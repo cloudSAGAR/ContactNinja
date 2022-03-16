@@ -6,13 +6,7 @@
     android:layout_width="match_parent"
     tools:ignore="MissingConstraints,TextContrastCheck,TouchTargetSizeCheck,Autofill,RtlHardcoded,ContentDescription,UseCompoundDrawables,DisableBaselineAlignment,UselessParent,NestedWeights,RedundantNamespace,InefficientWeight"
     android:layout_height="wrap_content">
-    <ru.rambler.libs.swipe_layout.SwipeLayout
-        android:id="@+id/swipe_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:left_swipe_enabled="true"
-        app:right_swipe_enabled="true"
-        >
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -49,9 +43,8 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="bottom"
+                            android:layout_gravity="center"
                             android:layout_weight="1"
-                            android:gravity="bottom"
                             android:orientation="vertical">
 
                             <LinearLayout
@@ -62,7 +55,7 @@
                                 <TextView
 
                                     android:id="@+id/tv_phone"
-                                    style="@style/tv_regular_13"
+                                    style="@style/tv_regular_12"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/add_phone"
@@ -169,59 +162,6 @@
 
                         </LinearLayout>
                     </LinearLayout>
-                    <LinearLayout
-                        android:background="@color/white"
-                        android:layout_alignParentRight="true"
-                        android:visibility="gone"
-                        android:id="@+id/layout_swap"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center|top"
-                        android:gravity="center|top"
-                        app:bring_to_clamp="150dp"
-                        app:clamp="self"
-                        app:gravity="right"
-                        android:layout_marginStart="@dimen/_10sdp"
-                        app:sticky="100dp">
-
-                        <LinearLayout
-                            android:id="@+id/layout_remove"
-                            android:layout_width="@dimen/_60sdp"
-                            android:layout_height="@dimen/_40sdp"
-                            android:layout_gravity="center|top"
-                            android:background="@drawable/shape_red_back"
-                            android:gravity="center|top">
-
-                            <ImageView
-                                android:layout_width="@dimen/_15sdp"
-                                android:layout_height="@dimen/_15sdp"
-                                android:layout_gravity="center"
-                                android:src="@drawable/ic_remove" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/layout_defult"
-                            android:layout_width="@dimen/_60sdp"
-                            android:layout_height="@dimen/_40sdp"
-                            android:layout_gravity="center|top"
-                            android:layout_marginStart="@dimen/_5sdp"
-                            android:background="@drawable/shape_5_blue"
-                            android:gravity="center|top">
-
-                            <TextView
-                                style="@style/tv_regular_13"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:gravity="center"
-                                android:text="@string/add_defult_text"
-                                android:textColor="@color/white"
-                                android:textSize="@dimen/_10sdp"
-                                android:textStyle="bold"/>
-                        </LinearLayout>
-
-                    </LinearLayout>
 
                 </RelativeLayout>
 
@@ -243,15 +183,16 @@
                     android:orientation="horizontal">
 
                 <com.hbb20.CountryCodePicker
+                    app:ccp_textSize="@dimen/_12sdp"
                     android:id="@+id/ccp_id"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center|left"
                     android:gravity="center|left"
                     app:ccpDialog_showTitle="false"
-                    app:ccpDialog_textColor="@color/black"
+                    app:ccpDialog_textColor="@color/text_reg"
                     app:ccp_autoDetectCountry="true"
-                    app:ccp_contentColor="@color/otp_header_text_color"
+                    app:ccp_contentColor="@color/text_reg"
                     app:ccp_showNameCode="false"
                      />
 
@@ -266,7 +207,7 @@
 
                 <EditText
                     android:id="@+id/edt_mobile_no"
-                    style="@style/tv_regular_13"
+                    style="@style/tv_regular_12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|left"
@@ -280,6 +221,7 @@
                     tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
 
             </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -287,7 +229,17 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:background="@color/home_list_add_contect_view" />
-
+            <TextView
+                android:id="@+id/iv_invalid1"
+                style="@style/tv_regular_12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/invalid_phone"
+                android:textColor="@color/red"
+                android:visibility="gone" />
         </LinearLayout>
-    </ru.rambler.libs.swipe_layout.SwipeLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

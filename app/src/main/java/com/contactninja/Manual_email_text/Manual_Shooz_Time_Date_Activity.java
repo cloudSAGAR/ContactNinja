@@ -64,7 +64,7 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
     private int mYear, mMonth, mDay, mHour, mMinute;
     String id,text,p_number,Type;
     private long mLastClickTime=0;
-
+    int prospect_id=0,seq_task_id=0,record_id=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +84,9 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
             Bundle bundle=intent.getExtras();
             id=bundle.getString("id");
             Type=bundle.getString("Type");
+            prospect_id=bundle.getInt("prospect_id");
+            seq_task_id=bundle.getInt("seq_task_id");
+            record_id=bundle.getInt("record_id");
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -96,8 +99,10 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
         String formattedDate = df.format(c);
         tv_date.setText(formattedDate);
 
+        Calendar mcurrentTime = Calendar.getInstance();
+        mcurrentTime.add(Calendar.MINUTE, 2);
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        String currentDateandTime = sdf.format(new Date());
+        String currentDateandTime = sdf.format(mcurrentTime.getTime());
         tv_time.setText(currentDateandTime);
     }
     @Override
@@ -134,11 +139,14 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Intent intent = null;
         if(Type.equals("EMAIL")){
-            startActivity(new Intent(getApplicationContext(), Item_List_Email_Detail_activty.class));
+            intent = new Intent(getApplicationContext(), Item_List_Email_Detail_activty.class);
         }else {
-            startActivity(new Intent(getApplicationContext(), Item_List_Text_Detail_Activty.class));
+            intent = new Intent(getApplicationContext(), Item_List_Text_Detail_Activty.class);
         }
+        intent.putExtra("record_id",record_id);
+        startActivity(intent);
         finish();
     }
 
@@ -197,7 +205,7 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
                 }
                 else {
                     try {
-                        SMSAPI(id);
+                        SMSAPI();
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -222,7 +230,7 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
 
         }
     }
-    private void SMSAPI(String i) throws JSONException {
+    private void SMSAPI() throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
         String user_id = String.valueOf(user_data.getUser().getId());
@@ -233,7 +241,8 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
         paramObject.put("team_id", "1");
         paramObject.put("organization_id", "1");
         paramObject.put("user_id", user_id);
-        paramObject.put("record_id", i);
+        paramObject.put("prospect_id", prospect_id);
+        paramObject.put("seq_task_id", seq_task_id);
         paramObject.put("status", "SNOOZE");
         paramObject.put("time", tv_time.getText().toString());
         paramObject.put("date", tv_date.getText().toString());
@@ -243,7 +252,7 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
         Log.e("Gson Data is", new Gson().toJson(gsonObject));
 
 
-        retrofitCalls.manual_task_store(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(this), Global.Device, new RetrofitCallback() {
+        retrofitCalls.manual_task_store_snooze(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 if (response.body().getHttp_status() == 200) {
@@ -263,6 +272,7 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
     public void onTimer()
     {
         Calendar mcurrentTime = Calendar.getInstance();
+        mcurrentTime.set(Calendar.MINUTE, 2);
         int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
         int minute = mcurrentTime.get(Calendar.MINUTE);
         TimePickerDialog mTimePicker;

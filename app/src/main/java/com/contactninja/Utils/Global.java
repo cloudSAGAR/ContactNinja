@@ -3,16 +3,21 @@ package com.contactninja.Utils;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.os.SystemClock;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -33,8 +38,10 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -53,8 +60,12 @@ public class Global extends Application {
     private static final long MIN_CLICK_INTERVAL = 2000; //in millis
     public static String AppVersion = "";
     public static String about = "https://contactninja.us/about/";
+    public static String conditions = "https://contactninja.us/terms-and-conditions/";
     public static String Email_auth = "https://app.contactninja.org/email_api/callback.php";
     public static int count = 1;
+    public static String bzcard_share ="https://app.contactninja.org/bzcard/";
+    public static String bzcard_priview="https://app.contactninja.org/bzpreview/";
+    public static String bzcard_master="https://app.contactninja.org/master-preview/";
     private static long lastClickTime = 0;
     private static Global mInstance;
     private static Snackbar snackbar;
@@ -114,6 +125,7 @@ public class Global extends Application {
         return object != null && !object.equals("null") && !object.equals("");
     }
 
+
     public static void bsck(Context context, View drawerLayout) {
         Snackbar snackbar;
         snackbar = Snackbar.make(drawerLayout, context.getString(R.string.back_button), 5000);
@@ -152,6 +164,15 @@ public class Global extends Application {
         if (Global.IsNotNull(activity.getCurrentFocus())) {
             if (imm != null) {
                 imm.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+            }
+        }
+    }
+
+    public static void ShowKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(INPUT_METHOD_SERVICE);
+        if (Global.IsNotNull(activity.getCurrentFocus())) {
+            if (imm != null) {
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
             }
         }
     }
@@ -303,6 +324,8 @@ public class Global extends Application {
         return countryCode;
     }
 
+
+
     /*
         public static String getcontectexits(SessionManager sessionManager){
 
@@ -334,4 +357,127 @@ public class Global extends Application {
         ConnectivityReceiver.connectivityReceiverListener = listener;
     }
 
+
+    @SuppressLint("NewApi")
+    public static String getPathFromUri(final Context context, final Uri uri) {
+
+        final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+        // DocumentProvider
+        if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
+            // ExternalStorageProvider
+            if ("com.android.externalstorage.documents".equals(uri.getAuthority())) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+
+                if ("primary".equalsIgnoreCase(type)) {
+                    return Environment.getExternalStorageDirectory() + "/" + split[1];
+                }
+                //handle non-primary volumes
+            }
+            // DownloadsProvider
+            else if ("com.android.providers.downloads.documents".equals(uri.getAuthority())) {
+                final String id = DocumentsContract.getDocumentId(uri);
+                final Uri contentUri = ContentUris.withAppendedId(
+                        Uri.parse("content://downloads/public_downloads"), Long.parseLong(id));
+                return getDataColumn(context, contentUri, null, null);
+            }
+            // MediaProvider
+            else if ("com.android.providers.media.documents".equals(uri.getAuthority())) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+                Uri contentUri = null;
+                if ("image".equals(type)) {
+                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                } else if ("video".equals(type)) {
+                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+                } else if ("audio".equals(type)) {
+                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                } else if ("document".equals(type)) {
+                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                }
+                final String selection = "_id=?";
+                final String[] selectionArgs = new String[]{
+                        split[1]
+                };
+                return getDataColumn(context, contentUri, selection, selectionArgs);
+            }
+        }
+        // MediaStore (and general)
+        else if ("content".equalsIgnoreCase(uri.getScheme())) {
+            // Return the remote address
+            if ("com.google.android.apps.photos.content".equals(uri.getAuthority()))
+                return uri.getLastPathSegment();
+
+            return getDataColumn(context, uri, null, null);
+        }
+        // File
+        else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            return uri.getPath();
+        }
+        return null;
+    }
+
+    public static String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
+        Cursor cursor = null;
+        final String column = "_data";
+        final String[] projection = {column};
+        try {
+            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                final int index = cursor.getColumnIndexOrThrow(column);
+                return cursor.getString(index);
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+        return null;
+    }
+    public static boolean isValidURL(String url)
+    {
+        // Regex to check valid URL
+        String regex = "((http|https)://)(www.)?"
+                + "[a-zA-Z0-9@:%._\\+~#?&//=]"
+                + "{2,256}\\.[a-z]"
+                + "{2,6}\\b([-a-zA-Z0-9@:%"
+                + "._\\+~#?&//=]*)";
+
+        // Compile the ReGex
+        Pattern p = Pattern.compile(regex);
+
+        // If the string is empty
+        // return false
+        if (url == null) {
+            return false;
+        }
+
+        // Find match between given string
+        // and regular expression
+        // using Pattern.matcher()
+        Matcher m = p.matcher(url);
+
+        // Return if the string
+        // matched the ReGex
+        return m.matches();
+    }
+    public static String getYoutubeThumbnailUrlFromVideoUrl(String videoUrl) {
+        return "http://img.youtube.com/vi/" + getYoutubeVideoIdFromUrl(videoUrl) + "/0.jpg";
+    }
+
+    public static String getYoutubeVideoIdFromUrl(String inUrl) {
+        inUrl = inUrl.replace("&feature=youtu.be", "");
+        if (inUrl.toLowerCase().contains("youtu.be")) {
+            return inUrl.substring(inUrl.lastIndexOf("/") + 1);
+        }
+        String pattern = "(?<=watch\\?v=|/videos/|embed\\/)[^#\\&\\?]*";
+        Pattern compiledPattern = Pattern.compile(pattern);
+        Matcher matcher = compiledPattern.matcher(inUrl);
+        if (matcher.find()) {
+            return matcher.group();
+        }
+        return null;
+    }
 }
+

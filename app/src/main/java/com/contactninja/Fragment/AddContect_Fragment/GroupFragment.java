@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -45,7 +46,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -60,9 +60,9 @@ import retrofit2.Response;
 @SuppressLint("UnknownNullness,SyntheticAccessor,SetTextI18n,StaticFieldLeak")
 public class GroupFragment extends Fragment implements View.OnClickListener {
     private long mLastClickTime = 0;
-    LinearLayout main_layout, add_new_contect_layout, group_name;
+    LinearLayout main_layout,  group_name;
     SessionManager sessionManager;
-    RecyclerView group_recyclerView;
+    RecyclerView rv_group_list;
     LinearLayoutManager layoutManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
@@ -75,8 +75,9 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
     private List<Grouplist.Group> grouplists=new ArrayList<>();
     // private GroupAdapter groupAdapter;
     private ProgressBar loadingPB;
-    LinearLayout mMainLayout1, demo_layout,mMainLayout;
+    LinearLayout mMainLayout1, demo_layout,mMainLayout,lay_no_list;
     EditText ev_search;
+    ImageView iv_cancle_search_icon,iv_add_new_contect_icon;
 
     public GroupFragment() {
         // Required empty public constructor
@@ -98,14 +99,14 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         SessionManager.setGroupList(getActivity(), new ArrayList<>());
 
         paginationAdapter = new PaginationAdapter(getActivity());
-        group_recyclerView.setAdapter(paginationAdapter);
+        rv_group_list.setAdapter(paginationAdapter);
 
-        add_new_contect_layout.setOnClickListener(this);
+        iv_add_new_contect_icon.setOnClickListener(this);
         group_name.setOnClickListener(this);
         demo_layout.setOnClickListener(this);
 
 
-        group_recyclerView.addOnScrollListener(new PaginationListener(layoutManager) {
+        rv_group_list.addOnScrollListener(new PaginationListener(layoutManager) {
             @Override
             protected void loadMoreItems() {
                 isLoading = true;
@@ -137,8 +138,8 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onRefresh() {
                 paginationAdapter = new PaginationAdapter(getActivity());
-                group_recyclerView.setAdapter(paginationAdapter);
-
+                rv_group_list.setAdapter(paginationAdapter);
+                iv_cancle_search_icon.setVisibility(View.GONE);
                 ev_search.setText("");
                 currentPage = PAGE_START;
                 isLastPage = false;
@@ -158,7 +159,9 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    iv_cancle_search_icon.setVisibility(View.VISIBLE);
                    Global.hideKeyboard(getActivity());
+                    iv_cancle_search_icon.setVisibility(View.VISIBLE);
                     onResume();
                     return true;
                 }
@@ -171,11 +174,13 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
     private void IntentUI(View view) {
 
         /*   main_layout = view.findViewById(R.id.main_layout);*/
-        add_new_contect_layout = view.findViewById(R.id.add_new_contect_layout);
+        iv_cancle_search_icon=view.findViewById(R.id.iv_cancle_search_icon);
+        iv_cancle_search_icon.setOnClickListener(this);
+        iv_add_new_contect_icon = view.findViewById(R.id.iv_add_new_contect_icon);
         ev_search = view.findViewById(R.id.ev_search);
-        group_recyclerView = view.findViewById(R.id.group_list);
+        rv_group_list = view.findViewById(R.id.rv_group_list);
         layoutManager = new LinearLayoutManager(getActivity());
-        group_recyclerView.setLayoutManager(layoutManager);
+        rv_group_list.setLayoutManager(layoutManager);
         group_name = view.findViewById(R.id.group_name);
         num_count = view.findViewById(R.id.num_count);
         loadingPB = view.findViewById(R.id.idPBLoading);
@@ -184,7 +189,9 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         mMainLayout = view.findViewById(R.id.mMainLayout);
         demo_layout = view.findViewById(R.id.demo_layout);
         swipeToRefresh = view.findViewById(R.id.swipeToRefresh);
-
+        lay_no_list = view.findViewById(R.id.lay_no_list);
+        iv_cancle_search_icon = view.findViewById(R.id.iv_cancle_search_icon);
+        iv_cancle_search_icon.setOnClickListener(this);
     }
 
 
@@ -192,7 +199,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.add_new_contect_layout:
+            case R.id.iv_add_new_contect_icon:
             case R.id.demo_layout:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
@@ -209,6 +216,20 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
                 /*  getActivity().finish();*/
                 break;
+            case R.id.iv_cancle_search_icon:
+                ev_search.setText("");
+                iv_cancle_search_icon.setVisibility(View.GONE);
+                try {
+                    grouplists.clear();
+                    paginationAdapter.clear();
+                    if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
+                        GroupEvent();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
+
             case R.id.group_name:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
@@ -217,7 +238,6 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
                 startActivity(new Intent(getActivity(), SendBroadcast.class));
                 break;
-
 
         }
 
@@ -228,7 +248,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         super.onResume();
         SessionManager.setGroupList(getActivity(), new ArrayList<>());
         paginationAdapter = new PaginationAdapter(getActivity());
-        group_recyclerView.setAdapter(paginationAdapter);
+        rv_group_list.setAdapter(paginationAdapter);
         //loadingDialog.showLoadingDialog();
         currentPage = PAGE_START;
         isLastPage = false;
@@ -287,13 +307,28 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                     isLoading = false;
                     num_count.setText(String.valueOf(group_model.getTotal() + " Group"));
 
+
+                    lay_no_list.setVisibility(View.GONE);
+                    rv_group_list.setVisibility(View.VISIBLE);
                     demo_layout.setVisibility(View.GONE);
                     mMainLayout1.setVisibility(View.VISIBLE);
+
+
                 } else {
                     num_count.setText(String.valueOf(0 + " Group"));
                     if(ev_search.getText().toString().equals("")){
+                        lay_no_list.setVisibility(View.GONE);
+                        rv_group_list.setVisibility(View.GONE);
                         demo_layout.setVisibility(View.VISIBLE);
                         mMainLayout1.setVisibility(View.GONE);
+                    }else {
+                        if(grouplists.size()==0){
+                            lay_no_list.setVisibility(View.VISIBLE);
+                            rv_group_list.setVisibility(View.GONE);
+                        }else {
+                            lay_no_list.setVisibility(View.GONE);
+                            rv_group_list.setVisibility(View.VISIBLE);
+                        }
                     }
                 }
             }
@@ -381,7 +416,8 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
                         Glide.with(context).
                                 load(Group_data.getGroupImage()).
                                 placeholder(R.drawable.shape_primary_back).
-                                error(R.drawable.shape_primary_back).into(movieViewHolder.group_image);
+                                error(R.drawable.shape_primary_back).
+                                into(movieViewHolder.group_image);
 
                         movieViewHolder.no_image.setVisibility(View.GONE);
                         movieViewHolder.group_image.setVisibility(View.VISIBLE);
@@ -472,7 +508,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
             public LoadingViewHolder(View itemView) {
                 super(itemView);
-                progressBar = itemView.findViewById(R.id.idPBLoading);
+                progressBar = itemView.findViewById(R.id.progressBar);
 
             }
         }

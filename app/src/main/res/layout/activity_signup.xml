@@ -28,7 +28,7 @@
 
                 <TextView
                     android:id="@+id/tv_welcome"
-                    style="@style/tv_Medium_14"
+                    style="@style/tv_Medium_12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|top"
@@ -72,7 +72,7 @@
 
                         <EditText
                             android:id="@+id/edit_First"
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -84,7 +84,7 @@
                             android:padding="10dp"
                             android:textColor="@color/otp_header_text_color"
                             android:textColorHint="@color/otp_header_text_color"
-                            tools:ignore="Autofill,RtlHardcoded" />
+                            tools:ignore="Autofill,RtlHardcoded,TouchTargetSizeCheck" />
 
                         <View
                             android:layout_width="match_parent"
@@ -102,7 +102,7 @@
 
                         <EditText
                             android:id="@+id/edit_Last"
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -114,7 +114,7 @@
                             android:padding="10dp"
                             android:textColor="@color/otp_header_text_color"
                             android:textColorHint="@color/otp_header_text_color"
-                            tools:ignore="Autofill,RtlHardcoded" />
+                            tools:ignore="Autofill,RtlHardcoded,TouchTargetSizeCheck" />
 
                         <View
                             android:layout_width="match_parent"
@@ -154,7 +154,7 @@
                             app:ccp_autoDetectCountry="true"
                             app:ccp_contentColor="@color/otp_header_text_color"
                             app:ccp_showNameCode="false"
-                            app:ccp_textSize="@dimen/_13sdp" />
+                            app:ccp_textSize="@dimen/_12sdp" />
 
                         <View
                             android:layout_width="1dp"
@@ -163,7 +163,7 @@
 
                         <EditText
                             android:id="@+id/edit_Mobile"
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -177,7 +177,7 @@
                             android:textColor="@color/otp_header_text_color"
                             android:textColorHighlight="@color/purple_200"
                             android:textColorHint="@color/otp_header_text_color"
-                             />
+                            tools:ignore="TouchTargetSizeCheck" />
 
                     </LinearLayout>
 
@@ -192,7 +192,7 @@
 
                         <EditText
                             android:id="@+id/edit_email"
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -219,7 +219,7 @@
 
                         <TextView
                             android:id="@+id/iv_invalid"
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:layout_width="@dimen/_150sdp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"
@@ -238,10 +238,11 @@
                             android:gravity="end"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/or_email"
-                            android:textColor="@color/purple_200" />
+                            android:textColor="@color/purple_200"
+                            tools:ignore="RelativeOverlap" />
 
                         <CheckBox
-                            style="@style/tv_regular_13"
+                            style="@style/tv_regular_12"
                             android:id="@+id/select_code"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -267,7 +268,7 @@
 
                             <EditText
                                 android:id="@+id/edit_code"
-                                style="@style/tv_regular_13"
+                                style="@style/tv_regular_12"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -309,7 +310,7 @@
                     android:text="@string/SignUp"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_13sdp"
-                    />
+                    tools:ignore="TextContrastCheck" />
 
                 <LinearLayout
                     android:id="@+id/lay_signup"
@@ -366,7 +367,8 @@
         android:layout_height="@dimen/_60sdp"
         android:layout_marginStart="@dimen/_8sdp"
         android:layout_marginTop="@dimen/_55sdp"
-        android:src="@drawable/ic_group_otp_logo">
+        android:src="@drawable/ic_group_otp_logo"
+        tools:ignore="ImageContrastCheck">
 
     </ImageView>
 

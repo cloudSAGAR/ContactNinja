@@ -6,20 +6,51 @@ import android.annotation.SuppressLint;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
 @SuppressLint("UnknownNullness")
-public class LevelModel {
+public class LevelModel implements Serializable {
+
     @SerializedName("user_id")
     @Expose
     private Integer userId;
+
+    private String level_name;
     @SerializedName("referred_by")
     @Expose
     private Integer referredBy;
+    @SerializedName("profile_pic")
+    @Expose
+    private String profilePic;
     @SerializedName("first_name")
     @Expose
-    private String name;
+    private String firstName;
     @SerializedName("referred_name")
     @Expose
     private String referredName;
+    @SerializedName("created_at")
+    @Expose
+    private String createdAt;
+    @SerializedName("reward_earned")
+    @Expose
+    private Integer reward_earned=0;
+
+    public Integer getReward_earned() {
+        return reward_earned;
+    }
+
+    public void setReward_earned(Integer reward_earned) {
+        this.reward_earned = reward_earned;
+    }
+
+    public String getLevel_name() {
+        return level_name;
+    }
+
+    public void setLevel_name(String level_name) {
+        this.level_name = level_name;
+    }
 
     public Integer getUserId() {
         return userId;
@@ -37,12 +68,20 @@ public class LevelModel {
         this.referredBy = referredBy;
     }
 
-    public String getName() {
-        return name;
+    public String getProfilePic() {
+        return profilePic;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setProfilePic(String profilePic) {
+        this.profilePic = profilePic;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getReferredName() {
@@ -51,5 +90,13 @@ public class LevelModel {
 
     public void setReferredName(String referredName) {
         this.referredName = referredName;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 }

@@ -19,18 +19,27 @@ public class ManualTaskModel {
     @SerializedName("seq_id")
     @Expose
     private Integer seqId = 0;
+    @SerializedName("sequence_task_from")
+    @Expose
+    private Integer sequence_task_from = 0;
     @SerializedName("seq_task_id")
     @Expose
     private Integer seqTaskId;
     @SerializedName("type")
     @Expose
     private String type;
+    @SerializedName("manage_by")
+    @Expose
+    private String manage_by="";
     @SerializedName("prospect_id")
     @Expose
     private Integer prospectId;
     @SerializedName("status")
     @Expose
     private String status;
+    @SerializedName("stage")
+    @Expose
+    private String stage;
     @SerializedName("email")
     @Expose
     private String email;
@@ -86,6 +95,14 @@ public class ManualTaskModel {
     @SerializedName("sent_tbl_id")
     @Expose
     private String sent_tbl_id;
+
+    public String getStage() {
+        return stage;
+    }
+
+    public void setStage(String stage) {
+        this.stage = stage;
+    }
 
     public String getMail_module() {
         return mail_module;
@@ -285,5 +302,21 @@ public class ManualTaskModel {
 
     public void setTask_name(String task_name) {
         this.task_name = task_name;
+    }
+
+    public Integer getSequence_task_from() {
+        return sequence_task_from;
+    }
+
+    public void setSequence_task_from(Integer sequence_task_from) {
+        this.sequence_task_from = sequence_task_from;
+    }
+
+    public String getManage_by() {
+        return manage_by;
+    }
+
+    public void setManage_by(String manage_by) {
+        this.manage_by = manage_by;
     }
 }

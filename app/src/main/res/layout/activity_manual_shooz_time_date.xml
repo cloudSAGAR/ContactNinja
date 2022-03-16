@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:orientation="vertical"
     android:id="@+id/mMainLayout"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     tools:context=".Manual_email_text.Manual_Shooz_Time_Date_Activity">
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include layout="@layout/toolbar"/>
+        <include layout="@layout/toolbar" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,101 +26,102 @@
                 android:layout_marginStart="-25dp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:src="@drawable/ic_group_otp_logo"
-                tools:ignore="ContentDescription" />
+                tools:ignore="ContentDescription,ImageContrastCheck" />
 
 
         </LinearLayout>
 
         <TextView
-            style="@style/tv_Medium_14"
+            style="@style/tv_Medium_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_40sdp"
             android:gravity="center"
             android:text="@string/Snooze_task"
             android:textColor="@color/text_welcome"
-            android:textSize="@dimen/_18sdp"
-            >
-        </TextView>
-
+            android:textSize="@dimen/_18sdp"/>
 
 
         <TextView
-            style="@style/tv_Medium_14"
+            style="@style/tv_Medium_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_22sdp"
             android:layout_marginTop="@dimen/_30sdp"
             android:text="@string/email_date"
-            android:layout_marginStart="@dimen/_22sdp"
             android:textColor="@color/text_reg">
 
         </TextView>
+
         <LinearLayout
             android:id="@+id/la_date"
-            android:background="@drawable/shep_gray_back"
-            android:layout_marginStart="@dimen/_20sdp"
-            android:layout_marginEnd="@dimen/_20sdp"
             android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
             android:layout_gravity="center|left"
-            android:gravity="left|center"
+            android:layout_marginStart="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_5sdp"
-            android:layout_height="@dimen/_40sdp">
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:background="@drawable/shep_gray_back"
+            android:gravity="left|center">
+
             <TextView
                 android:id="@+id/tv_date"
-                android:layout_marginStart="@dimen/_15sdp"
-                style="@style/tv_Medium_14"
+                style="@style/tv_Medium_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
                 android:hint="@string/email_date"
                 android:textColor="@color/text_reg"
-                >
+                tools:ignore="TextContrastCheck">
 
             </TextView>
         </LinearLayout>
 
         <TextView
-            style="@style/tv_Medium_14"
+            style="@style/tv_Medium_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_22sdp"
             android:layout_marginTop="@dimen/_20sdp"
             android:text="@string/email_time"
-            android:layout_marginStart="@dimen/_22sdp"
-            android:textColor="@color/text_reg"
-            >
+            android:textColor="@color/text_reg">
 
         </TextView>
+
         <LinearLayout
             android:id="@+id/la_time"
-            android:background="@drawable/shep_gray_back"
-            android:layout_marginStart="@dimen/_20sdp"
-            android:layout_marginEnd="@dimen/_20sdp"
             android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
             android:layout_gravity="center|left"
-            android:gravity="left|center"
+            android:layout_marginStart="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_5sdp"
-            android:layout_height="@dimen/_40sdp">
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:background="@drawable/shep_gray_back"
+            android:gravity="left|center">
+
             <TextView
                 android:id="@+id/tv_time"
-                android:layout_marginStart="@dimen/_15sdp"
-                style="@style/tv_Medium_14"
+                style="@style/tv_Medium_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
                 android:hint="@string/email_time"
                 android:textColor="@color/text_reg"
-                >
+                tools:ignore="TextContrastCheck">
 
             </TextView>
         </LinearLayout>
+
         <TextView
             android:id="@+id/tc_time_zone"
-            android:layout_marginStart="@dimen/_22sdp"
             style="@style/tv_regular_12"
-            android:layout_marginTop="@dimen/_10sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_22sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:hint="@string/email_date"
             android:textColor="@color/text_reg"
-            >
+            tools:ignore="TextContrastCheck">
 
         </TextView>
 

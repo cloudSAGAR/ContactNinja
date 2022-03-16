@@ -164,6 +164,7 @@ public class Campaign_Step_Fragment extends Fragment {
                     }
                     movieViewHolder.edit_minutes.setText(movieList.get(position).getMinute().toString());
                     movieViewHolder.edit_day.setText(movieList_data.getDay().toString());
+                    movieViewHolder.iv_manu.setVisibility(View.GONE);
                     movieViewHolder.iv_manu.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -567,6 +568,8 @@ public class Campaign_Step_Fragment extends Fragment {
         paramObject.addProperty("id", sequence_id);
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", user_id);
+        paramObject.addProperty("is_preview","1");
+
         obj.add("data", paramObject);
         PackageManager pm = getActivity().getPackageManager();
         String pkgName = getActivity().getPackageName();

@@ -18,53 +18,54 @@
 
         <TextView
             android:id="@+id/selected_broadcast"
+            style="@style/tv_regular_12"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_30sdp"
             android:layout_marginTop="10dp"
-            style="@style/tv_regular_13"
             android:gravity="center"
             android:text="@string/add_broadcast"
-            android:textColor="@color/text_reg"
-            />
+            android:textColor="@color/text_reg" />
+
         <View
             android:id="@+id/line_brodcste"
-            android:background="@color/browser_actions_bg_grey"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_1sdp">
+            android:layout_height="@dimen/_1sdp"
+            android:background="@color/browser_actions_bg_grey">
 
         </View>
+
         <TextView
             android:id="@+id/selected_campaign"
+            style="@style/tv_regular_12"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_30sdp"
             android:layout_marginTop="10dp"
-            style="@style/tv_regular_13"
             android:gravity="center"
             android:text="@string/campaign"
-            android:textColor="@color/text_reg"
-            />
+            android:textColor="@color/text_reg" />
+
         <View
             android:id="@+id/line_caampaign"
-            android:background="@color/browser_actions_bg_grey"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_1sdp">
+            android:layout_height="@dimen/_1sdp"
+            android:background="@color/browser_actions_bg_grey">
 
         </View>
 
         <TextView
             android:id="@+id/selected_task"
+            style="@style/tv_regular_12"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_30sdp"
             android:layout_marginTop="10dp"
-            style="@style/tv_regular_13"
             android:gravity="center"
             android:text="@string/manual_task_create"
-            android:textColor="@color/text_reg"
-            />
+            android:textColor="@color/text_reg" />
+
         <View
-            android:background="@color/browser_actions_bg_grey"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_1sdp">
+            android:layout_height="@dimen/_1sdp"
+            android:background="@color/browser_actions_bg_grey">
 
         </View>
     </LinearLayout>

@@ -2,12 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:background="@color/purple_200"
-    android:layout_height="match_parent"
     android:id="@+id/mMainLayout"
-    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
-    tools:context=".Auth.AppIntroActivity">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/purple_200"
+    tools:context=".Auth.AppIntroActivity"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
 
 
     <TextView
@@ -30,27 +30,27 @@
         android:layout_above="@+id/tab_layout"
         android:layout_below="@+id/tv_skip"
         android:overScrollMode="never"
-        tools:ignore="MissingConstraints"/>
+        tools:ignore="MissingConstraints,SpeakableTextPresentCheck" />
 
-  <!--  <TextView
-        android:id="@+id/tv_dis"
-        android:padding="@dimen/_10sdp"
-        style="@style/tv_regular"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/in_1"
-        android:textColor="@color/white"
-        android:layout_marginBottom="@dimen/_20sdp"
-        app:layout_constraintBottom_toTopOf="@+id/tab_layout"
-        tools:ignore="MissingConstraints" />-->
+    <!--  <TextView
+          android:id="@+id/tv_dis"
+          android:padding="@dimen/_10sdp"
+          style="@style/tv_regular"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:gravity="center"
+          android:text="@string/in_1"
+          android:textColor="@color/white"
+          android:layout_marginBottom="@dimen/_20sdp"
+          app:layout_constraintBottom_toTopOf="@+id/tab_layout"
+          tools:ignore="MissingConstraints" />-->
 
     <com.google.android.material.tabs.TabLayout
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
         android:id="@+id/tab_layout"
         android:layout_width="@dimen/_150sdp"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/_50sdp"
         android:background="@color/purple_200"
         app:tabBackground="@drawable/tab_selector"

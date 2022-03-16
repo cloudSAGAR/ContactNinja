@@ -97,7 +97,7 @@ public class View_Contect_Fragment extends Fragment implements View.OnClickListe
         retrofitCalls = new RetrofitCalls(getActivity());
 
         contect_list_unselect.setHasFixedSize(true);
-        contect_list_unselect.setItemViewCacheSize(5000);
+        contect_list_unselect.setItemViewCacheSize(50000);
 
 
          contect_list_data=SessionManager.getCampaign_data(getActivity());

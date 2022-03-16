@@ -7,6 +7,7 @@
     tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
 
     <LinearLayout
+        android:layout_marginBottom="@dimen/_10sdp"
         android:id="@+id/layout_contec"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,46 +17,47 @@
         android:weightSum="2">
 
         <RelativeLayout
-            android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_35sdp"
+            android:id="@+id/iv_logo"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
             android:layout_gravity="center">
 
             <ImageView
-                android:visibility="gone"
                 android:id="@+id/iv_puse_icon"
-                android:src="@drawable/ic_push"
-                android:padding="@dimen/_5sdp"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_60sdp"
                 android:layout_gravity="center"
-                android:layout_width="@dimen/_50sdp"
-                android:layout_height="match_parent"/>
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/ic_push"
+                android:visibility="gone" />
 
             <ImageView
-                android:visibility="gone"
                 android:id="@+id/iv_play_icon"
-                android:src="@drawable/ic_play"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_60sdp"
                 android:layout_gravity="center"
                 android:padding="@dimen/_5sdp"
-                android:layout_width="@dimen/_50sdp"
-                android:layout_height="match_parent"/>
+                android:src="@drawable/ic_play"
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/iv_hold"
-                android:layout_width="@dimen/_50sdp"
-                android:layout_height="match_parent"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_60sdp"
                 android:layout_gravity="center"
                 android:padding="@dimen/_5sdp"
                 android:src="@drawable/ic_hold" />
 
             <TextView
-                android:visibility="gone"
                 android:id="@+id/no_image"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_width="@dimen/_35sdp"
                 android:layout_height="@dimen/_35sdp"
                 android:layout_gravity="center"
                 android:background="@drawable/shape_primary_circle"
                 android:gravity="center"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/iv_camp"
@@ -77,9 +79,9 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:orientation="horizontal">
 
@@ -98,28 +100,29 @@
                     android:layout_marginStart="@dimen/_5sdp"
                     android:gravity="center|left"
                     android:padding="@dimen/_2sdp"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:textSize="@dimen/_12sdp" />
             </LinearLayout>
 
             <TextView
                 android:id="@+id/tv_username"
-                style="@style/tv_Medium_14"
+                style="@style/tv_Medium_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:gravity="center|left"
+                android:padding="@dimen/_2sdp"
                 android:singleLine="true"
                 android:textColor="@color/text_reg" />
 
             <TextView
                 android:id="@+id/tv_task_time"
-                style="@style/tv_regular_13"
-                android:layout_width="wrap_content"
+                style="@style/tv_regular_12"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:gravity="center"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:gravity="center|start"
                 android:padding="@dimen/_2sdp"
                 android:singleLine="true"
                 android:textColor="@color/purple_200"
@@ -127,15 +130,15 @@
 
             <TextView
                 android:id="@+id/tv_task_description"
-                style="@style/tv_regular_13"
-                android:layout_width="wrap_content"
+                style="@style/tv_regular_12"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:gravity="center"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:gravity="center|start"
                 android:padding="@dimen/_2sdp"
                 android:singleLine="true"
                 android:textColor="@color/text_gray"
+                android:textSize="@dimen/_12sdp"
                 android:textStyle="bold" />
 
         </LinearLayout>
@@ -149,7 +152,7 @@
 
             <TextView
                 android:id="@+id/tv_time"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -157,15 +160,15 @@
                 android:gravity="center"
                 android:padding="@dimen/_2sdp"
                 android:textColor="@color/text_reg"
-                android:textSize="@dimen/_10sdp"/>
+                android:textSize="@dimen/_10sdp" />
 
         </LinearLayout>
 
     </LinearLayout>
 
     <View
+        android:id="@+id/view_last_line"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="@dimen/_10sdp"
         android:background="@color/home_list_back_line" />
 </LinearLayout>

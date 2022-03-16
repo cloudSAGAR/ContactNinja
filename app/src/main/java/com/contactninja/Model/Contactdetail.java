@@ -11,10 +11,20 @@ public class Contactdetail {
     String label;
     String type;
     String country_code;
+    int contect_id;
     public Contactdetail()
     {
 
     }
+
+    public int getContect_id() {
+        return contect_id;
+    }
+
+    public void setContect_id(int contect_id) {
+        this.contect_id = contect_id;
+    }
+
     public String getEmail_number() {
         return email_number;
     }

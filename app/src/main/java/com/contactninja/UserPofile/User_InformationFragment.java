@@ -11,6 +11,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.contactninja.Bzcard.Media.SwipeHelper;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.CompanyModel;
@@ -87,12 +89,12 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
     BottomSheetDialog bottomSheetDialog_time, bottomSheetDialog_company;
     EditText ev_address, ev_city, ev_zip, ev_zoom, ev_note,
             ev_company_url, ev_state, ev_job, ev_bob, ev_fb, ev_twitter, ev_breakout,
-            ev_linkedin, ev_company, edt_email;
+            ev_linkedin, ev_company, edt_email,ev_affiliatecode;
     LinearLayout select_state, add_mobile_Number,
             layout_Add_phone, layout_Add_email, layout_mobile, fb_layout;
     TextView tv_phone, tv_more_field, tv_company_url, tv_job,
             zone_txt, tv_add_social;
-    ImageView pulse_icon, pulse_icon1, img_fb, img_twitter, img_linkdin, img_breakout;
+    ImageView pulse_icon, pulse_icon1, img_fb, img_twitter, img_linkdin, img_breakout,iv_copy_affilate;
     String Name = "", job_titel = "", time_zone_id;
     SessionManager sessionManager;
     AddcontectModel addcontectModel;
@@ -139,14 +141,18 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
 
         View view = inflater.inflate(R.layout.fragment_user_information, container, false);
         IntentUI(view);
+        //Log.e("On Click Method ","3");
         addcontectModel = new AddcontectModel();
-
         sessionManager = new SessionManager(getActivity());
         loadingDialog = new LoadingDialog(getActivity());
         retrofitCalls = new RetrofitCalls(getActivity());
         companyAdapter = new CompanyAdapter(getActivity(), new ArrayList<>());
 
+        return view;
+    }
 
+    @Override
+    public void onStart() {
         setdata();
 
         layout_bod.setOnClickListener(new View.OnClickListener() {
@@ -201,15 +207,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 showBottomSheetDialog_For_Company();
             }
         });
-
-
-        try {
-            Timezoneget();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return view;
+        super.onStart();
     }
 
     private void setdata() {
@@ -286,10 +284,17 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             ev_zip.setEnabled(true);
             //  ev_bob.setEnabled(true);
             ev_note.setEnabled(true);
+            ev_breakout.setEnabled(true);
+            ev_linkedin.setEnabled(true);
+            ev_twitter.setEnabled(true);
+            ev_fb.setEnabled(true);
+            ev_affiliatecode.setEnabled(true);
 
-
+            layout_bod.setEnabled(true);
             edt_mobile_no.setEnabled(false);
-            edt_mobile_no.setText(user_data_model.getContactNumber());
+            String main_data = user_data_model.getContactNumber().replace("+" + String.valueOf(Global.Countrycode(getActivity(), user_data_model.getContactNumber())), "");
+            edt_mobile_no.setText(main_data);
+            ev_affiliatecode.setText(user_data_model.getReferenceCode());
             edt_email.setText(user_data_model.getEmail());
             edt_email.setEnabled(false);
             layout_country_piker.setVisibility(View.VISIBLE);
@@ -319,6 +324,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             ev_address.setText(Contect_data.getAddress());
             ev_zoom.setText(Contect_data.getZoom_id());
             ev_company.setText(Contect_data.getCompany_name());
+
             ev_state.setText(Contect_data.getState());
             ev_city.setText(Contect_data.getCity());
             if (String.valueOf(Contect_data.getTimezoneId()).equals("null")) {
@@ -405,8 +411,6 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                             rv_phone.setAdapter(phoneAdapter);
                             addcontectModel.setContactdetails(contactdetails);
                             Log.e("Add Contect Model is ", new Gson().toJson(addcontectModel));
-
-
                         }
                     }
                 }
@@ -419,15 +423,22 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             EmailViewAdd();
             PhoneViewAdd();
 
+            phonelistSwipe();
+            EmailistSwipe();
+
+
+
 
         } else if (flag.equals("read")) {
 
-            Log.e("Model Data", new Gson().toJson(user_data_model));
+           // Log.e("Model Data", new Gson().toJson(user_data_model));
             edt_mobile_no.setEnabled(false);
             edt_mobile_no.setText(user_data_model.getContactNumber());
             edt_email.setText(user_data_model.getEmail());
             edt_email.setEnabled(false);
             layout_country_piker.setVisibility(View.GONE);
+            layout_bod.setEnabled(false);
+            ev_affiliatecode.setEnabled(false);
 
             company_layout.setEnabled(false);
             media_link.setVisibility(View.GONE);
@@ -444,6 +455,12 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             ev_zip.setEnabled(false);
             ev_bob.setEnabled(false);
             ev_note.setEnabled(false);
+
+            ev_breakout.setEnabled(false);
+            ev_linkedin.setEnabled(false);
+            ev_twitter.setEnabled(false);
+            ev_fb.setEnabled(false);
+
             tv_add_social.setVisibility(View.GONE);
             edt_mobile_no.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
             edt_email.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
@@ -460,6 +477,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             ev_zip.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
             ev_bob.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
             ev_note.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
+            ev_affiliatecode.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
 
             // ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
             Userprofile Contect_data = user_data_model.getUserprofile();
@@ -476,6 +494,8 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             addcontectModel.setLinkedin(Contect_data.getLinkedin_link());
             addcontectModel.setFacebook(Contect_data.getFacebook_link());
             addcontectModel.setBirthday(Contect_data.getDob());
+            addcontectModel.setBreakoutu(user_data_model.getReferenceCode());
+
             /* addcontectModel.setTime(Contect_data.getTimezoneId());*//*
           /* img_fb.setVisibility(View.GONE);
             img_breakout.setVisibility(View.GONE);
@@ -489,6 +509,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             ev_company.setText(Contect_data.getCompany_name());
             ev_state.setText(Contect_data.getState());
             ev_city.setText(Contect_data.getCity());
+            ev_affiliatecode.setText(user_data_model.getReferenceCode());
             if (String.valueOf(Contect_data.getTimezoneId()).equals("null")) {
                 time_zone_id = TimeZone.getDefault().getID();
                 zone_txt.setText(time_zone_id);
@@ -662,7 +683,60 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             tv_add_social.setVisibility(View.GONE);
         }
     }
+    private void EmailistSwipe() {
+        SwipeHelper swipeHelper = new SwipeHelper(getActivity()) {
+            @Override
+            public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
+                underlayButtons.add(new SwipeHelper.UnderlayButton(
+                        "Delete",
+                        0,
+                        Color.parseColor("#FF3C30"),
+                        new SwipeHelper.UnderlayButtonClickListener() {
+                            @Override
+                            public void onClick(final int pos) {
+                                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                                    return;
+                                }
+                                mLastClickTime = SystemClock.elapsedRealtime();
+                                final Contactdetail item = emaildetails_list.get(pos);
+                                emailAdapter.removeItem(pos,item);
 
+                                Toast.makeText(getContext(), "Item was removed from the list.", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                ));
+
+            }
+        };
+        swipeHelper.attachToRecyclerView(rv_email);
+    }
+    private void phonelistSwipe() {
+        SwipeHelper swipeHelper = new SwipeHelper(getActivity()) {
+            @Override
+            public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
+                underlayButtons.add(new SwipeHelper.UnderlayButton(
+                        "Delete",
+                        0,
+                        Color.parseColor("#FF3C30"),
+                        new SwipeHelper.UnderlayButtonClickListener() {
+                            @Override
+                            public void onClick(final int pos) {
+                                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                                    return;
+                                }
+                                mLastClickTime = SystemClock.elapsedRealtime();
+                                final Contactdetail item = phonedetails_list.get(pos);
+                                phoneAdapter.removeItem(pos,item);
+
+                                Toast.makeText(getContext(), "Item was removed from the list.", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                ));
+
+            }
+        };
+        swipeHelper.attachToRecyclerView(rv_phone);
+    }
     private void Showlayout() {
         tv_more_field.setVisibility(View.GONE);
         media_layout.setVisibility(View.VISIBLE);
@@ -698,8 +772,8 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 rv_email.setLayoutManager(new LinearLayoutManager(getActivity()));
                 rv_email.setAdapter(emailAdapter);
                 //     Log.e("layout_Add_email",new Gson().toJson(emaildetails_list));
-                Log.e("Concet List size", String.valueOf(contactdetails.size()));
-                Log.e("Email  List is ", new Gson().toJson(SessionManager.getAdd_Contect_Detail(getActivity())));
+               // Log.e("Concet List size", String.valueOf(contactdetails.size()));
+               // Log.e("Email  List is ", new Gson().toJson(SessionManager.getAdd_Contect_Detail(getActivity())));
             });
         } else {
 
@@ -813,6 +887,24 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
                 addcontectModel.setAddress(charSequence.toString());
+                SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        ev_affiliatecode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                addcontectModel.setReferenceCode(charSequence.toString());
                 SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
             }
 
@@ -1061,6 +1153,8 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
     }
 
     private void IntentUI(View view) {
+        ev_affiliatecode=view.findViewById(R.id.ev_affiliatecode);
+        iv_copy_affilate=view.findViewById(R.id.iv_copy_affilate);
         layout_referenceCode = view.findViewById(R.id.layout_referenceCode);
         layout_country_piker = view.findViewById(R.id.layout_country_piker);
         edt_email = view.findViewById(R.id.edt_email);
@@ -1123,7 +1217,6 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         company_layout.setOnClickListener(this);
         other_company_layout = view.findViewById(R.id.other_company_layout);
         ev_othre_company = view.findViewById(R.id.ev_othre_company);
-        layout_referenceCode.setOnClickListener(this);
 
     }
 
@@ -1155,12 +1248,13 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.layout_referenceCode:
+            case R.id.iv_copy_affilate:
                 ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                 ClipData clip = ClipData.newPlainText("Code", referenceCode);
                 clipboard.setPrimaryClip(clip);
                 Toast.makeText(getContext(), "Code copy", Toast.LENGTH_SHORT).show();
                 break;
+
         }
     }
 
@@ -1540,6 +1634,8 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
 
                 CompanyList();
+                Timezoneget();
+
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -1727,8 +1823,6 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             holder.edt_mobile_no.setEnabled(true);
             if (edit) {
 
-                holder.swipe_layout.setLeftSwipeEnabled(true);
-                holder.swipe_layout.setRightSwipeEnabled(true);
                 holder.ccp_id.setCountryForNameCode(item.getCountry_code());
                 if (contactdetails.get(position).getIs_default() == 1) {
                     holder.iv_set_default.setVisibility(View.VISIBLE);
@@ -1793,42 +1887,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 });
 
 */
-                holder.swipe_layout.setOnSwipeListener(new SwipeLayout.OnSwipeListener() {
-                    @Override
-                    public void onBeginSwipe(SwipeLayout swipeLayout, boolean moveToRight) {
-                        // Log.e("Swipe Call ","MOveto right");
-                        if (holder.layout_swap.getVisibility() == View.GONE) {
-                            holder.layout_swap.setVisibility(View.VISIBLE);
-                            holder.layout_defult.setVisibility(View.GONE);
-                            holder.select_label.setVisibility(View.GONE);
-                        } else {
-                            holder.layout_defult.setVisibility(View.GONE);
 
-                            holder.layout_swap.setVisibility(View.GONE);
-                            holder.select_label.setVisibility(View.VISIBLE);
-
-                        }
-
-
-                    }
-
-                    @Override
-                    public void onSwipeClampReached(SwipeLayout swipeLayout, boolean moveToRight) {
-                        Log.e("Swipe Call", "MOveto right1");
-
-                    }
-
-                    @Override
-                    public void onLeftStickyEdge(SwipeLayout swipeLayout, boolean moveToRight) {
-                        Log.e("Swipe Call", "Left");
-                    }
-
-                    @Override
-                    public void onRightStickyEdge(SwipeLayout swipeLayout, boolean moveToRight) {
-                        Log.e("Swipe Call", "Right");
-
-                    }
-                });
                 holder.select_label.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -1843,26 +1902,24 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                     }
                 });
 
-                holder.layout_remove.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                            return;
-                        }
-                        mLastClickTime = SystemClock.elapsedRealtime();
-                        holder.layout_swap.setVisibility(View.GONE);
-                        contactdetails.remove(position);
-                        notifyDataSetChanged();
-                    }
-                });
 
 
-            } else if (flag.equals("read")) {
+                try {
+                    holder.ccp_id.setDefaultCountryUsingNameCode(String.valueOf(Global.Countrycode(getActivity(),
+                            contactdetails.get(position).getEmail_number())));
+                    holder.ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(getActivity(),contactdetails.get(position).getEmail_number()));
+                    holder.ccp_id.resetToDefaultCountry();
+                    holder.ccp_id.registerCarrierNumberEditText(holder.edt_mobile_no);
+
+                }
+                catch (Exception e)
+                {
+
+                }
+               } else if (flag.equals("read")) {
                 // EnableRuntimePermission();
                 holder.layout_icon_call.setVisibility(View.GONE);
                 holder.layout_icon_message.setVisibility(View.GONE);
-                holder.swipe_layout.setLeftSwipeEnabled(false);
-                holder.swipe_layout.setRightSwipeEnabled(false);
                 holder.select_label.setVisibility(View.GONE);
                 holder.contect_msg.setVisibility(View.GONE);
                 holder.layout_country_piker.setVisibility(View.GONE);
@@ -1916,32 +1973,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 });
 
 
-                holder.swipe_layout.setOnSwipeListener(new SwipeLayout.OnSwipeListener() {
-                    @Override
-                    public void onBeginSwipe(SwipeLayout swipeLayout, boolean moveToRight) {
-                        // Log.e("Swipe Call ","MOveto right");
-                        if (holder.layout_swap.getVisibility() == View.GONE) {
-                            holder.layout_swap.setVisibility(View.VISIBLE);
-                        } else {
-                            holder.layout_swap.setVisibility(View.GONE);
-                        }
-                    }
 
-                    @Override
-                    public void onSwipeClampReached(SwipeLayout swipeLayout, boolean moveToRight) {
-                        Log.e("Swipe Call ", "MOveto right1");
-                    }
-
-                    @Override
-                    public void onLeftStickyEdge(SwipeLayout swipeLayout, boolean moveToRight) {
-                        Log.e("Swipe Call ", "Left");
-                    }
-
-                    @Override
-                    public void onRightStickyEdge(SwipeLayout swipeLayout, boolean moveToRight) {
-                        Log.e("Swipe Call ", "Right");
-                    }
-                });
                 holder.select_label.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -1952,55 +1984,13 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                         showBottomSheetDialog_For_Home("mobile", holder.phone_txt, holder.phone_txt, item, position);
                     }
                 });
-                holder.layout_defult.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                            return;
-                        }
-                        mLastClickTime = SystemClock.elapsedRealtime();
-                        holder.layout_swap.setVisibility(View.GONE);
-                        for (int i = 0; i < contactdetails.size(); i++) {
-                            if (item.getId() == contactdetails.get(i).getId()) {
-                                contactdetails.get(i).setIs_default(1);
-                                notifyDataSetChanged();
-                            } else {
-                                contactdetails.get(i).setIs_default(0);
-                                notifyDataSetChanged();
-                            }
-                        }
-                    }
-                });
 
-                holder.layout_remove.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                            return;
-                        }
-                        mLastClickTime = SystemClock.elapsedRealtime();
-                        holder.layout_swap.setVisibility(View.GONE);
-                        contactdetails.remove(position);
-                        notifyDataSetChanged();
-
-                        if (edit) {
-                            try {
-                                if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
-                                    RemoveContect(item.getId());
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                });
 
 
             } else {
 
-                holder.swipe_layout.setLeftSwipeEnabled(true);
-                holder.swipe_layout.setRightSwipeEnabled(true);
-                if (item.getIs_default() == 1) {
+
+              if (item.getIs_default() == 1) {
                     holder.iv_set_default.setVisibility(View.VISIBLE);
                 } else {
                     holder.iv_set_default.setVisibility(View.GONE);
@@ -2069,36 +2059,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
 
                     }
                 });
-                holder.swipe_layout.setOnSwipeListener(new SwipeLayout.OnSwipeListener() {
-                    @Override
-                    public void onBeginSwipe(SwipeLayout swipeLayout, boolean moveToRight) {
-                        // Log.e("Swipe Call ","MOveto right");
-                        if (holder.layout_swap.getVisibility() == View.GONE) {
-                            holder.layout_swap.setVisibility(View.VISIBLE);
-                        } else {
-                            holder.layout_swap.setVisibility(View.GONE);
-                        }
 
-
-                    }
-
-                    @Override
-                    public void onSwipeClampReached(SwipeLayout swipeLayout, boolean moveToRight) {
-                        Log.e("Swipe Call ", "MOveto right1");
-
-                    }
-
-                    @Override
-                    public void onLeftStickyEdge(SwipeLayout swipeLayout, boolean moveToRight) {
-                        Log.e("Swipe Call ", "Left");
-                    }
-
-                    @Override
-                    public void onRightStickyEdge(SwipeLayout swipeLayout, boolean moveToRight) {
-                        Log.e("Swipe Call ", "Right");
-
-                    }
-                });
                 holder.select_label.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -2109,52 +2070,24 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                         showBottomSheetDialog_For_Home("mobile", holder.phone_txt, holder.phone_txt, item, position);
                     }
                 });
-                holder.layout_defult.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                            return;
-                        }
-                        mLastClickTime = SystemClock.elapsedRealtime();
-                        holder.layout_swap.setVisibility(View.GONE);
-                        for (int i = 0; i < contactdetails.size(); i++) {
-                            if (item.getId() == contactdetails.get(i).getId()) {
-                                contactdetails.get(i).setIs_default(1);
-                                notifyDataSetChanged();
-                            } else {
-                                contactdetails.get(i).setIs_default(0);
-                                notifyDataSetChanged();
-                            }
-                        }
-                    }
-                });
+                    try {
+                        holder.ccp_id.setDefaultCountryUsingNameCode(String.valueOf(Global.Countrycode(getActivity(),
+                                contactdetails.get(position).getEmail_number())));
+                        holder.ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(getActivity(),contactdetails.get(position).getEmail_number()));
+                        holder.ccp_id.resetToDefaultCountry();
+                        holder.ccp_id.registerCarrierNumberEditText(holder.edt_mobile_no);
 
-                holder.layout_remove.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                            return;
-                        }
-                        mLastClickTime = SystemClock.elapsedRealtime();
-                        holder.layout_swap.setVisibility(View.GONE);
-                        contactdetails.remove(position);
-                        notifyDataSetChanged();
-
-                        if (edit) {
-                            try {
-                                if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
-                                    RemoveContect(item.getId());
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
                     }
-                });
-            }
+                    catch (Exception e)
+                    {
+
+                    }
+
+                  }
 
             holder.layout_icon_call.setVisibility(View.GONE);
             holder.layout_icon_message.setVisibility(View.GONE);
+
 
 
         }
@@ -2184,11 +2117,40 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             }
         }
 
+        public void removeItem(int pos, Contactdetail item) {
+            contactdetails.remove(pos);
+            notifyDataSetChanged();
+            addcontectModel.setContactdetails(contactdetails);
+            SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
+
+/*
+            if (edit) {
+                try {
+                    if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
+                        RemoveContect(item.getId());
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }*/
+        }
+
+        public void setdefault(int pos, Contactdetail item) {
+            for (int i = 0; i < contactdetails.size(); i++) {
+                if (item.getId() == contactdetails.get(i).getId()) {
+                    contactdetails.get(i).setIs_default(1);
+                    notifyDataSetChanged();
+                } else {
+                    contactdetails.get(i).setIs_default(0);
+                    notifyDataSetChanged();
+                }
+            }
+        }
+
         public class InviteListDataclass extends RecyclerView.ViewHolder {
             EditText edt_mobile_no;
             ImageView iv_set_default;
-            SwipeLayout swipe_layout;
-            LinearLayout layout_swap, select_label, layout_defult, layout_remove, contect_msg, layout_icon_call,
+            LinearLayout layout_swap, select_label, contect_msg, layout_icon_call,
                     layout_icon_message, layout_country_piker;
             TextView phone_txt;
             CountryCodePicker ccp_id;
@@ -2200,10 +2162,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
 
                 edt_mobile_no = itemView.findViewById(R.id.edt_mobile_no);
                 iv_set_default = itemView.findViewById(R.id.iv_set_default);
-                swipe_layout = itemView.findViewById(R.id.swipe_layout);
                 layout_swap = itemView.findViewById(R.id.layout_swap);
-                layout_defult = itemView.findViewById(R.id.layout_defult);
-                layout_remove = itemView.findViewById(R.id.layout_remove);
                 phone_txt = itemView.findViewById(R.id.phone_txt);
                 ccp_id = itemView.findViewById(R.id.ccp_id);
                 layout_country_piker = itemView.findViewById(R.id.layout_country_piker);
@@ -2254,8 +2213,6 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
 
             if (edit) {
 
-                holder.swipe_layout.setLeftSwipeEnabled(true);
-                holder.swipe_layout.setRightSwipeEnabled(true);
                 holder.edt_email.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -2324,68 +2281,16 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                     }
                 });
 
-                holder.swipe_layout.setOnSwipeListener(new SwipeLayout.OnSwipeListener() {
-                    @Override
-                    public void onBeginSwipe(SwipeLayout swipeLayout, boolean moveToRight) {
-                        // Log.e("Swipe Call ","MOveto right");
-                        if (holder.layout_swap.getVisibility() == View.GONE) {
-                            holder.layout_swap.setVisibility(View.VISIBLE);
-                            holder.layout_defult.setVisibility(View.GONE);
-                            holder.select_email_label.setVisibility(View.GONE);
-                        } else {
-                            holder.layout_defult.setVisibility(View.GONE);
-                            holder.select_email_label.setVisibility(View.VISIBLE);
-                            holder.layout_swap.setVisibility(View.GONE);
-                        }
-
-
-                    }
-
-                    @Override
-                    public void onSwipeClampReached(SwipeLayout swipeLayout, boolean moveToRight) {
-                        Log.e("Swipe Call ", "MOveto right1");
-
-                    }
-
-                    @Override
-                    public void onLeftStickyEdge(SwipeLayout swipeLayout, boolean moveToRight) {
-                        Log.e("Swipe Call ", "Left");
-                    }
-
-                    @Override
-                    public void onRightStickyEdge(SwipeLayout swipeLayout, boolean moveToRight) {
-                        Log.e("Swipe Call ", "Right");
-
-                    }
-                });
-
-
-                holder.layout_remove.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                            return;
-                        }
-                        mLastClickTime = SystemClock.elapsedRealtime();
-                        holder.layout_swap.setVisibility(View.GONE);
-                        contactdetails.remove(position);
-                        notifyDataSetChanged();
-
-                    }
-                });
-
 
             } else if (flag.equals("read")) {
-                holder.swipe_layout.setLeftSwipeEnabled(false);
-                holder.swipe_layout.setRightSwipeEnabled(false);
+               ;
                 holder.select_email_label.setVisibility(View.GONE);
                 holder.layout_icon_email.setVisibility(View.GONE);
                 holder.edt_email.setEnabled(false);
                 holder.edt_email.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
                 holder.tv_email.setText(holder.tv_email.getText().toString() + "(" + item.getLabel() + ")");
             } else {
-                holder.swipe_layout.setLeftSwipeEnabled(true);
-                holder.swipe_layout.setRightSwipeEnabled(true);
+
                 holder.edt_email.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -2425,81 +2330,6 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                     }
                 });
 
-                holder.swipe_layout.setOnSwipeListener(new SwipeLayout.OnSwipeListener() {
-                    @Override
-                    public void onBeginSwipe(SwipeLayout swipeLayout, boolean moveToRight) {
-                        // Log.e("Swipe Call ","MOveto right");
-                        if (holder.layout_swap.getVisibility() == View.GONE) {
-                            holder.layout_swap.setVisibility(View.VISIBLE);
-                        } else {
-                            holder.layout_swap.setVisibility(View.GONE);
-                        }
-
-
-                    }
-
-                    @Override
-                    public void onSwipeClampReached(SwipeLayout swipeLayout, boolean moveToRight) {
-                        Log.e("Swipe Call ", "MOveto right1");
-
-                    }
-
-                    @Override
-                    public void onLeftStickyEdge(SwipeLayout swipeLayout, boolean moveToRight) {
-                        Log.e("Swipe Call ", "Left");
-                    }
-
-                    @Override
-                    public void onRightStickyEdge(SwipeLayout swipeLayout, boolean moveToRight) {
-                        Log.e("Swipe Call ", "Right");
-
-                    }
-                });
-
-                holder.layout_defult.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                            return;
-                        }
-                        mLastClickTime = SystemClock.elapsedRealtime();
-                        holder.layout_swap.setVisibility(View.GONE);
-                        for (int i = 0; i < contactdetails.size(); i++) {
-                            if (item.getId() == contactdetails.get(i).getId()) {
-                                contactdetails.get(i).setIs_default(1);
-                                notifyDataSetChanged();
-                                break;
-                            } else {
-                                contactdetails.get(i).setIs_default(0);
-                                notifyDataSetChanged();
-                            }
-                        }
-                    }
-                });
-
-                holder.layout_remove.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                            return;
-                        }
-                        mLastClickTime = SystemClock.elapsedRealtime();
-                        holder.layout_swap.setVisibility(View.GONE);
-                        contactdetails.remove(position);
-                        notifyDataSetChanged();
-
-                        if (edit) {
-                            try {
-                                if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
-                                    RemoveContect(item.getId());
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
-                    }
-                });
 
 
             }
@@ -2512,12 +2342,44 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             return contactdetails.size();
         }
 
+        public void setdefault(int pos, Contactdetail item) {
+            for (int i = 0; i < contactdetails.size(); i++) {
+                if (item.getId() == contactdetails.get(i).getId()) {
+                    contactdetails.get(i).setIs_default(1);
+                    notifyDataSetChanged();
+                    break;
+                } else {
+                    contactdetails.get(i).setIs_default(0);
+                    notifyDataSetChanged();
+                }
+            }
+        }
+
+        public void removeItem(int pos, Contactdetail item) {
+
+            contactdetails.remove(pos);
+            notifyDataSetChanged();
+            addcontectModel.setContactdetails_email(contactdetails);
+            SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
+
+
+            /*if (edit) {
+                try {
+                    if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
+                        RemoveContect(item.getId());
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }*/
+
+        }
+
 
         public class InviteListDataclass extends RecyclerView.ViewHolder {
             EditText edt_email;
             TextView email_txt, iv_invalid, tv_email;
-            LinearLayout select_email_label, layout_defult, layout_remove, layout_swap, layout_icon_email;
-            SwipeLayout swipe_layout;
+            LinearLayout select_email_label, layout_swap, layout_icon_email;
 
             public InviteListDataclass(@NonNull View itemView) {
                 super(itemView);
@@ -2526,10 +2388,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 email_txt = itemView.findViewById(R.id.email_txt);
                 select_email_label = itemView.findViewById(R.id.select_email_label);
                 iv_invalid = itemView.findViewById(R.id.iv_invalid);
-                swipe_layout = itemView.findViewById(R.id.swipe_layout);
                 layout_swap = itemView.findViewById(R.id.layout_swap);
-                layout_defult = itemView.findViewById(R.id.layout_defult);
-                layout_remove = itemView.findViewById(R.id.layout_remove);
                 layout_icon_email = itemView.findViewById(R.id.layout_icon_email);
                 tv_email = itemView.findViewById(R.id.tv_email);
 
@@ -2688,6 +2547,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                         mLastClickTime = SystemClock.elapsedRealtime();
                         bottomSheetDialog_company.cancel();
                         ev_company.setText(holder.tv_item.getText().toString());
+                        ev_company_url.setText(WorkData.getCompany_url());
                         //addcontectModel.setCompany(String.valueOf(WorkData.getName()));
                         addcontectModel.setCompany_id(String.valueOf(WorkData.getId()));
                         SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);

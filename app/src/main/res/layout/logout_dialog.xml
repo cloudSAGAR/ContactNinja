@@ -6,6 +6,7 @@
     android:padding="@dimen/_10sdp"
     android:background="@drawable/shape_10_white"
     android:orientation="vertical"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     tools:context=".MainActivity">
 
 
@@ -23,7 +24,7 @@
     <TextView
         android:id="@+id/tv_sub_titale"
         android:layout_marginTop="@dimen/_10sdp"
-        style="@style/tv_regular_13"
+        style="@style/tv_regular_12"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -38,18 +39,20 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <TextView
+            android:id="@+id/tv_cancel"
+            style="@style/tv_regular_12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/_5sdp"
+            android:layout_weight="1"
             android:background="@drawable/shape_10_red"
             android:gravity="center"
-            android:layout_weight="1"
-            android:id="@+id/tv_cancel"
             android:padding="@dimen/_10sdp"
-            android:textColor="@color/white"
             android:text="@string/cancel"
-            style="@style/tv_regular_13"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:textColor="@color/white"
+            tools:ignore="TextContrastCheck" />
         <TextView
             android:layout_margin="@dimen/_5sdp"
             android:background="@drawable/shape_10_green"
@@ -59,7 +62,7 @@
             android:padding="@dimen/_10sdp"
             android:textColor="@color/white"
             android:text="@string/ok"
-            style="@style/tv_regular_13"
+            style="@style/tv_regular_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

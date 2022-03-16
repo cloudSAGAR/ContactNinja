@@ -21,10 +21,12 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.contactninja.MainActivity;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.UserLinkedList;
+import com.contactninja.Model.ZoomExists;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.DatabaseClient;
@@ -48,7 +50,7 @@ import retrofit2.Response;
 public class SettingActivity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     TextView tv_version_name;
     ImageView iv_back;
-    LinearLayout layout_logout, layout_resetPassword, layout_template, layout_Current_plan, layout_about, layout_mail_box;
+    LinearLayout layout_zoom,layout_logout, layout_resetPassword, layout_template, layout_Current_plan, layout_about, layout_mail_box;
     SessionManager sessionManager;
     RelativeLayout mMainLayout;
     RetrofitCalls retrofitCalls;
@@ -83,6 +85,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
     private void intentView() {
         mMainLayout = findViewById(R.id.mMainLayout);
+        layout_zoom = findViewById(R.id.layout_zoom);
         layout_mail_box = findViewById(R.id.layout_mail_box);
         tv_version_name = findViewById(R.id.tv_version_name);
         layout_Current_plan = findViewById(R.id.layout_Current_plan);
@@ -96,6 +99,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         layout_Current_plan.setOnClickListener(this);
         layout_resetPassword.setOnClickListener(this);
         layout_about.setOnClickListener(this);
+        layout_zoom.setOnClickListener(this);
         iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
         iv_back.setOnClickListener(new View.OnClickListener() {
@@ -192,7 +196,71 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 startActivity(new Intent(getApplicationContext(), EmailListActivity.class));
 
                 break;
+
+                case R.id.layout_zoom:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+                Check_zoom();
+
+                break;
         }
+    }
+
+    private void Check_zoom() {
+        try {
+            if(Global.isNetworkAvailable(SettingActivity.this, MainActivity.mMainLayout)) {
+                /*Check if user has records in Zoom Oauth table*/
+                Zoom_Api();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    void Zoom_Api() throws JSONException {
+
+        SignResponseModel signResponseModel= SessionManager.getGetUserdata(SettingActivity.this);
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        paramObject.addProperty("user_tmz_id",signResponseModel.getUser().getUserTimezone().get(0).getValue());
+        obj.add("data", paramObject);
+        retrofitCalls.zoomIntegrationExists(sessionManager,obj, loadingDialog, token,Global.getVersionname(SettingActivity.this),Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                if (response.body().getHttp_status() == 200) {
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<ZoomExists>() {
+                    }.getType();
+                    ZoomExists zoomExists=new Gson().fromJson(headerString, listType);
+                    Intent intent=new Intent(getApplicationContext(),ZoomActivity.class);
+                    if(zoomExists.getUserExists()){
+                        intent.putExtra("Email",zoomExists.getZoomUserEmail());
+                    }else {
+                        intent.putExtra("Email","");
+                    }
+                    startActivity(intent);
+                }else {
+                    Intent intent=new Intent(getApplicationContext(),ZoomActivity.class);
+                    intent.putExtra("Email","");
+                    startActivity(intent);
+
+                }
+            }
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+
+
     }
 
 
@@ -221,7 +289,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             public void onClick(View v) {
                 delete();
                 SessionManager sessionManager = new SessionManager(getApplicationContext());
-                sessionManager.logoutUser();
+                sessionManager.logoutUser(SettingActivity.this);
                 finish();
             }
         });

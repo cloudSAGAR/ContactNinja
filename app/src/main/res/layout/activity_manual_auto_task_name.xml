@@ -21,17 +21,18 @@
             android:layout_height="match_parent">
 
             <ImageView
+                android:layout_width="@dimen/_45sdp"
+                android:layout_height="@dimen/_45sdp"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:src="@drawable/ic_small_logo"
-                android:layout_width="@dimen/_45sdp"
-                android:layout_height="@dimen/_45sdp">
+                tools:ignore="ImageContrastCheck">
 
             </ImageView>
             <TextView
                 android:layout_marginTop="@dimen/_10sdp"
                 android:id="@+id/add_new_contect"
-                style="@style/tv_Medium_14"
+                style="@style/tv_Medium_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -43,19 +44,26 @@
               />
 
             <EditText
-                android:maxEms="40"
+
                 android:id="@+id/ev_titale"
-                android:layout_marginTop="@dimen/_50sdp"
-                android:background="@color/add_contect_transpernt"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginEnd="@dimen/_15sdp"
+                style="@style/tv_Medium_12"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="@color/add_contect_transpernt"
                 android:focusable="true"
-                android:imeOptions="actionDone"
-                android:inputType="text"
+                android:hint="Enter Your task name"
+                android:linksClickable="true"
+                android:maxEms="40"
                 android:maxLength="40"
-                style="@style/tv_Medium_14"
-                android:layout_height="wrap_content"/>
+                android:padding="@dimen/_5sdp"
+                android:paddingStart="@dimen/_15sdp"
+                android:textColor="@color/text_reg"
+                tools:ignore="HardcodedText,TextContrastCheck,TouchTargetSizeCheck">
+
+            </EditText>
+
             <View
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_15sdp"
@@ -65,20 +73,22 @@
                 android:layout_height="1dp">
 
             </View>
+
             <TextView
                 android:id="@+id/tv_remain_txt"
-                android:layout_marginTop="@dimen/_10sdp"
                 style="@style/tv_regular_12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|left"
-                android:gravity="center|left"
                 android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:gravity="center|left"
                 android:singleLine="true"
                 android:text="@string/camp_remaingn"
                 android:textColor="@color/home_list_sub_data"
-                android:layout_marginBottom="@dimen/_10sdp" />
+                tools:ignore="TextContrastCheck" />
             <TextView
                 android:id="@+id/tv_error"
                 android:layout_marginTop="@dimen/_10sdp"

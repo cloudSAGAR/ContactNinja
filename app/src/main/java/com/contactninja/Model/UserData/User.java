@@ -27,6 +27,9 @@ public class User {
     @SerializedName("email")
     @Expose
     private String email="";
+    @SerializedName("firebase_fcm_token")
+    @Expose
+    private String firebase_fcm_token="";
     @SerializedName("created_at")
     @Expose
     private String createdAt="";
@@ -57,9 +60,7 @@ public class User {
     @SerializedName("role_access")
     @Expose
     private List<RoleAccess> roleAccess = new ArrayList<>();
-    @SerializedName("affiliate_info")
-    @Expose
-    private AffiliateInfo affiliateInfo = new AffiliateInfo();
+
     @SerializedName("user_timezone")
     @Expose
     private List<UserTimezone> userTimezone = null;
@@ -70,6 +71,14 @@ public class User {
 
     public void setUserTimezone(List<UserTimezone> userTimezone) {
         this.userTimezone = userTimezone;
+    }
+
+    public String getFirebase_fcm_token() {
+        return firebase_fcm_token;
+    }
+
+    public void setFirebase_fcm_token(String firebase_fcm_token) {
+        this.firebase_fcm_token = firebase_fcm_token;
     }
 
     public Integer getId() {
@@ -192,13 +201,7 @@ public class User {
         this.roleAccess = roleAccess;
     }
 
-    public AffiliateInfo getAffiliateInfo() {
-        return affiliateInfo;
-    }
 
-    public void setAffiliateInfo(AffiliateInfo affiliateInfo) {
-        this.affiliateInfo = affiliateInfo;
-    }
 
     public Integer getIs_contact_exist() {
         return is_contact_exist;

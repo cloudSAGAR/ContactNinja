@@ -25,7 +25,7 @@ public class AddcontectModel {
     String breakoutu="";
     String company_id="";
     String other_company="";
-
+    String referenceCode="";
 
     List<Contactdetail> contactdetails =new ArrayList<>();
     List<Contactdetail> contactdetails_email =new ArrayList<>();
@@ -33,6 +33,14 @@ public class AddcontectModel {
     public AddcontectModel()
     {
 
+    }
+
+    public String getReferenceCode() {
+        return referenceCode;
+    }
+
+    public void setReferenceCode(String referenceCode) {
+        this.referenceCode = referenceCode;
     }
 
     public String getOther_company() {

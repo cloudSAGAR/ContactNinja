@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainUserProfileId"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
+    tools:context=".Bzcard.CreateBzcard.Add_New_Bzcard_Activity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:stateListAnimator="@null"
+        app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:expandedTitleMarginEnd="64dp"
+            app:expandedTitleMarginStart="48dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include layout="@layout/toolbar" />
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_180sdp">
+
+                    <LinearLayout
+                        android:id="@+id/layout_cover"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:layout_marginEnd="@dimen/_15sdp"
+                        android:layout_marginBottom="@dimen/_20sdp"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/iv_dummy_cover_img"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_cover_back"
+                            tools:ignore="ImageContrastCheck">
+
+                        </ImageView>
+
+                        <com.makeramen.roundedimageview.RoundedImageView
+                            android:id="@+id/iv_cover_img"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="fitXY"
+                            android:visibility="gone"
+                            app:riv_border_color="@color/purple_200"
+                            app:riv_border_width="0dp"
+                            app:riv_corner_radius="@dimen/_20sdp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout_pulse"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_55sdp"
+                        android:layout_below="@+id/layout_cover"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="-70dp"
+                        android:gravity="center"
+                        tools:ignore="Orientation">
+
+                        <ImageView
+                            android:id="@+id/pulse_icon"
+                            android:layout_width="@dimen/_55sdp"
+                            android:layout_height="@dimen/_55sdp"
+                            android:background="@drawable/shape_oval_border_10_blue"
+                            android:padding="@dimen/_15sdp"
+                            android:src="@drawable/ic_plus"
+                            android:tint="@color/purple_200"
+                            tools:ignore="DuplicateIds,UseAppTint" />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/iv_user"
+                            android:layout_width="@dimen/_55sdp"
+                            android:layout_height="@dimen/_55sdp"
+                            android:layout_gravity="right"
+                            android:padding="1dp"
+                            android:visibility="gone"
+                            app:riv_border_color="@color/purple_200"
+                            app:riv_border_width="0dp"
+                            app:riv_corner_radius="@dimen/_50sdp"
+                            app:riv_oval="false" />
+
+                        <ImageView
+                            android:id="@+id/iv_edit"
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
+                            android:layout_gravity="bottom|end"
+                            android:layout_marginStart="-25dp"
+                            android:src="@drawable/ic_edit_profile">
+
+                        </ImageView>
+
+
+                    </LinearLayout>
+                </RelativeLayout>
+
+            </LinearLayout>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            style="@style/tv_bold_16"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            app:tabIndicatorColor="@color/home_list_tab_bg"
+            app:tabIndicatorHeight="2dp"
+            app:tabSelectedTextColor="@color/text_reg"
+            app:tabTextAppearance="@style/CustomTextAppearanceTab_bzcars"
+            app:tabTextColor="@color/text_gray"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/home_list_back_line" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:ignore="SpeakableTextPresentCheck">
+
+        <FrameLayout
+            android:id="@+id/frameContainer_bzcars"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/llFooter" />
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -115,8 +115,42 @@ Number</string>
     <string name="add_company_url_a">Add company url</string>
 
 
+    //Bz Card String
+    <string name="tv_first">First name</string>
+    <string name="ev_first">Add first name</string>
+
+
+    <string name="tv_last_name">Last Name</string>
+    <string name="ev_last_name">Add last name</string>
+
+    <string name="tv_bzemail">Email</string>
+    <string name="ev_email">Add last name</string>
+
+    <string name="tv_company">Add your company logo</string>
+    <string name="ev_company_size">image size 300 by 300</string>
+    <string name="tv_recompany">Re-upload logo</string>
+
+    <string name="tv_company_url">Company URL</string>
+    <string name="ev_company_url">Add company url</string>
+
+
     <string name="add_job">Job title</string>
     <string name="add_job_a">Add job title</string>
+
+
+    <string name="add_fab">Facebook</string>
+    <string name="add_url">URL</string>
+    <string name="add_twittera">Twitter</string>
+    <string name="add_youtube">Youtube</string>
+    <string name="add_breakout">Breakout</string>
+    <string name="add_instagram">Instagram</string>
+    <string name="add_linkedin1">Linkedin</string>
+    <string name="add_pintrest">Pintrest</string>
+    <string name="add_venmo">Venmo</string>
+    <string name="add_skypay">Skypay</string>
+    <string name="add_tiktok">Tiktok</string>
+    <string name="add_snapchat">Snapchat</string>
+    <string name="add_other_filed">other filed</string>
 
 
     <string name="add_city">City</string>
@@ -163,7 +197,7 @@ Number</string>
 
     <string name="group_to">To</string>
     <string name="add_new_group">Add new group</string>
-    <string name="add_new_group_all">Add all group</string>
+    <string name="add_new_group_all">Select all group</string>
     <string name="remove_new_group_all">Remove all group</string>
     <string name="add_task_email">Create a new \n email task</string>
     <string name="add_task_text">Create a new \n Text task</string>
@@ -196,13 +230,13 @@ Number</string>
     </array>
 
     <array name="broadcast_days">
+        <item>Sunday</item>
         <item>Monday</item>
         <item>Tuesday</item>
         <item>Wednesday</item>
         <item>Thursday</item>
         <item>Friday</item>
         <item>Saturday</item>
-        <item>Sunday</item>
     </array>
 
     <string name="daily_text">I want my broadcast to repeat</string>
@@ -271,20 +305,8 @@ Number</string>
         <item>"29"</item>
         <item>"30"</item>
         <item>"31"</item>
-
-
     </array>
 
-
-    <array name="broadcast_day_txt">
-        <item>Sunday</item>
-        <item>Monday</item>
-        <item>Tuesday</item>
-        <item>Wednesday</item>
-        <item>Thursday</item>
-        <item>Friday</item>
-        <item>Saturday</item>
-    </array>
 
     <string name="forgot_password">Fogot your password?</string>
     <string name="forgot_password_txt">Enter your registerd email blow \n to receive password </string>
@@ -419,6 +441,7 @@ Number</string>
     <string name="selected">Selected</string>
     <string name="contacts">Contacts</string>
     <string name="groups">Groups</string>
+    <string name="select_Contact_group">Contact or group</string>
 
 
     <string name="add_blacklist">Add to blacklist</string>
@@ -434,69 +457,76 @@ Number</string>
     <string name="delete_company">Delete company</string>
 
     <string name="no_Task">👍 You\'re all good ! \n You don\'t have any tasks here</string>
+    <string name="no_campaing">👍 You\'re all good ! \n You don\'t have any campaign here</string>
+    <string name="no_broadcast">👍 You\'re all good ! \n You don\'t have any broadcast here</string>
     <string name="no_block_company">You haven\'t \nblack listed any company</string>
+    <string name="no_block_contact">You haven\'t \nblack listed any contact</string>
+    <string name="no_contact">👍 You\'re all good ! \n You don\'t have any contact here</string>
+    <string name="no_group">👍 You\'re all good ! \n You don\'t have any group here</string>
+    <string name="no_company">👍 You\'re all good ! \n You don\'t have any company here</string>
+    <string name="no_email">👍 You\'re all good ! \n You don\'t have any Mail here</string>
     <string name="manual_Today">Today</string>
     <string name="manual_Upcoming">Upcoming</string>
     <string name="manual_Due">Due</string>
     <string name="manual_Completed">Completed</string>
     <string name="manual_Skipped">Skipped</string>
     <string name="manual_Paused">Paused</string>
+    <string name="manual_mark">Mark as complete</string>
     <string name="manual_Snooze">Snooze</string>
     <string name="manual_Delete">Delete</string>
     <string name="manual_All_tasks">All tasks</string>
+    <string name="manual_auto_complate_tasks">Automted completed</string>
+    <string name="manual_auto_upcoming_tasks">Automted Upcoming</string>
     <string name="Filters">Filters</string>
     <string name="send_complate">Send now &amp; mark task as complete</string>
     <string name="Snooze_task">Snooze task</string>
+    <string name="Auto_play">play</string>
 
     <string name="manual_aleart_delete">Remove Task ?</string>
     <string name="manual_aleart_delete_des">Are you sure that you would like to task remove?</string>
     <string name="manual_aleart_paused">Paused Task ?</string>
     <string name="manual_aleart_paused_des">Are you sure that you would like to task paused?</string>
+    <string name="manual_aleart_finished">Finished Task ?</string>
+    <string name="manual_aleart_finished_des">Are you sure that you would like to task finished?</string>
     <string name="manual_aleart_snooze">Snooze Task ?</string>
     <string name="manual_aleart_snooze_des">Are you sure that you would like to task snooze?</string>
 
+    <string name="auto_aleart_play">Paly Task ?</string>
+    <string name="auto_aleart_play_des">Are you sure that you would like to task play?</string>
+
+    <string name="auto_aleart_Paused">Paused Task ?</string>
+    <string name="auto_aleart_Paused_des">Are you sure that you would like to task Paused?</string>
+
     <string-array name="manual_filter">
-        <item>today</item>
-        <item>upcoming</item>
-        <item>due</item>
-        <item>finished</item>
-        <item>skipped</item>
-        <item>paused</item>
+        <item>TODAY</item>
+        <item>UPCOMINGE</item>
+        <item>DUE</item>
+        <item>FINISHED</item>
+        <item>SKIPPED</item>
+        <item>PAUSED</item>
+        <item>AUTO</item>
+        <item>FINISHED_AUTO</item>
     </string-array>
     <string-array name="manual_Select">
+        <item>MARK</item>
         <item>PAUSED</item>
         <item>SNOOZE</item>
         <item>DELETE</item>
+    </string-array>
+    <string-array name="auto_Select">
+        <item>PAUSED</item>
+        <item>NOT_STARTED</item>
+
     </string-array>
     <string-array name="Select_Tab">
         <item>Text</item>
         <item>Email</item>
     </string-array>
-
-
     <string-array name="Select_Recurrence">
         <item>Daily</item>
         <item>Weekly</item>
         <item>Monthly</item>
     </string-array>
-
-    <string name="contect_block">This contect is block</string>
-    <string name="email_contact">Please email in contact</string>
-
-
-    <string name="add_brodcaste">Create new broadcast</string>
-    <string name="broadcast_email">Recuring email broadcast</string>
-    <string name="broadcast_text">Recuring text broadcast</string>
-    <string name="broadcast_info_text">ContactNinja allows you to schedule texts or emails with multiple \n  occurrences. You can schedule these in daily, \n weekly, and monthly increments.</string>
-    <string name="create_company">Create new Company</string>
-    <string name="repet_every">Repeat every</string>
-    <string name="repet_day">Day</string>
-    <string name="occurs_weekly">Occurs weekly</string>
-    <string name="please_select_sender">"Please select sender "</string>
-    <string name="company_phone">Company\'s phone</string>
-    <string name="company_email">info@company.com</string>
-    <string name="company_url">www.companyname.com</string>
-    <string name="company_address">Location</string>
     <string-array name="Select_day">
         <item>1</item>
         <item>2</item>
@@ -515,5 +545,124 @@ Number</string>
         <item>15</item>
     </string-array>
 
+    <string name="contect_block">This contect is block</string>
+    <string name="email_contact">Please email in contact</string>
 
+
+    <string name="add_brodcaste">Create new broadcast</string>
+    <string name="broadcast_email">Recurring email broadcast</string>
+    <string name="broadcast_text">Recurring text broadcast</string>
+    <string name="broadcast_info_text">ContactNinja allows you to schedule texts or emails with multiple \n  occurrences. You can schedule these in daily, \n weekly, and monthly increments.</string>
+    <string name="create_company">Create new Company</string>
+    <string name="repet_every">Repeat every</string>
+    <string name="repet_day">Day</string>
+    <string name="occurs_weekly">Occurs weekly</string>
+    <string name="please_select_sender">"Please select sender "</string>
+    <string name="company_phone">Company\'s phone</string>
+    <string name="company_email">info@company.com</string>
+    <string name="company_url">www.companyname.com</string>
+    <string name="company_address">Location</string>
+
+
+    <string name="connect_zoom_account">Connect zoom account</string>
+    <string name="zoom_account">Your zoom account</string>
+    <string name="dis_account">Disconnect my account</string>
+    <string name="meeting">Meeting Duration</string>
+    <string name="select_meeting">Select Meeting Duration</string>
+    <string name="m_5">5 mins</string>
+    <string name="m_15">15 mins</string>
+    <string name="m_30">30 mins</string>
+    <string name="m_45">45 mins</string>
+    <string name="m_60">60 mins</string>
+
+    <string name="select_bzcard">Select Bzcard</string>
+    <string name="preview">Preview</string>
+    <string name="use_template">Use This Template</string>
+    <string name="edit_template">Edit This Template</string>
+    <string name="bz_footer">*Represents dummy data, upload photos, videos, and text content to make it your own!</string>
+    <string name="bz_footer2">Share your mission with the world when you bring your business contact info to life on a virtual BZcard.</string>
+    <string name="Bzcard_theme_colour">Bzcard theme colour</string>
+    <string name="Bzcard_text_1">in order to see preview please press preview on top right corner</string>
+    <string name="Cutom_Button">Cutom Button</string>
+    <string name="other_Cutom_Button">Add onther custom button </string>
+    <string name="title_button">Title of your button</string>
+    <string name="yourtitle_hint">Add your title</string>
+    <string name="Add_url">Add url</string>
+    <string name="Add_bio">Add a short bio</string>
+    <string name="Bio">Bio</string>
+    <string name="Add_description">Add description</string>
+    <string name="Add_call">Add call to action</string>
+    <string name="Schedule_a_meeting">Schedule a meeting</string>
+    <string name="Know_more">Know more</string>
+    <string name="Visit_now">Visit now</string>
+    <string name="Inquire_now">Inquire now</string>
+    <string name="Learn_more">Learn more</string>
+    <string name="Add_url1">*Add url</string>
+    <string name="Custom_HTML">Custom HTML</string>
+    <string name="media_title">Add media blocks to your BizCard</string>
+    <string name="media_title1">ContactNinja supports adding of your YouTube videos.</string>
+    <string name="media_title2">ContactNinja supports adding of your Images.</string>
+    <string name="media_title4">ContactNinja supports adding of your downloadable pdf.</string>
+    <string name="media_title3">What would you like to add?</string>
+    <string name="choose">Choose file type:</string>
+    <string name="Video">Video</string>
+    <string name="Image">Image</string>
+    <string name="PDF">PDF</string>
+    <string name="invalid_url">Invalid URL</string>
+    <string name="Link_your_video">Link your video</string>
+    <string name="Link_Media">Link Media</string>
+    <string name="url_hint">www.youtube.com / contactnnja</string>
+    <string name="title_video">Title Your Media</string>
+    <string name="Replace_Video">Replace video</string>
+    <string name="Replace_image">Replace image</string>
+    <string name="Cancel_Media">Cancel media</string>
+    <string name="video_title_error">Add video title</string>
+    <string name="image_title_error">Add image title</string>
+    <string name="video_description_error">Add video description</string>
+    <string name="image_description_error">Add image description</string>
+    <string name="select_image">Please select image</string>
+    <string name="select_pdf">Please select pdf</string>
+    <string name="max_media">Can add only up to 10 media blocks.</string>
+    <string name="add_featured">Add to featured media</string>
+    <string name="Remove_featured">Remove featured media</string>
+    <string name="title_bzcard">Please add title of \n bzcard</string>
+    <string-array name="Select_color">
+        <item>5495EC</item>
+        <item>F97C74</item>
+        <item>3A59AE</item>
+        <item>EAC19B</item>
+        <item>0DC0C0</item>
+        <item>6ECF41</item>
+        <item>864879</item>
+        <item>CF8A39</item>
+        <item>4A4A4A</item>
+    </string-array>
+    <string name="title_activity_title_bzcard_main">Title_bzcard_MainActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+    //Home Text
+    <string name="home_campaign">Campaign</string>
+    <string name="home_text">Text</string>
+    <string name="home_email">Email</string>
+    <string name="home_broadcast">Broadcast</string>
+    <string name="hoome_affiliategroth">Affiliate Groth</string>
+    <string name="home_lastday">last 7 days</string>
+    <string name="home_affiliate_text">View Detailed Affiliate Report</string>
+    <string name="home_today_activity">Activity</string>
+    <string name="Edit">Edit</string>
+    <string name="Delete">Delete</string>
+    <string name="Share">Share</string>
+    <string name="Preview">Preview</string>
+
+    <string name="home_bz_card">Bzcard analytics</string>
+    <string name="home_email_text">Connected Email</string>
+    <string name="setting_mail">"You havent linked your mailbox. Add from settings > Mailbox."</string>
+    <string name="setting_mail_defoult">"You havent set your mail. Select from settings > Mailbox."</string>
+    <string name="task_title_email">Task title:</string>
 </resources>

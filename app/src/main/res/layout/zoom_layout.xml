@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@+id/mMainLayout"
+    android:layout_height="match_parent"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
+
+    <LinearLayout
+        android:padding="10dp"
+        android:background="@drawable/top_corner15"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            style="@style/tv_Medium_12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:gravity="center"
+            android:text="Add zoom meeting link"
+            android:textColor="@color/text_welcome"
+            android:textSize="@dimen/_14sdp"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/la_date"
+            android:background="@drawable/shep_gray_back"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_width="match_parent"
+            android:layout_gravity="center|left"
+            android:gravity="left|center"
+            android:weightSum="1"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_height="@dimen/_40sdp">
+
+            <TextView
+                android:id="@+id/tv_date"
+                style="@style/tv_Medium_12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_weight="1"
+                android:hint="@string/email_date"
+                android:textColor="@color/text_reg"
+                tools:ignore="TextContrastCheck">
+
+            </TextView>
+
+            <ImageView
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:src="@drawable/ic_date_icon"
+                tools:ignore="ImageContrastCheck">
+
+            </ImageView>
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/la_time"
+            android:background="@drawable/shep_gray_back"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_width="match_parent"
+            android:layout_gravity="center|left"
+            android:gravity="left|center"
+            android:weightSum="1"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_height="@dimen/_40sdp">
+
+            <TextView
+                android:id="@+id/tv_time"
+                style="@style/tv_Medium_12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_weight="1"
+                android:hint="@string/email_time"
+                android:textColor="@color/text_reg"
+                tools:ignore="TextContrastCheck">
+
+            </TextView>
+
+            <ImageView
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:src="@drawable/ic_time_icon"
+                tools:ignore="ImageContrastCheck">
+
+            </ImageView>
+        </LinearLayout>
+        <TextView
+            android:id="@+id/tc_time_zone"
+            android:layout_marginStart="@dimen/_12sdp"
+            style="@style/tv_regular_12"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_reg"
+            >
+
+        </TextView>
+           <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/layout_Duration"
+            android:background="@drawable/shep_gray_back"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_width="match_parent"
+            android:gravity="left|center"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_height="@dimen/_45sdp">
+
+               <LinearLayout
+                   android:layout_weight="1"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:orientation="vertical">
+               <TextView
+                   android:padding="@dimen/_2sdp"
+                   android:layout_marginStart="@dimen/_10sdp"
+                   style="@style/tv_Medium_12"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:text="@string/meeting"
+                   android:textColor="@color/text_reg"
+                   />
+                   <TextView
+                       android:id="@+id/txt_time"
+                       android:visibility="gone"
+                       android:padding="@dimen/_2sdp"
+                       android:layout_marginStart="@dimen/_10sdp"
+                       style="@style/tv_regular_12"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:textColor="@color/text_gray"
+                       />
+               </LinearLayout>
+
+
+               <ImageView
+
+                   android:layout_width="@dimen/_20sdp"
+                   android:layout_height="@dimen/_20sdp"
+                   android:layout_marginEnd="@dimen/_10sdp"
+                   android:padding="@dimen/_5sdp"
+                   android:src="@drawable/ic_right_arrow_gray"
+                   tools:ignore="ImageContrastCheck">
+
+               </ImageView>
+           </LinearLayout>
+        <TextView
+            android:layout_marginTop="@dimen/_15sdp"
+            android:id="@+id/tv_done"
+            android:layout_width="match_parent"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:textColor="@color/text_White"
+            android:text="Done"
+            style="@style/tv_Medium_16"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="@drawable/shape_primary_back"
+            android:layout_height="@dimen/_40sdp"/>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

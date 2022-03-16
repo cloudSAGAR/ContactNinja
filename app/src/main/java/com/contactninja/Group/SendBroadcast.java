@@ -1,6 +1,8 @@
 package com.contactninja.Group;
 
 import android.annotation.SuppressLint;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -21,30 +23,25 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
-import com.contactninja.Fragment.GroupFragment.ExposuresFragment;
 import com.contactninja.Fragment.GroupFragment.MembersFragment;
+import com.contactninja.Fragment.Home.Task_Fragment;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.SessionManager;
-import com.google.android.material.tabs.TabLayout;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
-public class SendBroadcast extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener, ConnectivityReceiver.ConnectivityReceiverListener {
+public class SendBroadcast extends AppCompatActivity implements View.OnClickListener,ConnectivityReceiver.ConnectivityReceiverListener {
     private long mLastClickTime = 0;
-    TextView save_button, tv_start_broadcast, tv_group_text;
+    TextView save_button;
     ImageView iv_Setting, iv_back;
     EditText add_detail, add_new_contect, ev_search;
-    TabLayout tabLayout;
-    ViewPager viewPager;
-    ViewpaggerAdapter adapter;
     SessionManager sessionManager;
     RoundedImageView add_new_contect_icon;
     ConstraintLayout mMainLayout;
@@ -70,29 +67,6 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
         save_button.setText("Edit");
         save_button.setVisibility(View.VISIBLE);
         iv_Setting.setVisibility(View.GONE);
-        tabLayout.addTab(tabLayout.newTab().setText("Members"));
-        tabLayout.addTab(tabLayout.newTab().setText("Exposures"));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        adapter = new ViewpaggerAdapter(this, getSupportFragmentManager(), tabLayout.getTabCount());
-        viewPager.setAdapter(adapter);
-
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
 
         if (group_data.getGroupImage() == null) {
             String name = group_data.getGroupName();
@@ -113,7 +87,8 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
             no_image.setText(add_text);
             no_image.setVisibility(View.VISIBLE);
             add_new_contect_icon.setVisibility(View.GONE);
-        } else {
+        }
+        else {
             Glide.with(getApplicationContext()).
                     load(group_data.getGroupImage()).
                     placeholder(R.drawable.shape_primary_back).
@@ -144,27 +119,26 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
                 //    topic_remainingCharacter.setText(100 - editable.length() + " Characters Remaining.");
             }
         });
-        viewPager.addOnPageChangeListener(this);
+
+
+        Fragment fragment = new MembersFragment();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frame, fragment, fragment.getClass().getSimpleName()).addToBackStack(null).commit();
+
     }
 
     private void IntentUI() {
-        tv_start_broadcast = findViewById(R.id.tv_start_broadcast);
-        tv_group_text = findViewById(R.id.tv_group_text);
         save_button = findViewById(R.id.save_button);
         iv_Setting = findViewById(R.id.iv_Setting);
         iv_Setting.setVisibility(View.VISIBLE);
         iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
         add_detail = findViewById(R.id.add_detail);
-        tabLayout = findViewById(R.id.tabLayout);
-        viewPager = findViewById(R.id.viewPager);
         add_new_contect_icon = findViewById(R.id.add_new_contect_icon);
         add_new_contect = findViewById(R.id.add_new_contect);
         mMainLayout = findViewById(R.id.mMainLayout);
         no_image = findViewById(R.id.no_image);
         topic_remainingCharacter = findViewById(R.id.topic_remainingCharacter);
-        tv_start_broadcast.setOnClickListener(this);
-        tv_group_text.setOnClickListener(this);
     }
 
     @Override
@@ -185,67 +159,15 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
                 startActivity(new Intent(getApplicationContext(), Final_Group.class));
                 finish();
                 break;
-            case R.id.tv_start_broadcast:
-                Global.Messageshow(SendBroadcast.this, mMainLayout, "Under Development", false);
-                break;
-            case R.id.tv_group_text:
-                Global.Messageshow(SendBroadcast.this, mMainLayout, "Under Development", false);
-                break;
             default:
 
 
         }
     }
 
-    @Override
-    public void onPageScrolled(int i, float v, int i1) {
-
-    }
-
-    @Override
-    public void onPageSelected(int i) {
-
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int i) {
-
-    }
 
 
-    static class ViewpaggerAdapter extends FragmentPagerAdapter {
 
-        Context context;
-        int totalTabs;
-
-        public ViewpaggerAdapter(Context c, FragmentManager fm, int totalTabs) {
-            super(fm);
-            context = c;
-            this.totalTabs = totalTabs;
-
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-
-            switch (position) {
-                case 0:
-                    MembersFragment membersFragment = new MembersFragment();
-                    return membersFragment;
-
-                case 1:
-                    ExposuresFragment exposuresFragment = new ExposuresFragment();
-                    return exposuresFragment;
-                default:
-                    return null;
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return totalTabs;
-        }
-    }
 
     @Override
     public void onBackPressed() {

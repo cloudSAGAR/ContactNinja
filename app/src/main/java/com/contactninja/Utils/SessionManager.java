@@ -9,14 +9,22 @@ import android.util.Log;
 
 import com.contactninja.Auth.AppIntroActivity;
 import com.contactninja.Auth.LoginActivity;
+import com.contactninja.Contect.Contact;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.AddcontectModel;
+import com.contactninja.Model.BZcardListModel;
+import com.contactninja.Model.BroadcastActivityListModel;
+import com.contactninja.Model.BroadcastActivityModel;
 import com.contactninja.Model.Broadcast_Data;
 import com.contactninja.Model.Broadcate_save_data;
+import com.contactninja.Model.Bzcard_Fields_Model;
 import com.contactninja.Model.CampaignTask;
 import com.contactninja.Model.CampaignTask_overview;
-import com.contactninja.Model.CompanyModel;
 import com.contactninja.Model.ContectListData;
+import com.contactninja.Model.Dashboard.Dashboard;
+import com.contactninja.Model.Dashboard.Des_Broadcast;
+import com.contactninja.Model.Dashboard.Des_Sequence;
+import com.contactninja.Model.Dashboard.Des_Task;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.ManualTaskModel;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -45,6 +53,7 @@ public class SessionManager {
     public static final String Group_Model = "group_model";
     public static final String Contect_Model = "contect_model";
     public static final String Contect_flag = "contect_flag";
+    public static final String Contect_edit = "contect_edit";
     public static final String Campign_flag = "campign_flag";
     public static final String Refresh_token = "refresh_token";
     public static final String Access_token = "access_token";
@@ -78,6 +87,14 @@ public class SessionManager {
     public static final String Broadcaste_save_data = "broadcaste_save_data";
 
     public static final String Broadcast_flag="broadcast_flag";
+    public static final String Broadcaste_Detail="Broadcaste_detail";
+    public static final String Broadcast_contect="Broadcast_contect";
+    public static final String Bzcard="Bzcard";
+    public static final String Add_newcontect="add_new_contect";
+    public static final String update_newcontect="add_update_contect";
+    public static final String destasks="des_tasks";
+    public static final String DesBroadcast="Des_Broadcast";
+    public static final String DesSequence="Des_Sequence";
     // Constructor
     @SuppressLint("CommitPrefEdits")
     public SessionManager(Context context) {
@@ -176,16 +193,22 @@ public class SessionManager {
     }
 
     public static String getContect_flag(Context context) {
-
         String type = pref.getString(Contect_flag, "");
         return type;
-
     }
-
-
 
     public static void setContect_flag(String plantype) {
         editor.putString(Contect_flag, plantype);
+        editor.commit();
+    }
+
+    public static boolean getContect_edit(Context context) {
+        boolean type = pref.getBoolean(Contect_edit, false);
+        return type;
+    }
+
+    public static void setContect_edit(boolean contect_flag) {
+        editor.putBoolean(Contect_edit, contect_flag);
         editor.commit();
     }
 
@@ -239,7 +262,7 @@ public class SessionManager {
         String json = gson.toJson(signModel);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString(Sign_Model, json);
-        Log.e("Sessioin data", new Gson().toJson(signModel));
+        //Log.e("Sessioin data", new Gson().toJson(signModel));
         editor.apply();
     }
 
@@ -281,7 +304,7 @@ public class SessionManager {
         String json = gson.toJson(group);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString(Group_Model, json);
-        Log.e("Sessioin data", new Gson().toJson(group));
+  /*      Log.e("Sessioin data", new Gson().toJson(group));*/
         editor.apply();
     }
 
@@ -303,7 +326,7 @@ public class SessionManager {
         Gson gson = new Gson();
         String json = gson.toJson(groupModel);
         editor.putString(GroupListData, json);
-        Log.e("Sessioin data", new Gson().toJson(groupModel));
+     /*   Log.e("Sessioin data", new Gson().toJson(groupModel));*/
         editor.apply();
     }
 
@@ -345,7 +368,7 @@ public class SessionManager {
         Gson gson = new Gson();
         String json = gson.toJson(groupModel);
         editor.putString(Contect_List, json);
-        Log.e("Sessioin data", new Gson().toJson(groupModel));
+       /* Log.e("Sessioin data", new Gson().toJson(groupModel));*/
         editor.apply();
     }
 
@@ -643,6 +666,50 @@ public class SessionManager {
     }
 
 
+    public static BroadcastActivityListModel.Broadcast getBroadcate_List_Detail(Context context) {
+        Gson gson = new Gson();
+        String json = pref.getString(Broadcaste_Detail, "");
+        Type type = new TypeToken<BroadcastActivityListModel.Broadcast>() {
+        }.getType();
+        BroadcastActivityListModel.Broadcast signModel = gson.fromJson(json, type);
+        if (signModel == null) {
+            signModel = new BroadcastActivityListModel.Broadcast();
+        }
+        return signModel;
+    }
+
+    public static void setBroadcate_List_Detail(Context context, BroadcastActivityListModel.Broadcast add_model) {
+        Gson gson = new Gson();
+        String json = gson.toJson(add_model);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(Broadcaste_Detail, json);
+        editor.apply();
+    }
+
+
+    public static BZcardListModel.Bizcard getBzcard(Context context) {
+        Gson gson = new Gson();
+        String json = pref.getString(Bzcard, "");
+        Type type = new TypeToken<BZcardListModel.Bizcard>() {
+        }.getType();
+        BZcardListModel.Bizcard signModel = gson.fromJson(json, type);
+        if (signModel == null) {
+            signModel = new BZcardListModel.Bizcard();
+        }
+        return signModel;
+    }
+
+    public static void setBzcard(Context context, BZcardListModel.Bizcard bzcard_model) {
+        Gson gson = new Gson();
+        String json = gson.toJson(bzcard_model);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(Bzcard, json);
+        editor.apply();
+    }
+
+
+
+
 
 
 /*    public static CampaignTask getTask(Context context) {
@@ -666,7 +733,7 @@ public class SessionManager {
         editor.apply();
     }*/
 
-    public String getFcm_Token(Context context) {
+    public static String getFcm_Token(Context context) {
 
         String type = pref.getString(Fcm_Token, "");
         return type;
@@ -697,9 +764,8 @@ public class SessionManager {
         }
     }
 
-    public void logoutUser() {
-        NotificationManager notificationManager = (NotificationManager) _context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancelAll();
+    public void logoutUser(Context context) {
+
         // Clearing all data from Shared Preferences
         editor.clear();
         editor.commit();
@@ -709,11 +775,10 @@ public class SessionManager {
         // Closing all the Activities
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        // Add new Flag to start new Activity
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         // Staring Login Activity
-        _context.startActivity(i);
+        context.startActivity(i);
     }
 
     // Get Login State
@@ -757,7 +822,156 @@ public class SessionManager {
         Gson gson = new Gson();
         String json = gson.toJson(userLinkedGmailList);
         editor.putString(UserLinkedGmailList, json);
+     /*   Log.e("Sessioin data", new Gson().toJson(userLinkedGmailList));*/
+        editor.apply();
+    }
+
+
+
+
+
+    public static List<BroadcastActivityModel.BroadcastProspect> getBroadcast_Contect(Context context) {
+
+        Gson gson = new Gson();
+        String json = pref.getString(Broadcast_contect, null);
+        Type type = new TypeToken<ArrayList<BroadcastActivityModel.BroadcastProspect>>() {
+        }.getType();
+        List<BroadcastActivityModel.BroadcastProspect> userLinkedGmailList = gson.fromJson(json, type);
+        if (userLinkedGmailList == null) {
+            userLinkedGmailList = new ArrayList<>();
+        }
+        return userLinkedGmailList;
+
+    }
+
+    public static void setBroadcast_Contect(Context context, List<BroadcastActivityModel.BroadcastProspect> userLinkedGmailList) {
+        Gson gson = new Gson();
+        String json = gson.toJson(userLinkedGmailList);
+        editor.putString(Broadcast_contect, json);
+/*
         Log.e("Sessioin data", new Gson().toJson(userLinkedGmailList));
+*/
+        editor.apply();
+    }
+
+
+    public static List<Contact> getnewContect(Context context) {
+
+        Gson gson = new Gson();
+        String json = pref.getString(Add_newcontect, null);
+        Type type = new TypeToken<ArrayList<Contact>>() {
+        }.getType();
+        List<Contact> userLinkedGmailList = gson.fromJson(json, type);
+        if (userLinkedGmailList == null) {
+            userLinkedGmailList = new ArrayList<>();
+        }
+        return userLinkedGmailList;
+
+    }
+
+    public static void setnewContect(Context context, List<Contact> userLinkedGmailList) {
+        Gson gson = new Gson();
+        String json = gson.toJson(userLinkedGmailList);
+        editor.putString(Add_newcontect, json);
+/*
+        Log.e("Sessioin data", new Gson().toJson(userLinkedGmailList));
+*/
+        editor.apply();
+    }
+
+    public static List<Contact> getupdateContect(Context context) {
+
+        Gson gson = new Gson();
+        String json = pref.getString(update_newcontect, null);
+        Type type = new TypeToken<ArrayList<Contact>>() {
+        }.getType();
+        List<Contact> userLinkedGmailList = gson.fromJson(json, type);
+        if (userLinkedGmailList == null) {
+            userLinkedGmailList = new ArrayList<>();
+        }
+        return userLinkedGmailList;
+
+    }
+
+    public static void setupdateContect(Context context, List<Contact> userLinkedGmailList) {
+        Gson gson = new Gson();
+        String json = gson.toJson(userLinkedGmailList);
+        editor.putString(update_newcontect, json);
+/*
+        Log.e("Sessioin data", new Gson().toJson(userLinkedGmailList));
+*/
+        editor.apply();
+    }
+
+
+
+
+
+
+
+
+
+
+ /** Dashboard api list */
+
+ public static List<Des_Task> getDes_Task(Context context) {
+
+     Gson gson = new Gson();
+     String json = pref.getString(destasks, null);
+     Type type = new TypeToken<ArrayList<Des_Task>>() {
+     }.getType();
+     List<Des_Task> des_tasks = gson.fromJson(json, type);
+     if (des_tasks == null) {
+         des_tasks = new ArrayList<>();
+     }
+     return des_tasks;
+
+ }
+
+    public static void setDes_Task(Context context, List<Des_Task> des_tasks) {
+        Gson gson = new Gson();
+        String json = gson.toJson(des_tasks);
+        editor.putString(destasks, json);
+        editor.apply();
+    }
+    public static List<Des_Broadcast> getDes_Broadcast(Context context) {
+
+        Gson gson = new Gson();
+        String json = pref.getString(DesBroadcast, null);
+        Type type = new TypeToken<ArrayList<Des_Broadcast>>() {
+        }.getType();
+        List<Des_Broadcast> des_broadcasts = gson.fromJson(json, type);
+        if (des_broadcasts == null) {
+            des_broadcasts = new ArrayList<>();
+        }
+        return des_broadcasts;
+
+    }
+
+    public static void setDes_Broadcast(Context context, List<Des_Broadcast> des_broadcasts) {
+        Gson gson = new Gson();
+        String json = gson.toJson(des_broadcasts);
+        editor.putString(DesBroadcast, json);
+        editor.apply();
+    }
+    public static List<Des_Sequence> getDes_Sequence(Context context) {
+
+        Gson gson = new Gson();
+        String json = pref.getString(DesSequence, null);
+        Type type = new TypeToken<ArrayList<Des_Sequence>>() {
+        }.getType();
+        List<Des_Sequence> des_sequences = gson.fromJson(json, type);
+        if (des_sequences == null) {
+            des_sequences = new ArrayList<>();
+        }
+        return des_sequences;
+
+    }
+
+    public static void setDes_Sequence(Context context, List<Des_Sequence> des_sequences) {
+        Gson gson = new Gson();
+        String json = gson.toJson(des_sequences);
+        editor.putString(DesSequence, json);
         editor.apply();
     }
 

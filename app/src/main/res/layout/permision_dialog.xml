@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/shape_10_white"
     android:orientation="vertical"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     tools:context=".MainActivity">
 
 
@@ -18,7 +19,7 @@
 
         <TextView
             android:id="@+id/tv_sub_titale"
-            style="@style/tv_regular_13"
+            style="@style/tv_regular_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

@@ -61,16 +61,17 @@ import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 public class Campaign_List_Activity extends AppCompatActivity implements View.OnClickListener,
-        SwipeRefreshLayout.OnRefreshListener, CampaingClick, ConnectivityReceiver.ConnectivityReceiverListener  {
+        SwipeRefreshLayout.OnRefreshListener, CampaingClick, ConnectivityReceiver.ConnectivityReceiverListener {
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
-    ImageView iv_back;
+    ImageView iv_back, iv_cancle_search_icon;
     TextView tv_create, sub_txt;
-    LinearLayout demo_layout, add_campaign_layout, mMainLayout1,mMainLayout;
+    LinearLayout demo_layout,  mMainLayout1, mMainLayout,add_campaign_layout;
     EditText ev_search;
     SwipeRefreshLayout swipeToRefresh;
     RecyclerView rv_campaign_list;
+    LinearLayout lay_no_list;
 
 
     CampaingAdepter campaingAdepter;
@@ -81,7 +82,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
     private boolean isLoading = false;
 
     private BroadcastReceiver mNetworkReceiver;
-    private long mLastClickTime=0;
+    private long mLastClickTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,7 +136,9 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                     onResume();
+                    iv_cancle_search_icon.setVisibility(View.VISIBLE);
+                    Global.hideKeyboard(Campaign_List_Activity.this);
+                    onResume();
                     return true;
                 }
                 return false;
@@ -145,8 +148,11 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
 
     private void IntentUI() {
         mMainLayout = findViewById(R.id.mMainLayout);
+        iv_cancle_search_icon = findViewById(R.id.iv_cancle_search_icon);
+        iv_cancle_search_icon.setOnClickListener(this);
         mMainLayout1 = findViewById(R.id.mMainLayout1);
-        rv_campaign_list = findViewById(R.id.campaign_list);
+        rv_campaign_list = findViewById(R.id.rv_campaign_list);
+        lay_no_list = findViewById(R.id.lay_no_list);
         iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
         demo_layout = findViewById(R.id.demo_layout);
@@ -183,6 +189,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
             e.printStackTrace();
         }
     }
+
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         Global.checkConnectivity(Campaign_List_Activity.this, mMainLayout);
@@ -217,6 +224,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
     @Override
     public void onRefresh() {
         ev_search.setText("");
+        iv_cancle_search_icon.setVisibility(View.GONE);
         currentPage = PAGE_START;
         isLastPage = false;
         campaingAdepter.clear();
@@ -272,8 +280,27 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                             Campaign_List campaign = new Gson().fromJson(headerString, listType);
                             campaignList = campaign.getCampaignList();
 
-                            demo_layout.setVisibility(View.GONE);
-                            mMainLayout1.setVisibility(View.VISIBLE);
+                            if (!ev_search.getText().toString().equals("")) {
+                                if (campaignList.size() == 0) {
+                                    rv_campaign_list.setVisibility(View.GONE);
+                                    lay_no_list.setVisibility(View.VISIBLE);
+                                } else {
+                                    lay_no_list.setVisibility(View.GONE);
+                                    rv_campaign_list.setVisibility(View.VISIBLE);
+                                }
+                            } else {
+                                if (campaignList.size() == 0) {
+                                    lay_no_list.setVisibility(View.GONE);
+                                    mMainLayout1.setVisibility(View.GONE);
+                                    demo_layout.setVisibility(View.VISIBLE);
+                                } else {
+
+                                    lay_no_list.setVisibility(View.GONE);
+                                    demo_layout.setVisibility(View.GONE);
+                                    rv_campaign_list.setVisibility(View.VISIBLE);
+                                    mMainLayout1.setVisibility(View.VISIBLE);
+                                }
+                            }
 
 
                             if (currentPage != PAGE_START) campaingAdepter.removeLoading();
@@ -288,9 +315,13 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                             isLoading = false;
 
                         } else {
-                            // Global.Messageshow(getApplicationContext(), mMainLayout, headerString, false);
-                            demo_layout.setVisibility(View.VISIBLE);
-                            mMainLayout1.setVisibility(View.GONE);
+                            if (!ev_search.getText().toString().equals("")) {
+                                rv_campaign_list.setVisibility(View.GONE);
+                                lay_no_list.setVisibility(View.VISIBLE);
+                            } else {
+                                mMainLayout1.setVisibility(View.GONE);
+                                demo_layout.setVisibility(View.VISIBLE);
+                            }
                         }
                     }
 
@@ -310,26 +341,31 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
             case R.id.iv_back:
                 finish();
                 break;
+            case R.id.iv_cancle_search_icon:
+                iv_cancle_search_icon.setVisibility(View.GONE);
+                ev_search.setText("");
+                onResume();
+                break;
             case R.id.demo_layout:
             case R.id.add_campaign_layout:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                if(SessionManager.getContectList(Campaign_List_Activity.this).size()!=0){
+                if (SessionManager.getContectList(Campaign_List_Activity.this).size() != 0) {
 
 
-                SessionManager.setCampaign_type("");
-                SessionManager.setCampaign_type_name("");
-                SessionManager.setCampaign_Day("");
-                SessionManager.setCampaign_minute("");
-                Global.count = 1;
-                SessionManager.setTask(getApplicationContext(), new ArrayList<>());
-                Intent intent=new Intent(getApplicationContext(), Add_Camp_Tab_Select_Activity.class);
-                intent.putExtra("flag","new");
-                startActivity(intent);
-                }else {
-                    Global.Messageshow(Campaign_List_Activity.this,mMainLayout,getResources().getString(R.string.add_contact),false);
+                    SessionManager.setCampaign_type("");
+                    SessionManager.setCampaign_type_name("");
+                    SessionManager.setCampaign_Day("");
+                    SessionManager.setCampaign_minute("");
+                    Global.count = 1;
+                    SessionManager.setTask(getApplicationContext(), new ArrayList<>());
+                    Intent intent = new Intent(getApplicationContext(), Add_Camp_Tab_Select_Activity.class);
+                    intent.putExtra("flag", "new");
+                    startActivity(intent);
+                } else {
+                    Global.Messageshow(Campaign_List_Activity.this, mMainLayout, getResources().getString(R.string.add_contact), false);
                 }
                 break;
         }
@@ -344,17 +380,16 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         Global.count = 1;
         SessionManager.setTask(getApplicationContext(), new ArrayList<>());
         String contect_list_count = String.valueOf(campaign.getProspect());
-        if (campaign.getStatus().equals("A"))
-        {
+        if (campaign.getStatus().equals("A")) {
             Intent intent = new Intent(getApplicationContext(), Campaign_Final_Start.class);
             intent.putExtra("sequence_id", campaign.getId());
             startActivity(intent);
-        }else if (campaign.getStatus().equals("I")){
-            if(campaign.getStarted_on()!=null&&!campaign.getStarted_on().equals("")&&campaign.getProspect()!=0){
+        } else if (campaign.getStatus().equals("I")) {
+            if (campaign.getStarted_on() != null && !campaign.getStarted_on().equals("") && campaign.getProspect() != 0) {
                 Intent intent = new Intent(getApplicationContext(), Campaign_Final_Start.class);
                 intent.putExtra("sequence_id", campaign.getId());
                 startActivity(intent);
-            }else{
+            } else {
                 if (contect_list_count.equals("0")) {
                     Intent intent = new Intent(getApplicationContext(), Campaign_Overview.class);
                     intent.putExtra("sequence_id", campaign.getId());
@@ -446,12 +481,30 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         @Override
         public void onBindViewHolder(@NonNull CampaingAdepter.viewData holder, int position) {
             Campaign_List.Campaign campaign = campaignList.get(position);
-            if(Global.IsNotNull(campaign.getSeqName())){
+            if (Global.IsNotNull(campaign.getSeqName())) {
                 holder.campaign_name.setText(campaign.getSeqName());
                 setImage(campaign, holder);
 
+                holder.layout_item.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        switch (campaign.getStatus()) {
+                            case "A":
+                                showAlertDialogButtonClicked(campaign.getId(), 1);
+                                break;
+                            case "I":
+                                if (campaign.getStarted_on() != null && !campaign.getStarted_on().equals("")) {
+                                    showAlertDialogButtonClicked(campaign.getId(), 0);
+                                } else {
+                                    showAlertDialogButtonClicked(campaign.getId(), 3);
+                                }
+                                break;
+                        }
+                        return true;
+                    }
+                });
 
-                holder.campaign_name.setOnClickListener(new View.OnClickListener() {
+                holder.layout_item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
@@ -461,6 +514,17 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                         campaingClick.OnClick(campaign);
                     }
                 });
+                holder.iv_hold.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
+                        showAlertDialogButtonClicked(campaign.getId(), 3);
+
+                    }
+                });
                 holder.iv_play_icon.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -468,7 +532,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                             return;
                         }
                         mLastClickTime = SystemClock.elapsedRealtime();
-                        showAlertDialogButtonClicked(campaign.getId(),1);
+                        showAlertDialogButtonClicked(campaign.getId(), 1);
                     }
                 });
                 holder.iv_puse_icon.setOnClickListener(new View.OnClickListener() {
@@ -478,7 +542,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                             return;
                         }
                         mLastClickTime = SystemClock.elapsedRealtime();
-                        showAlertDialogButtonClicked(campaign.getId(),0);
+                        showAlertDialogButtonClicked(campaign.getId(), 0);
                     }
                 });
 
@@ -495,7 +559,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                     holder.iv_puse_icon.setVisibility(View.GONE);
                     break;
                 case "I":
-                    if (campaign.getStarted_on() != null&&!campaign.getStarted_on().equals("")&&campaign.getProspect()!=0) {
+                    if (campaign.getStarted_on() != null && !campaign.getStarted_on().equals("") && campaign.getProspect() != 0) {
                         holder.iv_puse_icon.setVisibility(View.VISIBLE);
                         holder.iv_hold.setVisibility(View.GONE);
                     } else {
@@ -513,9 +577,10 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         }
 
 
-        public  class viewData extends RecyclerView.ViewHolder {
+        public class viewData extends RecyclerView.ViewHolder {
             TextView campaign_name;
             ImageView iv_hold, iv_puse_icon, iv_play_icon;
+            LinearLayout layout_item;
 
             public viewData(@NonNull View itemView) {
                 super(itemView);
@@ -523,10 +588,11 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                 iv_hold = itemView.findViewById(R.id.iv_hold);
                 iv_puse_icon = itemView.findViewById(R.id.iv_puse_icon);
                 iv_play_icon = itemView.findViewById(R.id.iv_play_icon);
+                layout_item = itemView.findViewById(R.id.layout_item);
             }
         }
 
-        public  class ProgressHolder extends viewData {
+        public class ProgressHolder extends viewData {
             ProgressHolder(View itemView) {
                 super(itemView);
             }
@@ -541,7 +607,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
     }
 
 
-    public void showAlertDialogButtonClicked(int sequence_id,int status) {
+    public void showAlertDialogButtonClicked(int sequence_id, int status) {
 
         // Create an alert builder
         AlertDialog.Builder builder
@@ -554,9 +620,9 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                 = builder.create();
 
         TextView tv_message = customLayout.findViewById(R.id.tv_message);
-        if(status==1){
+        if (status == 1) {
             tv_message.setText("Are you sure you want to pause the campaign");
-        }else {
+        } else {
             tv_message.setText("Are you sure you want to play the campaign");
         }
         TextView tv_ok = customLayout.findViewById(R.id.tv_ok);
@@ -570,11 +636,12 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         tv_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                StartCampignApi(sequence_id,status,dialog);
+                StartCampignApi(sequence_id, status, dialog);
             }
         });
         dialog.show();
     }
+
     public void StartCampignApi(int sequence_id, int status, AlertDialog dialog) {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
@@ -589,9 +656,9 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         paramObject.addProperty("record_id", sequence_id);
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", user_id);
-        if(status==1){
+        if (status == 1) {
             paramObject.addProperty("status", "I");
-        }else {
+        } else {
             paramObject.addProperty("status", "A");
         }
         obj.add("data", paramObject);

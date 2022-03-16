@@ -62,8 +62,9 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
 
     SwipeRefreshLayout swipeToRefresh;
     List<UserLinkedList.UserLinkedGmail> userLinkedGmailList=new ArrayList<>();
-    LinearLayout add_new_email;
+    LinearLayout lay_no_list,add_new_email;
     private long mLastClickTime=0;
+    boolean CheckScreen=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,8 +118,13 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
 
                     userLinkedGmailList=userLinkedGmail.getUserLinkedGmail();
                     if (userLinkedGmailList.size() == 0) {
-                        startActivity(new Intent(getApplicationContext(), Email_verification.class));
+                        if(!CheckScreen){
+                            CheckScreen=true;
+                            startActivity(new Intent(getApplicationContext(), Verification_web.class));
+                        }
                     }else {
+                        lay_no_list.setVisibility(View.GONE);
+                        rv_email_list.setVisibility(View.VISIBLE);
                         sessionManager.setUserLinkedGmail(getApplicationContext(),userLinkedGmailList);
                     }
                     rv_email_list.setLayoutManager(new LinearLayoutManager(EmailListActivity.this, LinearLayoutManager.VERTICAL, false));
@@ -126,7 +132,12 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
                     rv_email_list.setAdapter(emailAdepter);
 
                 }else {
-                    startActivity(new Intent(getApplicationContext(), Email_verification.class));
+                    if(!CheckScreen){
+                        CheckScreen=true;
+                        startActivity(new Intent(getApplicationContext(), Verification_web.class));
+                    }
+                    lay_no_list.setVisibility(View.VISIBLE);
+                    rv_email_list.setVisibility(View.GONE);
                 }
             }
 
@@ -140,6 +151,7 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
 
     }
     private void IntentUI() {
+        lay_no_list = findViewById(R.id.lay_no_list);
         add_new_email = findViewById(R.id.add_new_email);
         rv_email_list = findViewById(R.id.rv_email_list);
         mMainLayout = findViewById(R.id.mMainLayout);
@@ -167,7 +179,7 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
                     }
                     mLastClickTime = SystemClock.elapsedRealtime();
                     // Global.openEmailAuth(EmailListActivity.this);
-                    Intent intent= new Intent(getApplicationContext(),Email_verification.class);
+                    Intent intent= new Intent(getApplicationContext(), Verification_web.class);
                     intent.putExtra("create","create");
                     startActivity(intent);
                 break;

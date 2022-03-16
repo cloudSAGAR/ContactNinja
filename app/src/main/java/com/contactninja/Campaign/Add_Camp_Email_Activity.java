@@ -33,11 +33,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.contactninja.Broadcast.Broadcast_Frgment.CardClick;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
-import com.contactninja.Model.Broadcast_image_list;
+import com.contactninja.Model.BZcardListModel;
 import com.contactninja.Model.CampaignTask;
 import com.contactninja.Model.HastagList;
 import com.contactninja.Model.TemplateList;
@@ -45,7 +44,7 @@ import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.UserLinkedList;
 import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
-import com.contactninja.Setting.Email_verification;
+import com.contactninja.Setting.Verification_web;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
@@ -67,18 +66,19 @@ import java.util.List;
 import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables")
-public class Add_Camp_Email_Activity extends AppCompatActivity implements View.OnClickListener, TextClick, TemplateClick, ConnectivityReceiver.ConnectivityReceiverListener, CardClick {
+public class Add_Camp_Email_Activity extends AppCompatActivity implements View.OnClickListener, TextClick,
+        TemplateClick, ConnectivityReceiver.ConnectivityReceiverListener {
     public static final int PICKFILE_RESULT_CODE = 1;
     static CoordinatorLayout mMainLayout;
     public String template_id_is = "";
     ImageView iv_back;
-    List<Broadcast_image_list> broadcast_image_list = new ArrayList<>();
+    List<BZcardListModel.Bizcard> bizcardList = new ArrayList<>();
     CardListAdepter cardListAdepter;
     TextView save_button, tv_use_tamplet;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
-    EditText ev_subject, edit_template;
+    static EditText ev_subject, edit_template;
     LinearLayout top_layout;
     TemplateAdepter templateAdepter;
     RecyclerView rv_direct_list;
@@ -116,6 +116,13 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
         try {
             if (Global.isNetworkAvailable(Add_Camp_Email_Activity.this, MainActivity.mMainLayout)) {
                 Hastag_list();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (Global.isNetworkAvailable(Add_Camp_Email_Activity.this, MainActivity.mMainLayout)) {
+                BZCard_list();
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -211,7 +218,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
         if (userLinkedGmailList.size() == 0) {
             if (FirstTime == 0) {
                 FirstTime = 1;
-                startActivity(new Intent(getApplicationContext(), Email_verification.class));
+                startActivity(new Intent(getApplicationContext(), Verification_web.class));
             }
             iv_more.setVisibility(View.GONE);
         } else if (userLinkedGmailList.size() == 1) {
@@ -322,16 +329,10 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                     text1.setSelect(false);
                     templateTextList.add(1, text1);
 
-                    HastagList.TemplateText text2 = new HastagList.TemplateText();
-                    text2.setFile(R.drawable.ic_video);
-                    text2.setSelect(false);
-                    templateTextList.add(2, text2);
-
-
                     HastagList.TemplateText templateText = new HastagList.TemplateText();
                     templateText.setDescription("Placeholders #");
                     templateText.setSelect(true);
-                    templateTextList.add(3, templateText);
+                    templateTextList.add(2, templateText);
 
 
                     Listset(templateTextList);
@@ -353,7 +354,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
     private void Listset(List<HastagList.TemplateText> templateTextList) {
         rv_direct_list.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
         rv_direct_list.setHasFixedSize(true);
-        picUpTextAdepter = new PicUpTextAdepter(getApplicationContext(), templateTextList, this);
+        picUpTextAdepter = new PicUpTextAdepter(Add_Camp_Email_Activity.this, templateTextList, this);
         rv_direct_list.setAdapter(picUpTextAdepter);
     }
 
@@ -804,31 +805,19 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
         }
     }
 
-    @Override
-    public void Onclick(Broadcast_image_list broadcastImageList) {
-        for (int i = 0; i < broadcast_image_list.size(); i++) {
-            if (broadcastImageList.getId() == broadcast_image_list.get(i).getId()) {
-                broadcast_image_list.get(i).setScelect(true);
-            } else {
-                broadcast_image_list.get(i).setScelect(false);
-            }
-        }
-        cardListAdepter.notifyDataSetChanged();
-    }
+
 
     static class CardListAdepter extends RecyclerView.Adapter<CardListAdepter.cardListData> {
 
-        Activity activity;
-        List<Broadcast_image_list> broadcast_image_list;
-        CardClick cardClick;
+        Activity mContext;
+        List<BZcardListModel.Bizcard> bizcardList;
         BottomSheetDialog bottomSheetDialog;
         TextClick interfaceClick;
 
-        public CardListAdepter(Activity activity, List<Broadcast_image_list> broadcast_image_list,
-                               CardClick cardClick, BottomSheetDialog bottomSheetDialog, TextClick interfaceClick) {
-            this.activity = activity;
-            this.broadcast_image_list = broadcast_image_list;
-            this.cardClick = cardClick;
+        public CardListAdepter(Activity activity, List<BZcardListModel.Bizcard> bizcardList,
+                                BottomSheetDialog bottomSheetDialog, TextClick interfaceClick) {
+            this.mContext = activity;
+            this.bizcardList = bizcardList;
             this.bottomSheetDialog = bottomSheetDialog;
             this.interfaceClick = interfaceClick;
         }
@@ -844,21 +833,40 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
         @SuppressLint({"SetTextI18n", "UseCompatLoadingForDrawables"})
         @Override
         public void onBindViewHolder(@NonNull CardListAdepter.cardListData holder, int position) {
-            Broadcast_image_list item = this.broadcast_image_list.get(position);
+            BZcardListModel.Bizcard bizcard = this.bizcardList.get(position);
 
-
-            int resID = activity.getResources().getIdentifier(item.getImagename()
-                    .replace(" ", "_").toLowerCase(), "drawable", activity.getPackageName());
+            int resID = mContext.getResources().getIdentifier("my_" + bizcard.getCardName()
+                    .replace(" ", "_").toLowerCase(), "drawable", mContext.getPackageName());
             if (resID != 0) {
-                Glide.with(activity.getApplicationContext()).load(resID).into(holder.iv_card);
+                Glide.with(mContext.getApplicationContext()).load(resID).into(holder.iv_card);
             }
+
             holder.layout_select_image.setOnClickListener(v -> {
-                cardClick.Onclick(item);
-                item.setScelect(true);
+                String newUrl="",oldUrl="",Newtext="";
+                for(int i=0;i<bizcardList.size();i++){
+                    if(bizcardList.get(i).isScelect()){
+                        oldUrl=Global.bzcard_priview+bizcardList.get(i).getId_encoded();
+                        bizcardList.get(i).setScelect(false);
+                        break;
+                    }
+                }
+                bizcard.setScelect(true);
+                newUrl=Global.bzcard_priview+bizcard.getId_encoded();
+
+                String curenttext = edit_template.getText().toString();
+                if(!oldUrl.equals("")&& !oldUrl.equals(newUrl)){
+                    String changeurl=curenttext.replace(oldUrl,newUrl);
+                    Newtext = changeurl;
+                }else {
+                    Newtext = curenttext+newUrl;
+                }
+                edit_template.setText(Newtext);
+                edit_template.setSelection(edit_template.getText().length());
+
                 bottomSheetDialog.dismiss();
-                interfaceClick.OnClick("BzczrdLink");
+                notifyDataSetChanged();
             });
-            if (item.isScelect()) {
+            if (bizcard.isScelect()) {
                 holder.layout_select_image.setBackgroundResource(R.drawable.shape_10_blue);
             } else {
                 holder.layout_select_image.setBackground(null);
@@ -868,7 +876,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
 
         @Override
         public int getItemCount() {
-            return broadcast_image_list.size();
+            return bizcardList.size();
         }
 
         public static class cardListData extends RecyclerView.ViewHolder {
@@ -1028,6 +1036,12 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                         showAlertDialogButtonClicked(view, edit_template);
                     } else {
                         interfaceClick.OnClick(item);
+                        for(int i=0;i<bizcardList.size();i++){
+                            if(bizcardList.get(i).isScelect()){
+                                bizcardList.get(i).setScelect(false);
+                                break;
+                            }
+                        }
                     }
                 }
             });
@@ -1054,11 +1068,11 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
 
     class PicUpTextAdepter extends RecyclerView.Adapter<PicUpTextAdepter.viewholder> {
 
-        public Context mCtx;
+        public Activity mCtx;
         List<HastagList.TemplateText> templateTextList;
         TextClick interfaceClick;
 
-        public PicUpTextAdepter(Context applicationContext, List<HastagList.TemplateText> templateTextList, TextClick interfaceClick) {
+        public PicUpTextAdepter(Activity applicationContext, List<HastagList.TemplateText> templateTextList, TextClick interfaceClick) {
             this.mCtx = applicationContext;
             this.templateTextList = templateTextList;
             this.interfaceClick = interfaceClick;
@@ -1113,27 +1127,13 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                         RecyclerView rv_image_card = bottomSheetDialog.findViewById(R.id.rv_image_card);
 
 
-                        broadcast_image_list.clear();
-                        for (int i = 0; i <= 20; i++) {
-                            Broadcast_image_list item = new Broadcast_image_list();
-                            if (i % 2 == 0) {
-                                item.setId(i);
-                                item.setScelect(false);
-                                item.setImagename("card_1");
-                            } else {
-                                item.setId(i);
-                                item.setScelect(false);
-                                item.setImagename("card_2");
-                            }
-                            broadcast_image_list.add(item);
-                        }
+
                         rv_image_card.setLayoutManager(new LinearLayoutManager(Add_Camp_Email_Activity.this,
                                 LinearLayoutManager.HORIZONTAL, false));
                         rv_image_card.setHasFixedSize(true);
-                        cardListAdepter = new CardListAdepter(Add_Camp_Email_Activity.this, broadcast_image_list,
-                                Add_Camp_Email_Activity.this, bottomSheetDialog, interfaceClick);
+                        cardListAdepter = new CardListAdepter(Add_Camp_Email_Activity.this, bizcardList,
+                                 bottomSheetDialog, interfaceClick);
                         rv_image_card.setAdapter(cardListAdepter);
-
 
                         bottomSheetDialog.show();
                     }
@@ -1187,5 +1187,43 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
         }
     }
 
+    void BZCard_list() throws JSONException {
 
+     //   loadingDialog.showLoadingDialog();
+
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Add_Camp_Email_Activity.this);
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        obj.add("data", paramObject);
+        retrofitCalls.BZcard_User_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(Add_Camp_Email_Activity.this), Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                if (response.body().getHttp_status() == 200) {
+                    bizcardList.clear();
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<BZcardListModel>() {
+                    }.getType();
+                    BZcardListModel bZcardListModel = new Gson().fromJson(headerString, listType);
+
+                    bizcardList = bZcardListModel.getBizcardList_user();
+
+
+
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+
+
+    }
 }

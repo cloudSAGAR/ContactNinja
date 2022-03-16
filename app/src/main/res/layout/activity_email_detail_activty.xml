@@ -24,7 +24,6 @@
             android:orientation="vertical">
 
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -32,22 +31,25 @@
                 android:layout_below="@+id/toolbar"
                 android:orientation="vertical"
                 tools:ignore="MissingConstraints">
+
                 <LinearLayout
-                    android:visibility="gone"
                     android:id="@+id/lay_seq_stap"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_10sdp">
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:visibility="gone">
+
                     <ImageView
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_email"
                         android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"/>
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_email" />
+
                     <TextView
                         android:id="@+id/tv_stap"
-                        style="@style/tv_Medium_14"
+                        style="@style/tv_Medium_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/_5sdp"
@@ -55,13 +57,14 @@
                         tools:ignore="HardcodedText">
 
                     </TextView>
+
                     <TextView
                         android:id="@+id/tv_taskname"
-                        android:maxLines="1"
-                        android:ellipsize="end"
-                        style="@style/tv_Medium_14"
+                        style="@style/tv_Medium_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         android:padding="@dimen/_5sdp"
                         android:textColor="@color/text_gray"
                         tools:ignore="HardcodedText">
@@ -69,6 +72,7 @@
                     </TextView>
 
                 </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/lay_taskname"
                     android:layout_width="match_parent"
@@ -78,32 +82,31 @@
                     android:layout_marginEnd="@dimen/_10sdp">
 
                     <TextView
-                        style="@style/tv_Medium_14"
+                        style="@style/tv_Medium_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/_5sdp"
                         android:text="Task title: "
                         android:textColor="@color/text_gray"
-                        tools:ignore="HardcodedText">
+                        tools:ignore="HardcodedText,TextContrastCheck">
 
-                        </TextView>
+                    </TextView>
 
                     <EditText
                         android:id="@+id/ev_titale"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:background="@color/add_contect_transpernt"
                         android:enabled="false"
+                        android:singleLine="true"
                         android:focusable="true"
-                        android:maxLines="1"
-                        android:ellipsize="end"
-                        android:scrollHorizontally="true"
                         android:gravity="left|center"
                         android:imeOptions="actionDone"
+                        android:scrollHorizontally="true"
                         android:textColor="@color/text_reg"
-                        tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
+                        tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields,TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
 
                 </LinearLayout>
@@ -127,7 +130,7 @@
                     android:weightSum="1">
 
                     <TextView
-                        style="@style/tv_Medium_14"
+                        style="@style/tv_Medium_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -139,7 +142,7 @@
 
                     <EditText
                         android:id="@+id/ev_from"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
@@ -150,7 +153,7 @@
                         android:gravity="left|center"
                         android:imeOptions="actionDone"
                         android:textColor="@color/text_reg"
-                        tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
+                        tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields,TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
                     <ImageView
                         android:id="@+id/iv_more"
@@ -182,7 +185,7 @@
                     android:layout_marginEnd="@dimen/_10sdp">
 
                     <TextView
-                        style="@style/tv_Medium_14"
+                        style="@style/tv_Medium_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/_5sdp"
@@ -194,7 +197,7 @@
 
                     <EditText
                         android:id="@+id/ev_to"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
@@ -204,7 +207,7 @@
                         android:gravity="left|center"
                         android:imeOptions="actionDone"
                         android:textColor="@color/text_reg"
-                        tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
+                        tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
 
                 </LinearLayout>
@@ -227,16 +230,17 @@
                     android:layout_marginEnd="@dimen/_10sdp">
 
                     <TextView
-                        style="@style/tv_Medium_14"
+                        style="@style/tv_Medium_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/_5sdp"
                         android:text="@string/to_subject"
-                        android:textColor="@color/text_gray" />
+                        android:textColor="@color/text_gray"
+                        tools:ignore="TextContrastCheck" />
 
                     <EditText
                         android:id="@+id/ev_subject"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
@@ -247,7 +251,7 @@
                         android:hint="@string/ComposeEmail"
                         android:imeOptions="actionDone"
                         android:textColor="@color/text_reg"
-                        tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
+                        tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields,TouchTargetSizeCheck,TextContrastCheck,DuplicateSpeakableTextCheck" />
 
 
                 </LinearLayout>
@@ -270,18 +274,18 @@
                     android:layout_marginEnd="@dimen/_10sdp">
 
                     <TextView
-                        style="@style/tv_Medium_14"
+                        style="@style/tv_Medium_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/_5sdp"
                         android:text="Date: "
                         android:textColor="@color/text_gray"
-                        tools:ignore="HardcodedText" />
+                        tools:ignore="HardcodedText,TextContrastCheck" />
 
                     <TextView
 
                         android:id="@+id/tv_date"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text=""
@@ -289,7 +293,7 @@
 
                     <TextView
                         android:id="@+id/tv_status"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center|right"
@@ -300,18 +304,22 @@
                 </LinearLayout>
 
                 <EditText
+                    style="@style/tv_regular_12"
                     android:id="@+id/edit_compose"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/_10sdp"
+                    android:autoLink="web|email"
                     android:background="@color/add_contect_transpernt"
                     android:focusable="true"
                     android:gravity="left"
                     android:hint="@string/ComposeEmail"
                     android:imeOptions="actionDone"
+                    android:linksClickable="true"
                     android:padding="15dp"
-                    android:textColor="@color/text_reg" />
+                    android:textColor="@color/text_reg"
+                    tools:ignore="TextContrastCheck" />
 
                 <ImageView
                     android:id="@+id/iv_body"
@@ -353,7 +361,8 @@
                 android:layout_marginStart="@dimen/_10sdp"
                 android:padding="@dimen/_10sdp"
                 android:text="B"
-                android:textColor="@color/black">
+                android:textColor="@color/text_gray"
+                tools:ignore="HardcodedText">
 
             </TextView>
 
@@ -366,7 +375,8 @@
                 android:layout_marginStart="@dimen/_10sdp"
                 android:padding="@dimen/_10sdp"
                 android:text="I"
-                android:textColor="@color/black">
+                android:textColor="@color/text_gray"
+                tools:ignore="HardcodedText">
 
             </TextView>
 
@@ -378,7 +388,8 @@
                 android:layout_marginStart="@dimen/_10sdp"
                 android:padding="@dimen/_10sdp"
                 android:text="U"
-                android:textColor="@color/black">
+                android:textColor="@color/text_gray"
+                tools:ignore="HardcodedText">
 
             </TextView>
         </LinearLayout>
@@ -421,7 +432,7 @@
 
         <TextView
             android:id="@+id/bt_done"
-            style="@style/tv_Medium_14"
+            style="@style/tv_Medium_12"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_45sdp"
             android:layout_gravity="bottom"

@@ -36,14 +36,15 @@
                         android:layout_height="@dimen/_60sdp"
                         android:layout_gravity="center"
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:src="@drawable/ic_small_logo">
+                        android:src="@drawable/ic_small_logo"
+                        tools:ignore="ImageContrastCheck">
 
                     </ImageView>
 
                     <TextView
 
                         android:id="@+id/add_new_contect"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -93,7 +94,8 @@
                                     <ImageView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:background="@drawable/ic_small_logo" />
+                                        android:background="@drawable/ic_small_logo"
+                                        tools:ignore="ImageContrastCheck,TooDeepLayout" />
                                 </LinearLayout>
 
 
@@ -128,7 +130,7 @@
 
                                 <TextView
                                     android:id="@+id/tv_name"
-                                    style="@style/tv_Medium_14"
+                                    style="@style/tv_Medium_12"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_gravity="left|center"
@@ -232,7 +234,7 @@
 
                                 <TextView
                                     android:id="@+id/contect_count"
-                                    style="@style/tv_Medium_14"
+                                    style="@style/tv_Medium_12"
                                     android:layout_width="wrap_content"
                                     android:layout_height="@dimen/_30sdp"
                                     android:layout_alignParentBottom="true"
@@ -251,8 +253,7 @@
 
                     </LinearLayout>
 
-                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                        xmlns:tools="http://schemas.android.com/tools"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
@@ -286,13 +287,12 @@
 
                                 <ImageView
                                     android:id="@+id/tv_item_num"
-                                    style="@style/tv_regular_13"
+                                    style="@style/tv_regular_12"
                                     android:layout_width="@dimen/_20sdp"
                                     android:layout_height="@dimen/_20sdp"
                                     android:layout_gravity="center"
                                     android:gravity="center"
                                     android:padding="@dimen/_2sdp"
-                                    android:src="@drawable/ic_email_mini"
                                     android:text="1"
                                     android:textColor="@color/text_White">
 
@@ -341,7 +341,7 @@
 
                                             <TextView
                                                 android:id="@+id/tv_title"
-                                                style="@style/tv_regular_13"
+                                                style="@style/tv_regular_12"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:layout_gravity="center"
@@ -372,13 +372,13 @@
                                         </LinearLayout>
 
                                         <ImageView
-                                            android:visibility="gone"
                                             android:id="@+id/iv_manu"
                                             android:layout_width="@dimen/_18sdp"
                                             android:layout_height="@dimen/_18sdp"
                                             android:layout_gravity="center|end"
                                             android:layout_marginStart="@dimen/_10sdp"
-                                            android:background="@drawable/ic_camp_edit">
+                                            android:background="@drawable/ic_camp_edit"
+                                            android:visibility="gone">
 
                                         </ImageView>
                                     </LinearLayout>
@@ -409,7 +409,7 @@
                                             android:orientation="horizontal">
 
                                             <TextView
-                                                style="@style/tv_Medium_14"
+                                                style="@style/tv_Medium_12"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:layout_marginEnd="@dimen/_5sdp"
@@ -417,21 +417,21 @@
                                                 android:textColor="@color/purple_200" />
 
                                             <EditText
-                                                android:enabled="false"
                                                 android:id="@+id/ev_subject"
-                                                style="@style/tv_regular_13"
+                                                style="@style/tv_regular_12"
                                                 android:layout_width="0dp"
                                                 android:layout_height="wrap_content"
                                                 android:layout_gravity="center"
                                                 android:layout_weight="1"
                                                 android:background="@null"
+                                                android:enabled="false"
                                                 android:gravity="center|left"
                                                 android:hint="@string/Enter_subject_here"
                                                 android:imeOptions="actionDone"
                                                 android:inputType="textEmailAddress"
                                                 android:textColor="@color/text_reg"
                                                 android:textColorHint="@color/otp_header_text_color"
-                                                tools:ignore="Autofill,RtlHardcoded" />
+                                                tools:ignore="Autofill,RtlHardcoded,TouchTargetSizeCheck,DuplicateSpeakableTextCheck" />
 
 
                                         </LinearLayout>
@@ -448,7 +448,7 @@
 
                                     <TextView
                                         android:id="@+id/tv_detail"
-                                        style="@style/tv_regular_13"
+                                        style="@style/tv_regular_12"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center"
@@ -461,9 +461,7 @@
                                         android:textColor="@color/text_reg" />
 
 
-
                                 </LinearLayout>
-
 
 
                             </LinearLayout>
@@ -502,7 +500,6 @@
                                     </View>
 
 
-
                                     <View
                                         android:layout_width="1dp"
                                         android:layout_height="match_parent"
@@ -523,7 +520,7 @@
 
                                     <TextView
                                         android:id="@+id/tv_add_new_step"
-                                        style="@style/tv_regular_13"
+                                        style="@style/tv_regular_12"
                                         android:layout_width="match_parent"
                                         android:layout_height="@dimen/_40sdp"
                                         android:layout_gravity="center"
@@ -538,7 +535,7 @@
                             </LinearLayout>
 
                             <TextView
-                                style="@style/tv_regular_13"
+                                style="@style/tv_regular_12"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -552,8 +549,7 @@
                     </LinearLayout>
 
 
-                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                        xmlns:tools="http://schemas.android.com/tools"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
@@ -586,38 +582,39 @@
                                 </View>
 
                                 <ImageView
-                                    style="@style/tv_regular_13"
+                                    style="@style/tv_regular_12"
                                     android:layout_width="@dimen/_20sdp"
                                     android:layout_height="@dimen/_20sdp"
                                     android:layout_gravity="center"
+                                    android:background="@drawable/ic_back_date"
                                     android:gravity="center"
                                     android:padding="@dimen/_2sdp"
-                                    android:background="@drawable/ic_back_date"
                                     android:text="1"
                                     android:textColor="@color/text_White">
 
                                 </ImageView>
 
                                 <View
-                                    android:visibility="invisible"
                                     android:layout_width="1dp"
                                     android:layout_height="match_parent"
                                     android:layout_gravity="center"
                                     android:layout_weight="1"
-                                    android:background="@color/camp_line">
+                                    android:background="@color/camp_line"
+                                    android:visibility="invisible">
 
                                 </View>
                             </LinearLayout>
 
                             <LinearLayout
-                                android:padding="@dimen/_10sdp"
-                                android:layout_marginBottom="@dimen/_10sdp"
-                                android:layout_marginTop="@dimen/_10sdp"
-                                android:layout_marginEnd="@dimen/_10sdp"
-                                android:background="@drawable/shape_5_white_ccc_line"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:orientation="vertical">
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:layout_marginEnd="@dimen/_10sdp"
+                                android:layout_marginBottom="@dimen/_10sdp"
+                                android:background="@drawable/shape_5_white_ccc_line"
+                                android:orientation="vertical"
+                                android:padding="@dimen/_10sdp">
+
                                 <LinearLayout
 
                                     android:layout_width="match_parent"
@@ -626,81 +623,85 @@
                                     android:orientation="horizontal">
 
                                     <TextView
-                                        style="@style/tv_Medium_14"
+                                        style="@style/tv_Medium_12"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginEnd="@dimen/_5sdp"
                                         android:hint="Starts"
-                                        android:textColor="@color/purple_200" />
+                                        android:textColor="@color/purple_200"
+                                        tools:ignore="TextContrastCheck" />
 
                                     <TextView
                                         android:id="@+id/tv_date"
-                                       android:enabled="false"
-                                        style="@style/tv_regular_13"
+                                        style="@style/tv_regular_12"
                                         android:layout_width="0dp"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center"
                                         android:layout_weight="1"
                                         android:background="@null"
+                                        android:enabled="false"
                                         android:gravity="center|left"
                                         android:hint="@string/Enter_subject_here"
                                         android:imeOptions="actionDone"
                                         android:inputType="textEmailAddress"
                                         android:textColor="@color/purple_200"
                                         android:textColorHint="@color/purple_200"
-                                        tools:ignore="Autofill,RtlHardcoded" />
+                                        tools:ignore="Autofill,RtlHardcoded,TouchTargetSizeCheck" />
 
 
                                 </LinearLayout>
 
                                 <LinearLayout
-                                    android:layout_marginTop="@dimen/_10sdp"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_10sdp"
                                     android:gravity="center"
                                     android:orientation="horizontal">
 
                                     <TextView
-                                        style="@style/tv_Medium_14"
+                                        style="@style/tv_Medium_12"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginEnd="@dimen/_5sdp"
                                         android:hint="Repeats"
-                                        android:textColor="@color/purple_200" />
+                                        android:textColor="@color/purple_200"
+                                        tools:ignore="TextContrastCheck" />
 
                                     <TextView
                                         android:id="@+id/tv_repete_type"
-                                        android:enabled="false"
-                                        style="@style/tv_regular_13"
+                                        style="@style/tv_regular_12"
                                         android:layout_width="0dp"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center"
                                         android:layout_weight="1"
                                         android:background="@null"
+                                        android:enabled="false"
                                         android:gravity="center|left"
                                         android:hint="@string/Enter_subject_here"
                                         android:imeOptions="actionDone"
                                         android:inputType="textEmailAddress"
                                         android:textColor="@color/purple_200"
                                         android:textColorHint="@color/purple_200"
-                                        tools:ignore="Autofill,RtlHardcoded" />
+                                        tools:ignore="Autofill,RtlHardcoded,TouchTargetSizeCheck" />
 
 
                                 </LinearLayout>
+
                             </LinearLayout>
 
                         </LinearLayout>
+
                         <TextView
                             android:id="@+id/tv_start_broadcast"
-                            android:layout_marginTop="@dimen/_15sdp"
-                            android:layout_marginStart="@dimen/_25sdp"
-                            style="@style/tv_Medium_14"
+                            style="@style/tv_Medium_12"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_40sdp"
                             android:layout_gravity="center"
-                            android:gravity="center"
-                            android:background="@drawable/shape_15_blue"
+                            android:layout_marginStart="@dimen/_25sdp"
+                            android:layout_marginTop="@dimen/_15sdp"
                             android:layout_marginEnd="@dimen/_15sdp"
+                            android:background="@drawable/shape_15_blue"
+                            android:gravity="center"
                             android:text="Create Broadcast"
                             android:textColor="@color/white" />
 

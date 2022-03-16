@@ -9,12 +9,8 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -36,8 +32,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3Client;
 import com.bumptech.glide.Glide;
-import com.contactninja.AddContect.Addnewcontect_Activity;
+import com.contactninja.AddContect.Add_Newcontect_Activity;
+import com.contactninja.Bzcard.Select_Bzcard_Activity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
@@ -47,12 +48,14 @@ import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
 import com.contactninja.Setting.SettingActivity;
 import com.contactninja.UserPofile.User_BzcardFragment;
-import com.contactninja.UserPofile.User_ExposuresFragment;
+import com.contactninja.UserPofile.User_GrowthFragment;
 import com.contactninja.UserPofile.User_InformationFragment;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
+import com.contactninja.aws.image_aws.AmazonUtil;
+import com.contactninja.aws.image_aws.S3Uploader;
 import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
@@ -62,13 +65,13 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
-import com.makeramen.roundedimageview.RoundedImageView;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
@@ -85,20 +88,26 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 
 public class Main_userProfile_Fragment extends Fragment implements View.OnClickListener {
-    private long mLastClickTime = 0;
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
     public static final int RequestPermissionCode = 1;
     private static final String TAG_HOME = "Addcontect";
     public static String CURRENT_TAG = TAG_HOME;
+    public static TransferUtility transferUtility;
+    int image_flag = 1;
+    String filePath1="";
+    Uri mCapturedImageURI;
+    Integer CAPTURE_IMAGE = 3;
     CoordinatorLayout user_image;
-    ImageView iv_Setting, pulse_icon, iv_back, iv_edit;
+    ImageView iv_Setting, pulse_icon, iv_back, iv_edit,iv_Bzcard;
     TextView save_button, tv_nameLetter;
     TabLayout tabLayout;
+    TabLayout.Tab tab;
     String fragment_name, user_image_Url = "", File_name = "", File_extension = "";
     EditText edt_FirstName, edt_lastname;
     SessionManager sessionManager;
@@ -109,17 +118,19 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     FrameLayout frameContainer;
-    RoundedImageView iv_user;
+    CircleImageView iv_user;
     LinearLayout layout_pulse;
     String option_type = "";
     LinearLayout layout_toolbar_logo;
     TextView edit_profile;
+    AmazonS3Client s3Client;
+    S3Uploader s3uploaderObj;
+    private long mLastClickTime = 0;
     private BroadcastReceiver mNetworkReceiver;
-    View view_single;
-
+    String flag;
     // ListPhoneContactsActivity use this method to start this activity.
     public static void start(Context context) {
-        Intent intent = new Intent(context, Addnewcontect_Activity.class);
+        Intent intent = new Intent(context, Add_Newcontect_Activity.class);
         SessionManager.setContect_flag("save");
         context.startActivity(intent);
     }
@@ -160,6 +171,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user_profile_main, container, false);
         intentView(view);
+        Log.e("On Click Method ","2");
         SessionManager.setOneCotect_deatil(getActivity(), new ContectListData.Contact());
 
         mNetworkReceiver = new ConnectivityReceiver();
@@ -167,12 +179,20 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         loadingDialog = new LoadingDialog(getActivity());
         retrofitCalls = new RetrofitCalls(getActivity());
         sessionManager = new SessionManager(getActivity());
+        s3uploaderObj = new S3Uploader(getActivity());
+        // Create an S3 client
+        CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
+                getActivity(),
+                "us-east-2:a47e1f07-8030-4bce-b50b-075713507665", // Identity pool ID
+                Regions.US_EAST_2 // Region
+        );
         option_type = "save";
-        setTab();
 
+
+
+        setTab();
         setdata();
-        MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
-        myAsyncTasks.execute();
+
 
 
         pulse_icon.setColorFilter(getResources().getColor(R.color.purple_200));
@@ -198,14 +218,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                         Global.Messageshow(getActivity(), mMainLayout, getString(R.string.invalid_last_name), false);
 
                     } else {
-                        try {
-                            if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
-                                AddContect_Update();
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        uploadImageTos3(filePath1);
                     }
 
                 } else {
@@ -214,7 +227,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                     String flag = SessionManager.getContect_flag(getActivity());
                     if (flag.equals("read")) {
                         SessionManager.setContect_flag("edit");
-                        Intent addnewcontect = new Intent(getActivity(), Addnewcontect_Activity.class);
+                        Intent addnewcontect = new Intent(getActivity(), Add_Newcontect_Activity.class);
                         SessionManager.setContect_flag("edit");
                         startActivity(addnewcontect);
                         //finish();
@@ -223,13 +236,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                         save_button.setText("Save");
                         edt_FirstName.setEnabled(true);
                         edt_lastname.setEnabled(true);
-                        try {
-                            if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
-                                AddContect_Update();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        uploadImageTos3(filePath1);
                     }
 
 
@@ -272,16 +279,12 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
 
             }
         });
+
+        MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
+        myAsyncTasks.execute();
+
         return view;
     }
-
-    @Override
-    public void onResume() {
-
-        super.onResume();
-
-    }
-
     private void Userinfo() throws JSONException {
         //  loadingDialog.showLoadingDialog();
         SignResponseModel signResponseModel = SessionManager.getGetUserdata(getActivity());
@@ -304,7 +307,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                             SignResponseModel user_model = new Gson().fromJson(headerString, listType);
                             SessionManager.setUserdata(getActivity(), user_model);
                             Log.e("Main Data Is ", new Gson().toJson(user_model));
-                            setdata();
+
                             // setTab();
 
 
@@ -332,7 +335,6 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                     @Override
                     public void success(Response<ApiResponse> response) {
                         if (response.body().getHttp_status() == 200) {
-                            loadingDialog.cancelLoading();
                             SessionManager.setUserdata(getActivity(), new SignResponseModel());
 
                             Gson gson = new Gson();
@@ -342,7 +344,17 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                             SignResponseModel user_model = new Gson().fromJson(headerString, listType);
                             SessionManager.setUserdata(getActivity(), user_model);
                             setdata();
-                            //setTab();
+
+                            Fragment fragment = new User_InformationFragment();
+                            FragmentManager fragmentManager = getFragmentManager();
+
+                            if (fragmentManager != null) {
+                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                fragmentTransaction.replace(R.id.frameContainer123, fragment, "Fragment");
+                                fragmentTransaction.commitAllowingStateLoss();
+                            }
+
+                            loadingDialog.cancelLoading();
 
 
                         } else {
@@ -360,152 +372,11 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
     private void setTab() {
         // loadingDialog = new LoadingDialog(this);
         //Set Viewpagger
+        flag = SessionManager.getContect_flag(getActivity());
         tabLayout.addTab(tabLayout.newTab().setText("Information"));
         tabLayout.addTab(tabLayout.newTab().setText("Bzcard"));
-        tabLayout.addTab(tabLayout.newTab().setText("Exposures"));
+        tabLayout.addTab(tabLayout.newTab().setText("Growth"));
         fragment_name = "Info";
-
-
-    }
-
-    @SuppressLint("SetTextI18n")
-    private void setdata() {
-
-        String flag = SessionManager.getContect_flag(getActivity());
-        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-
-
-        User user_data_model = user_data.getUser();
-        ContectListData.Contact set_contact = new ContectListData.Contact();
-        set_contact.setFirstname(user_data_model.getFirstName());
-        set_contact.setLastname(user_data_model.getLastName());
-        List<ContectListData.Contact.ContactDetail> contactDetails_list = new ArrayList<>();
-        ContectListData.Contact.ContactDetail contactDetail_model = new ContectListData.Contact.ContactDetail();
-        contactDetail_model.setEmailNumber(user_data_model.getContactNumber());
-        contactDetail_model.setLabel("");
-        /*contactDetail_model.setEmailNumber(user_data_model.getEmail());*/
-        contactDetail_model.setContactId(user_data_model.getId());
-        contactDetail_model.setType("NUMBER");
-        contactDetail_model.setIsDefault(1);
-        contactDetail_model.setLabel("Home");
-        contactDetails_list.add(0, contactDetail_model);
-
-        ContectListData.Contact.ContactDetail contactDetail_model1 = new ContectListData.Contact.ContactDetail();
-        contactDetail_model1.setEmailNumber(user_data_model.getEmail());
-        contactDetail_model1.setLabel("");
-        /*contactDetail_model.setEmailNumber(user_data_model.getEmail());*/
-        contactDetail_model1.setContactId(user_data_model.getId());
-        contactDetail_model1.setType("EMAIL");
-        contactDetail_model1.setIsDefault(1);
-        contactDetail_model1.setLabel("Home");
-        contactDetails_list.add(1, contactDetail_model1);
-        set_contact.setContactDetails(contactDetails_list);
-        SessionManager.setOneCotect_deatil(getActivity(), set_contact);
-
-        if (flag.equals("edit")) {
-            pulse_icon.setEnabled(true);
-            iv_user.setEnabled(true);
-            tv_nameLetter.setEnabled(true);
-            iv_edit.setVisibility(View.VISIBLE);
-            ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
-            edt_FirstName.setText(Contect_data.getFirstname());
-            edt_lastname.setText(Contect_data.getLastname());
-            f_name = Contect_data.getFirstname();
-            l_name = Contect_data.getLastname();
-
-            if (user_data.getUser().getUserprofile().getProfilePic() == null) {
-                iv_user.setVisibility(View.GONE);
-                layout_pulse.setVisibility(View.VISIBLE);
-                user_image.setVisibility(View.GONE);
-                tv_nameLetter.setVisibility(View.VISIBLE);
-                tv_nameLetter.setOnClickListener(this);
-
-                String name = Contect_data.getFirstname();
-                String add_text = "";
-                String[] split_data = name.split(" ");
-                try {
-                    for (int i = 0; i < split_data.length; i++) {
-                        if (i == 0) {
-                            add_text = split_data[i].substring(0, 1);
-                        } else {
-                            add_text = add_text + split_data[i].charAt(0);
-                            break;
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                tv_nameLetter.setText(add_text);
-
-            } else {
-                iv_user.setVisibility(View.VISIBLE);
-                layout_pulse.setVisibility(View.GONE);
-                Glide.with(getActivity()).
-                        load(user_data.getUser().getUserprofile().getProfilePic())
-                        .placeholder(R.drawable.shape_primary_back)
-                        .error(R.drawable.shape_primary_back).
-                        into(iv_user);
-            }
-            olld_image = Contect_data.getContactImage();
-
-            save_button.setText("Save");
-
-
-        } else if (flag.equals("read")) {
-
-            iv_user.setEnabled(false);
-            pulse_icon.setEnabled(false);
-            tv_nameLetter.setEnabled(false);
-            save_button.setVisibility(View.GONE);
-
-
-            ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
-            edt_FirstName.setText(Contect_data.getFirstname() + " " + Contect_data.getLastname());
-            edt_lastname.setText(Contect_data.getLastname());
-            f_name = Contect_data.getFirstname();
-            l_name = Contect_data.getLastname();
-            if (user_data.getUser().getUserprofile().getProfilePic() == null) {
-                iv_user.setVisibility(View.GONE);
-                layout_pulse.setVisibility(View.VISIBLE);
-                user_image.setVisibility(View.GONE);
-                tv_nameLetter.setVisibility(View.VISIBLE);
-                String name = Contect_data.getFirstname();
-                String add_text = "";
-                String[] split_data = name.split(" ");
-                try {
-                    for (int i = 0; i < split_data.length; i++) {
-                        if (i == 0) {
-                            add_text = split_data[i].substring(0, 1);
-                        } else {
-                            add_text = add_text + split_data[i].charAt(0);
-                            break;
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                tv_nameLetter.setText(add_text);
-
-            } else {
-                iv_user.setVisibility(View.VISIBLE);
-                layout_pulse.setVisibility(View.GONE);
-                Glide.with(getActivity()).
-                        load(user_data.getUser().getUserprofile().getProfilePic())
-                        .placeholder(R.drawable.shape_primary_back)
-                        .error(R.drawable.shape_primary_back).
-                        into(iv_user);
-            }
-            olld_image = Contect_data.getContactImage();
-
-        }
-        else {
-            pulse_icon.setEnabled(false);
-            tv_nameLetter.setEnabled(false);
-            Log.e("Null", "No Call");
-        }
 
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -525,22 +396,15 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 Fragment fragment = null;
                 switch (tab.getPosition()) {
                     case 0:
-                        if (flag.equals("edit"))
-                        {
-                            view_single.setVisibility(View.VISIBLE);
-                            fragment = new User_InformationFragment();
+                        if (!flag.equals("edit")) {
+                            edt_FirstName.setEnabled(false);
+                            edt_lastname.setEnabled(false);
 
                         }
-                        else {
-                            view_single.setVisibility(View.VISIBLE);
-                            fragment = new User_InformationFragment();
-
-                        }
+                        fragment = new User_InformationFragment();
                         break;
                     case 1:
-                        if (flag.equals("edit"))
-                        {
-                            view_single.setVisibility(View.GONE);
+                        if (flag.equals("edit")) {
                             layout_toolbar_logo.setVisibility(View.VISIBLE);
                             iv_back.setVisibility(View.GONE);
                             SessionManager.setContect_flag("read");
@@ -551,17 +415,12 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                             edt_lastname.setVisibility(View.GONE);
                             edit_profile.setVisibility(View.VISIBLE);
                             edt_FirstName.setEnabled(false);
-                            setdata();
-                            fragment = new User_BzcardFragment();
+                            //  setdata();
                         }
-                        else {
-                            fragment = new User_BzcardFragment();
-                        }
+                        fragment = new User_BzcardFragment();
                         break;
                     case 2:
-                        if (flag.equals("edit"))
-                        {
-                            view_single.setVisibility(View.VISIBLE);
+                        if (flag.equals("edit")) {
                             layout_toolbar_logo.setVisibility(View.VISIBLE);
                             iv_back.setVisibility(View.GONE);
                             SessionManager.setContect_flag("read");
@@ -571,13 +430,10 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                             iv_edit.setVisibility(View.GONE);
                             edt_lastname.setVisibility(View.GONE);
                             edit_profile.setVisibility(View.VISIBLE);
-                            setdata();
+                            // setdata();
                             edt_FirstName.setEnabled(false);
-                            fragment = new User_ExposuresFragment();
                         }
-                        else {
-                            fragment = new User_ExposuresFragment();
-                        }
+                        fragment = new User_GrowthFragment();
                         break;
 
                 }
@@ -601,15 +457,171 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         });
 
 
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void setdata() {
+        flag = SessionManager.getContect_flag(getActivity());
+        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+        if(Global.IsNotNull(user_data.getUser().getId())) {
+
+
+            String user_id = String.valueOf(user_data.getUser().getId());
+            String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+            String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+
+
+            User user_data_model = user_data.getUser();
+            ContectListData.Contact set_contact = new ContectListData.Contact();
+            set_contact.setFirstname(user_data_model.getFirstName());
+            set_contact.setLastname(user_data_model.getLastName());
+            List<ContectListData.Contact.ContactDetail> contactDetails_list = new ArrayList<>();
+            ContectListData.Contact.ContactDetail contactDetail_model = new ContectListData.Contact.ContactDetail();
+            contactDetail_model.setEmailNumber(user_data_model.getContactNumber());
+            contactDetail_model.setLabel("");
+            /*contactDetail_model.setEmailNumber(user_data_model.getEmail());*/
+            contactDetail_model.setContactId(user_data_model.getId());
+            contactDetail_model.setType("NUMBER");
+            contactDetail_model.setIsDefault(1);
+            contactDetail_model.setLabel("Home");
+            contactDetails_list.add(0, contactDetail_model);
+
+            ContectListData.Contact.ContactDetail contactDetail_model1 = new ContectListData.Contact.ContactDetail();
+            contactDetail_model1.setEmailNumber(user_data_model.getEmail());
+            contactDetail_model1.setLabel("");
+            /*contactDetail_model.setEmailNumber(user_data_model.getEmail());*/
+            contactDetail_model1.setContactId(user_data_model.getId());
+            contactDetail_model1.setType("EMAIL");
+            contactDetail_model1.setIsDefault(1);
+            contactDetail_model1.setLabel("Home");
+            contactDetails_list.add(1, contactDetail_model1);
+            set_contact.setContactDetails(contactDetails_list);
+            SessionManager.setOneCotect_deatil(getActivity(), set_contact);
+
+            if (flag.equals("edit")) {
+                pulse_icon.setEnabled(true);
+                iv_user.setEnabled(true);
+                tv_nameLetter.setEnabled(true);
+                iv_edit.setVisibility(View.VISIBLE);
+                edt_FirstName.setEnabled(true);
+                edt_lastname.setEnabled(true);
+                ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
+                edt_FirstName.setText(Contect_data.getFirstname());
+                edt_lastname.setText(Contect_data.getLastname());
+                f_name = Contect_data.getFirstname();
+                l_name = Contect_data.getLastname();
+
+                if (user_data.getUser().getUserprofile().getProfilePic() == null) {
+                    iv_user.setVisibility(View.GONE);
+                    layout_pulse.setVisibility(View.VISIBLE);
+                    user_image.setVisibility(View.GONE);
+                    tv_nameLetter.setVisibility(View.VISIBLE);
+                    tv_nameLetter.setOnClickListener(this);
+
+                    String name = Contect_data.getFirstname();
+                    String add_text = "";
+                    String[] split_data = name.split(" ");
+                    try {
+                        for (int i = 0; i < split_data.length; i++) {
+                            if (i == 0) {
+                                add_text = split_data[i].substring(0, 1);
+                            } else {
+                                add_text = add_text + split_data[i].charAt(0);
+                                break;
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    tv_nameLetter.setText(add_text);
+
+                } else {
+                    iv_user.setVisibility(View.VISIBLE);
+                    layout_pulse.setVisibility(View.GONE);
+                    Glide.with(getActivity()).
+                            load(user_data.getUser().getUserprofile().getProfilePic())
+                            .placeholder(R.drawable.shape_primary_back)
+                            .error(R.drawable.shape_primary_back).
+                            into(iv_user);
+                }
+                user_image_Url = Contect_data.getContactImage();
+
+                save_button.setText("Save");
+
+
+            } else if (flag.equals("read")) {
+
+                iv_user.setEnabled(false);
+                pulse_icon.setEnabled(false);
+                tv_nameLetter.setEnabled(false);
+                save_button.setVisibility(View.GONE);
+                edt_FirstName.setEnabled(false);
+                edt_lastname.setEnabled(false);
+
+
+                ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
+                edt_FirstName.setText(Contect_data.getFirstname() + " " + Contect_data.getLastname());
+                edt_lastname.setText(Contect_data.getLastname());
+                f_name = Contect_data.getFirstname();
+                l_name = Contect_data.getLastname();
+                if (user_data.getUser().getUserprofile().getProfilePic() == null) {
+                    iv_user.setVisibility(View.GONE);
+                    layout_pulse.setVisibility(View.VISIBLE);
+                    user_image.setVisibility(View.GONE);
+                    tv_nameLetter.setVisibility(View.VISIBLE);
+                    String name = Contect_data.getFirstname();
+                    String add_text = "";
+                    String[] split_data = name.split(" ");
+                    try {
+                        for (int i = 0; i < split_data.length; i++) {
+                            if (i == 0) {
+                                add_text = split_data[i].substring(0, 1);
+                            } else {
+                                add_text = add_text + split_data[i].charAt(0);
+                                break;
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    tv_nameLetter.setText(add_text);
+
+                } else {
+                    iv_user.setVisibility(View.VISIBLE);
+                    layout_pulse.setVisibility(View.GONE);
+                    try {
+                        Glide.with(getActivity()).
+                                load(user_data.getUser().getUserprofile().getProfilePic())
+                                .placeholder(R.drawable.shape_primary_back)
+                                .error(R.drawable.shape_primary_back).
+                                into(iv_user);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+                user_image_Url = Contect_data.getContactImage();
+
+            } else {
+                pulse_icon.setEnabled(false);
+                tv_nameLetter.setEnabled(false);
+               // Log.e("Null", "No Call");
+            }
+
+        }
+
+
 
     }
 
     private void intentView(View view) {
-        view_single=view.findViewById(R.id.view_single);
         iv_edit = view.findViewById(R.id.iv_edit);
         iv_Setting = view.findViewById(R.id.iv_Setting);
         iv_Setting.setVisibility(View.VISIBLE);
         iv_Setting.setOnClickListener(this);
+        iv_Bzcard = view.findViewById(R.id.iv_Bzcard);
+        iv_Bzcard.setOnClickListener(this);
+        iv_Bzcard.setVisibility(View.VISIBLE);
         iv_back = view.findViewById(R.id.iv_back);
         tabLayout = view.findViewById(R.id.tabLayout);
         frameContainer = view.findViewById(R.id.frameContainer);
@@ -620,7 +632,6 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         mMainLayout = view.findViewById(R.id.frameContainer1);
         layout_pulse = view.findViewById(R.id.layout_pulse);
         tv_nameLetter = view.findViewById(R.id.tv_nameLetter);
-
         iv_user = view.findViewById(R.id.iv_user);
         pulse_icon.setOnClickListener(this);
         iv_user.setOnClickListener(this);
@@ -706,10 +717,9 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
     }
 
     public void AddContect_Update() throws JSONException {
-        loadingDialog.showLoadingDialog();
         f_name = edt_FirstName.getText().toString().trim();
         l_name = edt_lastname.getText().toString().trim();
-      //  ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
+        //  ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
         AddcontectModel addcontectModel = SessionManager.getAdd_Contect_Detail(getActivity());
         zip_code = addcontectModel.getZip_code();
         zoom_id = addcontectModel.getZoom_id();
@@ -734,69 +744,80 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         List<Contactdetail> contactdetails_email = new ArrayList<>();
         contactdetails_email.addAll(addcontectModel.getContactdetails_email());
         contactdetails.addAll(contactdetails_email);
+
+
+        /**
+         *
+         * Chek affilate code change or not and api call only code date
+         *
+         * */
+        if(!user_data.getUser().getReferenceCode().equals(addcontectModel.getReferenceCode())){
+            try {
+                if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
+                    UpdateCode();
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+
+
         JSONObject obj = new JSONObject();
 
         JSONObject param_data = new JSONObject();
         param_data.put("organization_id", 1);
         param_data.put("team_id", 1);
-        param_data.put("user_id",user_data.getUser().getId());
+        param_data.put("user_id", user_data.getUser().getId());
         param_data.put("role_id", rol_id);
-        param_data.put("contact_number", contect_number);
-        param_data.put("email", email_address);
+        param_data.put("contact_number", contect_number.toString().trim());
+        param_data.put("email", email_address.toString().trim());
 
 
-        // JSONArray jsonArray_contect = new JSONArray();
 
-
-        // JSONObject paramObject = new JSONObject();
-        //Other Company Add
         if (addcontectModel.getCompany().trim().equalsIgnoreCase("")) {
-            param_data.put("company_name", addcontectModel.getCompany());
+            param_data.put("company_name", addcontectModel.getCompany().toString().trim());
             //param_data.put("company_id",  addcontectModel.getCompany_id());
         } else {
-            param_data.put("company_name", addcontectModel.getCompany());
+            param_data.put("company_name", addcontectModel.getCompany().toString().trim());
             // param_data.put("company_id",   addcontectModel.getCompany_id());
         }
-        param_data.put("address", address);
-        param_data.put("breakout_link", addcontectModel.getBreakoutu());
-        param_data.put("city", city);
+        param_data.put("address", address.toString().trim());
+        param_data.put("breakout_link", addcontectModel.getBreakoutu().toString().trim());
+        param_data.put("city", city.toString().trim());
 
 
-        param_data.put("company_url", addcontectModel.getCompany_url());
-        param_data.put("dob", addcontectModel.getBirthday());
-        param_data.put("dynamic_fields_value", "");
-        param_data.put("facebook_link", addcontectModel.getFacebook());
-        param_data.put("first_name", edt_FirstName.getText().toString().trim());
-        param_data.put("last_name", edt_lastname.getText().toString());
-        param_data.put("job_title", addcontectModel.getJob_title());
-        param_data.put("linkedin_link", addcontectModel.getLinkedin());
-        param_data.put("organization_id", "1");
-        param_data.put("state", state);
-        param_data.put("team_id", "1");
-        // addcontectModel.getTime()
-        param_data.put("timezone_id", addcontectModel.getTime());
-        param_data.put("twitter_link", addcontectModel.getTwitter());
-        param_data.put("user_id", user_data.getUser().getId());
-        param_data.put("zipcode", addcontectModel.getZip_code());
-        param_data.put("zoom_id", addcontectModel.getZoom_id());
+        param_data.put("company_url", addcontectModel.getCompany_url().toString().trim());
 
-        if (!user_image_Url.equals("")) {
-            param_data.put("profile_pic", user_image_Url);
-            param_data.put("pic_name", File_name);
-            param_data.put("pic_extension", File_extension);
-            if (olld_image != null) {
-                param_data.put("old_pic_name", olld_image);
-            } else {
-                param_data.put("old_pic_name", "");
-            }
-
-        } else {
-            param_data.put("profile_pic", olld_image);
-            //   paramObject.put("contact_image", "");
-            //   paramObject.put("contact_image_name", "");
+        if (addcontectModel.getBirthday().equals("0000-00-00"))
+        {
+            param_data.put("dob", "");
         }
+        else
+        {
+            param_data.put("dob", addcontectModel.getBirthday());
+        }
+        param_data.put("dynamic_fields_value", "");
+        param_data.put("facebook_link", addcontectModel.getFacebook().toString().trim());
+        param_data.put("first_name", edt_FirstName.getText().toString().trim());
+        param_data.put("last_name", edt_lastname.getText().toString().toString().trim());
+        param_data.put("job_title", addcontectModel.getJob_title().toString().trim());
+        param_data.put("linkedin_link", addcontectModel.getLinkedin().toString().trim());
+        param_data.put("organization_id", "1");
+        param_data.put("state", state.toString().trim());
+        param_data.put("team_id", "1");
+        param_data.put("timezone_id", addcontectModel.getTime().toString().trim());
+        param_data.put("twitter_link", addcontectModel.getTwitter().toString().trim());
+        param_data.put("user_id", user_data.getUser().getId());
+        param_data.put("zipcode", addcontectModel.getZip_code().toString().trim());
+        param_data.put("zoom_id", addcontectModel.getZoom_id().toString().trim());
 
-        param_data.put("notes", addcontectModel.getNote());
+        param_data.put("user_img", user_image_Url.toString().trim());
+
+        param_data.put("notes", addcontectModel.getNote().toString().trim());
 
 
         for (int i = 0; i < contactdetails.size(); i++) {
@@ -813,42 +834,35 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                         phone = contactdetails.get(i).getEmail_number();
                     }
                     phone_type = contactdetails.get(i).getLabel();
-
                     contactdetails1.add(contactdetails.get(i));
                 }
-
             }
-
-
-
-                    }
-
+        }
 
 
         JSONArray jsonArray = new JSONArray();
         JSONObject paramObject1 = null;
 
-        Log.e("Size is ",String.valueOf(contactdetails1.size()));
-        contactdetails1=removeDuplicates((ArrayList<Contactdetail>) contactdetails1);
+        Log.e("Size is ", String.valueOf(contactdetails1.size()));
+        contactdetails1 = removeDuplicates((ArrayList<Contactdetail>) contactdetails1);
         for (int i = 0; i < contactdetails1.size(); i++) {
             paramObject1 = new JSONObject();
             if (contactdetails1.get(i).getEmail_number().equals("")) {
 
             } else {
-                        if (contactdetails1.get(i).getType().equals("NUMBER")) {
-                            phone = contactdetails1.get(i).getEmail_number();
-                        }
-                        phone_type = contactdetails1.get(i).getLabel();
-                        paramObject1.put("email_number", contactdetails1.get(i).getEmail_number());
-                        paramObject1.put("label", contactdetails1.get(i).getLabel());
-                        paramObject1.put("type", contactdetails1.get(i).getType());
+                if (contactdetails1.get(i).getType().equals("NUMBER")) {
+                    phone = contactdetails1.get(i).getEmail_number();
+                }
+                phone_type = contactdetails1.get(i).getLabel();
+                paramObject1.put("email_number", contactdetails1.get(i).getEmail_number());
+                paramObject1.put("label", contactdetails1.get(i).getLabel());
+                paramObject1.put("type", contactdetails1.get(i).getType());
 
-                    }
+            }
 
             jsonArray.put(paramObject1);
         }
         param_data.put("contact_details", jsonArray);
-
         obj.put("data", param_data);
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
@@ -921,12 +935,51 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
 
     }
 
-    public ArrayList<Contactdetail>  removeDuplicates(ArrayList<Contactdetail> list){
+
+
+
+    public void UpdateCode() throws JSONException {
+
+        AddcontectModel addcontectModel = SessionManager.getAdd_Contect_Detail(getActivity());
+        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+
+
+        JSONObject obj = new JSONObject();
+        JSONObject param_data = new JSONObject();
+        param_data.put("organization_id", 1);
+        param_data.put("team_id", 1);
+        param_data.put("user_id", user_data.getUser().getId());
+        param_data.put("reference_code",addcontectModel.getReferenceCode());
+        obj.put("data", param_data);
+        JsonParser jsonParser = new JsonParser();
+        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
+
+        Log.e("Final Data is", new Gson().toJson(gsonObject));
+
+
+        retrofitCalls.UpdateUser_Profile(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                if (response.body().getHttp_status() == 200) {
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+
+
+    }
+
+    public ArrayList<Contactdetail> removeDuplicates(ArrayList<Contactdetail> list) {
         Set<Contactdetail> set = new TreeSet(new Comparator<Contactdetail>() {
 
             @Override
             public int compare(Contactdetail o1, Contactdetail o2) {
-                if(o1.getEmail_number().equalsIgnoreCase(o2.getEmail_number())){
+                if (o1.getEmail_number().equalsIgnoreCase(o2.getEmail_number())) {
                     return 0;
                 }
                 return 1;
@@ -937,10 +990,20 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         final ArrayList newList = new ArrayList(set);
         return newList;
     }
+
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
+        Fragment fragment;
+        FragmentManager fragmentManager ;
         switch (v.getId()) {
+            case R.id.iv_Bzcard:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+                startActivity(new Intent(getActivity(), Select_Bzcard_Activity.class));
+                break;
             case R.id.pulse_icon:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
@@ -952,6 +1015,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
 
                 }
                 break;
+
 
             case R.id.iv_user:
             case R.id.tv_nameLetter:
@@ -975,6 +1039,8 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
                 }
+
+
                 layout_toolbar_logo.setVisibility(View.GONE);
                 iv_back.setVisibility(View.VISIBLE);
                 SessionManager.setContect_flag("edit");
@@ -986,6 +1052,19 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 edt_FirstName.setEnabled(true);
                 edt_lastname.setEnabled(true);
                 setdata();
+
+                tab=tabLayout.getTabAt(0);
+                tab.select();
+
+                 fragment = new User_InformationFragment();
+                 fragmentManager = getFragmentManager();
+
+                if (fragmentManager != null) {
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.frameContainer123, fragment, "Fragment");
+                    fragmentTransaction.commitAllowingStateLoss();
+                }
+
 
 
                 break;
@@ -1003,6 +1082,15 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 edt_lastname.setVisibility(View.GONE);
                 edit_profile.setVisibility(View.VISIBLE);
                 setdata();
+
+                 fragment = new User_InformationFragment();
+                 fragmentManager = getFragmentManager();
+
+                if (fragmentManager != null) {
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.frameContainer123, fragment, "Fragment");
+                    fragmentTransaction.commitAllowingStateLoss();
+                }
         }
     }
 
@@ -1028,6 +1116,11 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 iv_user.setVisibility(View.GONE);
                 layout_pulse.setVisibility(View.VISIBLE);
                 tv_nameLetter.setVisibility(View.GONE);
+                if(Global.IsNotNull(user_image_Url)){
+                    AmazonUtil.deleteS3Client(getActivity(),user_image_Url);
+                    user_image_Url="";
+                    Glide.with(getActivity()).load(user_image_Url).into(iv_user);
+                }
                 bottomSheetDialog.dismiss();
 
             }
@@ -1039,8 +1132,21 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+               /* Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(takePicture, 0);
+*/
+                image_flag = 0;
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                String fileName = "temp.jpg";
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Images.Media.TITLE, fileName);
+                mCapturedImageURI = getActivity().getContentResolver()
+                        .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                values);
+                takePictureIntent
+                        .putExtra(MediaStore.EXTRA_OUTPUT, mCapturedImageURI);
+                startActivityForResult(takePictureIntent, CAPTURE_IMAGE);
+
 
                 bottomSheetDialog.dismiss();
             }
@@ -1052,9 +1158,26 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
                 }
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                image_flag=0;
                 mLastClickTime = SystemClock.elapsedRealtime();
-                Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(pickPhoto, 1);
+/*                Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(pickPhoto, 1);*/
+
+
+                Intent takePictureIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                String fileName = "temp.jpg";
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Images.Media.TITLE, fileName);
+                mCapturedImageURI = getActivity().getContentResolver()
+                        .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                values);
+                takePictureIntent
+                        .putExtra(MediaStore.EXTRA_OUTPUT, mCapturedImageURI);
+                startActivityForResult(takePictureIntent, 1);
+
                 bottomSheetDialog.dismiss();
 
             }
@@ -1069,65 +1192,118 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode != Activity.RESULT_CANCELED) {
-            switch (requestCode) {
-                case 0:
-                    if (resultCode == Activity.RESULT_OK && data != null) {
-                        Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-                        iv_user.setImageBitmap(bitmap);
-                        iv_user.setVisibility(View.VISIBLE);
-                        layout_pulse.setVisibility(View.GONE);
+        if (requestCode == 0) {
+            if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                if (resultCode == Activity.RESULT_OK) {
+                    iv_user.setVisibility(View.VISIBLE);
+                    layout_pulse.setVisibility(View.GONE);
+                    tv_nameLetter.setVisibility(View.GONE);
+                    Uri resultUri = result.getUri();
+                    File_name = "Image";
+                    File file=new File(result.getUri().getPath());
+                    Uri uri = Uri.fromFile(file);
+                    filePath1 = uri.getPath();
+                    Glide.with(getActivity()).load(resultUri).into(iv_user);
 
-                        File_name = "Image";
+                    //  uploadImageTos3(profilePath);
 
-                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-                        byte[] imageBytes = byteArrayOutputStream.toByteArray();
-                        String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-                        user_image_Url = "data:image/JPEG;base64," + imageString;
-                        File_extension = "JPEG";
-                        Log.e("url is", user_image_Url);
-                    }
-                    break;
-                case 1:
-                    if (resultCode == Activity.RESULT_OK && data != null) {
-                        Uri selectedImage = data.getData();
-                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                        if (selectedImage != null) {
-                            Cursor cursor = getActivity().getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-                            if (cursor != null) {
-                                cursor.moveToFirst();
-                                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                                String picturePath = cursor.getString(columnIndex);
-                                user_image_Url = encodeFileToBase64Binary(picturePath);
+                }
+                else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    Exception error = result.getError();
+                }
+            }
+        } else if (requestCode == CAPTURE_IMAGE) {
+            ImageCropFunctionCustom(mCapturedImageURI);
+        }
+        else if (requestCode == 203) {
+            if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                CropImage.ActivityResult result1 = CropImage.getActivityResult(data);
+                if (resultCode == Activity.RESULT_OK) {
+                    iv_user.setVisibility(View.VISIBLE);
+                    layout_pulse.setVisibility(View.GONE);
+                    tv_nameLetter.setVisibility(View.GONE);
+                    Uri resultUri = result1.getUri();
+                    File_name = "Image";
+                    File file=new File(result1.getUri().getPath());
+                    Uri uri = Uri.fromFile(file);
+                    filePath1 = uri.getPath();
+                    Glide.with(getActivity()).load(resultUri).into(iv_user);
+                    //uploadImageTos3(filePath1);
+                }
+                else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    Exception error = result1.getError();
+                }
+            }
+        } else {
+            if (image_flag == 0) {
+                image_flag = 1;
+                ImageCropFunctionCustom(data.getData());
+            }
 
-                                iv_user.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-                                cursor.close();
-                                iv_user.setVisibility(View.VISIBLE);
-                                layout_pulse.setVisibility(View.GONE);
+        }
+    }
 
-                                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                                Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
-                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+    private void uploadImageTos3(String imageUri) {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(getActivity());
+        if (!imageUri.equals("")) {
+            //String[] nameList = imageUri.split("/");
+            // String uploadFileName = nameList[nameList.length - 1];
+            olld_image = user_image_Url;
+            String contect_group = s3uploaderObj.initUpload(imageUri, "user_profile", Integer.valueOf(signResponseModel.getUser().getId()));
+            s3uploaderObj.setOns3UploadDone(new S3Uploader.S3UploadInterface() {
+                @Override
+                public void onUploadSuccess(String response) {
+                    Log.e("Reppnse is", new Gson().toJson(response));
+                    Toast.makeText(getActivity(), new Gson().toJson(response), Toast.LENGTH_SHORT).show();
 
-                                byte[] imageBytes = byteArrayOutputStream.toByteArray();
-                                String imageString = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-                                user_image_Url = "data:image/JPEG;base64," + imageString;
-                                Log.e("url is", user_image_Url);
-                                File_extension = "JPEG";
-
-
-                                iv_user.setVisibility(View.VISIBLE);
-
-                                File file = new File(selectedImage.getPath());
-                                File_name = file.getName();
+                    if (response.equalsIgnoreCase("Success")) {
+                        user_image_Url = contect_group;
+                        try {
+                            if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
+                                AddContect_Update();
                             }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
                     }
-                    break;
+                }
+
+                @Override
+                public void onUploadError(String response) {
+                    try {
+                        if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
+                            AddContect_Update();
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    Log.e("Error", "Error Uploading");
+
+                }
+            });
+        } else {
+            try {
+                if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
+                    AddContect_Update();
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
     }
+
+    public void ImageCropFunctionCustom(Uri uri) {
+        Intent intent = CropImage.activity(uri)
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .getIntent(getActivity());
+        startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
+    }
+
 
     private long getRawContactIdByName(String givenName, String familyName) {
         ContentResolver contentResolver = getActivity().getContentResolver();
@@ -1238,7 +1414,6 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         Log.e("Count is", String.valueOf(updateCount));
 
     }
-
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)

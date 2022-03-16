@@ -1,6 +1,6 @@
 package com.contactninja.Main_Broadcast;
-
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -33,7 +33,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables")
 public class Broadcast_Contact_Selction_Actvity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     TabLayout tabLayout;
@@ -46,7 +45,7 @@ public class Broadcast_Contact_Selction_Actvity extends AppCompatActivity implem
     TextView save_button;
     LinearLayout main_layout;
     SessionManager sessionManager;
-    String sequence_Name = "";
+    String sequence_Name = "", Activty_Back="",Select_tab="";
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     private BroadcastReceiver mNetworkReceiver;
@@ -62,6 +61,15 @@ public class Broadcast_Contact_Selction_Actvity extends AppCompatActivity implem
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
 
+
+        try {
+            Intent intent = getIntent();
+            Bundle bundle = intent.getExtras();
+            Activty_Back = bundle.getString("Activty");
+            Select_tab = bundle.getString("type");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         tabLayout.addTab(tabLayout.newTab().setText("Contacts"));
         tabLayout.addTab(tabLayout.newTab().setText("Groups"));
@@ -116,7 +124,6 @@ public class Broadcast_Contact_Selction_Actvity extends AppCompatActivity implem
         save_button.setOnClickListener(this);
         save_button.setVisibility(View.VISIBLE);
         save_button.setText("Next");
-        save_button.setTextColor(getResources().getColor(R.color.purple_200));
     }
 
     @Override
@@ -124,7 +131,7 @@ public class Broadcast_Contact_Selction_Actvity extends AppCompatActivity implem
 
         switch (view.getId()) {
             case R.id.iv_back:
-                finish();
+                onBackPressed();
                 break;
             case R.id.save_button:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
@@ -132,17 +139,30 @@ public class Broadcast_Contact_Selction_Actvity extends AppCompatActivity implem
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
                 Global.hideKeyboard(Broadcast_Contact_Selction_Actvity.this);
+                if(Activty_Back.equals("Preview")){
+                    Intent intent=new Intent(getApplicationContext(), Broadcast_Preview.class);
+                    intent.putExtra("Activty",Activty_Back);
+                    startActivity(intent);
+                    finish();
+                }else {
+                    if(SessionManager.getgroup_broadcste(this).size() != 0||
+                            SessionManager.getGroupList(this).size()!=0){
+                        if (SessionManager.getCampaign_type(getApplicationContext()).equals("SMS")) {
+                            Intent new_task = new Intent(getApplicationContext(), Add_Broad_Text_Activity.class);
+                            new_task.putExtra("flag", "add");
+                            new_task.putExtra("Activity", "Contact");
+                            startActivity(new_task);
 
-                if (SessionManager.getCampaign_type(getApplicationContext()).equals("SMS")) {
-                    Intent new_task = new Intent(getApplicationContext(), Add_Broad_Text_Activity.class);
-                    new_task.putExtra("flag", "add");
-                    startActivity(new_task);
-                    finish();
-                } else {
-                    Intent new_task = new Intent(getApplicationContext(), Add_Broad_Email_Activity.class);
-                    new_task.putExtra("flag", "add");
-                    startActivity(new_task);
-                    finish();
+                        } else {
+                            Intent new_task = new Intent(getApplicationContext(), Add_Broad_Email_Activity.class);
+                            new_task.putExtra("flag", "add");
+                            new_task.putExtra("Activity", "Contact");
+                            startActivity(new_task);
+
+                        }
+                    }else {
+                        Global.Messageshow(getApplicationContext(),main_layout,getResources().getString(R.string.select_Contact_group),false);
+                    }
                 }
                 //startActivity(new Intent(getApplicationContext(),Campaign_Name_Activity.class));
                 break;
@@ -151,8 +171,16 @@ public class Broadcast_Contact_Selction_Actvity extends AppCompatActivity implem
 
     @Override
     public void onBackPressed() {
-        finish();
         super.onBackPressed();
+        Intent intent;
+        if(Activty_Back.equals("Preview")){
+            intent=new Intent(getApplicationContext(), Broadcast_Preview.class);
+            intent.putExtra("Activty",Activty_Back);
+            startActivity(intent);
+        }
+        finish();
+
+
     }
 
     @Override

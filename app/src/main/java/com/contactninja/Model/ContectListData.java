@@ -52,43 +52,43 @@ public class ContectListData {
         private Integer timezoneId;
         @SerializedName("company_name")
         @Expose
-        private String companyName;
+        private String companyName="";
         @SerializedName("contact_image")
         @Expose
-        private String contactImage;
+        private String contactImage="";
         @SerializedName("address")
         @Expose
-        private String address;
+        private String address="";
         @SerializedName("city")
         @Expose
-        private String city;
+        private String city="";
         @SerializedName("zipcode")
         @Expose
-        private String zipcode;
+        private String zipcode="";
         @SerializedName("zoom_id")
         @Expose
-        private String zoomId;
+        private String zoomId="";
         @SerializedName("state")
         @Expose
-        private String state;
+        private String state="";
         @SerializedName("firstname")
         @Expose
-        private String firstname;
+        private String firstname="";
         @SerializedName("lastname")
         @Expose
         private String lastname="";
         @SerializedName("job_title")
         @Expose
-        private String jobTitle;
+        private String jobTitle="";
         @SerializedName("status")
         @Expose
-        private String status;
+        private String status="";
         @SerializedName("created_at")
         @Expose
-        private String createdAt;
+        private String createdAt="";
         @SerializedName("updated_at")
         @Expose
-        private String updatedAt;
+        private String updatedAt="";
         @SerializedName("contact_details")
         @Expose
         private List<ContactDetail> contactDetails = null;
@@ -100,7 +100,7 @@ public class ContectListData {
         private Object completedMantaskDetails;
         @SerializedName("contacted_at")
         @Expose
-        private String contactedAt;
+        private String contactedAt="";
         @SerializedName("contacted_at_utc")
         @Expose
         private Object contactedAtUtc;
@@ -110,22 +110,22 @@ public class ContectListData {
         private String  flag ="true";
         @SerializedName("facebook_link")
         @Expose
-        private String facebook_link;
+        private String facebook_link="";
         @SerializedName("twitter_link")
         @Expose
-        private String twitter_link;
+        private String twitter_link="";
         @SerializedName("breakout_link")
         @Expose
-        private String breakout_link;
+        private String breakout_link="";
         @SerializedName("linkedin_link")
         @Expose
-        private String linkedin_link;
+        private String linkedin_link="";
         @SerializedName("company_url")
         @Expose
-        private String company_url;
+        private String company_url="";
         @SerializedName("dob")
         @Expose
-        private String dob;
+        private String dob="";
 
         @SerializedName("is_blocked")
         @Expose

@@ -9,8 +9,8 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/splash_logo"
         android:padding="@dimen/_50sdp"
-        tools:ignore="ContentDescription,MissingConstraints" />
+        android:src="@drawable/splash_logo"
+        tools:ignore="ContentDescription,MissingConstraints,ImageContrastCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

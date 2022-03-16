@@ -17,24 +17,36 @@ public class Userprofile {
     @SerializedName("user_id")
     @Expose
     private Integer userId;
+
+    @SerializedName("trial_plan")
+    @Expose
+    private Integer trial_plan=0;
+
+    @SerializedName("trial_expiry")
+    @Expose
+    private String trial_expiry="";
+    @SerializedName("purchased_planid")
+    @Expose
+    private String purchased_planid="";
+
     @SerializedName("created_by")
     @Expose
-    private Object createdBy;
+    private String createdBy;
     @SerializedName("referred_by")
     @Expose
-    private Object referredBy;
+    private String referredBy;
     @SerializedName("referred_balance")
     @Expose
-    private Object referredBalance;
+    private String referredBalance;
     @SerializedName("timezone_id")
     @Expose
-    private Object timezoneId;
+    private Integer timezoneId;
     @SerializedName("affiliate_json")
     @Expose
     private List<Integer> affiliateJson = null;
     @SerializedName("profile_pic")
     @Expose
-    private Object profilePic;
+    private String  profilePic;
 
     @SerializedName("status")
     @Expose
@@ -47,7 +59,7 @@ public class Userprofile {
     private String updatedAt;
     @SerializedName("deleted_at")
     @Expose
-    private Object deletedAt;
+    private String deletedAt;
     @SerializedName("company_name")
     @Expose
     private String company_name;
@@ -105,6 +117,29 @@ public class Userprofile {
         this.id = id;
     }
 
+    public Integer getTrial_plan() {
+        return trial_plan;
+    }
+
+    public void setTrial_plan(Integer trial_plan) {
+        this.trial_plan = trial_plan;
+    }
+
+    public String getTrial_expiry() {
+        return trial_expiry;
+    }
+
+    public void setTrial_expiry(String trial_expiry) {
+        this.trial_expiry = trial_expiry;
+    }
+
+    public String getPurchased_planid() {
+        return purchased_planid;
+    }
+
+    public void setPurchased_planid(String purchased_planid) {
+        this.purchased_planid = purchased_planid;
+    }
 
     @SerializedName("contact_details")
     @Expose
@@ -118,35 +153,35 @@ public class Userprofile {
         this.userId = userId;
     }
 
-    public Object getCreatedBy() {
+    public String getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Object createdBy) {
+    public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
 
-    public Object getReferredBy() {
+    public String getReferredBy() {
         return referredBy;
     }
 
-    public void setReferredBy(Object referredBy) {
+    public void setReferredBy(String referredBy) {
         this.referredBy = referredBy;
     }
 
-    public Object getReferredBalance() {
+    public String getReferredBalance() {
         return referredBalance;
     }
 
-    public void setReferredBalance(Object referredBalance) {
+    public void setReferredBalance(String referredBalance) {
         this.referredBalance = referredBalance;
     }
 
-    public Object getTimezoneId() {
+    public Integer getTimezoneId() {
         return timezoneId;
     }
 
-    public void setTimezoneId(Object timezoneId) {
+    public void setTimezoneId(Integer timezoneId) {
         this.timezoneId = timezoneId;
     }
 
@@ -166,11 +201,11 @@ public class Userprofile {
         this.contactDetails = contactDetails;
     }
 
-    public Object getProfilePic() {
+    public String getProfilePic() {
         return profilePic;
     }
 
-    public void setProfilePic(Object profilePic) {
+    public void setProfilePic(String  profilePic) {
         this.profilePic = profilePic;
     }
 
@@ -198,11 +233,11 @@ public class Userprofile {
         this.updatedAt = updatedAt;
     }
 
-    public Object getDeletedAt() {
+    public String getDeletedAt() {
         return deletedAt;
     }
 
-    public void setDeletedAt(Object deletedAt) {
+    public void setDeletedAt(String deletedAt) {
         this.deletedAt = deletedAt;
     }
 

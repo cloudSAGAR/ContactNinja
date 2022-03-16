@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
     android:background="@android:color/transparent">
 
     <LinearLayout
@@ -13,6 +14,7 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/layout_Mark"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -21,20 +23,20 @@
             android:orientation="horizontal"
             >
 
-            <CheckBox
-                android:id="@+id/ch_Paused"
-                style="@style/tv_regular_13"
-                android:layout_width="0dp"
+            <TextView
+                style="@style/tv_regular_12"
+                android:layout_width="346dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="@dimen/_5sdp"
-                android:text="@string/manual_Paused" />
+                android:padding="@dimen/_10sdp"
+                android:text="@string/manual_mark"
+                android:textColor="@color/text_reg" />
 
             <ImageView
-                android:layout_width="@dimen/_15sdp"
-                android:layout_height="@dimen/_15sdp"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_man_today"
+                android:src="@drawable/ic_mark"
                 tools:ignore="ContentDescription" />
         </LinearLayout>
 
@@ -42,38 +44,8 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_1sdp"
             android:background="@color/line_separator" />
-
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_15sdp"
-            android:layout_marginEnd="@dimen/_15sdp"
-            android:orientation="horizontal"
-           >
-
-            <CheckBox
-                android:id="@+id/ch_snooze"
-                style="@style/tv_regular_13"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="@dimen/_5sdp"
-                android:text="@string/manual_Snooze" />
-
-            <ImageView
-                android:layout_width="@dimen/_15sdp"
-                android:layout_height="@dimen/_15sdp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_man_upcoming"
-                tools:ignore="ContentDescription" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_1sdp"
-            android:background="@color/line_separator" />
-
-        <LinearLayout
+            android:id="@+id/layout_Paused"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_15sdp"
@@ -81,18 +53,80 @@
             android:orientation="horizontal"
             >
 
-            <CheckBox
-                android:id="@+id/ch_delete"
-                style="@style/tv_regular_13"
+            <TextView
+                style="@style/tv_regular_12"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="@dimen/_5sdp"
+                android:padding="@dimen/_10sdp"
+                android:textColor="@color/text_reg"
+                android:text="@string/manual_Paused" />
+
+            <ImageView
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_pause"
+                tools:ignore="ContentDescription" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:background="@color/line_separator" />
+
+        <LinearLayout
+            android:id="@+id/layout_snooze"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:orientation="horizontal"
+           >
+
+            <TextView
+                style="@style/tv_regular_12"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="@dimen/_10sdp"
+                android:textColor="@color/text_reg"
+                android:text="@string/manual_Snooze" />
+
+            <ImageView
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_snooze"
+                tools:ignore="ContentDescription" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:background="@color/line_separator" />
+
+        <LinearLayout
+            android:id="@+id/layout_delete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                style="@style/tv_regular_12"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="@dimen/_10sdp"
+                android:textColor="@color/text_reg"
                 android:text="@string/manual_Delete" />
 
             <ImageView
-                android:layout_width="@dimen/_15sdp"
-                android:layout_height="@dimen/_15sdp"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_man_delete"
                 tools:ignore="ContentDescription" />

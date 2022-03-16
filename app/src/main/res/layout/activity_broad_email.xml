@@ -58,7 +58,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
-                    style="@style/tv_Medium_14"
+                    style="@style/tv_Medium_12"
                     android:padding="@dimen/_5sdp"
                     android:layout_gravity="center"
                     android:text="@string/from"
@@ -69,20 +69,19 @@
                 </TextView>
 
                 <EditText
-                    android:enabled="false"
-                    android:layout_weight="1"
                     android:id="@+id/ev_from"
-                    style="@style/tv_regular_13"
+                    style="@style/tv_regular_12"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
+                    android:layout_weight="1"
                     android:background="@color/add_contect_transpernt"
+                    android:enabled="false"
                     android:focusable="true"
                     android:gravity="left|center"
                     android:imeOptions="actionDone"
-                    android:paddingStart="@dimen/_15sdp"
                     android:textColor="@color/text_reg"
-                    tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
+                    tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
                 <ImageView
                     android:padding="@dimen/_10sdp"
                     android:id="@+id/iv_more"
@@ -119,7 +118,7 @@
                     android:padding="@dimen/_10sdp">
 
                     <TextView
-                        style="@style/tv_Medium_14"
+                        style="@style/tv_Medium_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/_5sdp"
@@ -129,9 +128,9 @@
 
                     <EditText
                         android:id="@+id/ev_subject"
-                        style="@style/tv_regular_13"
+                        style="@style/tv_regular_12"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:layout_weight="1"
                         android:background="@null"
@@ -141,7 +140,7 @@
                         android:inputType="textEmailAddress"
                         android:textColor="@color/text_reg"
                         android:textColorHint="@color/otp_header_text_color"
-                        tools:ignore="Autofill,RtlHardcoded" />
+                        tools:ignore="Autofill,RtlHardcoded,TouchTargetSizeCheck" />
 
 
                 </LinearLayout>
@@ -159,18 +158,20 @@
 
             <EditText
                 android:id="@+id/edit_template"
-                style="@style/tv_regular_13"
+                style="@style/tv_regular_12"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
+                android:autoLink="web|email"
                 android:background="@color/add_contect_transpernt"
                 android:focusable="true"
                 android:gravity="left"
                 android:hint="@string/ComposeEmail"
                 android:imeOptions="actionDone"
+                android:linksClickable="true"
                 android:padding="15dp"
                 android:textColor="@color/text_reg"
-                tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
+                tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields,TextContrastCheck" />
 
 
         </LinearLayout>
