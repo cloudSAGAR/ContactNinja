@@ -899,7 +899,7 @@ public class ContectFragment extends Fragment {
                     e.printStackTrace();
                 }
 
-                if (!SessionManager.getnewContect(getActivity()).equals(null)) {
+                if (!SessionManager.getnewContect(getActivity()).equals(null) && !SessionManager.getnewContect(getActivity()).equals("")) {
                     try {
                         splitdata((ArrayList<Contact>) SessionManager.getnewContect(getActivity()));
                     } catch (Exception e) {
