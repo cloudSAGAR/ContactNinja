@@ -29,14 +29,13 @@ import com.contactninja.Bzcard.CreateBzcard.Fragment.Information_Bzcard_Fragment
 import com.contactninja.Bzcard.CreateBzcard.Fragment.Media_Block_Bzcard_Fragment;
 import com.contactninja.Bzcard.CreateBzcard.Fragment.Social_media_Bzcard_Fragment;
 import com.contactninja.Model.BZcardListModel;
-import com.contactninja.Model.Bzcard_Fields_Model;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
-import com.contactninja.aws.S3Uploader;
+import com.contactninja.aws.image_aws.S3Uploader;
 import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
