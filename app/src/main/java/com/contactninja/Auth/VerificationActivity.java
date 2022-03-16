@@ -390,6 +390,7 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
 
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("firebase_fcm_token", SessionManager.getFcm_Token(getApplicationContext()));
         paramObject.addProperty("first_name", first_name);
         paramObject.addProperty("last_name", last_name);
         paramObject.addProperty("email", email_address);
@@ -492,6 +493,7 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
         Log.e("Code is",countrycode);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("firebase_fcm_token", SessionManager.getFcm_Token(getApplicationContext()));
         paramObject.addProperty("email", email_address);
         paramObject.addProperty("contact_number", countrycode+mobile_number);
         paramObject.addProperty("login_type", login_type);

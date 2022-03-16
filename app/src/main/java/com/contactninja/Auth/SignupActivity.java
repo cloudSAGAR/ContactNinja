@@ -407,6 +407,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("firebase_fcm_token", SessionManager.getFcm_Token(getApplicationContext()));
         paramObject.addProperty("first_name", first_name);
         paramObject.addProperty("last_name", last_name);
         paramObject.addProperty("email", email_address);

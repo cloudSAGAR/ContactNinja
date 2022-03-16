@@ -419,6 +419,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("firebase_fcm_token", SessionManager.getFcm_Token(getApplicationContext()));
         paramObject.addProperty("email", edit_email.getText().toString());
         paramObject.addProperty("login_type", Login_type);
         paramObject.addProperty("password", password);
