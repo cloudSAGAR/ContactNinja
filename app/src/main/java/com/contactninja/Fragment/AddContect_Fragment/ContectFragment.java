@@ -1170,75 +1170,82 @@ public class ContectFragment extends Fragment {
                 SessionManager.setnewContect(getActivity(), new ArrayList<>());
 
 
-                if (response.body().getHttp_status() == 200) {
-                    try {
-                        layout_list_data.setVisibility(View.VISIBLE);
-                        lay_no_list.setVisibility(View.GONE);
-                        if (swipeToRefresh.isRefreshing()) {
-                            contectListData.clear();
-                            paginationAdapter.removeloist();
-                            paginationAdapter.notifyDataSetChanged();
-                            rvinviteuserdetails.setItemViewCacheSize(50000);
-                            paginationAdapter = new ContectListAdapter(getActivity());
-                            rvinviteuserdetails.setAdapter(paginationAdapter);
-
-                            sessionManager.setContectList(getActivity(), new ArrayList<>());
-
-                            Gson gson = new Gson();
-                            String headerString = gson.toJson(response.body().getData());
-                            Type listType = new TypeToken<ContectListData>() {
-                            }.getType();
-                            ContectListData contectListData1 = new Gson().fromJson(headerString, listType);
-                            contectListData.addAll(contectListData1.getContacts());
-                            // paginationAdapter.addAll(contectListData);
-                            //paginationAdapter.notifyDataSetChanged();
-                            List<ContectListData> contectListData_store = new ArrayList<>();
-                            contectListData_store.add(contectListData1);
-                            sessionManager.setContectList(getActivity(), contectListData_store);
-                            num_count.setText("" + contectListData1.getTotal() + " Contacts");
-                            totale_group = contectListData1.getTotal();
-                            contectListData.addAll(contectListData_store.get(0).getContacts());
-                            onScrolledToBottom();
-
-
-                        } else {
-                            if (!Filter.equals("BLOCK")) {
+                try {
+                    if (response.body().getHttp_status() == 200) {
+                        try {
+                            layout_list_data.setVisibility(View.VISIBLE);
+                            lay_no_list.setVisibility(View.GONE);
+                            if (swipeToRefresh.isRefreshing()) {
                                 contectListData.clear();
                                 paginationAdapter.removeloist();
+                                paginationAdapter.notifyDataSetChanged();
+                                rvinviteuserdetails.setItemViewCacheSize(50000);
+                                paginationAdapter = new ContectListAdapter(getActivity());
+                                rvinviteuserdetails.setAdapter(paginationAdapter);
+
                                 sessionManager.setContectList(getActivity(), new ArrayList<>());
+
                                 Gson gson = new Gson();
                                 String headerString = gson.toJson(response.body().getData());
                                 Type listType = new TypeToken<ContectListData>() {
                                 }.getType();
                                 ContectListData contectListData1 = new Gson().fromJson(headerString, listType);
                                 contectListData.addAll(contectListData1.getContacts());
+                                // paginationAdapter.addAll(contectListData);
+                                //paginationAdapter.notifyDataSetChanged();
                                 List<ContectListData> contectListData_store = new ArrayList<>();
                                 contectListData_store.add(contectListData1);
                                 sessionManager.setContectList(getActivity(), contectListData_store);
-                                //contectListData.addAll(contectListData_store.get(0).getContacts());
-                                rvinviteuserdetails.setItemViewCacheSize(50000);
-                                paginationAdapter = new ContectListAdapter(getActivity());
-                                rvinviteuserdetails.setAdapter(paginationAdapter);
-
+                                num_count.setText("" + contectListData1.getTotal() + " Contacts");
+                                totale_group = contectListData1.getTotal();
+                                contectListData.addAll(contectListData_store.get(0).getContacts());
                                 onScrolledToBottom();
-                                num_count.setText(contectListData.size() + " Contacts");
+
+
+                            } else {
+                                if (!Filter.equals("BLOCK")) {
+                                    contectListData.clear();
+                                    paginationAdapter.removeloist();
+                                    sessionManager.setContectList(getActivity(), new ArrayList<>());
+                                    Gson gson = new Gson();
+                                    String headerString = gson.toJson(response.body().getData());
+                                    Type listType = new TypeToken<ContectListData>() {
+                                    }.getType();
+                                    ContectListData contectListData1 = new Gson().fromJson(headerString, listType);
+                                    contectListData.addAll(contectListData1.getContacts());
+                                    List<ContectListData> contectListData_store = new ArrayList<>();
+                                    contectListData_store.add(contectListData1);
+                                    sessionManager.setContectList(getActivity(), contectListData_store);
+                                    //contectListData.addAll(contectListData_store.get(0).getContacts());
+                                    rvinviteuserdetails.setItemViewCacheSize(50000);
+                                    paginationAdapter = new ContectListAdapter(getActivity());
+                                    rvinviteuserdetails.setAdapter(paginationAdapter);
+
+                                    onScrolledToBottom();
+                                    num_count.setText(contectListData.size() + " Contacts");
+
+                                }
 
                             }
-
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+
+                    } else {
+                        num_count.setText("0 Contacts");
+
+                        txt_nolist.setText(mCtx.getResources().getString(R.string.no_contact));
+                        lay_no_list.setVisibility(View.VISIBLE);
+                        layout_list_data.setVisibility(View.GONE);
                     }
-
-                } else {
-                    num_count.setText("0 Contacts");
-
-                    txt_nolist.setText(mCtx.getResources().getString(R.string.no_contact));
-                    lay_no_list.setVisibility(View.VISIBLE);
-                    layout_list_data.setVisibility(View.GONE);
+                    loadingDialog.cancelLoading();
+                    swipeToRefresh.setRefreshing(false);
                 }
-                loadingDialog.cancelLoading();
-                swipeToRefresh.setRefreshing(false);
+                catch (Exception e)
+                {
+
+                }
+
             }
 
             @Override

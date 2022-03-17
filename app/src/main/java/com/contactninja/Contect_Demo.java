@@ -20,6 +20,7 @@ import com.contactninja.Model.ContectListData;
 import com.contactninja.Utils.PaginationListener;
 import com.contactninja.Utils.SessionManager;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +42,6 @@ public class Contect_Demo extends AppCompatActivity {
     protected void onCreate(@SuppressLint("UnknownNullness") Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contect_demo);
-
 
     }
 

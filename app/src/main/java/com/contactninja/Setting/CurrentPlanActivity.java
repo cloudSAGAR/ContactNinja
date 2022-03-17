@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +54,7 @@ import retrofit2.Response;
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class CurrentPlanActivity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     ImageView iv_back;
+    int select_plan_type;
     ViewPager2 viewPager2;
     List<Plandetail> plandetailslist = new ArrayList<>();
     List<Plandetail> plandetailslist_new = new ArrayList<>();
@@ -91,6 +93,15 @@ public class CurrentPlanActivity extends AppCompatActivity implements View.OnCli
             e.printStackTrace();
         }
 
+        tv_save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (tv_save.getText().toString().equals(getResources().getString(R.string.Upgrade_Plan)))
+                {
+                    Global.Messageshow(getApplicationContext(),mMainLayout,"Upgrade Your Plan On Web",true);
+                }
+            }
+        });
 
     }
     private void Subscription() {
@@ -383,23 +394,51 @@ public class CurrentPlanActivity extends AppCompatActivity implements View.OnCli
 
         }
 
-/*
+
 
         for(int i=0;i<plandetailslist.size();i++){
             if(CurentPlan.equals(plandetailslist.get(i).getPlan_product_id())){
-                plandetailslist_new.add(0,plandetailslist.get(i));
-            }else {
-                plandetailslist_new.add(plandetailslist.size(),plandetailslist.get(i));
+                tv_save.setText(getResources().getString(R.string.Current_Plan));
+
+                select_plan_type= i;
+            }
+            else if (CurentPlan.equals("0"))
+            {
+                select_plan_type= plandetailslist.size()-1;
+                tv_save.setText(getResources().getString(R.string.Current_Plan));
+
+            }
+            else {
+                // plandetailslist_new.add(plandetailslist.size(),plandetailslist.get(i));
             }
         }
-*/
 
+
+        //Log.e("plan Type is",new Gson().toJson(plandetailslist_new));
 
         viewPager2.setAdapter(new ViewPageAdepter(getApplicationContext(), plandetailslist));
+
+
         viewPager2.setClipToPadding(false);
         viewPager2.setClipChildren(false);
         viewPager2.setOffscreenPageLimit(3);
         viewPager2.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
+        for(int i=0;i<plandetailslist.size();i++){
+            if(CurentPlan.equals(plandetailslist.get(i).getPlan_product_id())){
+                viewPager2.setCurrentItem(i);
+               // tv_save.setText(getResources().getString(R.string.Current_Plan));
+
+            }
+            else if (CurentPlan.equals("0"))
+            {
+                viewPager2.setCurrentItem(plandetailslist.size());
+             //   tv_save.setText(getResources().getString(R.string.Current_Plan));
+
+            }
+            else {
+                // plandetailslist_new.add(plandetailslist.size(),plandetailslist.get(i));
+            }
+        }
         dots_indicator.setViewPager2(viewPager2);
         CompositePageTransformer compositePagerTransformer = new CompositePageTransformer();
         compositePagerTransformer.addTransformer(new MarginPageTransformer(40));
@@ -409,12 +448,13 @@ public class CurrentPlanActivity extends AppCompatActivity implements View.OnCli
                 float r = 1 - Math.abs(position);
                 page.setScaleY(0.85f + r * 0.15f);
 
-              /*  if(viewPager2.getCurrentItem()==0){
+                Log.e("Item is ", String.valueOf(viewPager2.getCurrentItem()));
+                if(viewPager2.getCurrentItem()==select_plan_type){
                         tv_save.setText(getResources().getString(R.string.Current_Plan));
                 }else {
                     tv_save.setText(getResources().getString(R.string.Upgrade_Plan));
-                }*/
-                if(viewPager2.getCurrentItem()==0){
+                }
+          /*      if(viewPager2.getCurrentItem()==0){
                     for(int i=0;i<plandetailslist.size();i++){
                         if(CurentPlan.equals(plandetailslist.get(0).getPlan_product_id())){
                             tv_save.setText(getResources().getString(R.string.Current_Plan));
@@ -449,6 +489,7 @@ public class CurrentPlanActivity extends AppCompatActivity implements View.OnCli
                         }
                     }
                 }
+           */
             }
         });
         viewPager2.setPageTransformer(compositePagerTransformer);

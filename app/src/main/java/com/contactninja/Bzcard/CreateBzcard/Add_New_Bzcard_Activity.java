@@ -132,21 +132,30 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
                 bzcard_model.getBzcardFieldsModel().setProfile_image(bzcard_model.getBzcardFieldsModel().getProfile_image());
                 SessionManager.setBzcard(getApplicationContext(),bzcard_model);
             } else {
-                SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
-                Log.e("User Data Is ", user_data.getUser().getUserprofile().getProfilePic());
-                if (!user_data.getUser().getUserprofile().getProfilePic().equals("")) {
-                    Glide.with(getApplicationContext()).
-                            load(user_data.getUser().getUserprofile().getProfilePic()).
-                            into(iv_user);
-                    iv_user.setVisibility(View.VISIBLE);
-                    pulse_icon.setVisibility(View.GONE);
-                    bzcard_model = SessionManager.getBzcard(getApplicationContext());
-                    bzcard_model.getBzcardFieldsModel().setProfile_image(user_data.getUser().getUserprofile().getProfilePic());
-                    SessionManager.setBzcard(getApplicationContext(),bzcard_model);
-                } else {
-                    iv_user.setVisibility(View.GONE);
-                    pulse_icon.setVisibility(View.VISIBLE);
+                try {
+                    SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
+                    //Log.e("User Data Is ", user_data.getUser().getUserprofile().getProfilePic());
+
+                    if (!user_data.getUser().getUserprofile().getProfilePic().equals("")) {
+                        Glide.with(getApplicationContext()).
+                                load(user_data.getUser().getUserprofile().getProfilePic()).
+                                into(iv_user);
+                        iv_user.setVisibility(View.VISIBLE);
+                        pulse_icon.setVisibility(View.GONE);
+                        bzcard_model = SessionManager.getBzcard(getApplicationContext());
+                        bzcard_model.getBzcardFieldsModel().setProfile_image(user_data.getUser().getUserprofile().getProfilePic());
+                        SessionManager.setBzcard(getApplicationContext(),bzcard_model);
+                    }
+                    else {
+                        iv_user.setVisibility(View.GONE);
+                        pulse_icon.setVisibility(View.VISIBLE);
+                    }
                 }
+                catch (Exception e)
+                {
+
+                }
+
             }
                if (!bzcard_model.getBzcardFieldsModel().getCover_image().equals("")) {
                 Glide.with(getApplicationContext()).

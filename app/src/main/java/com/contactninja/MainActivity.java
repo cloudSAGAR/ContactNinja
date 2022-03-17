@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         registerNetworkBroadcastForNougat();
         sessionManager = new SessionManager(this);
         sessionManager.login();
-  /*      Intent intent=new Intent(getApplicationContext(),Contect_Demo.class);
+/*        Intent intent=new Intent(getApplicationContext(),Contect_Demo.class);
         startActivity(intent);*/
         loadingDialog = new LoadingDialog(this);
         retrofitCalls = new RetrofitCalls(getApplicationContext());
