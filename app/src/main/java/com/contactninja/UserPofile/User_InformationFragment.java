@@ -1496,7 +1496,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                     } else {
                         String t_id = user_data1.getUser().getUserprofile().getTimezoneId().toString();
                         for (int i = 0; i < timezoneModels.size(); i++) {
-                            if (t_id.equals(timezoneModels.get(i).getValue().toString() + ".0")) {
+                            if (t_id.equals(timezoneModels.get(i).getValue().toString())) {
                                 zone_txt.setText(timezoneModels.get(i).getText());
 
                                 Log.e("No Same Data", "NO");

@@ -31,13 +31,13 @@ public class Userprofile {
 
     @SerializedName("created_by")
     @Expose
-    private String createdBy;
+    private String createdBy="";
     @SerializedName("referred_by")
     @Expose
-    private String referredBy;
+    private String referredBy="";
     @SerializedName("referred_balance")
     @Expose
-    private String referredBalance;
+    private String referredBalance="";
     @SerializedName("timezone_id")
     @Expose
     private Integer timezoneId;
@@ -50,64 +50,64 @@ public class Userprofile {
 
     @SerializedName("status")
     @Expose
-    private String status;
+    private String status="";
     @SerializedName("created_at")
     @Expose
-    private String createdAt;
+    private String createdAt="";
     @SerializedName("updated_at")
     @Expose
-    private String updatedAt;
+    private String updatedAt="";
     @SerializedName("deleted_at")
     @Expose
-    private String deletedAt;
+    private String deletedAt="";
     @SerializedName("company_name")
     @Expose
-    private String company_name;
+    private String company_name="";
     @SerializedName("company_url")
     @Expose
-    private String company_url;
+    private String company_url="";
     @SerializedName("job_title")
     @Expose
-    private String job_title;
+    private String job_title="";
     @SerializedName("zoom_id")
     @Expose
-    private String zoom_id;
+    private String zoom_id="";
 
 
     @SerializedName("address")
     @Expose
-    private String address;
+    private String address="";
     @SerializedName("city")
     @Expose
-    private String city;
+    private String city="";
     @SerializedName("state")
     @Expose
-    private String state;
+    private String state="";
     @SerializedName("zipcode")
     @Expose
-    private String zipcode;
+    private String zipcode="";
 
 
 
     @SerializedName("dob")
     @Expose
-    private String dob;
+    private String dob="";
     @SerializedName("facebook_link")
     @Expose
-    private String facebook_link;
+    private String facebook_link="";
     @SerializedName("twitter_link")
     @Expose
-    private String twitter_link;
+    private String twitter_link="";
     @SerializedName("breakout_link")
     @Expose
-    private String breakout_link;
+    private String breakout_link="";
 
     @SerializedName("linkedin_link")
     @Expose
-    private String linkedin_link;
+    private String linkedin_link="";
     @SerializedName("is_social")
     @Expose
-    private String is_social;
+    private String is_social="";
 
     public Integer getId() {
         return id;

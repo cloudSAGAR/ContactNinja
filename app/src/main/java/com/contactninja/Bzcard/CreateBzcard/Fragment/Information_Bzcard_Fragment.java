@@ -345,30 +345,30 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
 
         }else {
             SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-            ev_first.setText(user_data.getUser().getFirstName().toString().trim());
-            bzcard_model.getBzcardFieldsModel().setFirst_name(user_data.getUser().getFirstName().toString().trim());
-            ev_last_name.setText(user_data.getUser().getLastName().toString().trim());
-            bzcard_model.getBzcardFieldsModel().setLast_name(user_data.getUser().getLastName().toString().trim());
+            ev_first.setText(""+user_data.getUser().getFirstName().toString().trim());
+            bzcard_model.getBzcardFieldsModel().setFirst_name(""+user_data.getUser().getFirstName().toString().trim());
+            ev_last_name.setText(""+user_data.getUser().getLastName().toString().trim());
+            bzcard_model.getBzcardFieldsModel().setLast_name(""+user_data.getUser().getLastName().toString().trim());
             String main_data = user_data.getUser().getContactNumber().replace("+" + String.valueOf(Global.Countrycode(getActivity(), user_data.getUser().getContactNumber())), "");
-            edt_mobile_no.setText(main_data.toString().trim());
-            bzcard_model.getBzcardFieldsModel().setContant_number(user_data.getUser().getContactNumber());
+            edt_mobile_no.setText(""+main_data.toString().trim());
+            bzcard_model.getBzcardFieldsModel().setContant_number(""+user_data.getUser().getContactNumber());
             //Country Code Set
             ccp_id.setDefaultCountryUsingNameCode(String.valueOf(Global.Countrycode(getActivity(), user_data.getUser().getContactNumber())));
             ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(getActivity(), user_data.getUser().getContactNumber()));
             ccp_id.resetToDefaultCountry();
             ccp_id.registerCarrierNumberEditText(edt_mobile_no);
             bzcard_model.getBzcardFieldsModel().setCountry_code(ccp_id.getSelectedCountryCode());
-            ev_email.setText(user_data.getUser().getEmail().toString().trim());
+            ev_email.setText(""+user_data.getUser().getEmail().toString().trim());
             bzcard_model.getBzcardFieldsModel().setEmail(user_data.getUser().getEmail().toString().trim());
-            ev_company.setText(user_data.getUser().getUserprofile().getCompany_name().toString().trim());
+            ev_company.setText(""+user_data.getUser().getUserprofile().getCompany_name());
             bzcard_model.getBzcardFieldsModel().setCompany_name(user_data.getUser().getUserprofile().getCompany_name());
-            ev_company_url.setText(user_data.getUser().getUserprofile().getCompany_url().toString().trim());
+            ev_company_url.setText(""+user_data.getUser().getUserprofile().getCompany_url().toString().trim());
             bzcard_model.getBzcardFieldsModel().setCompany_url(user_data.getUser().getUserprofile().getCompany_url().toString().trim());
-            ev_job.setText(user_data.getUser().getUserprofile().getJob_title().toString().trim());
+            ev_job.setText(""+user_data.getUser().getUserprofile().getJob_title().toString().trim());
             bzcard_model.getBzcardFieldsModel().setJobtitle(user_data.getUser().getUserprofile().getJob_title().toString().trim());
-            ev_address.setText(user_data.getUser().getUserprofile().getAddress().toString().trim());
+            ev_address.setText(""+user_data.getUser().getUserprofile().getAddress().toString().trim());
             bzcard_model.getBzcardFieldsModel().setAddrees(user_data.getUser().getUserprofile().getAddress().toString().trim());
-            ev_zip.setText(user_data.getUser().getUserprofile().getZipcode().toString().trim());
+            ev_zip.setText(""+user_data.getUser().getUserprofile().getZipcode().toString().trim());
             bzcard_model.getBzcardFieldsModel().setZipcode(user_data.getUser().getUserprofile().getZipcode().toString().trim());
 
 
