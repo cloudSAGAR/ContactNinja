@@ -282,19 +282,19 @@ public class Social_media_Bzcard_Fragment extends Fragment {
 
     public void setData()
     {
-        ev_fb.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getFacebook_url());
-        ev_twitter.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getTwitter_url());
-        ev_youtube.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getYoutube_url());
-        ev_breakout.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getBreakout_url());
-        ev_instagram.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getInstagram_url());
-        ev_linkedin.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getLinkedin_url());
-        ev_pintrest.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getPinterest_url());
-        ev_venmo.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getVenmo_url());
-        ev_skypay.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getSkype_url());
-        ev_tiktok.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getTiktok_url());
-        ev_snap_chat.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getSnapchat_url());
-        ev_other_filed.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getOther_1());
-        ev_other_filed1.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getOther_2());
+        ev_fb.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getFacebook_url().toString().trim());
+        ev_twitter.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getTwitter_url().toString().trim());
+        ev_youtube.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getYoutube_url().toString().trim());
+        ev_breakout.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getBreakout_url().toString().trim());
+        ev_instagram.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getInstagram_url().toString().trim());
+        ev_linkedin.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getLinkedin_url().toString().trim());
+        ev_pintrest.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getPinterest_url().toString().trim());
+        ev_venmo.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getVenmo_url().toString().trim());
+        ev_skypay.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getSkype_url().toString().trim());
+        ev_tiktok.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getTiktok_url().toString().trim());
+        ev_snap_chat.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getSnapchat_url().toString().trim());
+        ev_other_filed.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getOther_1().toString().trim());
+        ev_other_filed1.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getOther_2().toString().trim());
     }
 
     private void IntentUI(View view) {
