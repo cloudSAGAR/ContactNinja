@@ -164,15 +164,23 @@ public class User_GrowthFragment extends Fragment implements View.OnClickListene
             int Total_Affiliate = 0;
             int Total_rat = 0;
             if (Global.IsNotNull(des_affiliateInfo.getCountOfLevel1()) && des_affiliateInfo.getCountOfLevel1() != 0) {
-                tv_lavel_count_1.setText(String.valueOf(des_affiliateInfo.getCountOfLevel1()));
-                tv_rat_1.setText(String.valueOf(des_affiliateInfo.getRatiooflevel1())+"%");
-                Total_rat = des_affiliateInfo.getRatiooflevel1();
-                Total_Affiliate = des_affiliateInfo.getCountOfLevel1();
-                if (des_affiliateInfo.getRatiooflevel1() > 0) {
-                    iv_1_up.setImageResource(R.drawable.ic_home_grow_up);
-                } else if (des_affiliateInfo.getRatiooflevel1() < 0) {
-                    iv_1_up.setImageResource(R.drawable.ic_home_grow_down);
-                }
+               try {
+                   tv_lavel_count_1.setText(String.valueOf(des_affiliateInfo.getCountOfLevel1()));
+                   tv_rat_1.setText(String.valueOf(des_affiliateInfo.getRatiooflevel1())+"%");
+                   Total_rat = des_affiliateInfo.getRatiooflevel1();
+                   Total_Affiliate = des_affiliateInfo.getCountOfLevel1();
+                   if (des_affiliateInfo.getRatiooflevel1() > 0) {
+                       iv_1_up.setImageResource(R.drawable.ic_home_grow_up);
+                   } else if (des_affiliateInfo.getRatiooflevel1() < 0) {
+                       iv_1_up.setImageResource(R.drawable.ic_home_grow_down);
+                   }
+               }
+               catch (Exception e)
+               {
+
+               }
+
+
             }
             if (Global.IsNotNull(des_affiliateInfo.getCountOfLevel2()) && des_affiliateInfo.getCountOfLevel2() != 0) {
                 tv_lavel_count_2.setText(String.valueOf(des_affiliateInfo.getCountOfLevel2()));
