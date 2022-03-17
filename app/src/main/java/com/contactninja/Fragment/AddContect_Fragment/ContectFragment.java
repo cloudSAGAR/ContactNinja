@@ -269,9 +269,11 @@ public class ContectFragment extends Fragment {
         sessionManager = new SessionManager(getActivity());
         loadingDialog = new LoadingDialog(getActivity());
         retrofitCalls = new RetrofitCalls(getActivity());
-       /* layoutManager = new LinearLayoutManager(getActivity());
-        rvinviteuserdetails.setLayoutManager(layoutManager);*/
-        rvinviteuserdetails.setLayoutManager(new SpeedyLinearLayoutManager(getActivity(), SpeedyLinearLayoutManager.VERTICAL, false));
+        layoutManager = new LinearLayoutManager(getActivity());
+        rvinviteuserdetails.setLayoutManager(layoutManager);
+       /* SpeedyLinearLayoutManager speedyLinearLayoutManager=     new SpeedyLinearLayoutManager(getActivity(), SpeedyLinearLayoutManager.VERTICAL, false);
+        rvinviteuserdetails.setLayoutManager(speedyLinearLayoutManager);
+       */
         rvinviteuserdetails.setHasFixedSize(true);
         contectListData = new ArrayList<>();
         SessionManager.setOneCotect_deatil(getActivity(), new ContectListData.Contact());
@@ -295,9 +297,7 @@ public class ContectFragment extends Fragment {
                             int indicatorCenterY,
                             int itemPosition
                     ) {
-                        //    rvinviteuserdetails.smoothScrollToPosition(itemPosition);
-                        // rvinviteuserdetails.scrollToPosition(itemPosition);
-                    }
+                         }
                 }
         );
 
@@ -577,7 +577,7 @@ public class ContectFragment extends Fragment {
 
                 } else {
                     loadingDialog.cancelLoading();
-                    update_listContacts = SessionManager.getnewContect(getActivity());
+                    update_listContacts = SessionManager.getupdateContect(getActivity());
                     csv_inviteListData.get(i).setId(taskList.get(0).getContect_id());
                     Contact update_contact = new Contact(taskList.get(0).getContect_id(), userName, last_name);
                     ContactPhone contactPhone = new ContactPhone(userPhoneNumber, csv_inviteListData.get(i).numbers.get(0).type);
@@ -2482,6 +2482,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             // implement API in background and store the response in current variable
             String current = "";
+            Log.e("Updaate Contect List ",new Gson().toJson(SessionManager.getupdateContect(getActivity())));
             try {
                 if (!SessionManager.getnewContect(getActivity()).equals(null) && SessionManager.getnewContect(getActivity()).size()!=0)
                 {

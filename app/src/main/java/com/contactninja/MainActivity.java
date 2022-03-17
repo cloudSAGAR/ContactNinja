@@ -1222,7 +1222,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
                 } else {
-                    update_listContacts=SessionManager.getnewContect(getApplicationContext());
+                    update_listContacts=SessionManager.getupdateContect(getApplicationContext());
                     csv_inviteListData.get(i).setId(String.valueOf(taskList.get(0).getId1()));
                     Contact update_contact=new Contact(taskList.get(0).getContect_id(),userName,last_name);
                     ContactPhone contactPhone=new ContactPhone(userPhoneNumber,csv_inviteListData.get(i).numbers.get(0).type);
