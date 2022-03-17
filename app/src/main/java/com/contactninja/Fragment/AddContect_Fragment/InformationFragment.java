@@ -1,7 +1,5 @@
 package com.contactninja.Fragment.AddContect_Fragment;
 
-import static com.contactninja.Utils.PaginationListener.PAGE_START;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -18,7 +16,6 @@ import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,12 +25,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.contactninja.Bzcard.Media.SwipeHelper;
 import com.contactninja.MainActivity;
@@ -73,16 +64,20 @@ import java.util.Collections;
 import java.util.List;
 import java.util.TimeZone;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import io.michaelrocks.libphonenumber.android.NumberParseException;
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
 import io.michaelrocks.libphonenumber.android.Phonenumber;
 import retrofit2.Response;
-import ru.rambler.libs.swipe_layout.SwipeLayout;
+
+import static com.contactninja.Utils.PaginationListener.PAGE_START;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 public class InformationFragment extends Fragment implements View.OnClickListener {
-    private long mLastClickTime = 0;
-
     public int PhoneFieldNumber = 0;// total Phone add count
     public int emailFieldNumber = 0;// total email add count
     List<TimezoneModel> timezoneModels = new ArrayList<>();
@@ -121,6 +116,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
     List<CompanyModel.Company> companyList = new ArrayList<>();
     int perPage = 20;
     Integer contact_Is_Block = 0;
+    private long mLastClickTime = 0;
     private int mYear, mMonth, mDay, mHour, mMinute;
     private int currentPage = PAGE_START;
     private boolean isLastPage = false;
@@ -187,28 +183,28 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             addcontectModel.setFacebook(String.valueOf(Contect_data.getFacebook_link()));
             addcontectModel.setBirthday(String.valueOf(Contect_data.getDob()));
 
-            ev_zip.setText(""+Contect_data.getZipcode().toString().trim());
-            ev_address.setText(""+Contect_data.getAddress().toString().trim());
-            ev_zoom.setText(""+Contect_data.getZoomId().toString().trim());
-            ev_company.setText(""+Contect_data.getCompanyName().toString().trim());
-            ev_state.setText(""+Contect_data.getState().toString().trim());
-            ev_city.setText(""+Contect_data.getCity().toString().trim());
+            ev_zip.setText("" + Contect_data.getZipcode().toString().trim());
+            ev_address.setText("" + Contect_data.getAddress().toString().trim());
+            ev_zoom.setText("" + Contect_data.getZoomId().toString().trim());
+            ev_company.setText("" + Contect_data.getCompanyName().toString().trim());
+            ev_state.setText("" + Contect_data.getState().toString().trim());
+            ev_city.setText("" + Contect_data.getCity().toString().trim());
             if (String.valueOf(Contect_data.getTimezoneId()).equals("null")) {
                 String time_zone = TimeZone.getDefault().getID();
-                zone_txt.setText(""+time_zone.toString().trim());
+                zone_txt.setText("" + time_zone.toString().trim());
             } else {
                 zone_txt.setText(String.valueOf(Contect_data.getTimezoneId()).toString().trim());
             }
-            ev_job.setText(""+Contect_data.getJobTitle().toString().trim());
+            ev_job.setText("" + Contect_data.getJobTitle().toString().trim());
             contect_id = Contect_data.getId();
             organization_id = String.valueOf(Contect_data.getOrganizationId());
             team_id = String.valueOf(Contect_data.getTeamId());
-            ev_company_url.setText(""+Contect_data.getCompany_url().toString().trim());
-            ev_bob.setText(""+Contect_data.getDob().toString().trim());
-            ev_twitter.setText(""+Contect_data.getTwitter_link().toString().trim());
-            ev_fb.setText(""+Contect_data.getFacebook_link().toString().trim());
-            ev_linkedin.setText(""+Contect_data.getLinkedin_link().toString().trim());
-            ev_breakout.setText(""+Contect_data.getBreakout_link().toString().trim());
+            ev_company_url.setText("" + Contect_data.getCompany_url().toString().trim());
+            ev_bob.setText("" + Contect_data.getDob().toString().trim());
+            ev_twitter.setText("" + Contect_data.getTwitter_link().toString().trim());
+            ev_fb.setText("" + Contect_data.getFacebook_link().toString().trim());
+            ev_linkedin.setText("" + Contect_data.getLinkedin_link().toString().trim());
+            ev_breakout.setText("" + Contect_data.getBreakout_link().toString().trim());
             TextSet();
 
             List<ContectListData.Contact.ContactDetail> detail_contect = Contect_data.getContactDetails();
@@ -266,7 +262,6 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             EmailistSwipe();
 
 
-
         } else if (flag.equals("read")) {
             iv_down.setVisibility(View.GONE);
 
@@ -317,25 +312,25 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             addcontectModel.setLinkedin(String.valueOf(Contect_data.getLinkedin_link()));
             addcontectModel.setFacebook(String.valueOf(Contect_data.getFacebook_link()));
             addcontectModel.setBirthday(String.valueOf(Contect_data.getDob()));
-            ev_zip.setText(""+Contect_data.getZipcode().toString().trim());
-            ev_address.setText(""+Contect_data.getAddress().toString().trim());
-            ev_zoom.setText(""+Contect_data.getZoomId().toString().trim());
-            ev_company.setText(""+Contect_data.getCompanyName().toString().trim());
-            ev_state.setText(""+Contect_data.getState().toString().trim());
-            ev_city.setText(""+Contect_data.getCity().toString().trim());
+            ev_zip.setText("" + Contect_data.getZipcode().toString().trim());
+            ev_address.setText("" + Contect_data.getAddress().toString().trim());
+            ev_zoom.setText("" + Contect_data.getZoomId().toString().trim());
+            ev_company.setText("" + Contect_data.getCompanyName().toString().trim());
+            ev_state.setText("" + Contect_data.getState().toString().trim());
+            ev_city.setText("" + Contect_data.getCity().toString().trim());
             if (String.valueOf(Contect_data.getTimezoneId()).equals("null")) {
                 String time_zone = TimeZone.getDefault().getID();
-                zone_txt.setText(""+time_zone.toString().trim());
+                zone_txt.setText("" + time_zone.toString().trim());
             } else {
                 zone_txt.setText(String.valueOf(Contect_data.getTimezoneId()));
             }
 
-            ev_job.setText(""+Contect_data.getJobTitle().toString().trim());
+            ev_job.setText("" + Contect_data.getJobTitle().toString().trim());
             contect_id = Contect_data.getId();
             organization_id = String.valueOf(Contect_data.getOrganizationId()).toString().trim();
             team_id = String.valueOf(Contect_data.getTeamId().toString().trim());
-            ev_company_url.setText(""+Contect_data.getCompany_url().toString().trim());
-            ev_bob.setText(""+Contect_data.getDob().toString().trim());
+            ev_company_url.setText("" + Contect_data.getCompany_url().toString().trim());
+            ev_bob.setText("" + Contect_data.getDob().toString().trim());
             media_link.setVisibility(View.GONE);
             try {
 
@@ -372,10 +367,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
             }
 
-            ev_twitter.setText(""+Contect_data.getTwitter_link().toString().trim());
-            ev_fb.setText(""+Contect_data.getFacebook_link().toString().trim());
-            ev_linkedin.setText(""+Contect_data.getLinkedin_link().toString().trim());
-            ev_breakout.setText(""+Contect_data.getBreakout_link().toString().trim());
+            ev_twitter.setText("" + Contect_data.getTwitter_link().toString().trim());
+            ev_fb.setText("" + Contect_data.getFacebook_link().toString().trim());
+            ev_linkedin.setText("" + Contect_data.getLinkedin_link().toString().trim());
+            ev_breakout.setText("" + Contect_data.getBreakout_link().toString().trim());
             img_twitter.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -574,7 +569,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                                 }
                                 mLastClickTime = SystemClock.elapsedRealtime();
                                 final Contactdetail item = emaildetails_list.get(pos);
-                                emailAdapter.setdefault(pos,item);
+                                emailAdapter.setdefault(pos, item);
                             }
                         }
                 ));
@@ -590,7 +585,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                                 }
                                 mLastClickTime = SystemClock.elapsedRealtime();
                                 final Contactdetail item = emaildetails_list.get(pos);
-                                emailAdapter.removeItem(pos,item);
+                                emailAdapter.removeItem(pos, item);
 
                                 //Toast.makeText(getContext(), "Item was removed from the list.", Toast.LENGTH_LONG).show();
                             }
@@ -621,7 +616,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                                 }
                                 mLastClickTime = SystemClock.elapsedRealtime();
                                 final Contactdetail item = phonedetails_list.get(pos);
-                                phoneAdapter.setdefault(pos,item);
+                                phoneAdapter.setdefault(pos, item);
                             }
                         }
                 ));
@@ -636,10 +631,10 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                                     return;
                                 }
                                 mLastClickTime = SystemClock.elapsedRealtime();
-                                  final Contactdetail item = phonedetails_list.get(pos);
-                                   phoneAdapter.removeItem(pos,item);
+                                final Contactdetail item = phonedetails_list.get(pos);
+                                phoneAdapter.removeItem(pos, item);
 
-                            //    Toast.makeText(getContext(), "Item was removed from the list.", Toast.LENGTH_LONG).show();
+                                //    Toast.makeText(getContext(), "Item was removed from the list.", Toast.LENGTH_LONG).show();
                             }
                         }
                 ));
@@ -1330,7 +1325,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             @Override
             public void onPermissionDenied(ArrayList<String> deniedPermissions) {
 
-             //   EnableRuntimePermission();
+                //   EnableRuntimePermission();
             }
 
         };
@@ -2078,18 +2073,24 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             holder.ccp_id.setVisibility(View.VISIBLE);
             holder.edt_mobile_no.setEnabled(true);
             if (edit) {
-                 if (contactdetails.get(position).getIs_default() == 1) {
+                if (contactdetails.get(position).getIs_default() == 1) {
                     holder.iv_set_default.setVisibility(View.VISIBLE);
                 } else {
                     holder.iv_set_default.setVisibility(View.GONE);
                 }
 
+                if (contactdetails.get(position).getStatus().equals("D"))
+                {
+                    holder.phone_layout.setVisibility(View.GONE);
+                }
+                else {
+                    holder.phone_layout.setVisibility(View.VISIBLE);
+                }
 
-
-                holder.ccp_id.setDefaultCountryUsingNameCode(String.valueOf(Global.Countrycode(mCtx,item.getEmail_number())));
-                holder.ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(mCtx,item.getEmail_number()));
+                holder.ccp_id.setDefaultCountryUsingNameCode(String.valueOf(Global.Countrycode(mCtx, item.getEmail_number())));
+                holder.ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(mCtx, item.getEmail_number()));
                 holder.ccp_id.resetToDefaultCountry();
-                String main_data = item.getEmail_number().replace("+" + String.valueOf(Global.Countrycode(mCtx,item.getEmail_number())), "");
+                String main_data = item.getEmail_number().replace("+" + String.valueOf(Global.Countrycode(mCtx, item.getEmail_number())), "");
                 holder.edt_mobile_no.setText(main_data);
                 holder.phone_txt.setText(item.getLabel());
 
@@ -2108,8 +2109,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                             if (Global.isValidPhoneNumber(phoneNumber)) {
                                 boolean status = validateUsing_libphonenumber(countryCode, phoneNumber);
                                 Log.e("Contect Status", String.valueOf(status));
-                                if (status)
-                                {
+                                if (status) {
                                     item.setEmail_number(holder.ccp_id.getSelectedCountryCodeWithPlus() + s.toString());
                                     item.setCountry_code(holder.ccp_id.getSelectedCountryNameCode());
                                     holder.iv_invalid1.setText("");
@@ -2144,8 +2144,6 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         }
 
 
-
-
                     }
 
                     @Override
@@ -2153,7 +2151,6 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
                     }
                 });
-
 
 
                 holder.select_label.setOnClickListener(new View.OnClickListener() {
@@ -2175,16 +2172,14 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 });
 
 
-
                 holder.ccp_id.setDefaultCountryUsingNameCode(String.valueOf(Global.Countrycode(getActivity(),
                         contactdetails.get(position).getEmail_number())));
-                holder.ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(getActivity(),contactdetails.get(position).getEmail_number()));
+                holder.ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(getActivity(), contactdetails.get(position).getEmail_number()));
                 holder.ccp_id.resetToDefaultCountry();
                 holder.ccp_id.registerCarrierNumberEditText(holder.edt_mobile_no);
 
 
-            }
-            else if (flag.equals("read")) {
+            } else if (flag.equals("read")) {
 
                 holder.select_label.setVisibility(View.GONE);
                 holder.contect_msg.setVisibility(View.VISIBLE);
@@ -2235,7 +2230,6 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 });
 
 
-
                 holder.select_label.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -2248,9 +2242,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 });
 
 
-
-            }
-            else {
+            } else {
 
 
                 if (item.getIs_default() == 1) {
@@ -2259,7 +2251,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                     holder.iv_set_default.setVisibility(View.GONE);
                 }
 
-                String main_data = item.getEmail_number().replace("+" +Global.Countrycode_Country(mCtx,item.getEmail_number()), "");
+                String main_data = item.getEmail_number().replace("+" + Global.Countrycode_Country(mCtx, item.getEmail_number()), "");
 
                 holder.edt_mobile_no.setText(main_data);
                 holder.phone_txt.setText(item.getLabel());
@@ -2315,9 +2307,6 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         }
 
 
-
-
-
                     }
 
                     @Override
@@ -2339,7 +2328,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
                 holder.ccp_id.setDefaultCountryUsingNameCode(String.valueOf(Global.Countrycode(getActivity(),
                         contactdetails.get(position).getEmail_number())));
-                holder.ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(getActivity(),contactdetails.get(position).getEmail_number()));
+                holder.ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(getActivity(), contactdetails.get(position).getEmail_number()));
                 holder.ccp_id.resetToDefaultCountry();
                 holder.ccp_id.registerCarrierNumberEditText(holder.edt_mobile_no);
             }
@@ -2351,7 +2340,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         return;
                     }
                     mLastClickTime = SystemClock.elapsedRealtime();
-                   EnableRuntimePermission(item);
+                    EnableRuntimePermission(item);
                 }
             });
 
@@ -2373,8 +2362,6 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
 
         }
-
-
 
 
         @Override
@@ -2401,25 +2388,24 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             }
         }
 
-        public void removeItem(int pos,Contactdetail item) {
+        public void removeItem(int pos, Contactdetail item) {
 
-            if (contactdetails.size()>1)
-            {
+            if (contactdetails.size() > 1) {
 
-                contactdetails.remove(pos);
-                notifyDataSetChanged();
+                // contactdetails.remove(pos);
+                //notifyDataSetChanged();
 
                 if (edit) {
-                    try {
-                        if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
-                            RemoveContect(item.getId());
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                    if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
+                        /// RemoveContect(item.getId());
+                        contactdetails.get(pos).setStatus("D");
+                        addcontectModel.setContactdetails(contactdetails);
+                        SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
+                     /*   contactdetails.remove(pos);*/
+                        notifyDataSetChanged();
                     }
                 }
             }
-
 
 
         }
@@ -2427,15 +2413,15 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         public void setdefault(int pos, Contactdetail item) {
 
 
-               for (int i = 0; i < contactdetails.size(); i++) {
-                   contactdetails.get(i).setEmail_number(contactdetails.get(i).getEmail_number());
-                   if (item.getId() == contactdetails.get(i).getId()) {
-                       contactdetails.get(i).setIs_default(1);
-                   } else {
-                       contactdetails.get(i).setIs_default(0);
-                   }
+            for (int i = 0; i < contactdetails.size(); i++) {
+                contactdetails.get(i).setEmail_number(contactdetails.get(i).getEmail_number());
+                if (item.getId() == contactdetails.get(i).getId()) {
+                    contactdetails.get(i).setIs_default(1);
+                } else {
+                    contactdetails.get(i).setIs_default(0);
+                }
 
-           }
+            }
 
             addcontectModel.setContactdetails(contactdetails);
             SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
@@ -2448,11 +2434,11 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         public class InviteListDataclass extends RecyclerView.ViewHolder {
             EditText edt_mobile_no;
             ImageView iv_set_default;
-            LinearLayout layout_swap, select_label, contect_msg, layout_icon_call,
+            LinearLayout layout_swap,phone_layout, select_label, contect_msg, layout_icon_call,
                     layout_icon_message, layout_country_piker;
             TextView phone_txt;
             CountryCodePicker ccp_id;
-            TextView tv_phone,iv_invalid1;
+            TextView tv_phone, iv_invalid1;
 
 
             public InviteListDataclass(@NonNull View itemView) {
@@ -2469,7 +2455,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 layout_icon_call = itemView.findViewById(R.id.layout_icon_call);
                 layout_icon_message = itemView.findViewById(R.id.layout_icon_message);
                 tv_phone = itemView.findViewById(R.id.tv_phone);
-                iv_invalid1=itemView.findViewById(R.id.iv_invalid1);
+                iv_invalid1 = itemView.findViewById(R.id.iv_invalid1);
+                phone_layout=itemView.findViewById(R.id.phone_layout);
             }
         }
     }
@@ -2624,7 +2611,6 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 });
 
 
-
             }
 
 
@@ -2668,25 +2654,23 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
         public void setdefault(int pos, Contactdetail item) {
 
-            Log.e("postion is",String.valueOf(pos));
-            Log.e("Data is ",new Gson().toJson(item));
-            Log.e("Contect list is",new Gson().toJson(contactdetails));
-          if (contactdetails.size()==1)
-          {
-              contactdetails.get(0).setIs_default(1);
-          }
-          else {
-              for (int i = 0; i < contactdetails.size(); i++) {
-                  contactdetails.get(i).setEmail_number(contactdetails.get(i).getEmail_number());
-                  Log.e("Id is", String.valueOf(item.getId()));
-                  Log.e("Contect Id ", String.valueOf(contactdetails.get(i).getId()));
-                  if (item.getId() == contactdetails.get(i).getId()) {
-                      contactdetails.get(i).setIs_default(1);
-                  } else {
-                      contactdetails.get(i).setIs_default(0);
-                  }
-              }
-          }
+            Log.e("postion is", String.valueOf(pos));
+            Log.e("Data is ", new Gson().toJson(item));
+            Log.e("Contect list is", new Gson().toJson(contactdetails));
+            if (contactdetails.size() == 1) {
+                contactdetails.get(0).setIs_default(1);
+            } else {
+                for (int i = 0; i < contactdetails.size(); i++) {
+                    contactdetails.get(i).setEmail_number(contactdetails.get(i).getEmail_number());
+                    Log.e("Id is", String.valueOf(item.getId()));
+                    Log.e("Contect Id ", String.valueOf(contactdetails.get(i).getId()));
+                    if (item.getId() == contactdetails.get(i).getId()) {
+                        contactdetails.get(i).setIs_default(1);
+                    } else {
+                        contactdetails.get(i).setIs_default(0);
+                    }
+                }
+            }
 
             addcontectModel.setContactdetails_email(contactdetails);
             SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
@@ -2696,7 +2680,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         }
 
         public void removeItem(int pos, Contactdetail item) {
-            if (contactdetails.size()>1) {
+            if (contactdetails.size() > 1) {
 
                 contactdetails.remove(pos);
                 notifyDataSetChanged();
@@ -2719,6 +2703,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             TextView email_txt, iv_invalid, tv_email;
             LinearLayout select_email_label, layout_swap, layout_icon_email;
             ImageView iv_set_default;
+
             public InviteListDataclass(@NonNull View itemView) {
                 super(itemView);
 
@@ -2729,7 +2714,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 layout_swap = itemView.findViewById(R.id.layout_swap);
                 layout_icon_email = itemView.findViewById(R.id.layout_icon_email);
                 tv_email = itemView.findViewById(R.id.tv_email);
-                iv_set_default=itemView.findViewById(R.id.iv_set_default);
+                iv_set_default = itemView.findViewById(R.id.iv_set_default);
             }
 
         }

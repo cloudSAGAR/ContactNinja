@@ -12,9 +12,18 @@ public class Contactdetail {
     String type;
     String country_code;
     int contect_id;
+    String status="";
     public Contactdetail()
     {
 
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public int getContect_id() {

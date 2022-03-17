@@ -1025,13 +1025,19 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
                 paramObject1.put("label", contactdetails.get(i).getLabel());
                 paramObject1.put("type", contactdetails.get(i).getType());
                 paramObject1.put("contact_id", Contect_data.getId());
+               if (contactdetails.get(i).getStatus().equals("D"))
+               {
+                   paramObject1.put("status", "D");
+               }
                 param_data.put("team_id", 1);
+
             }
             jsonArray.put(paramObject1);
         }
         paramObject.put("contact_details", jsonArray);
         jsonArray_contect.put(paramObject);
         param_data.put("contact_update", jsonArray_contect);
+
 
         obj.put("data", param_data);
         JsonParser jsonParser = new JsonParser();
