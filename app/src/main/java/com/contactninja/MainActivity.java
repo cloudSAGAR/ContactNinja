@@ -332,7 +332,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Log.e("Data Is",new Gson().toJson(SessionManager.getnewContect(getApplicationContext())));
                         ArrayList<Contact> listContacts1=new ArrayList<>();
                         listContacts1.addAll(SessionManager.getnewContect(getApplicationContext()));
-                        splitdata(listContacts1);
+                        if (listContacts1.size()!=0)
+                        {
+                            splitdata(listContacts1);
+                        }
+
                     }
                     catch (Exception e)
                     {

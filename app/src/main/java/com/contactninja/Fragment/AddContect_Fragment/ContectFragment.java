@@ -901,11 +901,15 @@ public class ContectFragment extends Fragment {
                 }
 
                 if (!SessionManager.getnewContect(getActivity()).equals(null) && !SessionManager.getnewContect(getActivity()).equals("")) {
-                    try {
-                        splitdata((ArrayList<Contact>) SessionManager.getnewContect(getActivity()));
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    Duplicate_remove();
+                    Log.e("Data Is",new Gson().toJson(SessionManager.getnewContect(getActivity())));
+                    ArrayList<Contact> listContacts1=new ArrayList<>();
+                    listContacts1.addAll(SessionManager.getnewContect(getActivity()));
+                    if (listContacts1.size()!=0)
+                    {
+                        splitdata(listContacts1);
                     }
+
                 }
 
                 listContacts = new ContactFetcher(getActivity()).fetchAll();
@@ -2491,7 +2495,10 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         //Log.e("Data Is",new Gson().toJson(SessionManager.getnewContect(getActivity())));
                         ArrayList<Contact> listContacts1=new ArrayList<>();
                         listContacts1.addAll(SessionManager.getnewContect(getActivity()));
-                        splitdata(listContacts1);
+                        if (listContacts1.size()!=0)
+                        {
+                            splitdata(listContacts1);
+                        }
                     }
                     catch (Exception e)
                     {
