@@ -551,11 +551,13 @@ class LavelAdapter extends RecyclerView.Adapter<LavelAdapter.viewholder> {
         } else {
             namebyreferrer = item.getReferredName();
         }*/
+
         if (Global.IsNotNull(item.getLevel_name())&&!item.getLevel_name().equals("")) {
             holder.layout_laval.setVisibility(View.GONE);
             holder.tv_Referrer_by.setVisibility(View.VISIBLE);
             holder.tv_Referrer_by.setText(item.getLevel_name());
-        } else {
+        }
+        else {
             holder.layout_laval.setVisibility(View.VISIBLE);
             holder.tv_Referrer_by.setVisibility(View.GONE);
             holder.tv_count.setText(String.valueOf(item.getReward_earned()));

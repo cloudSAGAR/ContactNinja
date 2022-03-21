@@ -169,25 +169,31 @@ public class Broadcast_Fragment extends Fragment {
             public void success(Response<ApiResponse> response) {
 
 
-                SessionManager.setDes_Broadcast(getActivity(),new ArrayList<>());
+                try {
+                    SessionManager.setDes_Broadcast(getActivity(),new ArrayList<>());
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<Dashboard>() {
+                    }.getType();
+                    dashboard = new Gson().fromJson(headerString, listType);
+                    des_broadcasts = dashboard.getBroadcast();
+                    SessionManager.setDes_Broadcast(getActivity(),des_broadcasts);
 
-                Gson gson = new Gson();
-                String headerString = gson.toJson(response.body().getData());
-                Type listType = new TypeToken<Dashboard>() {
-                }.getType();
-                dashboard = new Gson().fromJson(headerString, listType);
-                des_broadcasts = dashboard.getBroadcast();
-                SessionManager.setDes_Broadcast(getActivity(),des_broadcasts);
+                    if(Global.IsNotNull(des_broadcasts)&&des_broadcasts.size()!=0){
+                        broadcastListAdepter.clear();
+                        broadcastListAdepter.add(des_broadcasts);
 
-                if(Global.IsNotNull(des_broadcasts)&&des_broadcasts.size()!=0){
-                    broadcastListAdepter.clear();
-                    broadcastListAdepter.add(des_broadcasts);
+                        rv_broadcast_list.setVisibility(View.VISIBLE);
+                        iv_demo.setVisibility(View.GONE);
+                    }else {
+                        rv_broadcast_list.setVisibility(View.GONE);
+                        iv_demo.setVisibility(View.VISIBLE);
+                    }
 
-                    rv_broadcast_list.setVisibility(View.VISIBLE);
-                    iv_demo.setVisibility(View.GONE);
-                }else {
-                    rv_broadcast_list.setVisibility(View.GONE);
-                    iv_demo.setVisibility(View.VISIBLE);
+                }
+                catch (Exception e)
+                {
+
                 }
 
 

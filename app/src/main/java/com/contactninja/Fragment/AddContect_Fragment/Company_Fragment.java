@@ -426,75 +426,83 @@ public class Company_Fragment extends Fragment {
             @Override
             public void success(Response<ApiResponse> response) {
                 //   Log.e("Response is",new Gson().toJson(response));
-                if (response.body().getHttp_status().equals(200)) {
-                    Gson gson = new Gson();
-                    String headerString = gson.toJson(response.body().getData());
-                    //    sessionManager.setCompanylist(getActivity(), new ArrayList<>());
-                    Type listType = new TypeToken<CompanyModel>() {
-                    }.getType();
-                    CompanyModel data = new Gson().fromJson(headerString, listType);
-                    num_count.setText(String.valueOf(data.getTotal() + " Company"));
-                    List<CompanyModel.Company> companyList;
-                    if (Filter.equals("BLOCK")) {
-                        companyList = data.getBlocked_companies();
+               try {
+                   if (response.body().getHttp_status().equals(200)) {
+                       Gson gson = new Gson();
+                       String headerString = gson.toJson(response.body().getData());
+                       //    sessionManager.setCompanylist(getActivity(), new ArrayList<>());
+                       Type listType = new TypeToken<CompanyModel>() {
+                       }.getType();
+                       CompanyModel data = new Gson().fromJson(headerString, listType);
+                       num_count.setText(String.valueOf(data.getTotal() + " Company"));
+                       List<CompanyModel.Company> companyList;
+                       if (Filter.equals("BLOCK")) {
+                           companyList = data.getBlocked_companies();
 
-                    } else {
+                       } else {
 
-                        companyList = data.getData();
-                        lay_no_list.setVisibility(View.GONE);
-                        layout_list.setVisibility(View.VISIBLE);
+                           companyList = data.getData();
+                           lay_no_list.setVisibility(View.GONE);
+                           layout_list.setVisibility(View.VISIBLE);
 
-                    }
+                       }
 
-                    Collections.sort(companyList, new Comparator<CompanyModel.Company>() {
-                        @Override
-                        public int compare(CompanyModel.Company s1, CompanyModel.Company s2) {
-                            return s1.getName().compareToIgnoreCase(s2.getName());
-                        }
-                    });
-                    if (currentPage != PAGE_START)
-                        companyAdapter.removeLoading();
-                        companyAdapter.addItems(companyList);
+                       Collections.sort(companyList, new Comparator<CompanyModel.Company>() {
+                           @Override
+                           public int compare(CompanyModel.Company s1, CompanyModel.Company s2) {
+                               return s1.getName().compareToIgnoreCase(s2.getName());
+                           }
+                       });
+                       if (currentPage != PAGE_START)
+                           companyAdapter.removeLoading();
+                       companyAdapter.addItems(companyList);
 
-                    // check weather is last page or not
-                    if (data.getTotal() > companyAdapter.getItemCount()) {
-                        companyAdapter.addLoading();
-                    } else {
-                        isLastPage = true;
-                    }
-                    isLoading = false;
-                    swipeToRefresh.setRefreshing(false);
-                    linearLayout3.setVisibility(View.VISIBLE);
-                    demo_layout.setVisibility(View.GONE);
+                       // check weather is last page or not
+                       if (data.getTotal() > companyAdapter.getItemCount()) {
+                           companyAdapter.addLoading();
+                       } else {
+                           isLastPage = true;
+                       }
+                       isLoading = false;
+                       swipeToRefresh.setRefreshing(false);
+                       linearLayout3.setVisibility(View.VISIBLE);
+                       demo_layout.setVisibility(View.GONE);
 
-                }
-                else {
-                    if (Filter.equals("") && ev_search.getText().toString().equals("")) {
-                        linearLayout3.setVisibility(View.GONE);
-                        demo_layout.setVisibility(View.VISIBLE);
-                    }
+                   }
+                   else {
+                       if (Filter.equals("") && ev_search.getText().toString().equals("")) {
+                           linearLayout3.setVisibility(View.GONE);
+                           demo_layout.setVisibility(View.VISIBLE);
+                       }
 
-                    if (Filter.equals("BLOCK")) {
-                        if (companyList.size() == 0) {
-                            txt_nolist.setText(getResources().getString(R.string.no_block_company));
-                            lay_no_list.setVisibility(View.VISIBLE);
-                            layout_list.setVisibility(View.GONE);
-                        } else {
-                            lay_no_list.setVisibility(View.GONE);
-                            layout_list.setVisibility(View.VISIBLE);
-                        }
-                    }else {
-                        if (companyList.size() == 0) {
-                            txt_nolist.setText(getResources().getString(R.string.no_company));
-                            lay_no_list.setVisibility(View.VISIBLE);
-                            layout_list.setVisibility(View.GONE);
-                        }else {
-                            lay_no_list.setVisibility(View.GONE);
-                            layout_list.setVisibility(View.VISIBLE);
-                        }
-                    }
-                    num_count.setText(String.valueOf(0 + " Company"));
-                }
+                       if (Filter.equals("BLOCK")) {
+                           if (companyList.size() == 0) {
+                               txt_nolist.setText(getResources().getString(R.string.no_block_company));
+                               lay_no_list.setVisibility(View.VISIBLE);
+                               layout_list.setVisibility(View.GONE);
+                           } else {
+                               lay_no_list.setVisibility(View.GONE);
+                               layout_list.setVisibility(View.VISIBLE);
+                           }
+                       }else {
+                           if (companyList.size() == 0) {
+                               txt_nolist.setText(getResources().getString(R.string.no_company));
+                               lay_no_list.setVisibility(View.VISIBLE);
+                               layout_list.setVisibility(View.GONE);
+                           }else {
+                               lay_no_list.setVisibility(View.GONE);
+                               layout_list.setVisibility(View.VISIBLE);
+                           }
+                       }
+                       num_count.setText(String.valueOf(0 + " Company"));
+                   }
+               }
+               catch (Exception e)
+               {
+
+               }
+
+
             }
 
             @Override

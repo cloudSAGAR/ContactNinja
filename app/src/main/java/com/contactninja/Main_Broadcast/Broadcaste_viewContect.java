@@ -87,15 +87,22 @@ public class Broadcaste_viewContect extends AppCompatActivity  implements Connec
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    Global.hideKeyboard(Broadcaste_viewContect.this);
-                    iv_cancle_search_icon.setVisibility(View.VISIBLE);
-                    List<BroadcastActivityModel.BroadcastProspect> temp = new ArrayList();
-                    for (BroadcastActivityModel.BroadcastProspect d : broadcastProspects) {
-                        if (d.getFirstname().toLowerCase().contains(ev_search.getText().toString().toLowerCase())) {
-                            temp.add(d);
+                    try {
+                        Global.hideKeyboard(Broadcaste_viewContect.this);
+                        iv_cancle_search_icon.setVisibility(View.VISIBLE);
+                        List<BroadcastActivityModel.BroadcastProspect> temp = new ArrayList();
+                        for (BroadcastActivityModel.BroadcastProspect d : broadcastProspects) {
+                            if (d.getFirstname().toLowerCase().contains(ev_search.getText().toString().toLowerCase())) {
+                                temp.add(d);
+                            }
                         }
+                        groupContectAdapter.updateList(temp);
                     }
-                    groupContectAdapter.updateList(temp);
+                    catch (Exception e)
+                    {
+
+                    }
+
 
                     return true;
                 }

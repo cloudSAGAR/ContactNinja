@@ -389,7 +389,14 @@ public class CurrentPlanActivity extends AppCompatActivity implements View.OnCli
                     plan.setPlansublist(plansublists123);
 
                 }
-                plandetailslist.add(plan);
+                try {
+                    plandetailslist.add(plan);
+                }
+                catch (Exception e)
+                {
+
+                }
+
             }
 
         }

@@ -2061,7 +2061,6 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         @Override
         public void onBindViewHolder(@NonNull InviteListDataclass holder, int position) {
             Contactdetail item = contactdetails.get(position);
-            Log.e("All Mobile Data ", new Gson().toJson(contactdetails));
             String flag = sessionManager.getContect_flag(getActivity());
             if (Is_blocked != 1) {
                 holder.layout_icon_message.setVisibility(View.VISIBLE);
@@ -2079,13 +2078,20 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                     holder.iv_set_default.setVisibility(View.GONE);
                 }
 
-                if (contactdetails.get(position).getStatus().equals("D"))
-                {
-                    holder.phone_layout.setVisibility(View.GONE);
-                }
-                else {
-                    holder.phone_layout.setVisibility(View.VISIBLE);
-                }
+               try {
+                   if (contactdetails.get(position).getStatus().equals("D"))
+                   {
+                       holder.phone_layout.setVisibility(View.GONE);
+                   }
+                   else {
+                       holder.phone_layout.setVisibility(View.VISIBLE);
+                   }
+               }
+               catch (Exception e)
+               {
+
+               }
+
 
                 holder.ccp_id.setDefaultCountryUsingNameCode(String.valueOf(Global.Countrycode(mCtx, item.getEmail_number())));
                 holder.ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(mCtx, item.getEmail_number()));
