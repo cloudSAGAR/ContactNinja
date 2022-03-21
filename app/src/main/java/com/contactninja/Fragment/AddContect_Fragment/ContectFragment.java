@@ -651,6 +651,7 @@ public class ContectFragment extends Fragment {
                     Global.IsNotNull(response.get(i).numbers) && !response.get(i).numbers.equals("null")) {
                 String email = "";
                 String number = "";
+                String contry_code = "";
                 for (int j = 0; j < response.get(i).emails.size(); j++) {
 
                     if (email.equals("")) {
@@ -663,10 +664,19 @@ public class ContectFragment extends Fragment {
 
                 for (int j = 0; j < response.get(i).numbers.size(); j++) {
 
-                    if (number.equals("")) {
-                        number = response.get(i).numbers.get(j).number;
-                    } else {
-                        number = number + "," + response.get(i).numbers.get(j).number;
+                    try {
+                        if (number.equals("")) {
+                            number = response.get(i).numbers.get(j).number;
+                            contry_code=response.get(i).numbers.get(j).contry_code;
+                        } else {
+                            number = number + "," + response.get(i).numbers.get(j).number;
+                            contry_code= contry_code + "," +response.get(i).numbers.get(j).contry_code;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        number = "";
+                        contry_code = "";
                     }
 
                 }
@@ -690,7 +700,8 @@ public class ContectFragment extends Fragment {
                             ',' + ' ' +
                             ',' + '"' + email + '"' +
                             ',' + '"' + number + ',' + '"' +
-                            ',' + ' '
+                            ',' + ' '+
+                            ',' + '"' + contry_code  + ',' + '"'
                     );
 
                 }
