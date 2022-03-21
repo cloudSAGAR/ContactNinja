@@ -162,12 +162,15 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
             mBarChart1.addPieSlice(new PieModel("Manual", des_taskCounter.getManual(), Color.parseColor("#FAAD64")));
             mBarChart1.startAnimation();
 
+
             Integer total = des_taskCounter.getAuto() + des_taskCounter.getManual();
             Double A = ((double) des_taskCounter.getAuto() / total) * 100;
             Double m = ((double) des_taskCounter.getManual() / total) * 100;
 
-            String Auto = Integer.toString((int) A.longValue());
-            String manual = Integer.toString((int) m.longValue());
+           long AA= Math.round(A);
+            long MM=Math.round(m);
+            String Auto = Integer.toString((int) AA);
+            String manual = Integer.toString((int) MM);
 
             tv_autometed_task.setText(String.valueOf(Auto + "%" + " Automated tasks"));
             tv_manual_task.setText(String.valueOf(manual + "%" + " Manaul tasks"));
