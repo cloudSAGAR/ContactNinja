@@ -25,22 +25,41 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+import retrofit2.Response;
 
 import com.bumptech.glide.Glide;
+import com.contactninja.AddContect.Add_Company_Activity;
 import com.contactninja.Fragment.GroupFragment.MembersFragment;
 import com.contactninja.Fragment.Home.Task_Fragment;
 import com.contactninja.Model.Grouplist;
+import com.contactninja.Model.UserData.SignResponseModel;
+import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
+import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
+import com.contactninja.retrofit.ApiResponse;
+import com.contactninja.retrofit.RetrofitCallback;
+import com.contactninja.retrofit.RetrofitCalls;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 import com.makeramen.roundedimageview.RoundedImageView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class SendBroadcast extends AppCompatActivity implements View.OnClickListener,ConnectivityReceiver.ConnectivityReceiverListener {
     private long mLastClickTime = 0;
     TextView save_button;
-    ImageView iv_Setting, iv_back;
+    ImageView iv_Setting, iv_back,iv_toolbar_manu1;
     EditText add_detail, add_new_contect, ev_search;
     SessionManager sessionManager;
     RoundedImageView add_new_contect_icon;
@@ -48,6 +67,11 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
     TextView no_image, topic_remainingCharacter;
 
     private BroadcastReceiver mNetworkReceiver;
+    RetrofitCalls retrofitCalls;
+    LoadingDialog loadingDialog;
+    int group_id;
+    String group_name;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +82,13 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
         Global.checkConnectivity(SendBroadcast.this, mMainLayout);
         sessionManager = new SessionManager(this);
         Grouplist.Group group_data = SessionManager.getGroupData(this);
-
+        sessionManager = new SessionManager(this);
+        retrofitCalls = new RetrofitCalls(this);
+        loadingDialog=new LoadingDialog(this);
         add_new_contect.setText(group_data.getGroupName());
         add_detail.setText(group_data.getDescription());
+        group_id=group_data.getId();
+        group_name=group_data.getGroupName();
 
         save_button.setOnClickListener(this);
         iv_back.setOnClickListener(this);
@@ -128,6 +156,9 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
     }
 
     private void IntentUI() {
+        iv_toolbar_manu1=findViewById(R.id.iv_toolbar_manu_vertical);
+        iv_toolbar_manu1.setVisibility(View.VISIBLE);
+        iv_toolbar_manu1.setOnClickListener(this);
         save_button = findViewById(R.id.save_button);
         iv_Setting = findViewById(R.id.iv_Setting);
         iv_Setting.setVisibility(View.VISIBLE);
@@ -144,6 +175,15 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.iv_toolbar_manu_vertical:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+                if (Global.isNetworkAvailable(this, mMainLayout)) {
+                    broadcast_manu();
+                }
+                break;
             case R.id.iv_back:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
@@ -165,7 +205,82 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    private void broadcast_manu() {
 
+        @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.remove_group_layout, null);
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this, R.style.CoffeeDialog);
+        bottomSheetDialog.setContentView(mView);
+
+        TextView selected_delete=bottomSheetDialog.findViewById(R.id.selected_delete);
+        selected_delete.setText("Delete Group");
+        selected_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    RemoveGroup();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                bottomSheetDialog.dismiss();
+
+            }
+        });
+        bottomSheetDialog.show();
+
+    }
+
+
+    private void RemoveGroup() throws JSONException {
+
+
+          loadingDialog.showLoadingDialog();
+
+        SignResponseModel user_data = sessionManager.getGetUserdata(this);
+        JSONArray jsonArray = new JSONArray();
+
+        // contect_array.put(3);
+        String token = Global.getToken(sessionManager);
+        JSONObject obj = new JSONObject();
+        JSONObject paramObject = new JSONObject();
+        paramObject.put("id", group_id);
+        paramObject.put("status","D");
+        paramObject.put("organization_id", 1);
+        paramObject.put("team_id", 1);
+        paramObject.put("user_id", user_data.getUser().getId());
+        //Log.e("Data IS ",new Gson().toJson(obj));
+        obj.put("data",paramObject);
+        JsonParser jsonParser = new JsonParser();
+        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
+        //  Log.e("Obbject data",new Gson().toJson(gsonObject));
+        retrofitCalls.AddGroup(sessionManager, gsonObject, loadingDialog, token, Global.getVersionname(SendBroadcast.this), Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+
+                loadingDialog.cancelLoading();
+                if (response.body().getHttp_status() == 200) {
+                    finish();
+                } else {
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Log.e("String is", response.body().getMessage());
+                    Type listType = new TypeToken<UservalidateModel>() {
+                    }.getType();
+                    UservalidateModel user_model = new Gson().fromJson(headerString, listType);
+                    Global.Messageshow(getApplicationContext(), mMainLayout, user_model.getEmail().get(0), false);
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+
+
+
+
+
+    }
 
 
 
