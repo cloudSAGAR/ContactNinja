@@ -93,7 +93,7 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
         save_button.setOnClickListener(this);
         iv_back.setOnClickListener(this);
         save_button.setText("Edit");
-        save_button.setVisibility(View.VISIBLE);
+        save_button.setVisibility(View.GONE);
         iv_Setting.setVisibility(View.GONE);
 
         if (group_data.getGroupImage() == null) {
@@ -213,6 +213,19 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
 
         TextView selected_delete=bottomSheetDialog.findViewById(R.id.selected_delete);
         selected_delete.setText("Delete Group");
+        TextView selected_edit=bottomSheetDialog.findViewById(R.id.selected_edit);
+        selected_edit.setText("Edit Group");
+        selected_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+                startActivity(new Intent(getApplicationContext(), Final_Group.class));
+                finish();
+            }
+        });
         selected_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
