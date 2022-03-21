@@ -144,7 +144,8 @@ public class ContactFetcher {
                     } catch (NumberParseException e) {
                         e.printStackTrace();
                     }
-                        contact.addNumber(number, phoneType.toString());
+                        String code=String.valueOf("+" +countryCode);
+                        contact.addNumber(number, phoneType.toString(),code);
                 phone.moveToNext();
             }
         }

@@ -443,7 +443,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 "Facebook Link" + "," + "Twitter Link" + "," +
                 "Breakout Link" + "," + "Linkedin Link" + "," +
                 "Email" + "," + "Phone" + "," +
-                "Fax");
+                "Fax"+","+"contry_code");
 
         for (int i = 0; i < response.size(); i++) {
 
@@ -451,6 +451,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Global.IsNotNull(response.get(i).numbers)&& !response.get(i).numbers.equals("null")) {
                 String email = "";
                 String number = "";
+                String contry_code = "";
                 for (int j = 0; j < response.get(i).emails.size(); j++) {
 
                     if (email.equals("")) {
@@ -466,13 +467,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     try {
                         if (number.equals("")) {
                             number = response.get(i).numbers.get(j).number;
+                            contry_code=response.get(i).numbers.get(j).contry_code;
                         } else {
                             number = number + "," + response.get(i).numbers.get(j).number;
+                            contry_code= contry_code + "," +response.get(i).numbers.get(j).contry_code;
                         }
                     }
                     catch (Exception e)
                     {
                         number = "";
+                        contry_code = "";
                     }
 
 
@@ -497,7 +501,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             ',' + ' ' +
                             ',' + '"' + email + '"' +
                             ',' + '"' + number + ',' + '"' +
-                            ',' + ' '
+                            ',' + ' ' +
+                            ',' + '"' + contry_code  + ',' + '"'
                     );
                 }
             }
@@ -505,11 +510,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         //Log.e("Data Is", String.valueOf(data));
-      /*  CreateCSV(data); */  //Api Pass Csv
+        CreateCSV(data);  //Api Pass Csv
 
 
         // Buket Upload Csv
-        Calendar calendar = Calendar.getInstance();
+       /* Calendar calendar = Calendar.getInstance();
         long time = calendar.getTimeInMillis();
         csv_file=SessionManager.getGetUserdata(getApplicationContext()).getUser().getId()+"_CSV_ANDROID_" + time ;
 
@@ -556,7 +561,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 loadingDialog.cancelLoading();
 
             }
-        });
+        });*/
 
     }
 
@@ -565,6 +570,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         long time = calendar.getTimeInMillis();
         try {
             //
+            if(csv_file.equals("")){
+                csv_file="CSV_ANDROID_" + time ;
+            }
             FileOutputStream out = openFileOutput(csv_file+ ".csv", Context.MODE_PRIVATE);//Api Pass Value  csv_file+ ".csv" //CSV_ANDROID_" + time + ".csv
 
             //store the data in CSV file by passing String Builder data
@@ -588,12 +596,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             startActivity(intent);*/
             if (Global.isNetworkAvailable(MainActivity.this, mMainLayout)) {
-              //  Uploadcsv(file);  //Api Time Call
-                s3uploaderObj = new S3Uploader_csv(MainActivity.this);
+                Uploadcsv(file);  //Api Time Call
+               /* s3uploaderObj = new S3Uploader_csv(MainActivity.this);
 
                 String Bzcard_image = s3uploaderObj.Csv_Upload(file.getPath(),
                         "CSV_UPLOAD");
-                UploadS3();
+                UploadS3();*/
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -1227,7 +1235,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     update_listContacts=SessionManager.getupdateContect(getApplicationContext());
                     csv_inviteListData.get(i).setId(String.valueOf(taskList.get(0).getId1()));
                     Contact update_contact=new Contact(taskList.get(0).getContect_id(),userName,last_name);
-                    ContactPhone contactPhone=new ContactPhone(userPhoneNumber,csv_inviteListData.get(i).numbers.get(0).type);
+                    ContactPhone contactPhone=new ContactPhone(userPhoneNumber,csv_inviteListData.get(i).numbers.get(0).type,csv_inviteListData.get(i).numbers.get(0).contry_code);
                     ArrayList<ContactPhone> contactPhoneslist=new ArrayList<>();
                     contactPhoneslist.add(contactPhone);
                     update_contact.setNumbers(contactPhoneslist);

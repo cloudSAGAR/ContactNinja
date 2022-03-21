@@ -13,7 +13,6 @@ public class Contact {
     public Contact(String id, String name,String last_name) {
         this.id = id;
         this.name = name;
-        this.last_name=last_name;
         this.emails = new ArrayList<ContactEmail>();
         this.numbers = new ArrayList<ContactPhone>();
     }
@@ -58,6 +57,8 @@ public class Contact {
         this.numbers = numbers;
     }
 
+
+
     @Override
     public String toString() {
         String result = name;
@@ -78,7 +79,7 @@ public class Contact {
         emails.add(new ContactEmail(address, type));
     }
 
-    public void addNumber(String number, String type) {
-        numbers.add(new ContactPhone(number, type));
+    public void addNumber(String number, String type,String countryCode) {
+        numbers.add(new ContactPhone(number, type,countryCode));
     }
 }
