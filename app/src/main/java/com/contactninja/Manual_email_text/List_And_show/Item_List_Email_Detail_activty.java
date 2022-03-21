@@ -630,7 +630,12 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
                     intent.putExtra("s_name", "add");
                     startActivity(intent);
                     finish();
-                } else if (response.body().getHttp_status() == 404) {
+                }
+                else if (response.body().getHttp_status()==403)
+                {
+                    Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.plan_validation),false);
+                }
+                else if (response.body().getHttp_status() == 404) {
                     Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
                 } else {
                     Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
@@ -1082,7 +1087,13 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
                     startActivity(intent);
                     finish();
 
-                } else {
+                }
+                else if (response.body().getHttp_status()==403)
+                {
+                    loadingDialog.cancelLoading();
+                    Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.plan_validation),false);
+                }
+                else {
                     loadingDialog.cancelLoading();
                 }
 
@@ -1127,7 +1138,13 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
                     intent.putExtra("s_name", "add");
                     startActivity(intent);
                     finish();
-                } else if (response.body().getHttp_status() == 406) {
+                }
+                else if (response.body().getHttp_status()==403)
+                {
+                    loadingDialog.cancelLoading();
+                    Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.plan_validation),false);
+                }
+                else if (response.body().getHttp_status() == 406) {
                     Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage().toString(), false);
                     loadingDialog.cancelLoading();
                 } else {

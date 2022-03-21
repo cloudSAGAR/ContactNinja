@@ -667,8 +667,18 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                     @Override
                     public void success(Response<ApiResponse> response) {
                         loadingDialog.cancelLoading();
-                        onResume();
-                        dialog.dismiss();
+
+                       if (response.body().getHttp_status()==200)
+                       {
+                           onResume();
+                           dialog.dismiss();
+                       }
+                       else if (response.body().getHttp_status()==403)
+                       {
+                           Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.plan_validation),false);
+                           dialog.dismiss();
+                       }
+
                     }
 
                     @Override

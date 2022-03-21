@@ -668,4 +668,6 @@ Number</string>
     <string name="plan_9">prod_LAUKubaHBxEsPP</string>
     <string name="plan_39">prod_LAUQKpnUmGVfBN</string>
     <string name="plan_69">prod_LAUJLCbnF7yEZQ</string>
+
+    <string name="plan_validation">You don\'t have active plan or quota.</string>
 </resources>

@@ -258,7 +258,12 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
                 if (response.body().getHttp_status() == 200) {
                     loadingDialog.cancelLoading();
                     finish();
-                } else {
+                }
+                else if (response.body().getHttp_status()==403)
+                {
+                    Global.Messageshow(getApplicationContext(),mMainLayout,response.body().getMessage().toString(),false);
+                }
+                else {
                     loadingDialog.cancelLoading();
                 }
             }

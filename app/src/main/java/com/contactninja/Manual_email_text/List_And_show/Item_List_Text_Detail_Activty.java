@@ -461,7 +461,14 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
                 if (response.body().getHttp_status() == 200) {
                     loadingDialog.cancelLoading();
                     finish();
-                } else {
+                }
+                else if (response.body().getHttp_status()==403)
+                {
+                    loadingDialog.cancelLoading();
+                    Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.plan_validation),false);
+                }
+
+                else {
                     loadingDialog.cancelLoading();
                 }
             }
@@ -500,7 +507,13 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
                     intent.putExtra("s_name", "add");
                     startActivity(intent);
                     finish();
-                } else {
+                }
+                else if (response.body().getHttp_status()==403)
+                {
+                    loadingDialog.cancelLoading();
+                    Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.plan_validation),false);
+                }
+                else {
                     Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
                 }
 

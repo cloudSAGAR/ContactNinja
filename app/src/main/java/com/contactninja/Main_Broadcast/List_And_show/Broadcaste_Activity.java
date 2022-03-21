@@ -513,6 +513,10 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
                                 e.printStackTrace();
                             }
                         }
+                        else if (response.body().getHttp_status()==403)
+                        {
+                            Global.Messageshow(getApplicationContext(),main_layout,getResources().getString(R.string.plan_validation),false);
+                        }
 
                     }
                     @Override

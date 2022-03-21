@@ -711,7 +711,12 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                     }
                     finish();
 
-                } else {
+                }
+                else if (response.body().getHttp_status()==403)
+                {
+                    Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.plan_validation),false);
+                }
+                else {
 
                     Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
 

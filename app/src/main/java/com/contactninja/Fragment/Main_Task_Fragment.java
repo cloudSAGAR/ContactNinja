@@ -578,7 +578,14 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                     } else {
                         demo_layout.setVisibility(View.VISIBLE);
                     }
-                } else {
+                }
+                else if (response.body().getHttp_status()==403)
+                {
+                    Global.Messageshow(getActivity(),mMainLayout,getResources().getString(R.string.plan_validation),false);
+
+                }
+
+                else {
                     demo_layout.setVisibility(View.VISIBLE);
                 }
             }
@@ -1083,7 +1090,14 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                   //  Filter = "";
                     refresf_api();
 
-                } else {
+                }
+                else if (response.body().getHttp_status()==403)
+                {
+                    Global.Messageshow(getActivity(),mMainLayout,getResources().getString(R.string.plan_validation),false);
+                }
+
+
+                else {
                     loadingDialog.cancelLoading();
                 }
 

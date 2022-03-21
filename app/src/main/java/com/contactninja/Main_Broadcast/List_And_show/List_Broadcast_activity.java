@@ -704,19 +704,27 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
                     @Override
                     public void success(Response<ApiResponse> response) {
                         loadingDialog.cancelLoading();
-                        currentPage = PAGE_START;
-                        isLastPage = false;
-                        broadcastActivityListModels.clear();
-                        broadCast_Adepter.clear();
-                        try {
-                            if (Global.isNetworkAvailable(List_Broadcast_activity.this, MainActivity.mMainLayout)) {
-                                if (!swipeToRefresh.isRefreshing()) {
-                                    loadingDialog.showLoadingDialog();
+                        if (response.body().getHttp_status()==200) {
+
+
+                            currentPage = PAGE_START;
+                            isLastPage = false;
+                            broadcastActivityListModels.clear();
+                            broadCast_Adepter.clear();
+                            try {
+                                if (Global.isNetworkAvailable(List_Broadcast_activity.this, MainActivity.mMainLayout)) {
+                                    if (!swipeToRefresh.isRefreshing()) {
+                                        loadingDialog.showLoadingDialog();
+                                    }
+                                    Broadcast_list();
                                 }
-                                Broadcast_list();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        }
+                        else if (response.body().getHttp_status()==403)
+                        {
+                            Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.plan_validation),false);
                         }
                     }
 

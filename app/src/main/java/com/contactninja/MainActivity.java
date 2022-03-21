@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
         else {
-            EnableRuntimePermission();
+         //   EnableRuntimePermission();
         }
         navItemIndex = 0;
         displayView();
@@ -212,7 +212,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         // Get new FCM registration token
                         String token = task.getResult();
 
-                        Log.e( "fcm token : ",token);
+                       // Log.e( "fcm token : ",token);
 
                     }
                 });

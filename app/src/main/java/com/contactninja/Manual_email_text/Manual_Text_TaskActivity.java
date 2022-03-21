@@ -348,7 +348,12 @@ public class Manual_Text_TaskActivity extends AppCompatActivity implements View.
                         startActivity(intent);
                         finish();
 
-                } else {
+                }
+                else if (response.body().getHttp_status()==403)
+                {
+                    Global.Messageshow(getApplicationContext(),mMainLayout,response.body().getMessage().toString(),false);
+                }
+                else {
                     loadingDialog.cancelLoading();
                 }
 

@@ -345,30 +345,37 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
             @Override
             public void success(Response<ApiResponse> response) {
 
-                Gson gson = new Gson();
-                String headerString = gson.toJson(response.body().getData());
-                Type listType = new TypeToken<Dashboard>() {
-                }.getType();
-                dashboard = new Gson().fromJson(headerString, listType);
-                des_taskCounter = dashboard.getTaskCounter();
-                des_affiliateInfo = dashboard.getAffiliate();
-                des_bizcardList = dashboard.getBizcard();
-
-                JSONObject jsonRootObject, json, graph = null;
-                HashMap<String, String> map = new HashMap<String, String>();//Creating HashMap
                 try {
-                    jsonRootObject = new JSONObject(headerString);
-                    json = jsonRootObject.getJSONObject("AFFILIATE");
-                    graph = json.getJSONObject("graph");
-                    for (int i = 0; i < graph.names().length(); i++) {
-                        map.put(graph.names().getString(i), String.valueOf(graph.get(graph.names().getString(i))));
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<Dashboard>() {
+                    }.getType();
+                    dashboard = new Gson().fromJson(headerString, listType);
+                    des_taskCounter = dashboard.getTaskCounter();
+                    des_affiliateInfo = dashboard.getAffiliate();
+                    des_bizcardList = dashboard.getBizcard();
+
+                    JSONObject jsonRootObject, json, graph = null;
+                    HashMap<String, String> map = new HashMap<String, String>();//Creating HashMap
+                    try {
+                        jsonRootObject = new JSONObject(headerString);
+                        json = jsonRootObject.getJSONObject("AFFILIATE");
+                        graph = json.getJSONObject("graph");
+                        for (int i = 0; i < graph.names().length(); i++) {
+                            map.put(graph.names().getString(i), String.valueOf(graph.get(graph.names().getString(i))));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+
+
+                    setdata(map);
+                }
+                catch (Exception e)
+                {
+
                 }
 
-
-                setdata(map);
 
 
             }
