@@ -696,9 +696,9 @@ public class ContectFragment extends Fragment {
                 }
             }
         }
-      /*  Calendar calendar = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
         long time = calendar.getTimeInMillis();
-        csv_file=SessionManager.getGetUserdata(getActivity()).getUser().getId()+"_CSV_Data_" + time ;
+        csv_file=SessionManager.getGetUserdata(getActivity()).getUser().getId()+"_CSV_ANDROID_" + time ;
 
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
         String user_id = String.valueOf(user_data.getUser().getId());
@@ -743,8 +743,8 @@ public class ContectFragment extends Fragment {
                 loadingDialog.cancelLoading();
 
             }
-        });*/
-        CreateCSV(data); //This CsV Upload Time Set
+        });
+        /*CreateCSV(data);*/ //This CsV Upload Time Set
 
     }
 /*
@@ -772,7 +772,7 @@ public class ContectFragment extends Fragment {
         long time = calendar.getTimeInMillis();
         try {
             //
-            FileOutputStream out = getActivity().openFileOutput("CSV_Data_" + time + ".csv", Context.MODE_PRIVATE);//old Csv Set Path csv_file+ ".csv"
+            FileOutputStream out = getActivity().openFileOutput("CSV_ANDROID_" + time + ".csv", Context.MODE_PRIVATE);//old Csv Set Path csv_file+ ".csv"
 
             //store the data in CSV file by passing String Builder data
             out.write(data.toString().getBytes());
@@ -782,7 +782,7 @@ public class ContectFragment extends Fragment {
             if (!newFile.exists()) {
                 newFile.mkdir();
             }
-            File file = new File(context.getFilesDir(), "CSV_Data_" + time + ".csv");//Old Csv Set csv_file +".csv"
+            File file = new File(context.getFilesDir(), "CSV_ANDROID_" + time + ".csv");//Old Csv Set csv_file +".csv"
             Uri path = FileProvider.getUriForFile(context, "com.contactninja", file);
             //once the file is ready a share option will pop up using which you can share
             // the same CSV from via Gmail or store in Google Drive
@@ -796,12 +796,12 @@ public class ContectFragment extends Fragment {
             startActivity(intent);*/
 
             if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
-                Uploadcsv(file); //Csv api Upload
-               /* s3uploaderObj = new S3Uploader_csv(getActivity());
+               // Uploadcsv(file); //Csv api Upload
+                s3uploaderObj = new S3Uploader_csv(getActivity());
 
                 String Bzcard_image = s3uploaderObj.Csv_Upload(file.getPath(),
                         "CSV_UPLOAD");
-                UploadS3();*/
+                UploadS3();
             }
         } catch (Exception e) {
             e.printStackTrace();

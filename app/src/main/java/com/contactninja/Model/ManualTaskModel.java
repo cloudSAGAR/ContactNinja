@@ -95,6 +95,9 @@ public class ManualTaskModel {
     @SerializedName("sent_tbl_id")
     @Expose
     private String sent_tbl_id;
+    @SerializedName("completed_on")
+    @Expose
+    private String completed_on="";
 
     public String getStage() {
         return stage;
@@ -318,5 +321,13 @@ public class ManualTaskModel {
 
     public void setManage_by(String manage_by) {
         this.manage_by = manage_by;
+    }
+
+    public String getCompleted_on() {
+        return completed_on;
+    }
+
+    public void setCompleted_on(String completed_on) {
+        this.completed_on = completed_on;
     }
 }

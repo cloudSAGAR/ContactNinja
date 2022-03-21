@@ -501,13 +501,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         //Log.e("Data Is", String.valueOf(data));
-        CreateCSV(data);   //Api Pass Csv
+      /*  CreateCSV(data); */  //Api Pass Csv
 
 
         // Buket Upload Csv
-        /*Calendar calendar = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
         long time = calendar.getTimeInMillis();
-        csv_file=SessionManager.getGetUserdata(getApplicationContext()).getUser().getId()+"_CSV_Data_" + time ;
+        csv_file=SessionManager.getGetUserdata(getApplicationContext()).getUser().getId()+"_CSV_ANDROID_" + time ;
 
         SignResponseModel user_data = SessionManager.getGetUserdata(activity);
         String user_id = String.valueOf(user_data.getUser().getId());
@@ -552,7 +552,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 loadingDialog.cancelLoading();
 
             }
-        });*/
+        });
 
     }
 
@@ -561,7 +561,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         long time = calendar.getTimeInMillis();
         try {
             //
-            FileOutputStream out = openFileOutput("CSV_Data_" + time + ".csv", Context.MODE_PRIVATE);//Api Pass Value  csv_file+ ".csv"
+            FileOutputStream out = openFileOutput("CSV_ANDROID_" + time + ".csv", Context.MODE_PRIVATE);//Api Pass Value  csv_file+ ".csv"
 
             //store the data in CSV file by passing String Builder data
             out.write(data.toString().getBytes());
@@ -571,7 +571,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (!newFile.exists()) {
                 newFile.mkdir();
             }
-            File file = new File(context.getFilesDir(), "CSV_Data_" + time + ".csv");//Api Time Pass csv_file+ ".csv"
+            File file = new File(context.getFilesDir(), "CSV_ANDROID_" + time + ".csv");//Api Time Pass csv_file+ ".csv"
             Uri path = FileProvider.getUriForFile(context, "com.contactninja", file);
             //once the file is ready a share option will pop up using which you can share
             // the same CSV from via Gmail or store in Google Drive
@@ -584,12 +584,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             startActivity(intent);*/
             if (Global.isNetworkAvailable(MainActivity.this, mMainLayout)) {
-                Uploadcsv(file);  //Api Time Call
-               /* s3uploaderObj = new S3Uploader_csv(MainActivity.this);
+              //  Uploadcsv(file);  //Api Time Call
+                s3uploaderObj = new S3Uploader_csv(MainActivity.this);
 
                 String Bzcard_image = s3uploaderObj.Csv_Upload(file.getPath(),
                         "CSV_UPLOAD");
-                UploadS3();*/
+                UploadS3();
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -823,9 +823,18 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                 String conactname = item.getContactMasterFirstname() + " " + item.getContactMasterLastname();
                 holder.tv_username.setText(Global.setFirstLetter(conactname));
                 holder.tv_task_description.setText(Global.setFirstLetter(item.getTask_name()));
+                String FullDate="",curendate="";
+                if(Filter.equals("FINISHED_AUTO")||Filter.equals("FINISHED")){
+                    FullDate = item.getCompleted_on();
+                    String currentString = item.getCompleted_on();
+                    String[] separated = currentString.split(" ");
+                    curendate = separated[0];
+                }else {
+                    FullDate = item.getDate() + " " + item.getTime();
+                    curendate =item.getDate();
+                }
 
-                String FullDate = item.getDate() + " " + item.getTime();
-                compareDates(item.getDate(), FullDate, holder.tv_status, holder.tv_time, item);
+                compareDates(curendate, FullDate, holder.tv_status, holder.tv_time, item);
 
                 String name = conactname;
                 String add_text = "";
