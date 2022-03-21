@@ -561,7 +561,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         long time = calendar.getTimeInMillis();
         try {
             //
-            FileOutputStream out = openFileOutput("CSV_ANDROID_" + time + ".csv", Context.MODE_PRIVATE);//Api Pass Value  csv_file+ ".csv"
+            FileOutputStream out = openFileOutput(csv_file+ ".csv", Context.MODE_PRIVATE);//Api Pass Value  csv_file+ ".csv" //CSV_ANDROID_" + time + ".csv
 
             //store the data in CSV file by passing String Builder data
             out.write(data.toString().getBytes());
@@ -571,7 +571,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (!newFile.exists()) {
                 newFile.mkdir();
             }
-            File file = new File(context.getFilesDir(), "CSV_ANDROID_" + time + ".csv");//Api Time Pass csv_file+ ".csv"
+            File file = new File(context.getFilesDir(), csv_file+ ".csv" );//Api Time Pass csv_file+ ".csv" //"CSV_ANDROID_" + time + ".csv"
             Uri path = FileProvider.getUriForFile(context, "com.contactninja", file);
             //once the file is ready a share option will pop up using which you can share
             // the same CSV from via Gmail or store in Google Drive
