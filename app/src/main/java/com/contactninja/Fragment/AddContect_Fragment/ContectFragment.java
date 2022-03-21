@@ -660,6 +660,7 @@ public class ContectFragment extends Fragment {
                         email = email + "," + response.get(i).emails.get(j).address;
                     }
 
+
                 }
 
                 for (int j = 0; j < response.get(i).numbers.size(); j++) {
