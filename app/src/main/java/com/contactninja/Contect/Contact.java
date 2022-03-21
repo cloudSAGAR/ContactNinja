@@ -13,6 +13,7 @@ public class Contact {
     public Contact(String id, String name,String last_name) {
         this.id = id;
         this.name = name;
+        this.last_name = last_name;
         this.emails = new ArrayList<ContactEmail>();
         this.numbers = new ArrayList<ContactPhone>();
     }
