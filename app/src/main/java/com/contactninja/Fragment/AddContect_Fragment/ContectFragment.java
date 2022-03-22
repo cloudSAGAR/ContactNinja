@@ -708,7 +708,7 @@ public class ContectFragment extends Fragment {
                 }
             }
         }
-       /* Calendar calendar = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
         long time = calendar.getTimeInMillis();
         csv_file=SessionManager.getGetUserdata(getActivity()).getUser().getId()+"_CSV_ANDROID_" + time ;
 
@@ -755,8 +755,8 @@ public class ContectFragment extends Fragment {
                 loadingDialog.cancelLoading();
 
             }
-        });*/
-        CreateCSV(data); //This CsV Upload Time Set
+        });
+       /* CreateCSV(data);*/ //This CsV Upload Time Set
 
     }
 /*
@@ -811,12 +811,12 @@ public class ContectFragment extends Fragment {
             startActivity(intent);*/
 
             if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
-                Uploadcsv(file); //Csv api Upload
-               /* s3uploaderObj = new S3Uploader_csv(getActivity());
+               // Uploadcsv(file); //Csv api Upload
+                s3uploaderObj = new S3Uploader_csv(getActivity());
 
                 String Bzcard_image = s3uploaderObj.Csv_Upload(file.getPath(),
                         "CSV_UPLOAD");
-                UploadS3();*/
+                UploadS3();
             }
         } catch (Exception e) {
             e.printStackTrace();

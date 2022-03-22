@@ -220,13 +220,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static void upload(RemoteMessage remoteMessage) {
         activity.runOnUiThread(new Runnable() {
             public void run() {
-                Global.Messageshow(activity,mMainLayout,"Hello testing chek ",true);
                 SessionManager.setCsv_Token("0");
                 try {
                     ContectEvent();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                Global.Messageshow(activity,mMainLayout,"Upload complate ",true);
 
             }
         });
@@ -510,11 +510,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         //Log.e("Data Is", String.valueOf(data));
-        CreateCSV(data);  //Api Pass Csv
+       /* CreateCSV(data);*/  //Api Pass Csv
 
 
         // Buket Upload Csv
-       /* Calendar calendar = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
         long time = calendar.getTimeInMillis();
         csv_file=SessionManager.getGetUserdata(getApplicationContext()).getUser().getId()+"_CSV_ANDROID_" + time ;
 
@@ -561,7 +561,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 loadingDialog.cancelLoading();
 
             }
-        });*/
+        });
 
     }
 
@@ -596,12 +596,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             startActivity(intent);*/
             if (Global.isNetworkAvailable(MainActivity.this, mMainLayout)) {
-                Uploadcsv(file);  //Api Time Call
-               /* s3uploaderObj = new S3Uploader_csv(MainActivity.this);
+               // Uploadcsv(file);  //Api Time Call
+                s3uploaderObj = new S3Uploader_csv(MainActivity.this);
 
                 String Bzcard_image = s3uploaderObj.Csv_Upload(file.getPath(),
                         "CSV_UPLOAD");
-                UploadS3();*/
+                UploadS3();
             }
         } catch (Exception e) {
             e.printStackTrace();
