@@ -119,6 +119,7 @@ public class ContactFetcher {
             final int contactIdColumnIndex = phone.getColumnIndex(Phone.CONTACT_ID);
             TelephonyManager tm = (TelephonyManager) context.getSystemService(context.TELEPHONY_SERVICE);
             String country = tm.getNetworkCountryIso();
+            String code1="";
             int countryCode = 0;
             PhoneNumberUtil phoneUtil = PhoneNumberUtil.createInstance(context);
             while (!phone.isAfterLast()) {
@@ -136,6 +137,7 @@ public class ContactFetcher {
                     try {
                         numberProto = phoneUtil.parse(number, country.toUpperCase());
                         countryCode = numberProto.getCountryCode();
+                        code1=phoneUtil.getRegionCodeForCountryCode(countryCode);
                         number = number.replace(" ", "");
                         number = number.replace("-", "");
                         if (!number.contains("+")) {
@@ -144,8 +146,7 @@ public class ContactFetcher {
                     } catch (NumberParseException e) {
                         e.printStackTrace();
                     }
-                        String code=String.valueOf("+" +countryCode);
-                        contact.addNumber(number, phoneType.toString(),code);
+                        contact.addNumber(number, phoneType.toString(),code1);
                 phone.moveToNext();
             }
         }
