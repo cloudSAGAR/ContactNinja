@@ -950,15 +950,18 @@ public class ContectFragment extends Fragment {
                             }
 
                         } else {
-                            try{
+                        /*    try{
                               splitdata(listContacts);
                             }catch (Exception e){
                                 e.printStackTrace();
-                            }
-                         /*   myAsyncTasks = new MyAsyncTasks();
-                            myAsyncTasks.execute();*/
+                            }*/
+                            loadingDialog.cancelLoading();
+                            myAsyncTasks = new MyAsyncTasks();
+                            myAsyncTasks.execute();
                         }
                     } else {
+                        loadingDialog.cancelLoading();
+
                         //   splitdata(listContacts);
                         myAsyncTasks = new MyAsyncTasks();
                         myAsyncTasks.execute();
