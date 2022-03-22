@@ -2512,7 +2512,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             String current = "";
             Log.e("Updaate Contect List ",new Gson().toJson(SessionManager.getupdateContect(getActivity())));
             try {
-                if (!SessionManager.getnewContect(getActivity()).equals(null) && SessionManager.getnewContect(getActivity()).size()!=0)
+              /*  if (!SessionManager.getnewContect(getActivity()).equals(null) && SessionManager.getnewContect(getActivity()).size()!=0)
                 {
                     try {
                         Duplicate_remove();
@@ -2529,7 +2529,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         e.printStackTrace();
                     }
                 }
-
+*/
                 if (!SessionManager.getupdateContect(getActivity()).equals(null) && SessionManager.getupdateContect(getActivity()).size()!=0) {
                     try {
                         AddContect_Update();
