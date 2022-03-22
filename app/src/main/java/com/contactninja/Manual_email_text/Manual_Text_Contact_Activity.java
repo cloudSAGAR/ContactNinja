@@ -401,6 +401,9 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity implements V
 
                     totale_group = contectListData1.getTotal();
                 }
+                else {
+                    sessionManager.setContectList(getApplicationContext(), new ArrayList<>());
+                }
 
             }
 

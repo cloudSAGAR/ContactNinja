@@ -415,6 +415,9 @@ public class Broadcast_Contect_Fragment extends Fragment {
 
                     totale_group = contectListData1.getTotal();
                 }
+                else {
+                    sessionManager.setContectList(getActivity(), new ArrayList<>());
+                }
 
             }
 

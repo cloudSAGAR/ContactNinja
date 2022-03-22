@@ -413,6 +413,10 @@ public class Manual_Email_Contect_Activity extends AppCompatActivity implements 
 
                     totale_group = contectListData1.getTotal();
                 }
+                else {
+                    sessionManager.setContectList(getApplicationContext(), new ArrayList<>());
+
+                }
 
             }
 

@@ -456,6 +456,11 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
 
                         totale_group = contectListData1.getTotal();
                     }
+                    else
+                    {
+                        sessionManager.setContectList(getApplicationContext(), new ArrayList<>());
+
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

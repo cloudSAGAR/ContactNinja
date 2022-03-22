@@ -776,6 +776,7 @@ public class ContectFragment extends Fragment {
 */
 
     private void CreateCSV(StringBuilder data) {
+        loadingDialog.cancelLoading();
         Calendar calendar = Calendar.getInstance();
         long time = calendar.getTimeInMillis();
         try {
@@ -907,6 +908,7 @@ public class ContectFragment extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onPermissionGranted() {
+                loadingDialog.showLoadingDialog();
                 try {
                     ContectEvent();
                 } catch (JSONException e) {
@@ -914,6 +916,7 @@ public class ContectFragment extends Fragment {
                 }
 
                 if (!SessionManager.getnewContect(getActivity()).equals(null) && !SessionManager.getnewContect(getActivity()).equals("")) {
+
                     Duplicate_remove();
                     Log.e("Data Is",new Gson().toJson(SessionManager.getnewContect(getActivity())));
                     ArrayList<Contact> listContacts1=new ArrayList<>();
@@ -935,7 +938,7 @@ public class ContectFragment extends Fragment {
                         e.printStackTrace();
                     }
                 } else {
-                    loadingDialog.showLoadingDialog();
+                 //   loadingDialog.showLoadingDialog();
                     String isContact = SessionManager.getcontectexits();
                     if (isContact.equals("0")) {
                         //Not Upload Contect Then If Call
@@ -953,14 +956,14 @@ public class ContectFragment extends Fragment {
                             }catch (Exception e){
                                 e.printStackTrace();
                             }*/
-                            loadingDialog.cancelLoading();
+
                             myAsyncTasks = new MyAsyncTasks();
                             myAsyncTasks.execute();
                         }
                     } else {
-                        loadingDialog.cancelLoading();
 
-                        //   splitdata(listContacts);
+
+                         //  splitdata(listContacts);
                         myAsyncTasks = new MyAsyncTasks();
                         myAsyncTasks.execute();
                     }
@@ -1048,6 +1051,7 @@ public class ContectFragment extends Fragment {
                     contacts.addAll(contectListData1.getContacts());
                     compareLists(contacts, main_store);
                 } else {
+                    sessionManager.setContectList(getActivity(), new ArrayList<>());
                 }
 
             }
@@ -1254,9 +1258,10 @@ public class ContectFragment extends Fragment {
                             e.printStackTrace();
                         }
 
-                    } else {
+                    }
+                    else {
                         num_count.setText("0 Contacts");
-
+                        sessionManager.setContectList(getActivity(), new ArrayList<>());
                         txt_nolist.setText(mCtx.getResources().getString(R.string.no_contact));
                         lay_no_list.setVisibility(View.VISIBLE);
                         layout_list_data.setVisibility(View.GONE);
@@ -2516,7 +2521,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         listContacts1.addAll(SessionManager.getnewContect(getActivity()));
                         if (listContacts1.size()!=0)
                         {
-                            splitdata(listContacts1);
+                           splitdata(listContacts1);
                         }
                     }
                     catch (Exception e)

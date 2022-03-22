@@ -714,6 +714,9 @@ public class Campaign_Contect_Fragment extends Fragment {
 
                     totale_group = contectListData1.getTotal();
                 }
+                else {
+                    sessionManager.setContectList(getActivity(), new ArrayList<>());
+                }
 
             }
 
