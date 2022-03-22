@@ -1772,7 +1772,7 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
                     ZoomExists zoomExists = new Gson().fromJson(headerString, listType);
 
                     String curenttext = edit_compose.getText().toString();
-                    String Newtext = curenttext + " /n " + zoomExists.getZoom_meeting_link_with_password();
+                    String Newtext = curenttext + " \n " + zoomExists.getZoom_meeting_link_with_password();
                     edit_compose.setText(Newtext);
                     edit_compose.setSelection(edit_compose.getText().length());
 

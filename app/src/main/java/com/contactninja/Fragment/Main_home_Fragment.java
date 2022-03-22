@@ -558,7 +558,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         @Override
         public BzcardlistAdepter.InviteListDataclass onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View view = inflater.inflate(R.layout.item_emailactivitylist, parent, false);
+            View view = inflater.inflate(R.layout.item_bzlist, parent, false);
             return new BzcardlistAdepter.InviteListDataclass(view);
         }
 
@@ -566,7 +566,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         public void onBindViewHolder(@NonNull BzcardlistAdepter.InviteListDataclass holder, int position) {
 
             Des_Bizcard item = des_bizcardList.get(position);
-            holder.tv_bzname.setText(item.getCard_name());
+            holder.tv_bzname.setText(String.valueOf(item.getCard_name()));
             holder.tv_count.setText(String.valueOf(item.getImpression()));
 
 

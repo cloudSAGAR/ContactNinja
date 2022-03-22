@@ -200,7 +200,15 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
                     Type listType = new TypeToken<List<BZcardListModel.Bizcard>>() {
                     }.getType();
                     List<BZcardListModel.Bizcard> bizcard = new Gson().fromJson(headerString, listType);
-                    manu(bizcard.get(0));
+                  //  manu(bizcard.get(0));
+
+                    SessionManager.setBzcard(getActivity(), new BZcardListModel.Bizcard());
+                    bizcard.get(0).setEdit(true);
+                    SessionManager.setBzcard(getActivity(), bizcard.get(0));
+
+                    startActivity(new Intent(getActivity(), Add_New_Bzcard_Activity.class));
+
+
                 }
             }
 
@@ -564,6 +572,7 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
 
             BZcardListModel.Bizcard bizcard = bizcardList.get(position);
             ImageView imageView = itemView.findViewById(R.id.iv_card);
+            ImageView iv_edit = itemView.findViewById(R.id.iv_edit);
 
             int resID = mContext.getResources().getIdentifier("my_" + bizcard.getCardName()
                     .replace(" ", "_").toLowerCase(), "drawable", mContext.getPackageName());
@@ -571,6 +580,14 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
                 Glide.with(mContext.getApplicationContext()).load(resID).into(imageView);
             }
             container.addView(itemView);
+
+
+            iv_edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    manu(bizcard);
+                }
+            });
 
             return itemView;
         }

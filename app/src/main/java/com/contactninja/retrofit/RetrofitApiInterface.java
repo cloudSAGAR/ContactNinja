@@ -187,6 +187,7 @@ public interface RetrofitApiInterface {
             @Part("user_id") RequestBody user_id,
             @Part("organization_id") RequestBody organization_id,
             @Part("is_phonebook") RequestBody is_phonebook,
+            @Part("imei") RequestBody imei,
             @Header("deviceType") String deviceType, @Header("appVersion") String appVersion
     );
 

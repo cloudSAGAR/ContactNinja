@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
         else {
-            EnableRuntimePermission();
+          //  EnableRuntimePermission();
         }
         navItemIndex = 0;
         displayView();
@@ -647,9 +647,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         RequestBody team_id1 = RequestBody.create(MediaType.parse("text/plain"), "1");
         RequestBody id = RequestBody.create(MediaType.parse("text/plain"), "1");
         RequestBody imei = RequestBody.create(MediaType.parse("text/plain"), Global.imei);
+        RequestBody is_phonebook = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(1));
 
         retrofitCalls.Upload_csv(sessionManager, loadingDialog, Global.getToken(sessionManager),
-                organization_id1, team_id1, user_id1, id, body, Global.getVersionname(MainActivity.this), Global.Device,imei, new RetrofitCallback() {
+                organization_id1, team_id1, user_id1,  body, Global.getVersionname(activity), Global.Device,is_phonebook, imei, new RetrofitCallback() {
                     @Override
                     public void success(Response<ApiResponse> response) {
                         sessionManager.setcontectexits("1");

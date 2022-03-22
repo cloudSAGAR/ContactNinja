@@ -1458,7 +1458,7 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
                     ZoomExists zoomExists=new Gson().fromJson(headerString, listType);
 
                     String curenttext = edit_template.getText().toString();
-                    String Newtext = curenttext + " /n "+ zoomExists.getZoom_meeting_link_with_password();
+                    String Newtext = curenttext + " \n "+ zoomExists.getZoom_meeting_link_with_password();
                     edit_template.setText(Newtext);
                     edit_template.setSelection(edit_template.getText().length());
 
