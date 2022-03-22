@@ -829,6 +829,7 @@ public class ContectFragment extends Fragment {
             public void onUploadSuccess(String response) {
                 Log.e("Reppnse is", new Gson().toJson(response));
                 loadingDialog.cancelLoading();
+                SessionManager.setnewContect(getActivity(),new ArrayList<>());
 
             }
 

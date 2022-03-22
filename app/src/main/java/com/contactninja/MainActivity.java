@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
         else {
-          //  EnableRuntimePermission();
+            EnableRuntimePermission();
         }
         navItemIndex = 0;
         displayView();
@@ -615,6 +615,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Log.e("Reppnse is", new Gson().toJson(response));
                 loadingDialog.cancelLoading();
                 SessionManager.setCsv_Token("1");
+                SessionManager.setnewContect(getApplicationContext(),new ArrayList<>());
 
             }
 
