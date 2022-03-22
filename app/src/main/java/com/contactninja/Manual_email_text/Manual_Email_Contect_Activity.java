@@ -373,6 +373,7 @@ public class Manual_Email_Contect_Activity extends AppCompatActivity implements 
         paramObject.addProperty("q", "");
         paramObject.addProperty("orderBy", "firstname");
         paramObject.addProperty("order", "asc");
+        paramObject.addProperty("phone_book", 1);
         obj.add("data", paramObject);
 
         JsonParser jsonParser = new JsonParser();

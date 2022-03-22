@@ -253,13 +253,13 @@ public class RetrofitCalls {
 
     }
 
-    public void Contect_List(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+/*    public void Contect_List(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
         call = retrofitApiInterface.Contect_List(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
         this.retrofitCallback = retrofitCallback;
         this.session = session;
         call_api(retrofitCallback, loadingDialog);
 
-    }
+    }*/
 
     public void Upload_csv(SessionManager session,LoadingDialog loadingDialog, String token, RequestBody organization_id,
                            RequestBody team_id, RequestBody user_id,MultipartBody.Part import_file,

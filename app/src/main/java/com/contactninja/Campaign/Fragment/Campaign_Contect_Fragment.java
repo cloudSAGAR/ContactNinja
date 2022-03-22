@@ -672,6 +672,7 @@ public class Campaign_Contect_Fragment extends Fragment {
         paramObject.addProperty("q", "");
         paramObject.addProperty("orderBy", "firstname");
         paramObject.addProperty("order", "asc");
+        paramObject.addProperty("phone_book", 1);
         obj.add("data", paramObject);
 
         JsonParser jsonParser = new JsonParser();

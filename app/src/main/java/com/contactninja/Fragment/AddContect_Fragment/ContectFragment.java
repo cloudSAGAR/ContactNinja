@@ -644,14 +644,13 @@ public class ContectFragment extends Fragment {
                 "Facebook Link" + "," + "Twitter Link" + "," +
                 "Breakout Link" + "," + "Linkedin Link" + "," +
                 "Email" + "," + "Phone" + "," +
-                "Fax"+","+"contry_code");
+                "Fax"+","+"imei");
 
         for (int i = 0; i < response.size(); i++) {
             if (Global.IsNotNull(response.get(i).name) && !response.get(i).name.equals("null") &&
                     Global.IsNotNull(response.get(i).numbers) && !response.get(i).numbers.equals("null")) {
                 String email = "";
                 String number = "";
-                String contry_code = "";
                 for (int j = 0; j < response.get(i).emails.size(); j++) {
 
                     if (email.equals("")) {
@@ -668,16 +667,13 @@ public class ContectFragment extends Fragment {
                     try {
                         if (number.equals("")) {
                             number = response.get(i).numbers.get(j).number;
-                            contry_code=response.get(i).numbers.get(j).contry_code;
                         } else {
                             number = number + "," + response.get(i).numbers.get(j).number;
-                            contry_code= contry_code + "," +response.get(i).numbers.get(j).contry_code;
                         }
                     }
                     catch (Exception e)
                     {
                         number = "";
-                        contry_code = "";
                     }
 
                 }
@@ -702,7 +698,7 @@ public class ContectFragment extends Fragment {
                             ',' + '"' + email + '"' +
                             ',' + '"' + number + ',' + '"' +
                             ',' + ' '+
-                            ',' + '"' + contry_code  + ',' + '"'
+                            ',' + Global.imei
                     );
 
                 }
@@ -1017,7 +1013,9 @@ public class ContectFragment extends Fragment {
         paramObject.addProperty("q", "");
         paramObject.addProperty("orderBy", "firstname");
         paramObject.addProperty("order", "asc");
+        paramObject.addProperty("phone_book", 1);
         obj.add("data", paramObject);
+
 
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
@@ -1182,6 +1180,7 @@ public class ContectFragment extends Fragment {
         paramObject.addProperty("q", fillter_text);
         paramObject.addProperty("orderBy", "firstname");
         paramObject.addProperty("order", "asc");
+        paramObject.addProperty("phone_book", 1);
         obj.add("data", paramObject);
 
         JsonParser jsonParser = new JsonParser();

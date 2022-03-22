@@ -443,7 +443,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 "Facebook Link" + "," + "Twitter Link" + "," +
                 "Breakout Link" + "," + "Linkedin Link" + "," +
                 "Email" + "," + "Phone" + "," +
-                "Fax"+","+"contry_code");
+                "Fax"+","+"imei");
 
         for (int i = 0; i < response.size(); i++) {
 
@@ -451,7 +451,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Global.IsNotNull(response.get(i).numbers)&& !response.get(i).numbers.equals("null")) {
                 String email = "";
                 String number = "";
-                String contry_code = "";
                 for (int j = 0; j < response.get(i).emails.size(); j++) {
 
                     if (email.equals("")) {
@@ -467,16 +466,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     try {
                         if (number.equals("")) {
                             number = response.get(i).numbers.get(j).number;
-                            contry_code=response.get(i).numbers.get(j).contry_code;
                         } else {
                             number = number + "," + response.get(i).numbers.get(j).number;
-                            contry_code= contry_code + "," +response.get(i).numbers.get(j).contry_code;
                         }
                     }
                     catch (Exception e)
                     {
                         number = "";
-                        contry_code = "";
                     }
 
 
@@ -502,7 +498,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             ',' + '"' + email + '"' +
                             ',' + '"' + number + ',' + '"' +
                             ',' + ' ' +
-                            ',' + '"' + contry_code  + ',' + '"'
+                            ',' + Global.imei
                     );
                 }
             }
@@ -714,6 +710,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         paramObject.addProperty("q", "");
         paramObject.addProperty("orderBy", "firstname");
         paramObject.addProperty("order", "asc");
+        paramObject.addProperty("phone_book", 1);
         obj.add("data", paramObject);
 
         JsonParser jsonParser = new JsonParser();

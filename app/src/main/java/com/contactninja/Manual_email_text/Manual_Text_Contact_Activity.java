@@ -361,6 +361,7 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity implements V
         paramObject.addProperty("q", "");
         paramObject.addProperty("orderBy", "firstname");
         paramObject.addProperty("order", "asc");
+        paramObject.addProperty("phone_book", 1);
         obj.add("data", paramObject);
 
         JsonParser jsonParser = new JsonParser();
