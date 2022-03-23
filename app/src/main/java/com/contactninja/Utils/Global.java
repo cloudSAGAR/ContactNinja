@@ -66,6 +66,8 @@ public class Global extends Application {
     public static String bzcard_share ="https://app.contactninja.org/bzcard/";
     public static String bzcard_priview="https://app.contactninja.org/bzpreview/";
     public static String bzcard_master="https://app.contactninja.org/master-preview/";
+    public static String youtube_link="https://www.youtube.com/embed/";
+
     private static long lastClickTime = 0;
     private static Global mInstance;
     private static Snackbar snackbar;
