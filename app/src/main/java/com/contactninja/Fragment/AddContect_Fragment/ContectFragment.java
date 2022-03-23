@@ -756,6 +756,9 @@ public class ContectFragment extends Fragment {
                 }
             });
         }
+        else {
+            tv_upload.setEnabled(true);
+        }
 
        /* CreateCSV(data);*/ //This CsV Upload Time Set
 
@@ -833,12 +836,13 @@ public class ContectFragment extends Fragment {
                 Log.e("Reppnse is", new Gson().toJson(response));
                 loadingDialog.cancelLoading();
                 SessionManager.setnewContect(getActivity(),new ArrayList<>());
-
+                tv_upload.setEnabled(true);
             }
 
             @Override
             public void onUploadError(String response) {
                 loadingDialog.cancelLoading();
+                tv_upload.setEnabled(true);
                 Log.e("Error is", new Gson().toJson(response));
             }
 
@@ -930,7 +934,13 @@ public class ContectFragment extends Fragment {
                     {
                         splitdata(listContacts1);
                     }
+                    else {
+                        tv_upload.setEnabled(true);
+                    }
 
+                }
+                else {
+                    tv_upload.setEnabled(true);
                 }
 
                 listContacts = new ContactFetcher(getActivity()).fetchAll();
