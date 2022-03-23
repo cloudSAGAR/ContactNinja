@@ -7,8 +7,10 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
+import com.amazonaws.services.s3.Headers;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.StorageClass;
 import com.contactninja.aws.image_aws.AWSKeys;
 import com.contactninja.aws.image_aws.AmazonUtil;
 
@@ -71,6 +73,7 @@ public class S3Uploader_csv {
         String audioURL = AWSKeys_csv.BUCKET_URL +uploadFileName;
         ObjectMetadata metadataCopy = new ObjectMetadata();
         metadataCopy.setContentType("text/csv");
+        metadataCopy.setHeader(Headers.STORAGE_CLASS, StorageClass.ReducedRedundancy);
         TransferObserver transferObserver = transferUtility.upload(AWSKeys_csv.BUCKET_NAME, uploadFileName,
                 uploadToS3, metadataCopy,  CannedAccessControlList.PublicRead
         );
