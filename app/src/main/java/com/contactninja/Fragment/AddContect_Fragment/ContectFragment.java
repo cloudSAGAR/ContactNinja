@@ -704,54 +704,59 @@ public class ContectFragment extends Fragment {
                 }
             }
         }
-        Calendar calendar = Calendar.getInstance();
-        long time = calendar.getTimeInMillis();
-        csv_file=SessionManager.getGetUserdata(getActivity()).getUser().getId()+"_CSV_ANDROID_" + time ;
 
-        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-        String user_id = String.valueOf(user_data.getUser().getId());
-        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
-        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-        String token = Global.getToken(sessionManager);
-        JsonObject obj = new JsonObject();
-        JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", 1);
-        paramObject.addProperty("team_id", 1);
-        paramObject.addProperty("user_id", user_id);
-        paramObject.addProperty("csv_name",csv_file+".csv");
-        obj.add("data", paramObject);
+        if (!data.toString().equals(null) &&  !data.toString().equals(""))
+        {
+            Calendar calendar = Calendar.getInstance();
+            long time = calendar.getTimeInMillis();
+            csv_file=SessionManager.getGetUserdata(getActivity()).getUser().getId()+"_CSV_ANDROID_" + time ;
 
-        JsonParser jsonParser = new JsonParser();
-        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
-        RetrofitApiInterface registerinfo = RetrofitApiClient.getClient().create(RetrofitApiInterface.class);
-        Call<ApiResponse> call = registerinfo.S3bucket_import(RetrofitApiClient.API_Header, token, obj, Global.getVersionname(getActivity()),
-                Global.Device);
-        call.enqueue(new Callback<ApiResponse>() {
-            @Override
-            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
-                loadingDialog.cancelLoading();
+            SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+            String user_id = String.valueOf(user_data.getUser().getId());
+            String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+            String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+            String token = Global.getToken(sessionManager);
+            JsonObject obj = new JsonObject();
+            JsonObject paramObject = new JsonObject();
+            paramObject.addProperty("organization_id", 1);
+            paramObject.addProperty("team_id", 1);
+            paramObject.addProperty("user_id", user_id);
+            paramObject.addProperty("csv_name",csv_file+".csv");
+            obj.add("data", paramObject);
 
-                if (response.body().getHttp_status() == 200) {
+            JsonParser jsonParser = new JsonParser();
+            JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
+            RetrofitApiInterface registerinfo = RetrofitApiClient.getClient().create(RetrofitApiInterface.class);
+            Call<ApiResponse> call = registerinfo.S3bucket_import(RetrofitApiClient.API_Header, token, obj, Global.getVersionname(getActivity()),
+                    Global.Device);
+            call.enqueue(new Callback<ApiResponse>() {
+                @Override
+                public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                    loadingDialog.cancelLoading();
 
-                    SessionManager.setContectList(getActivity(), new ArrayList<>());
-                    Gson gson = new Gson();
-                    String headerString = gson.toJson(response.body().getData());
-                    Type listType = new TypeToken<BuketModel>() {
-                    }.getType();
-                    BuketModel Data = new Gson().fromJson(headerString, listType);
-                    csv_file=csv_file+"_"+Data.getId();
-                    CreateCSV(data);
+                    if (response.body().getHttp_status() == 200) {
+
+                        SessionManager.setContectList(getActivity(), new ArrayList<>());
+                        Gson gson = new Gson();
+                        String headerString = gson.toJson(response.body().getData());
+                        Type listType = new TypeToken<BuketModel>() {
+                        }.getType();
+                        BuketModel Data = new Gson().fromJson(headerString, listType);
+                        csv_file=csv_file+"_"+Data.getId();
+                        CreateCSV(data);
+
+                    }
 
                 }
 
-            }
+                @Override
+                public void onFailure(Call<ApiResponse> call, Throwable throwable) {
+                    loadingDialog.cancelLoading();
 
-            @Override
-            public void onFailure(Call<ApiResponse> call, Throwable throwable) {
-                loadingDialog.cancelLoading();
+                }
+            });
+        }
 
-            }
-        });
        /* CreateCSV(data);*/ //This CsV Upload Time Set
 
     }
