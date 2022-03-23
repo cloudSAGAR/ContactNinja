@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         sessionManager.login();
         loadingDialog = new LoadingDialog(this);
         retrofitCalls = new RetrofitCalls(getApplicationContext());
-        startActivity(new Intent(getApplicationContext(),Contect_Demo.class));
+       // startActivity(new Intent(getApplicationContext(),Contect_Demo.class));
         SessionManager.setGroupData(getApplicationContext(), new Grouplist.Group());
         IntentUI();
         Calendar cal = Calendar.getInstance();
@@ -326,7 +326,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                if (SessionManager.getnewContect(getApplicationContext())!=null && !SessionManager.getnewContect(getApplicationContext()).equals(""))
+             /*   if (SessionManager.getnewContect(getApplicationContext())!=null && !SessionManager.getnewContect(getApplicationContext()).equals(""))
                 {
                     try {
                         Duplicate_remove();
@@ -343,7 +343,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     {
                         e.printStackTrace();
                     }
-                }
+                }*/
                 if (SessionManager.getContectList(getApplicationContext()).size() == 0) {
                     loadingDialog.showLoadingDialog();
                 }
