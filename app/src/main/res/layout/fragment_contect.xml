@@ -100,6 +100,7 @@
 
                  />
             <TextView
+                android:visibility="gone"
                 android:padding="@dimen/_5sdp"
                 android:id="@+id/tv_upload"
                 style="@style/tv_regular_12"

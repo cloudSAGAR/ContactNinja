@@ -255,6 +255,7 @@ public class ContectFragment extends Fragment {
         IntentUI(content_view);
         Filter = "ALL";
         setAllData();
+        EnableRuntimePermission();
         return content_view;
 
     }
@@ -389,17 +390,47 @@ public class ContectFragment extends Fragment {
 
             }
         });
-        tv_upload.setVisibility(View.VISIBLE);
+        if (!SessionManager.getnewContect(getActivity()).equals(null) && !SessionManager.getnewContect(getActivity()).equals("")) {
+            Log.e("Data Is",new Gson().toJson(SessionManager.getnewContect(getActivity())));
+            ArrayList<Contact> listContacts1=new ArrayList<>();
+            listContacts1.addAll(SessionManager.getnewContect(getActivity()));
+            if (listContacts1.size()!=0)
+            {
+                tv_upload.setVisibility(View.VISIBLE);
+            }
+            else {
+                tv_upload.setVisibility(View.GONE);
+            }
+        }
+
         tv_upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
                 }
 
                 mLastClickTime = SystemClock.elapsedRealtime();
+                if (!SessionManager.getnewContect(getActivity()).equals(null) && !SessionManager.getnewContect(getActivity()).equals("")) {
 
-                EnableRuntimePermission();
+                    Duplicate_remove();
+                    Log.e("Data Is",new Gson().toJson(SessionManager.getnewContect(getActivity())));
+                    ArrayList<Contact> listContacts1=new ArrayList<>();
+                    listContacts1.addAll(SessionManager.getnewContect(getActivity()));
+                    if (listContacts1.size()!=0)
+                    {
+                        loadingDialog.showLoadingDialog();
+                        splitdata(listContacts1);
+                    }
+                    else {
+                        tv_upload.setEnabled(true);
+                    }
+
+                }
+                else {
+                    tv_upload.setEnabled(true);
+                }
                 tv_upload.setEnabled(false);
                 // splitdata(csv_inviteListData);
             }
@@ -460,7 +491,8 @@ public class ContectFragment extends Fragment {
                 //Get All Contect Locale Room Database  No Data Then Upload Csv Code Call
                 if (contect_list.size() == 0) {
                     //    splitdata(csv_inviteListData);
-                } else if (contect_list.size() == listContacts.size()) {
+                }
+                else if (contect_list.size() == listContacts.size()) {
                     for (int i = 0; i < listContacts.size(); i++) {
                         String num = listContacts.get(i).numbers.get(0).number;
                         String f_name = listContacts.get(i).name;
@@ -833,10 +865,11 @@ public class ContectFragment extends Fragment {
         s3uploaderObj.setOns3UploadDone(new S3Uploader_csv.S3UploadInterface() {
             @Override
             public void onUploadSuccess(String response) {
-                Log.e("Reppnse is", new Gson().toJson(response));
+               // Log.e("Reppnse is", new Gson().toJson(response));
                 loadingDialog.cancelLoading();
                 SessionManager.setnewContect(getActivity(),new ArrayList<>());
                 tv_upload.setEnabled(true);
+                tv_upload.setVisibility(View.GONE);
             }
 
             @Override
@@ -917,14 +950,14 @@ public class ContectFragment extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onPermissionGranted() {
-                loadingDialog.showLoadingDialog();
-                try {
+               // loadingDialog.showLoadingDialog();
+               /* try {
                     ContectEvent();
                 } catch (JSONException e) {
                     e.printStackTrace();
-                }
+                }*/
 
-                if (!SessionManager.getnewContect(getActivity()).equals(null) && !SessionManager.getnewContect(getActivity()).equals("")) {
+                /*if (!SessionManager.getnewContect(getActivity()).equals(null) && !SessionManager.getnewContect(getActivity()).equals("")) {
 
                     Duplicate_remove();
                     Log.e("Data Is",new Gson().toJson(SessionManager.getnewContect(getActivity())));
@@ -941,7 +974,7 @@ public class ContectFragment extends Fragment {
                 }
                 else {
                     tv_upload.setEnabled(true);
-                }
+                }*/
 
                 listContacts = new ContactFetcher(getActivity()).fetchAll();
                 SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
@@ -1381,8 +1414,6 @@ public class ContectFragment extends Fragment {
         }
         myAsyncTasks1 = new MyAsyncTasks1();
         myAsyncTasks1.execute();
-
-
 
     }
 
