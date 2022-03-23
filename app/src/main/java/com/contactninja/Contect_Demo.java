@@ -31,8 +31,6 @@ import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Utils.PaginationListener;
 import com.contactninja.Utils.SessionManager;
-import com.yahiaangelo.markdownedittext.MarkdownEditText;
-import com.yahiaangelo.markdownedittext.MarkdownStylesBar;
 
 
 import java.util.ArrayList;
@@ -58,20 +56,21 @@ EditText editText;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contect_demo);
         save=findViewById(R.id.save);
-        MarkdownEditText markdownEditText = findViewById(R.id.edittext);
-        MarkdownStylesBar stylesBar = findViewById(R.id.stylesbar);
-                markdownEditText.setStylesBar(stylesBar);
+
         editText=findViewById(R.id.editText);
+      //  stylesBar.setStylesList(new MarkdownEditText.TextStyle[]{MarkdownEditText.TextStyle.BOLD, MarkdownEditText.TextStyle.ITALIC,MarkdownEditText.TextStyle.LINK});
 
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 int startSelection=editText.getSelectionStart();
                 int endSelection=editText.getSelectionEnd();
+
                 if (startSelection==endSelection)
                 {
-                    String selectedText = "<b>"+editText.getText().toString().substring(startSelection, endSelection)+"</b>";
+                    /*String selectedText = "<b>"+editText.getText().toString().substring(startSelection, endSelection)+"</b>";
                     Toast.makeText(getApplicationContext(),selectedText,Toast.LENGTH_LONG).show();
                     Log.e("String is",selectedText);
                     StringBuilder stringBuilder = new StringBuilder(editText.getText().toString());
@@ -80,13 +79,13 @@ EditText editText;
                     stringBuilder.replace(startSelection, endSelection, selectedText);
                     System.out.println("After Replace :- " + stringBuilder);
                     editText.setText(Html.fromHtml(stringBuilder.toString()));
-
+*/
                 }
                 else {
-                    String selectedText = "<b>"+editText.getText().toString().substring(startSelection, endSelection)+"</b>";
+                    String selectedText = "<b>"+Html.fromHtml(editText.getText().toString()).toString().substring(startSelection, endSelection)+"</b>";
                     Toast.makeText(getApplicationContext(),selectedText,Toast.LENGTH_LONG).show();
                     Log.e("String is",selectedText);
-                    StringBuilder stringBuilder = new StringBuilder(editText.getText().toString());
+                    StringBuilder stringBuilder = new StringBuilder(Html.fromHtml(editText.getText().toString()));
                     System.out.println("String :- " + stringBuilder);
 
                     stringBuilder.replace(startSelection, endSelection, selectedText);

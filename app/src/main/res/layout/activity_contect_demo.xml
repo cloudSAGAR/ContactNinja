@@ -7,7 +7,7 @@
     tools:context=".MainActivity"
     android:orientation="vertical">
     <EditText
-        android:visibility="gone"
+        android:visibility="visible"
         android:hint="@string/invalid_phone"
         android:id="@+id/editText"
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
 
     </EditText>
     <TextView
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_marginTop="50dp"
         android:layout_gravity="center"
         android:gravity="center"
@@ -28,23 +28,6 @@
         android:layout_height="wrap_content">
 
     </TextView>
-
-    <com.yahiaangelo.markdownedittext.MarkdownEditText
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/edittext"
-        android:gravity="top"/>
-
-    <com.yahiaangelo.markdownedittext.MarkdownStylesBar
-        android:layout_marginTop="-50dp"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:id="@+id/stylesbar"
-        app:buttonColor="@color/calendar_text"
-        android:clipToPadding="false"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"/>
 
 
 
