@@ -282,6 +282,41 @@ public class Social_media_Bzcard_Fragment extends Fragment {
 
     public void setData()
     {
+
+        if(bzcard_model.getCard_id()==1){
+
+            ev_fb.setEnabled(false);
+            ev_twitter.setEnabled(false);
+            ev_youtube.setEnabled(false);
+            ev_breakout.setEnabled(false);
+            ev_instagram.setEnabled(false);
+            ev_linkedin.setEnabled(false);
+            ev_pintrest.setEnabled(false);
+            ev_venmo.setEnabled(false);
+            ev_skypay.setEnabled(false);
+            ev_tiktok.setEnabled(false);
+            ev_snap_chat.setEnabled(false);
+            ev_other_filed.setEnabled(false);
+            ev_other_filed1.setEnabled(false);
+
+        }else {
+            ev_fb.setEnabled(true);
+            ev_twitter.setEnabled(true);
+            ev_youtube.setEnabled(true);
+            ev_breakout.setEnabled(true);
+            ev_instagram.setEnabled(true);
+            ev_linkedin.setEnabled(true);
+            ev_pintrest.setEnabled(true);
+            ev_venmo.setEnabled(true);
+            ev_skypay.setEnabled(true);
+            ev_tiktok.setEnabled(true);
+            ev_snap_chat.setEnabled(true);
+            ev_other_filed.setEnabled(true);
+            ev_other_filed1.setEnabled(true);
+
+        }
+
+
         ev_fb.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getFacebook_url().toString().trim());
         ev_twitter.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getTwitter_url().toString().trim());
         ev_youtube.setText(bzcard_model.getBzcardFieldsModel().getSocial_links().getYoutube_url().toString().trim());

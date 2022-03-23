@@ -24,6 +24,7 @@
             android:orientation="horizontal">
 
             <ImageView
+                android:visibility="invisible"
                 android:id="@+id/bottom_backword"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -40,6 +41,7 @@
                 tools:ignore="NestedWeights,SpeakableTextPresentCheck" />
 
             <ImageView
+                android:visibility="invisible"
                 android:id="@+id/bottom_forword"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"

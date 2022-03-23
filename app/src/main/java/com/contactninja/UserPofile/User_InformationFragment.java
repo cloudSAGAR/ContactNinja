@@ -15,6 +15,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -1155,6 +1156,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
     private void IntentUI(View view) {
         ev_affiliatecode=view.findViewById(R.id.ev_affiliatecode);
         iv_copy_affilate=view.findViewById(R.id.iv_copy_affilate);
+        iv_copy_affilate.setOnClickListener(this);
         layout_referenceCode = view.findViewById(R.id.layout_referenceCode);
         layout_country_piker = view.findViewById(R.id.layout_country_piker);
         edt_email = view.findViewById(R.id.edt_email);
@@ -1253,6 +1255,12 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 ClipData clip = ClipData.newPlainText("Code", referenceCode);
                 clipboard.setPrimaryClip(clip);
                 Toast.makeText(getContext(), "Code copy", Toast.LENGTH_SHORT).show();
+                iv_copy_affilate.setImageResource(R.drawable.ic_copy_select);
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        iv_copy_affilate.setImageResource(R.drawable.ic_copy);
+                    }
+                }, 1000);
                 break;
 
         }

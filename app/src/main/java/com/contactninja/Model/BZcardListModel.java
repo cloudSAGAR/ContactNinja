@@ -66,6 +66,9 @@ public class BZcardListModel {
         @SerializedName("card_name")
         @Expose
         private String cardName = "";
+        @SerializedName("card_id")
+        @Expose
+        private Integer card_id = 1;
         @SerializedName("fields")
         @Expose
         private Bzcard_Fields_Model bzcardFieldsModel1 = new Bzcard_Fields_Model();
@@ -84,6 +87,14 @@ public class BZcardListModel {
         @SerializedName("id_encoded")
         @Expose
         private String id_encoded = "";
+
+        public Integer getCard_id() {
+            return card_id;
+        }
+
+        public void setCard_id(Integer card_id) {
+            this.card_id = card_id;
+        }
 
         public boolean isScelect() {
             return isScelect;

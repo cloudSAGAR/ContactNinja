@@ -226,6 +226,9 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
             customViewPagerAdapter = new CustomViewPagerAdapter(getActivity(), bizcardList);
             viewPager.setAdapter(customViewPagerAdapter);
             backButton.setVisibility(View.INVISIBLE);
+            if (bizcardList.size()>1){
+                nextButton.setVisibility(View.VISIBLE);
+            }
             viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int i, float v, int i1) {
@@ -240,7 +243,9 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
                         backButton.setVisibility(View.VISIBLE);
                     }
                     if (position < viewPager.getAdapter().getCount() - 1) {
-                        nextButton.setVisibility(View.VISIBLE);
+                        if (bizcardList.size()>1){
+                            nextButton.setVisibility(View.VISIBLE);
+                        }
                     } else {
                         nextButton.setVisibility(View.INVISIBLE);
                     }

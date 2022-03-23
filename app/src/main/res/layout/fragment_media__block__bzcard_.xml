@@ -36,11 +36,12 @@
                 android:text="@string/Bzcard_text_1"
                 android:textColor="@color/text_gray" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_color_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_color_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp" />
 
             <View
                 android:layout_width="match_parent"

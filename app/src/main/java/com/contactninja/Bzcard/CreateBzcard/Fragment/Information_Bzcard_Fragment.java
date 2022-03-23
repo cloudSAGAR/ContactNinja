@@ -27,6 +27,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.BZcardListModel;
+import com.contactninja.Model.Bzcard_Fields_Model;
 import com.contactninja.Model.CompanyModel;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -298,6 +299,25 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
     }
 
     private void setData() {
+        if(bzcard_model.getCard_id()==1){
+
+            ev_company.setEnabled(false);
+            iv_company_dummy.setEnabled(false);
+            iv_company_icon.setEnabled(false);
+            ev_company_url.setEnabled(false);
+            ev_job.setEnabled(false);
+            ev_address.setEnabled(false);
+            ev_zip.setEnabled(false);
+        }else {
+            ev_company.setEnabled(true);
+            iv_company_dummy.setEnabled(true);
+            iv_company_icon.setEnabled(true);
+            ev_company_url.setEnabled(true);
+            ev_job.setEnabled(true);
+            ev_address.setEnabled(true);
+            ev_zip.setEnabled(true);
+
+        }
         if(bzcard_model.isEdit()){
             ev_first.setText(bzcard_model.getBzcardFieldsModel().getFirst_name().toString().trim());
             ev_last_name.setText(bzcard_model.getBzcardFieldsModel().getLast_name().toString().trim());
@@ -406,6 +426,7 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
 
         }
     }
+
 
     private void IntentUI(View view) {
         ev_first = view.findViewById(R.id.ev_first);

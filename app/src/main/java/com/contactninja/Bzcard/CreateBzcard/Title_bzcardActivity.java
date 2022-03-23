@@ -411,7 +411,7 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
         paramObject.put("organization_id", 1);
         paramObject.put("team_id", 1);
         paramObject.put("user_id", signResponseModel.getUser().getId());
-        paramObject.put("card_id", bzcard_model.getBzcardFieldsModel().getCard_id());
+        paramObject.put("card_id", bzcard_model.getCard_id());
 
 
         JSONObject param = new JSONObject();
@@ -457,7 +457,12 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
         param.put("theme", "");
         //   }
         //   if(Global.IsNotNull(main_model.getThemeColorHash())) {
-        param.put("themeColorHash", bzcard_model.getBzcardFieldsModel().getThemeColorHash());
+        if(Global.IsNotNull(bzcard_model.getBzcardFieldsModel().getThemeColorHash())){
+            param.put("themeColorHash", bzcard_model.getBzcardFieldsModel().getThemeColorHash());
+        }else {
+            String[] color_list = getResources().getStringArray(R.array.Select_color);
+            param.put("themeColorHash","#" + color_list[0]);
+        }
         //  }
         //   if(Global.IsNotNull(main_model.getButton1_name())) {
         param.put("button1_name", bzcard_model.getBzcardFieldsModel().getButton1_name());
@@ -496,7 +501,11 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
                 media_.put("media_type", bzMediaInformationList.get(i).getMedia_type());
             }
             if (Global.IsNotNull(bzMediaInformationList.get(i).getMedia_url())) {
-                media_.put("media_url", bzMediaInformationList.get(i).getMedia_url());
+                if(bzMediaInformationList.get(i).getMedia_type().equals("video")){
+                    media_.put("media_url",Global.getEmbedURL(bzMediaInformationList.get(i).getMedia_url()));
+                }else {
+                    media_.put("media_url", bzMediaInformationList.get(i).getMedia_url());
+                }
             }
             if (Global.IsNotNull(bzMediaInformationList.get(i).getMedia_thumbnail())) {
                 media_.put("media_thumbnail", bzMediaInformationList.get(i).getMedia_thumbnail());

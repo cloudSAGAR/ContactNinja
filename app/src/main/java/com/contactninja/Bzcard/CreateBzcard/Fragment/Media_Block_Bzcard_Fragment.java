@@ -129,6 +129,23 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
     }
 
     private void setdata() {
+        if(bzcard_model.getCard_id()==1){
+
+            iv_Cutom_Button.setEnabled(false);
+            iv_Add_call.setEnabled(false);
+            iv_Custom_HTML.setEnabled(false);
+            layout_media.setEnabled(false);
+
+        }else {
+            iv_Cutom_Button.setEnabled(true);
+            iv_Add_call.setEnabled(true);
+            iv_Custom_HTML.setEnabled(true);
+            layout_media.setEnabled(true);
+
+        }
+
+
+
         if(bzcard_model.getBzcardFieldsModel1().getCustom_btn_limit()==1){
             layout_Custom_other.setVisibility(View.GONE);
         }else {
@@ -654,6 +671,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
             }else {
                 if (i == 0) {
                     bzColorModel.setIs_Select(true);
+                    bzcard_model.getBzcardFieldsModel().setThemeColorHash("#" + color_list[i]);
                 } else {
                     bzColorModel.setIs_Select(false);
                 }
@@ -663,9 +681,6 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
         rv_color_list.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         colorAdepter = new ColorAdepter(getActivity(), color_modelList);
         rv_color_list.setAdapter(colorAdepter);
-
-
-
 
     }
 
@@ -809,16 +824,18 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
             holder.cv_main.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    for (int i = 0; i < color_modelList.size(); i++) {
-                        if (color_modelList.get(i).isIs_Select()) {
-                            color_modelList.get(i).setIs_Select(false);
-                            break;
+                    if(bzcard_model.getCard_id()!=1) {
+                        for (int i = 0; i < color_modelList.size(); i++) {
+                            if (color_modelList.get(i).isIs_Select()) {
+                                color_modelList.get(i).setIs_Select(false);
+                                break;
+                            }
                         }
+                        item.setIs_Select(true);
+                        bzcard_model.getBzcardFieldsModel().setThemeColorHash("#" + item.getColorName());
+                        SessionManager.setBzcard(mCtx, bzcard_model);
+                        notifyDataSetChanged();
                     }
-                    item.setIs_Select(true);
-                    bzcard_model.getBzcardFieldsModel().setThemeColorHash("#"+item.getColorName());
-                    SessionManager.setBzcard(mCtx, bzcard_model);
-                    notifyDataSetChanged();
                 }
             });
         }

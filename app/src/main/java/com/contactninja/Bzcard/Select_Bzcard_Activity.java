@@ -224,7 +224,7 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
                             break;
                         }
                     }
-                    main_model.getBzcardFieldsModel().setCard_id(Card_id);
+                    main_model.setCard_id(Card_id);
                     SessionManager.setBzcard(this, main_model);
                     startActivity(new Intent(getApplicationContext(), Add_New_Bzcard_Activity.class));
                 }else {

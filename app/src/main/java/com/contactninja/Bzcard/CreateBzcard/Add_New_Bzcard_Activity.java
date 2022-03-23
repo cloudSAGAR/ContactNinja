@@ -253,17 +253,13 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
                 switch (tab.getPosition()) {
                     case 0:
                         fragment = new Information_Bzcard_Fragment();
-
                         break;
                     case 1:
                         fragment = new Media_Block_Bzcard_Fragment();
-
                         break;
                     case 2:
                         fragment = new Social_media_Bzcard_Fragment();
-
                         break;
-
                 }
                 if (fragment != null) {
                     androidx.fragment.app.FragmentManager fragmentManager = getSupportFragmentManager();

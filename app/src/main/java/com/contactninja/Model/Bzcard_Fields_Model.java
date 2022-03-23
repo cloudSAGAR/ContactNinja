@@ -8,7 +8,9 @@ import java.util.List;
 
 @SuppressLint("UnknownNullness")
 public class Bzcard_Fields_Model {
+/*
     int card_id =0;
+*/
     String card_name="";
     String cover_image="";
     String profile_image="";
@@ -56,9 +58,11 @@ public class Bzcard_Fields_Model {
         this.media_deletes = media_deletes;
     }
 
+/*
     public int getCard_id() {
         return card_id;
     }
+*/
 
     public String getCard_name() {
         return card_name;
@@ -68,10 +72,10 @@ public class Bzcard_Fields_Model {
         this.card_name = card_name;
     }
 
-    public void setCard_id(int card_id) {
+ /*   public void setCard_id(int card_id) {
         this.card_id = card_id;
     }
-
+*/
     public List<BZ_media_information> getBzMediaInformationList() {
         return media_information;
     }
