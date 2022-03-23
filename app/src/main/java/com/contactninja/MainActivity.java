@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         sessionManager.login();
         loadingDialog = new LoadingDialog(this);
         retrofitCalls = new RetrofitCalls(getApplicationContext());
-        //startActivity(new Intent(getApplicationContext(),Contect_Demo.class));
+        startActivity(new Intent(getApplicationContext(),Contect_Demo.class));
         SessionManager.setGroupData(getApplicationContext(), new Grouplist.Group());
         IntentUI();
         Calendar cal = Calendar.getInstance();
