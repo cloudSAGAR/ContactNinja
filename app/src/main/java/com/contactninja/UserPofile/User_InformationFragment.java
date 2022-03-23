@@ -1489,23 +1489,29 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                     timezoneModels.addAll(timezoon);
 
                     SignResponseModel user_data1 = SessionManager.getGetUserdata(getActivity());
-                    if (String.valueOf(user_data1.getUser().getUserprofile().getTimezoneId()).equals("null")) {
-                        time_zone_id = TimeZone.getDefault().getID();
-                        zone_txt.setText(time_zone_id);
+                  if (!String.valueOf(user_data1.getUser().getUserprofile().getTimezoneId()).equals("null"))
+                  {
+                      if (String.valueOf(user_data1.getUser().getUserprofile().getTimezoneId()).equals("null"))
+                      {
+                          time_zone_id = TimeZone.getDefault().getID();
+                          zone_txt.setText(time_zone_id);
 
-                    } else {
-                        String t_id = user_data1.getUser().getUserprofile().getTimezoneId().toString();
-                        for (int i = 0; i < timezoneModels.size(); i++) {
-                            if (t_id.equals(timezoneModels.get(i).getValue().toString())) {
-                                zone_txt.setText(timezoneModels.get(i).getText());
+                      }
+                      else {
+                          String t_id = user_data1.getUser().getUserprofile().getTimezoneId().toString();
+                          for (int i = 0; i < timezoneModels.size(); i++) {
+                              if (t_id.equals(timezoneModels.get(i).getValue().toString())) {
+                                  zone_txt.setText(timezoneModels.get(i).getText());
 
-                                Log.e("No Same Data", "NO");
-                                break;
-                            } else {
-                                Log.e("No Same Data", "Yes");
-                            }
-                        }
-                    }
+                                  Log.e("No Same Data", "NO");
+                                  break;
+                              } else {
+                                  Log.e("No Same Data", "Yes");
+                              }
+                          }
+                      }
+                  }
+
 
                     loadingDialog.cancelLoading();
 

@@ -1184,7 +1184,7 @@ public class ContectFragment extends Fragment {
         paramObject.addProperty("q", fillter_text);
         paramObject.addProperty("orderBy", "firstname");
         paramObject.addProperty("order", "asc");
-        paramObject.addProperty("phone_book", 1);
+        paramObject.addProperty("phone_book", 0);
         obj.add("data", paramObject);
 
         JsonParser jsonParser = new JsonParser();

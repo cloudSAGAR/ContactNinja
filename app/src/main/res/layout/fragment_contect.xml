@@ -167,6 +167,7 @@
                             android:layout_alignParentRight="true" />
 
                     </RelativeLayout>
+
                         <com.reddit.indicatorfastscroll.FastScrollerView
                             android:id="@+id/fastscroller"
                             style="@style/tv_regular_5"

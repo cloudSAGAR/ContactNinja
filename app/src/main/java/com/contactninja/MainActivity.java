@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         sessionManager.login();
         loadingDialog = new LoadingDialog(this);
         retrofitCalls = new RetrofitCalls(getApplicationContext());
-        //startActivity(new Intent(getApplicationContext(),Contect_Demo.class));
+        startActivity(new Intent(getApplicationContext(),Contect_Demo.class));
         SessionManager.setGroupData(getApplicationContext(), new Grouplist.Group());
         IntentUI();
         Calendar cal = Calendar.getInstance();
@@ -330,7 +330,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 {
                     try {
                         Duplicate_remove();
-                        Log.e("Data Is",new Gson().toJson(SessionManager.getnewContect(getApplicationContext())));
+                   //     Log.e("Data Is",new Gson().toJson(SessionManager.getnewContect(getApplicationContext())));
                         ArrayList<Contact> listContacts1=new ArrayList<>();
                         listContacts1.addAll(SessionManager.getnewContect(getApplicationContext()));
                         if (listContacts1.size()!=0)
