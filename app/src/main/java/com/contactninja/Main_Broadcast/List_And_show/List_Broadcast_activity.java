@@ -570,8 +570,9 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
                             return;
                         }
                         mLastClickTime = SystemClock.elapsedRealtime();
-                        SessionManager.setBroadcate_List_Detail(getApplicationContext(), item);
+                        //SessionManager.setBroadcate_List_Detail(getApplicationContext(), item);
                         Intent getintent = new Intent(getApplicationContext(), Broadcaste_Activity.class);
+                        getintent.putExtra("id",item.getId());
                         startActivity(getintent);
 
                     }

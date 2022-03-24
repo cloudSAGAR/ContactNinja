@@ -95,6 +95,8 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
     public Main_home_Fragment(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
     }
+    public Main_home_Fragment() {
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.P)
     @Override

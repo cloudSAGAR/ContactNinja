@@ -544,10 +544,7 @@ public class RetrofitCalls {
             public void onResponse(@NotNull Call<ApiResponse> call, @NotNull Response<ApiResponse> response) {
 
                 if (response.code() != 200) {
-                    if(response.code()==404){
-                        //session.logoutUser();
-                    }else
-                    {
+
                         if(response.code()==401&&response.message().equals("Unauthenticated.")){
                             try {
                                 Refreess_token(session,loadingDialog);
@@ -557,7 +554,7 @@ public class RetrofitCalls {
                         }else {
                             retrofitCallback.error(response);
                         }
-                    }
+
                 } else {
                     retrofitCallback.success(response);
                 }

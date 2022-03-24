@@ -891,13 +891,13 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
                 String newUrl="",oldUrl="",Newtext="";
                 for(int i=0;i<bizcardList.size();i++){
                     if(bizcardList.get(i).isScelect()){
-                        oldUrl=Global.bzcard_priview+bizcardList.get(i).getId_encoded();
+                        oldUrl=Global.bzcard_share+bizcardList.get(i).getId_encoded();
                         bizcardList.get(i).setScelect(false);
                         break;
                     }
                 }
                 bizcard.setScelect(true);
-                newUrl=Global.bzcard_priview+bizcard.getId_encoded();
+                newUrl=Global.bzcard_share+bizcard.getId_encoded();
 
                 String curenttext = edit_template.getText().toString();
                 if(!oldUrl.equals("")&& !oldUrl.equals(newUrl)){

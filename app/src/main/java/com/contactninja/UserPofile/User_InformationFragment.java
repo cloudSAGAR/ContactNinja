@@ -680,12 +680,14 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 ev_zip.setText(Contect_data.getZipcode());
 
             }
-            if (Contect_data.getTimezoneId().toString().trim().equals("") || Contect_data.getTimezoneId().toString().trim().equals(null) )
-            {
-                time_layout.setVisibility(View.GONE);
-            }
-            else {
-                time_layout.setVisibility(View.VISIBLE);
+            if(Global.IsNotNull(Contect_data.getTimezoneId())){
+                if (Contect_data.getTimezoneId().toString().trim().equals("") || Contect_data.getTimezoneId().toString().trim().equals(null) )
+                {
+                    time_layout.setVisibility(View.GONE);
+                }
+                else {
+                    time_layout.setVisibility(View.VISIBLE);
+                }
             }
             if (Contect_data.getDob().toString().trim().equals("") || Contect_data.getDob().toString().trim().equals(null) || Contect_data.getDob().toString().trim().equals("0000-00-00"))
             {

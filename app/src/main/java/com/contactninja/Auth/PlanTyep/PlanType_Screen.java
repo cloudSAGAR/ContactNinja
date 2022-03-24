@@ -14,9 +14,29 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.contactninja.MainActivity;
+import com.contactninja.Model.Timezon;
+import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
+import com.contactninja.Utils.LoadingDialog;
+import com.contactninja.Utils.SessionManager;
+import com.contactninja.retrofit.ApiResponse;
+import com.contactninja.retrofit.RetrofitCallback;
+import com.contactninja.retrofit.RetrofitCalls;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONException;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TimeZone;
+
+import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class PlanType_Screen extends AppCompatActivity implements View.OnClickListener , ConnectivityReceiver.ConnectivityReceiverListener  {
@@ -25,12 +45,91 @@ public class PlanType_Screen extends AppCompatActivity implements View.OnClickLi
     int flag = 0;
     private BroadcastReceiver mNetworkReceiver;
     ConstraintLayout mMainLayout;
+    SignResponseModel user_data;
+    SessionManager sessionManager;
+    RetrofitCalls retrofitCalls;
+    LoadingDialog loadingDialog;
+    String token_api = "", organization_id = "", team_id = "";
+    Integer user_id = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plan_type_screen);
         mNetworkReceiver = new ConnectivityReceiver();
+        sessionManager = new SessionManager(this);
+        loadingDialog = new LoadingDialog(this);
+        retrofitCalls = new RetrofitCalls(getApplicationContext());
         IntentUI();
+
+        user_data = SessionManager.getGetUserdata(getApplicationContext());
+        user_id = user_data.getUser().getId();
+        organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+        token_api = Global.getToken(sessionManager);
+
+
+
+    }
+    //TimeZone Call
+    private void Timezone(String id, int i, String i1) throws JSONException {
+        loadingDialog.showLoadingDialog();
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", user_id);
+        obj.add("data", paramObject);
+        retrofitCalls.Timezone(sessionManager, obj, loadingDialog, token_api, Global.getVersionname(this), Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+
+
+                Gson gson = new Gson();
+                String headerString = gson.toJson(response.body().getData());
+                Type listType = new TypeToken<ArrayList<Timezon.TimezonData>>() {
+                }.getType();
+                List<Timezon.TimezonData> timezonDataList = new Gson().fromJson(headerString, listType);
+                for (int i = 0; i < timezonDataList.size(); i++) {
+                    if (id.equals(timezonDataList.get(i).getTzname())) {
+                        Working_hour(timezonDataList.get(i).getValue(),i,i1);
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+            }
+        });
+    }
+    //Working Hourse Call
+    private void Working_hour(Integer integer, int i, String value) {
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("timezone_id", integer);
+        paramObject.addProperty("is_default", "1");
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", user_id);
+        obj.add("data", paramObject);
+        String version_name = Global.getVersionname(this);
+        retrofitCalls.Working_hour(sessionManager, obj, loadingDialog, token_api, version_name, Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                Intent intent = new Intent(getApplicationContext(), Plan_Detail_Screen.class);
+                intent.putExtra("flag", i);
+                intent.putExtra("plan_product_id", value);
+                startActivity(intent);
+                finish();
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
 
     }
 
@@ -52,41 +151,95 @@ public class PlanType_Screen extends AppCompatActivity implements View.OnClickLi
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent(getApplicationContext(), Plan_Detail_Screen.class);
+
+        TimeZone tz = TimeZone.getDefault();
         switch (v.getId()) {
             case R.id.layout_free_card:
                 /**
                  * This is free card */
-                intent.putExtra("flag", 1);
-                intent.putExtra("plan_product_id", "0");
-                startActivity(intent);
-                finish();
+
+
+                if (!Global.IsNotNull(user_data.getUser().getWorkingHoursList()) || user_data.getUser().getWorkingHoursList().size() == 0) {
+                    try {
+                        if (Global.isNetworkAvailable(this, MainActivity.mMainLayout)) {
+                            Timezone(tz.getID(),1,"0");
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }else {
+                    Intent intent = new Intent(getApplicationContext(), Plan_Detail_Screen.class);
+                    intent.putExtra("flag", 1);
+                    intent.putExtra("plan_product_id", "0");
+                    startActivity(intent);
+                    finish();
+                }
+
                 break;
             case R.id.layout_bz_card:
                 /**
                  * This is 9.95 card */
-                intent.putExtra("flag", 2);
-                intent.putExtra("plan_product_id", getResources().getString(R.string.plan_9));
-                startActivity(intent);
-                finish();
+
+                if (!Global.IsNotNull(user_data.getUser().getWorkingHoursList()) || user_data.getUser().getWorkingHoursList().size() == 0) {
+                    try {
+                        if (Global.isNetworkAvailable(this, MainActivity.mMainLayout)) {
+                            Timezone(tz.getID(),2, getResources().getString(R.string.plan_9));
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }else {
+                    Intent intent = new Intent(getApplicationContext(), Plan_Detail_Screen.class);
+                    intent.putExtra("flag", 2);
+                    intent.putExtra("plan_product_id",  getResources().getString(R.string.plan_9));
+                    startActivity(intent);
+                    finish();
+                }
+
                 break;
             case R.id.layout_master:
                 /**
                  * This is 39.95 card */
-                intent.putExtra("flag", 3);
-                intent.putExtra("plan_product_id", getResources().getString(R.string.plan_39));
-                startActivity(intent);
-                finish();
+                if (!Global.IsNotNull(user_data.getUser().getWorkingHoursList()) || user_data.getUser().getWorkingHoursList().size() == 0) {
+                    try {
+                        if (Global.isNetworkAvailable(this, MainActivity.mMainLayout)) {
+                            Timezone(tz.getID(),3, getResources().getString(R.string.plan_39));
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }else {
+                    Intent intent = new Intent(getApplicationContext(), Plan_Detail_Screen.class);
+                    intent.putExtra("flag", 3);
+                    intent.putExtra("plan_product_id",  getResources().getString(R.string.plan_39));
+                    startActivity(intent);
+                    finish();
+                }
+
                 break;
             case R.id.layout_contect:
                 /**
                  * This is 69.95 card */
-                intent.putExtra("flag", 4);
-                intent.putExtra("plan_product_id", getResources().getString(R.string.plan_69));
-                startActivity(intent);
-                finish();
+                if (!Global.IsNotNull(user_data.getUser().getWorkingHoursList()) || user_data.getUser().getWorkingHoursList().size() == 0) {
+                    try {
+                        if (Global.isNetworkAvailable(this, MainActivity.mMainLayout)) {
+                            Timezone(tz.getID(),4, getResources().getString(R.string.plan_69));
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }else {
+                    Intent intent = new Intent(getApplicationContext(), Plan_Detail_Screen.class);
+                    intent.putExtra("flag", 4);
+                    intent.putExtra("plan_product_id",  getResources().getString(R.string.plan_69));
+                    startActivity(intent);
+                    finish();
+                }
+
                 break;
         }
+
+
     }
 
     @Override

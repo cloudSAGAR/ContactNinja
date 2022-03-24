@@ -58,7 +58,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_dis"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:orientation="horizontal"
                     android:padding="10dp">
@@ -159,7 +159,7 @@
                         <View
                             android:layout_width="1dp"
                             android:layout_height="match_parent"
-                            android:background="#707070" />
+                            android:background="@color/otp_header_text_color" />
 
                         <EditText
                             android:id="@+id/edit_Mobile"
@@ -242,21 +242,21 @@
                             tools:ignore="RelativeOverlap" />
 
                         <CheckBox
-                            style="@style/tv_regular_12"
                             android:id="@+id/select_code"
+                            style="@style/tv_regular_12"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/btn_chnage_phone_email"
+                            android:background="@android:color/transparent"
                             android:buttonTint="@color/purple_200"
                             android:paddingStart="@dimen/_5sdp"
                             android:text="@string/or_code"
                             android:textColor="@color/purple_200"
-                            android:textSize="@dimen/_12sdp"
-                            >
+                            android:textSize="@dimen/_12sdp">
 
                         </CheckBox>
                         <LinearLayout
-                            android:visibility="gone"
+                            android:visibility="invisible"
                             android:layout_below="@+id/select_code"
                             android:id="@+id/layout_code"
                             android:layout_width="match_parent"
@@ -283,7 +283,7 @@
                         </LinearLayout>
 
                         <View
-                            android:visibility="gone"
+                            android:visibility="invisible"
                             android:id="@+id/view_layout"
                             android:layout_below="@id/layout_code"
                             android:layout_width="match_parent"
@@ -302,7 +302,7 @@
                     android:layout_below="@+id/layout_phone"
                     android:layout_gravity="center"
                     android:layout_marginStart="@dimen/_25sdp"
-                    android:layout_marginTop="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
                     android:layout_marginEnd="@dimen/_25sdp"
                     android:background="@drawable/shape_primary_back"
                     android:gravity="center"
@@ -318,7 +318,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/btn_signup"
                     android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/_50sdp"
+                    android:layout_marginTop="@dimen/_30sdp"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -341,8 +341,7 @@
                         android:layout_height="match_parent"
                         android:padding="@dimen/_5sdp"
                         android:text="@string/login"
-                        android:textColor="@color/otp_background"
-                    />
+                        android:textColor="@color/otp_background" />
                 </LinearLayout>
 
                 <TextView
@@ -353,10 +352,13 @@
                     android:layout_below="@+id/lay_signup"
                     android:layout_alignParentBottom="true"
                     android:layout_gravity="center|bottom"
+                    android:layout_marginStart="@dimen/_50sdp"
                     android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_50sdp"
                     android:gravity="center|top"
                     android:text="@string/terms"
-                    android:textColor="@color/text_welcome" />
+                    android:textColor="@color/text_welcome"
+                    android:textColorLink="@color/purple_200" />
 
             </RelativeLayout>
         </ScrollView>

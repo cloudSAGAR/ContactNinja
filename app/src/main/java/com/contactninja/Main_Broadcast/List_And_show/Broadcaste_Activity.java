@@ -12,10 +12,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.contactninja.MainActivity;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.contactninja.Main_Broadcast.Broadcast_Preview;
 import com.contactninja.Main_Broadcast.Broadcaste_viewContect;
-import com.contactninja.Model.BroadcastActivityListModel;
 import com.contactninja.Model.BroadcastActivityModel;
 import com.contactninja.Model.Broadcate_save_data;
 import com.contactninja.Model.ContectListData;
@@ -39,13 +40,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import retrofit2.Response;
-
-import static com.contactninja.Utils.PaginationListener.PAGE_START;
-
+@SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Broadcaste_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     ImageView iv_back, iv_Setting, image_icon, image_step, iv_toolbar_manu_vertical;
     TextView save_button;
@@ -63,7 +59,7 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
     Broadcate_save_data broadcate_save_data;
     private long mLastClickTime = 0;
     private BroadcastReceiver mNetworkReceiver;
-
+    int Broadcate_ID=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +68,12 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
         broadcate_save_data = new Broadcate_save_data();
         // broadcasteda=SessionManager.getBroadcate_List_Detail(this);
         Log.e("Broadcaste Data", new Gson().toJson(broadcasteda));
+
+
+        Intent inten = getIntent();
+        Bundle bundle = inten.getExtras();
+        Broadcate_ID = bundle.getInt("id");
+
         IntentUI();
         loadingDialog = new LoadingDialog(this);
         sessionManager = new SessionManager(this);
@@ -407,7 +409,7 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("organization_id", 1);
         paramObject.addProperty("team_id", 1);
-        paramObject.addProperty("id", SessionManager.getBroadcate_List_Detail(getApplicationContext()).getId());
+        paramObject.addProperty("id", Broadcate_ID);
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         paramObject.addProperty("q", "");
         paramObject.addProperty("orderBy", "created_at");

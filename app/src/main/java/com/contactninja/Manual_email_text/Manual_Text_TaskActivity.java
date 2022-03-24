@@ -161,7 +161,9 @@ public class Manual_Text_TaskActivity extends AppCompatActivity implements View.
       //  tc_time_zone.setText("Time Zone("+localTime+"-"+time_zone);
 
         SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
-        tc_time_zone.setText("Time Zone("+user_data.getUser().getUserTimezone().get(0).getText().toString()+")");
+        if(Global.IsNotNull(user_data.getUser().getUserTimezone().get(0))){
+            tc_time_zone.setText("Time Zone("+user_data.getUser().getUserTimezone().get(0).getText().toString()+")");
+        }
     }
 
     @Override

@@ -38,7 +38,7 @@ public class ResetActivity extends AppCompatActivity implements View.OnClickList
 
     TextView btn_Create_password,iv_invalid;
     EditText edit_Current_Password,edit_New_Password,edit_Confirm_Password;
-    ImageView iv_current_showPassword,iv_new_showPassword,iv_Confirm_showPassword;
+    ImageView iv_current_showPassword,iv_new_showPassword,iv_Confirm_showPassword,iv_back;
     CoordinatorLayout mMainLayout;
     SessionManager sessionManager;
     LoadingDialog loadingDialog;
@@ -71,7 +71,9 @@ public class ResetActivity extends AppCompatActivity implements View.OnClickList
         edit_New_Password=findViewById(R.id.edit_New_Password);
         edit_Current_Password=findViewById(R.id.edit_Current_Password);
         btn_Create_password=findViewById(R.id.btn_Create_password);
+        iv_back=findViewById(R.id.iv_back);
         btn_Create_password.setOnClickListener(this);
+        iv_back.setOnClickListener(this);
 
         iv_Confirm_showPassword.setOnClickListener(this);
         iv_new_showPassword.setOnClickListener(this);
@@ -82,6 +84,9 @@ public class ResetActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(@SuppressLint("UnknownNullness") View v) {
         switch (v.getId()){
+            case R.id.iv_back:
+                onBackPressed();
+                break;
             case R.id.btn_Create_password:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;

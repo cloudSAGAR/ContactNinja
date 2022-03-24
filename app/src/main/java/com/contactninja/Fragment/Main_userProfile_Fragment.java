@@ -94,6 +94,11 @@ import retrofit2.Response;
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 
 public class Main_userProfile_Fragment extends Fragment implements View.OnClickListener {
+
+    public Main_userProfile_Fragment() {
+    }
+
+
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
     public static final int RequestPermissionCode = 1;
     private static final String TAG_HOME = "Addcontect";
@@ -717,6 +722,11 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
     }
 
     public void AddContect_Update() throws JSONException {
+
+
+
+
+
         f_name = edt_FirstName.getText().toString().trim();
         l_name = edt_lastname.getText().toString().trim();
         //  ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
@@ -746,24 +756,65 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         contactdetails.addAll(contactdetails_email);
 
 
+
+
         /**
          *
          * Chek affilate code change or not and api call only code date
          *
          * */
-        if(!user_data.getUser().getReferenceCode().equals(addcontectModel.getReferenceCode())){
-            try {
-                if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
-                    UpdateCode();
+        if(!addcontectModel.getReferenceCode().equals("")){
+            if(!user_data.getUser().getReferenceCode().equals(addcontectModel.getReferenceCode())){
+                try {
+                    if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
+                        UpdateCode();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
 
-            } catch (JSONException e) {
-                e.printStackTrace();
+            }else {
+                onlyUserprofile();
             }
-
+        }else {
+            onlyUserprofile();
         }
 
 
+
+
+    }
+
+    private void onlyUserprofile() throws JSONException{
+
+        f_name = edt_FirstName.getText().toString().trim();
+        l_name = edt_lastname.getText().toString().trim();
+        //  ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
+        AddcontectModel addcontectModel = SessionManager.getAdd_Contect_Detail(getActivity());
+        zip_code = addcontectModel.getZip_code();
+        zoom_id = addcontectModel.getZoom_id();
+        address = addcontectModel.getAddress();
+        note = addcontectModel.getNote();
+        city = addcontectModel.getCity();
+        state = addcontectModel.getState();
+
+        SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
+        String email_address = user_data.getUser().getEmail();
+
+        String rol_id = user_data.getUser().getRoleId().toString();
+        String contect_number = user_data.getUser().getContactNumber();
+
+        List<Contactdetail> contactdetails = new ArrayList<>();
+        contactdetails.clear();
+        List<Contactdetail> contactdetails1 = new ArrayList<>();
+        contactdetails1.clear();
+        contactdetails.addAll(addcontectModel.getContactdetails());
+
+
+        List<Contactdetail> contactdetails_email = new ArrayList<>();
+        contactdetails_email.addAll(addcontectModel.getContactdetails_email());
+        contactdetails.addAll(contactdetails_email);
 
 
         JSONObject obj = new JSONObject();
@@ -932,10 +983,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             }
         });
 
-
     }
-
-
 
 
     public void UpdateCode() throws JSONException {
@@ -962,6 +1010,11 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
                 if (response.body().getHttp_status() == 200) {
+                    try {
+                        onlyUserprofile();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 

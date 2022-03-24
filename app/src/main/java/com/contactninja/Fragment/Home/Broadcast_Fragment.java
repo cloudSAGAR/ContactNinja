@@ -5,30 +5,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.SystemClock;
-import android.text.format.DateFormat;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CalendarView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.contactninja.MainActivity;
 import com.contactninja.Main_Broadcast.List_And_show.Broadcaste_Activity;
 import com.contactninja.Model.Dashboard.Dashboard;
 import com.contactninja.Model.Dashboard.Des_Broadcast;
-import com.contactninja.Model.Dashboard.Des_Task;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.Global;
@@ -48,12 +43,11 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 import retrofit2.Response;
 
+@SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Broadcast_Fragment extends Fragment {
     RecyclerView rv_broadcast_list;
     BroadcastListAdepter broadcastListAdepter;
@@ -66,6 +60,7 @@ public class Broadcast_Fragment extends Fragment {
     LoadingDialog loadingDialog;
     Dashboard dashboard = new Dashboard();
     List<Des_Broadcast> des_broadcasts = new ArrayList<>();
+    private long mLastClickTime=0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -193,7 +188,7 @@ public class Broadcast_Fragment extends Fragment {
                 }
                 catch (Exception e)
                 {
-
+                    e.printStackTrace();
                 }
 
 
@@ -277,6 +272,21 @@ public class Broadcast_Fragment extends Fragment {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+          /*  holder.layout_contec.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
+                    //SessionManager.setBroadcate_List_Detail(getApplicationContext(), item);
+                    Intent getintent = new Intent(getActivity(), Broadcaste_Activity.class);
+                  //  getintent.putExtra("id",item.getId());
+                    startActivity(getintent);
+
+                }
+            });*/
         }
 
         @Override
@@ -299,8 +309,8 @@ public class Broadcast_Fragment extends Fragment {
             TextView tv_username, tv_task_description, tv_time, no_image, tv_status, tv_task_time;
             ImageView image_icon, iv_camp, iv_hold, iv_play_icon, iv_puse_icon;
             RelativeLayout iv_logo;
-
-             View view_last_line;
+            LinearLayout layout_contec;
+            View view_last_line;
 
 
             public InviteListDataclass(@NonNull View itemView) {
@@ -319,6 +329,7 @@ public class Broadcast_Fragment extends Fragment {
                 iv_camp = itemView.findViewById(R.id.iv_camp);
                 iv_logo = itemView.findViewById(R.id.iv_logo);
                 view_last_line = itemView.findViewById(R.id.view_last_line);
+                layout_contec = itemView.findViewById(R.id.layout_contec);
 
             }
 

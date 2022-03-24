@@ -4,14 +4,12 @@ import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.TextPaint;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.LinkMovementMethod;
@@ -31,6 +29,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
+import com.contactninja.Auth.PlanTyep.PlanType_Screen;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.UservalidateModel;
@@ -66,7 +65,8 @@ import io.michaelrocks.libphonenumber.android.NumberParseException;
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
 import io.michaelrocks.libphonenumber.android.Phonenumber;
 import retrofit2.Response;
-@SuppressLint("UnknownNullness")
+
+@SuppressLint("UnknownNullness,SyntheticAccessor")
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     private static final String TAG = "LoginActivity";
     public String fcmToken = "";
@@ -251,17 +251,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     //hide password
                     iv_showPassword.setImageResource(R.drawable.ic_visibility_off);
                     edit_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                    edit_password.setSelection(edit_password.getText().length());
 
                 }else {
                     iv_showPassword.setSelected(true);
                     //show password
                     iv_showPassword.setImageResource(R.drawable.ic_visibility);
                     edit_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                    edit_password.setSelection(edit_password.getText().length());
                 }
+                edit_password.setSelection(edit_password.getText().length());
             }
         });
+
+
+
+        /**
+         * set URL in terms and condition */
 
         String text = "I have read and agree to Contact Ninja’s Terms & Conditions";
         SpannableString spannableString = new SpannableString(text);
@@ -312,8 +316,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if (checkVelidaction()) {
                     sessionManager.setlogin_type(Login_type);
 
-                   // loadingDialog.showLoadingDialog();
                     if (Login_type.equals("EMAIL")) {
+                        /**
+                         * if login with email */
                         try {
                             iv_password_invalid.setVisibility(View.GONE);
                             iv_invalid.setVisibility(View.GONE);
@@ -324,7 +329,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             e.printStackTrace();
                         }
                     } else {
-                        //loadingDialog.showLoadingDialog();
+
                         try {
                             iv_invalid.setVisibility(View.GONE);
                             if(Global.isNetworkAvailable(LoginActivity.this,mMainLayout)) {
@@ -448,8 +453,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
                             intent.putExtra("login_type", Login_type);
                             startActivity(intent);
-                        }
-                        else {
+                        } else if (!sessionManager.isPayment_Type_Select()) {
+                            startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
+                        } else {
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         }
                         finish();
@@ -462,25 +468,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         finish();
                     }
 
-/*
-                    if (!sessionManager.isEmail_Update())
-                    {
-                        Intent i = new Intent(LoginActivity.this, Phone_email_verificationActivity.class);
-                        i.putExtra("login_type",Login_type);
-                        startActivity(i);
-                        finish();
-                    }
-                    else if (!sessionManager.isPayment_Type_Select())
-                    {
-                        //Call Phone
-                        Intent i = new Intent(LoginActivity.this, PlanType_Screen.class);
-                        startActivity(i);
-                        finish();
-                    }
-                    else {
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                        finish();
-                    }*/
 
 
                 } else if (response.body().getHttp_status()==404){
@@ -577,20 +564,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             retrofitCalls.Userexistcheck(sessionManager,obj, loadingDialog,Global.getVersionname(LoginActivity.this),Global.Device, new RetrofitCallback() {
                 @Override
                 public void success(Response<ApiResponse> response) {
-                    //Log.e("Response is",new Gson().toJson(response));
-
 
                     if (response.body().getHttp_status() == 200) {
 
                         if(!Login_type.equals("EMAIL")){
-                          /*  try {
-                                LoginData1();
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }*/
+                            /**
+                             * verification phone */
                             VerifyPhone(edit_Mobile.getText().toString());
                         }else {
                             if(Global.isNetworkAvailable(LoginActivity.this,mMainLayout)) {
+                                /**
+                                 * login with email and password */
                                 LoginData();
                             }
                         }
@@ -606,71 +590,4 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
             });
         }
-
-/*
-    public void LoginData1() throws JSONException {
-        JsonObject obj = new JsonObject();
-        JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("email", "");
-        paramObject.addProperty("contact_number", "7874732505");
-        paramObject.addProperty("login_type", "PHONE");
-        paramObject.addProperty("otp", "123456");
-        obj.add("data", paramObject);
-        retrofitCalls.LoginUser(sessionManager,obj, loadingDialog, new RetrofitCallback() {
-            @Override
-            public void success(Response<ApiResponse> response) {
-                // Log.e("Response is",new Gson().toJson(response));
-                loadingDialog.cancelLoading();
-
-
-                if (response.body().getStatus() == 200) {
-
-                    Gson gson = new Gson();
-                    String headerString = gson.toJson(response.body().getData());
-                    Type listType = new TypeToken<SignResponseModel>() {
-                    }.getType();
-
-
-                    // Log.e("Reponse is",gson.toJson(response.body().getData()));
-                    SignResponseModel user_model = new Gson().fromJson(headerString, listType);
-                    SessionManager.setUserdata(getApplicationContext(), user_model);
-                    sessionManager.setRefresh_token(user_model.getTokenType()+" "+user_model.getAccessToken());
-                    try {
-                        if (user_model.getUser().getEmail().equals("")||user_model.getUser().getContactNumber().equals("")) {
-                            Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
-                            intent.putExtra("login_type", "PHONE");
-                            startActivity(intent);
-                            finish();
-                        } else if (!sessionManager.isPayment_Type_Select()) {
-                            startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
-                            finish();
-                        } else {
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                            finish();
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
-                        intent.putExtra("login_type", "PHONE");
-                        startActivity(intent);
-                        finish();
-                    }
-
-
-                    //  Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), true);
-
-
-                } else {
-                   // verfiy_button.setEnabled(false);
-                    Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
-                }
-            }
-
-            @Override
-            public void error(Response<ApiResponse> response) {
-                loadingDialog.cancelLoading();
-            }
-        });
-    }*/
     }

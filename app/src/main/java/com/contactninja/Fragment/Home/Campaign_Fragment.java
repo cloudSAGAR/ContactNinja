@@ -2,6 +2,7 @@ package com.contactninja.Fragment.Home;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -10,13 +11,19 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.contactninja.Campaign.Campaign_Overview;
+import com.contactninja.Campaign.Campaign_Preview;
+import com.contactninja.Campaign.List_itm.Campaign_Final_Start;
+import com.contactninja.Interface.Des_CampaingClick;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.Dashboard.Dashboard;
 import com.contactninja.Model.Dashboard.Des_Sequence;
@@ -43,7 +50,7 @@ import java.util.List;
 
 import retrofit2.Response;
 
-public class Campaign_Fragment extends Fragment {
+public class Campaign_Fragment extends Fragment implements Des_CampaingClick {
 
     RecyclerView rv_campaign_list;
     CampaingListAdepter campaingListAdepter;
@@ -56,6 +63,7 @@ public class Campaign_Fragment extends Fragment {
     LoadingDialog loadingDialog;
     Dashboard dashboard = new Dashboard();
     List<Des_Sequence> des_sequences = new ArrayList<>();
+    private long mLastClickTime=0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -95,10 +103,51 @@ public class Campaign_Fragment extends Fragment {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rv_campaign_list.setLayoutManager(layoutManager);
-        campaingListAdepter = new CampaingListAdepter(getActivity(), new ArrayList<>());
+        campaingListAdepter = new CampaingListAdepter(getActivity(), new ArrayList<>(),this);
         rv_campaign_list.setAdapter(campaingListAdepter);
 
     }
+
+    @Override
+    public void OnClick(Des_Sequence des_sequence) {
+        SessionManager.setCampaign_type("");
+        SessionManager.setCampaign_type_name("");
+        SessionManager.setCampaign_Day("");
+        SessionManager.setCampaign_minute("");
+        Global.count = 1;
+        SessionManager.setTask(getActivity(), new ArrayList<>());
+        String contect_list_count = String.valueOf(des_sequence.getProspect());
+        if (des_sequence.getStatus().equals("A")) {
+            Intent intent = new Intent(getActivity(), Campaign_Final_Start.class);
+            intent.putExtra("sequence_id", des_sequence.getId());
+            startActivity(intent);
+        } else if (des_sequence.getStatus().equals("I")) {
+            if (des_sequence.getStartedOn() != null && !des_sequence.getStartedOn().equals("") && des_sequence.getProspect() != 0) {
+                Intent intent = new Intent(getActivity(), Campaign_Final_Start.class);
+                intent.putExtra("sequence_id", des_sequence.getId());
+                startActivity(intent);
+            } else {
+                if (contect_list_count.equals("0")) {
+                    Intent intent = new Intent(getActivity(), Campaign_Overview.class);
+                    intent.putExtra("sequence_id", des_sequence.getId());
+                    startActivity(intent);
+                    //   finish();
+                } else {
+                    SessionManager.setCampign_flag("read");
+                    Intent intent = new Intent(getActivity(), Campaign_Preview.class);
+                    intent.putExtra("sequence_id", des_sequence.getId());
+                    startActivity(intent);
+
+                }
+            }
+        }
+
+
+
+
+
+    }
+
     @SuppressLint("StaticFieldLeak")
     public class MyAsyncTasks extends AsyncTask<String, String, String> {
 
@@ -194,10 +243,11 @@ public class Campaign_Fragment extends Fragment {
 
         List<Des_Sequence> desSequenceList;
         public Context mCtx;
-
-        public CampaingListAdepter(Context context,List<Des_Sequence> desSequenceList) {
+        Des_CampaingClick des_campaingClick;
+        public CampaingListAdepter(Context context,List<Des_Sequence> desSequenceList,Des_CampaingClick des_campaingClick) {
             this.mCtx = context;
             this.desSequenceList = desSequenceList;
+            this.des_campaingClick =des_campaingClick;
         }
 
         @NonNull
@@ -223,7 +273,16 @@ public class Campaign_Fragment extends Fragment {
                 holder.view_last_line.setVisibility(View.VISIBLE);
             }
 
-
+            holder.layout_item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
+                    des_campaingClick.OnClick(item);
+                }
+            });
         }
 
         @Override
@@ -245,7 +304,7 @@ public class Campaign_Fragment extends Fragment {
 
         public class InviteListDataclass extends RecyclerView.ViewHolder {
             TextView tv_camp_name,tv_total_contact ;
-
+            LinearLayout layout_item;
 
             View view_last_line;
 
@@ -256,6 +315,7 @@ public class Campaign_Fragment extends Fragment {
                 tv_camp_name = itemView.findViewById(R.id.tv_camp_name);
                 tv_total_contact = itemView.findViewById(R.id.tv_total_contact);
                 view_last_line = itemView.findViewById(R.id.view_last_line);
+                layout_item = itemView.findViewById(R.id.layout_item);
 
 
             }

@@ -724,11 +724,10 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
             } else if (date1.equals(date2)) {
                 if (item.getStatus().equals("NOT_STARTED")) {
                     tv_status.setText("Today");
-                    tv_status.setTextColor(Color.parseColor("#EC5454"));
                 } else {
                     tv_status.setText(Global.setFirstLetter(item.getStatus()));
-                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
                 }
+                tv_status.setTextColor(Color.parseColor("#ABABAB"));
             }
 
             System.out.println();
@@ -1037,13 +1036,13 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
                 String newUrl="",oldUrl="",Newtext="";
                 for(int i=0;i<bizcardList.size();i++){
                     if(bizcardList.get(i).isScelect()){
-                        oldUrl=Global.bzcard_priview+bizcardList.get(i).getId_encoded();
+                        oldUrl=Global.bzcard_share+bizcardList.get(i).getId_encoded();
                         bizcardList.get(i).setScelect(false);
                         break;
                     }
                 }
                 bizcard.setScelect(true);
-                newUrl=Global.bzcard_priview+bizcard.getId_encoded();
+                newUrl=Global.bzcard_share+bizcard.getId_encoded();
 
                 String curenttext = edit_compose.getText().toString();
                 if(!oldUrl.equals("")&& !oldUrl.equals(newUrl)){

@@ -7,8 +7,13 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
@@ -25,6 +30,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
+import com.contactninja.Setting.WebActivity;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
@@ -63,7 +69,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private static final String TAG = "SignupActivity";
     public static RetrofitApiInterface apiService;
     public String fcmToken = "";
-    TextView btn_chnage_phone_email, btn_signup, iv_invalid, tv_Login;
+    TextView btn_chnage_phone_email, btn_signup, iv_invalid, tv_Login,tv_terms;
     boolean lay_PhoneShow = true;
     LinearLayout layout_email, layout_phonenumber, layout_code;
     CountryCodePicker ccp_id;
@@ -254,6 +260,29 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         view_layout = findViewById(R.id.view_layout);
         edit_code = findViewById(R.id.edit_code);
         select_code.setOnClickListener(this);
+        tv_terms=findViewById(R.id.tv_terms);
+
+
+        String text = "I have read and agree to Contact Ninja’s Terms & Conditions";
+        SpannableString spannableString = new SpannableString(text);
+        ClickableSpan clickableSpan1 = new ClickableSpan() {
+            @Override
+            public void onClick(View widget) {
+                Intent intent = new Intent(getApplicationContext(), WebActivity.class);
+                intent.putExtra("WebUrl", Global.conditions);
+                startActivity(intent);
+            }
+        };
+        spannableString.setSpan(clickableSpan1, 41,59, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        tv_terms.setText(spannableString);
+        try {
+            tv_terms.setMovementMethod(LinkMovementMethod.getInstance());
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
 
     }
 
@@ -303,8 +332,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                     layout_code.setVisibility(View.VISIBLE);
                     view_layout.setVisibility(View.VISIBLE);
                 } else {
-                    layout_code.setVisibility(View.GONE);
-                    view_layout.setVisibility(View.GONE);
+                    layout_code.setVisibility(View.INVISIBLE);
+                    view_layout.setVisibility(View.INVISIBLE);
                 }
                 break;
         }
@@ -323,6 +352,15 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         AlertDialog dialog
                 = builder.create();
         dialog.show();
+
+
+
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                dialog.dismiss();
+                onBackPressed();
+            }
+        }, 2000);
     }
 
     private void Uservalidate() throws JSONException {

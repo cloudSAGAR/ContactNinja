@@ -667,7 +667,7 @@ public class SessionManager {
     }
 
 
-    public static BroadcastActivityListModel.Broadcast getBroadcate_List_Detail(Context context) {
+  /*  public static BroadcastActivityListModel.Broadcast getBroadcate_List_Detail(Context context) {
         Gson gson = new Gson();
         String json = pref.getString(Broadcaste_Detail, "");
         Type type = new TypeToken<BroadcastActivityListModel.Broadcast>() {
@@ -685,7 +685,7 @@ public class SessionManager {
         SharedPreferences.Editor editor = pref.edit();
         editor.putString(Broadcaste_Detail, json);
         editor.apply();
-    }
+    }*/
 
 
     public static BZcardListModel.Bizcard getBzcard(Context context) {

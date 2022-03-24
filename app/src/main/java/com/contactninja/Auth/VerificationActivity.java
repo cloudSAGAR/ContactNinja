@@ -67,7 +67,7 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
     PinView otp_pinview;
     TextView verfiy_button, resend_txt, tc_wrong, tvTimer;
     String phoneAuthCredential;
-    String mobile_number = "", countrycode="", v_id="";
+    String mobile_number = "", countrycode = "", v_id = "";
     int second;
     LoadingDialog loadingDialog;
     SessionManager sessionManager;
@@ -77,7 +77,7 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
     private FirebaseAuth mAuth;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     private final long mLastClickTime = 0;
-    String referred_by="";
+    String referred_by = "";
     private BroadcastReceiver mNetworkReceiver;
 
 
@@ -92,17 +92,17 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
         Global.checkConnectivity(VerificationActivity.this, mMainLayout);
         Intent getIntent = getIntent();
         Bundle getbunBundle = getIntent.getExtras();
-        try{
+        try {
             first_name = getbunBundle.getString("f_name");
             last_name = getbunBundle.getString("l_name");
             email_address = getbunBundle.getString("email");
             login_type = getbunBundle.getString("login_type");
             mobile_number = getbunBundle.getString("mobile");
             v_id = getbunBundle.getString("v_id");
-            countrycode=getbunBundle.getString("countrycode");
+            countrycode = getbunBundle.getString("countrycode");
             activity_flag = getbunBundle.getString("activity_flag");
-            referred_by=getbunBundle.getString("referred_by");
-        }catch (Exception e){
+            referred_by = getbunBundle.getString("referred_by");
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -124,12 +124,12 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                     tc_wrong.setVisibility(View.GONE);
                     loadingDialog.showLoadingDialog();
 
-                        tc_wrong.setVisibility(View.GONE);
-                        loadingDialog.showLoadingDialog();
+                    tc_wrong.setVisibility(View.GONE);
+                    loadingDialog.showLoadingDialog();
                     try {
                         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(v_id, otp_pinview.getText().toString());
                         signInWithCredential(credential);
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -139,7 +139,7 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
         resend_txt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // Log.e("On Resend ", "call");
+                // Log.e("On Resend ", "call");
                 VerifyPhone(mobile_number.trim());
                 showTimer();
                 resend_txt.setVisibility(View.GONE);
@@ -149,7 +149,7 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
             }
         });
         new OTP_Receiver().setEditText(otp_pinview);
-     otp_pinview.addTextChangedListener(new TextWatcher() {
+        otp_pinview.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -166,12 +166,12 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                     try {
                         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(v_id, otp_pinview.getText().toString());
                         signInWithCredential(credential);
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                     verfiy_button.setEnabled(false);
 
-                }else {
+                } else {
                     verfiy_button.setEnabled(true);
 
                 }
@@ -214,7 +214,7 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                             // sessionManager.login();
                             if (activity_flag.equals("login")) {
                                 try {
-                                    if(Global.isNetworkAvailable(VerificationActivity.this,mMainLayout)) {
+                                    if (Global.isNetworkAvailable(VerificationActivity.this, mMainLayout)) {
                                         LoginData();
                                     }
                                 } catch (JSONException e) {
@@ -222,7 +222,7 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                                 }
                             } else {
                                 try {
-                                    if(Global.isNetworkAvailable(VerificationActivity.this,mMainLayout)) {
+                                    if (Global.isNetworkAvailable(VerificationActivity.this, mMainLayout)) {
                                         SignAPI();
                                     }
                                 } catch (JSONException e) {
@@ -359,7 +359,7 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
     }
 
     public void showTimer() {
-        Log.e("Show TImmer","Yes");
+        Log.e("Show TImmer", "Yes");
         countDownTimer = new CountDownTimer(60 * 1000, 1000) {
             @SuppressLint({"NewApi", "DefaultLocale"})
             @Override
@@ -394,17 +394,17 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
         paramObject.addProperty("first_name", first_name);
         paramObject.addProperty("last_name", last_name);
         paramObject.addProperty("email", email_address);
-        paramObject.addProperty("contact_number", countrycode+mobile_number);
+        paramObject.addProperty("contact_number", countrycode + mobile_number);
         paramObject.addProperty("login_type", login_type);
         paramObject.addProperty("otp", otp);
-        paramObject.addProperty("referred_by",referred_by);
+        paramObject.addProperty("referred_by", referred_by);
         obj.add("data", paramObject);
-        retrofitCalls.SignUp_user(sessionManager,obj, loadingDialog,Global.getVersionname(VerificationActivity.this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.SignUp_user(sessionManager, obj, loadingDialog, Global.getVersionname(VerificationActivity.this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
-                Log.e("Response is",new Gson().toJson(response.body()));
-                if (response.body().getHttp_status()==200) {
+                Log.e("Response is", new Gson().toJson(response.body()));
+                if (response.body().getHttp_status() == 200) {
 
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
@@ -413,63 +413,57 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                     SignResponseModel user_model = new Gson().fromJson(headerString, listType);
                     SessionManager.setUserdata(getApplicationContext(), user_model);
                     sessionManager.setRefresh_token(user_model.getRefreshToken());
-                    sessionManager.setAccess_token(user_model.getTokenType()+" "+user_model.getAccessToken());
-                    if (login_type.equals("EMAIL"))
-                    {
+                    sessionManager.setAccess_token(user_model.getTokenType() + " " + user_model.getAccessToken());
+                    if (login_type.equals("EMAIL")) {
 
                         try {
-                            if (user_model.getUser().getContactNumber().equals(""))
-                            {
+                            if (user_model.getUser().getContactNumber().equals("")) {
                                 Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
                                 intent.putExtra("login_type", login_type);
                                 startActivity(intent);
-                            }
-                            else {
-                                startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
+                            } else {
+                                if (!sessionManager.isPayment_Type_Select()) {
+                                    startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
+                                } else {
+                                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                }
                             }
                             finish();
-                        }
-                        catch (Exception e)
-                        {
+                        } catch (Exception e) {
                             Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
                             intent.putExtra("login_type", login_type);
                             startActivity(intent);
                             finish();
                         }
 
-                    }
-                    else if (login_type.equals("PHONE"))
-                    {
+                    } else if (login_type.equals("PHONE")) {
 
                         try {
-                            if (user_model.getUser().getEmail().equals(""))
-                            {
+                            if (user_model.getUser().getEmail().equals("")) {
                                 Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
                                 intent.putExtra("login_type", login_type);
                                 startActivity(intent);
-                            }
-                            else {
-                                startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
+                            } else {
+                                if (!sessionManager.isPayment_Type_Select()) {
+                                    startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
+                                } else {
+                                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                }
                             }
                             finish();
-                        }
-                        catch (Exception e)
-                        {
+                        } catch (Exception e) {
                             Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
                             intent.putExtra("login_type", login_type);
                             startActivity(intent);
                             finish();
                         }
 
-                    }
-                  else if (user_model.getUser().getEmail().equals("") || user_model.getUser().getContactNumber().equals(""))
-                  {
-                      Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
-                      intent.putExtra("login_type", login_type);
-                      startActivity(intent);
-                      finish();
-                  }
-                  else if (!sessionManager.isPayment_Type_Select()) {
+                    } else if (user_model.getUser().getEmail().equals("") || user_model.getUser().getContactNumber().equals("")) {
+                        Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
+                        intent.putExtra("login_type", login_type);
+                        startActivity(intent);
+                        finish();
+                    } else if (!sessionManager.isPayment_Type_Select()) {
                         startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
                         finish();
                     } else {
@@ -490,16 +484,16 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
     }
 
     public void LoginData() throws JSONException {
-        Log.e("Code is",countrycode);
+        Log.e("Code is", countrycode);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("firebase_fcm_token", SessionManager.getFcm_Token(getApplicationContext()));
         paramObject.addProperty("email", email_address);
-        paramObject.addProperty("contact_number", countrycode+mobile_number);
+        paramObject.addProperty("contact_number", countrycode + mobile_number);
         paramObject.addProperty("login_type", login_type);
         paramObject.addProperty("otp", otp_pinview.getText().toString());
         obj.add("data", paramObject);
-        retrofitCalls.LoginUser(sessionManager,obj, loadingDialog,Global.getVersionname(VerificationActivity.this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.LoginUser(sessionManager, obj, loadingDialog, Global.getVersionname(VerificationActivity.this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 // Log.e("Response is",new Gson().toJson(response));
@@ -518,31 +512,30 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                     SignResponseModel user_model = new Gson().fromJson(headerString, listType);
                     SessionManager.setUserdata(getApplicationContext(), user_model);
                     sessionManager.setRefresh_token(user_model.getRefreshToken());
-                    sessionManager.setAccess_token(user_model.getTokenType()+" "+user_model.getAccessToken());                   try {
+                    sessionManager.setAccess_token(user_model.getTokenType() + " " + user_model.getAccessToken());
+                    try {
 
-                       if (user_model.getUser().getEmail().equals("")||user_model.getUser().getContactNumber().equals("")) {
-                           Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
-                           intent.putExtra("login_type", login_type);
-                           startActivity(intent);
-                           finish();
-                       } else if (!sessionManager.isPayment_Type_Select()) {
-                           startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
-                           finish();
-                       } else {
-                           startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                           finish();
-                       }
-                   }
-                   catch (Exception e)
-                   {
-                       Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
-                       intent.putExtra("login_type", login_type);
-                       startActivity(intent);
-                       finish();
-                   }
+                        if (user_model.getUser().getEmail().equals("") || user_model.getUser().getContactNumber().equals("")) {
+                            Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
+                            intent.putExtra("login_type", login_type);
+                            startActivity(intent);
+                            finish();
+                        } else if (!sessionManager.isPayment_Type_Select()) {
+                            startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
+                            finish();
+                        } else {
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            finish();
+                        }
+                    } catch (Exception e) {
+                        Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
+                        intent.putExtra("login_type", login_type);
+                        startActivity(intent);
+                        finish();
+                    }
 
 
-                  //  Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), true);
+                    //  Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), true);
 
 
                 } else {

@@ -719,7 +719,7 @@ public class Add_Broad_Text_Activity extends AppCompatActivity implements View.O
                     }
                 }
                 bizcard.setScelect(true);
-                newUrl=Global.bzcard_priview+bizcard.getId_encoded();
+                newUrl=Global.bzcard_share+bizcard.getId_encoded();
 
                 String curenttext = edit_template.getText().toString();
                 if(!oldUrl.equals("")&& !oldUrl.equals(newUrl)){

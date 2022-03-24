@@ -21,6 +21,7 @@
     <string name="welcome">Welcome to \n Contact Ninja!</string>
     <string name="welcome_dis">Helping you keep your contacts informed in the easiest and fastest way possible.</string>
     <string name="account_no">Don\'t have an account?</string>
+    <string name="remember_password">Remember password?</string>
     <string name="signup">Sign up</string>
     <string name="signIn">Sign In</string>
     <string name="send">Send</string>
@@ -36,6 +37,7 @@
     <string name="invalid_email">Invalid email</string>
     <string name="invalid_email1">This email address is not exist</string>
     <string name="invalid_phone">Invalid number</string>
+    <string name="invalid_jobtitle">Invalid Job Title</string>
     <string name="add_phone_number">Invalid number</string>
     <string name="invalid_password">Invalid password</string>
     <string name="invalid_first_name">Add first name</string>

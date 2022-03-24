@@ -661,11 +661,10 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
             } else if (date1.equals(date2)) {
                 if (item.getStatus().equals("NOT_STARTED")) {
                     tv_status.setText("Today");
-                    tv_status.setTextColor(Color.parseColor("#EC5454"));
                 } else {
                     tv_status.setText(Global.setFirstLetter(item.getStatus()));
-                    tv_status.setTextColor(Color.parseColor("#ABABAB"));
                 }
+                tv_status.setTextColor(Color.parseColor("#ABABAB"));
                 tv_time.setText(parseDate(FullDate));
 
             }

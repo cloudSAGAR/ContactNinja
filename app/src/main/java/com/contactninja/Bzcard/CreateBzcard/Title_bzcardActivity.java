@@ -388,13 +388,47 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
         if(TotalFileUpload==0) {
             try {
                 if (Global.isNetworkAvailable(Title_bzcardActivity.this, MainActivity.mMainLayout)) {
-                    Data_Upload();
+                    if(validaction()){
+                        Data_Upload();
+                    }
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
 
+    }
+
+    private boolean validaction() {
+        if(bzcard_model.getCard_id()==1){
+            if(bzcard_model.getBzcardFieldsModel().getFirst_name().equals("")){
+                Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.invalid_first_name),false);
+            }else  if(bzcard_model.getBzcardFieldsModel().getLast_name().equals("")){
+                Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.invalid_last_name),false);
+            }else if(bzcard_model.getBzcardFieldsModel().getContant_number().equals("")){
+                Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.invalid_phone),false);
+            }else if(bzcard_model.getBzcardFieldsModel().getEmail().equals("")){
+                Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.invalid_email),false);
+            }else {
+                return true;
+            }
+        }else {
+            if(bzcard_model.getBzcardFieldsModel().getFirst_name().equals("")){
+                Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.invalid_first_name),false);
+            }else  if(bzcard_model.getBzcardFieldsModel().getLast_name().equals("")){
+                Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.invalid_last_name),false);
+            }else if(bzcard_model.getBzcardFieldsModel().getContant_number().equals("")){
+                Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.invalid_phone),false);
+            }else if(bzcard_model.getBzcardFieldsModel().getEmail().equals("")){
+                Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.invalid_email),false);
+            }else if(bzcard_model.getBzcardFieldsModel().getJobtitle().equals("")){
+                Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.invalid_jobtitle),false);
+            }else {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     void Data_Upload () throws JSONException {

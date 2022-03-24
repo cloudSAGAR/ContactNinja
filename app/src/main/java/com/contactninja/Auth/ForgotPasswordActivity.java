@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -40,6 +41,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
     RetrofitCalls retrofitCalls;
     private BroadcastReceiver mNetworkReceiver;
     CoordinatorLayout mMainLayout;
+    ImageView iv_back;
 
     @Override
     protected void onCreate(@NonNull Bundle savedInstanceState) {
@@ -52,6 +54,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
         retrofitCalls = new RetrofitCalls(this);
         tv_signUP.setOnClickListener(this);
         btn_login.setOnClickListener(this);
+        iv_back.setOnClickListener(this);
 
     }
 
@@ -61,6 +64,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
         btn_login=findViewById(R.id.btn_login);
         tv_signUP=findViewById(R.id.tv_signUP);
         iv_invalid=findViewById(R.id.iv_invalid);
+        iv_back=findViewById(R.id.iv_back);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -68,7 +72,8 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
     public void onClick(@SuppressLint("UnknownNullness") View view) {
         switch (view.getId())
         {
-            case R.id.tv_signUP:
+            case R.id.iv_back:
+                case R.id.tv_signUP:
                 finish();
                 break;
             case R.id.btn_login:
@@ -86,6 +91,8 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
             iv_invalid.setText("");
             try {
                 if(Global.isNetworkAvailable(ForgotPasswordActivity.this,mMainLayout)) {
+                    /**
+                     * check email is valid oe not in database */
                     Uservalidate();
                 }
             } catch (JSONException e) {
@@ -118,6 +125,8 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
 
                     try {
                         if(Global.isNetworkAvailable(ForgotPasswordActivity.this,mMainLayout)) {
+                            /**
+                             * send password */
                             ForgotPassword();
                         }
                     } catch (JSONException e) {

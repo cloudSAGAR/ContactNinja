@@ -94,7 +94,7 @@
                             <View
                                 android:layout_width="1dp"
                                 android:layout_height="match_parent"
-                                android:background="#707070" />
+                                android:background="@color/otp_header_text_color" />
 
                             <EditText
                                 android:id="@+id/edit_Mobile"

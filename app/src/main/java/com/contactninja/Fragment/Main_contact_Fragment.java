@@ -20,6 +20,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.contactninja.Fragment.AddContect_Fragment.Company_Fragment;
 import com.contactninja.Fragment.AddContect_Fragment.ContectFragment;
 import com.contactninja.Fragment.AddContect_Fragment.GroupFragment;
+import com.contactninja.MainActivity;
 import com.contactninja.R;
 import com.google.android.material.tabs.TabLayout;
 
@@ -33,7 +34,8 @@ public class Main_contact_Fragment extends Fragment {
    // ViewpaggerAdapter adapter;
     ImageView search_icon;
     LinearLayout layout_toolbar_logo;
-
+    public Main_contact_Fragment() {
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
