@@ -300,6 +300,21 @@ public class Global extends Application {
         return tripDate;
     }
 
+
+    public static String formateChange1(String dateTime) {
+        Date oneWayTripDate=null;
+        String tripDate="";
+        SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat output = new SimpleDateFormat("dd-MMM-yyyy");
+        try {
+            oneWayTripDate = input.parse(dateTime);                 // parse input
+            tripDate= output.format(oneWayTripDate);    // format output
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return tripDate;
+    }
+
     public static int Countrycode_Country(Activity activity, String email_number) {
         TelephonyManager tm = (TelephonyManager) activity.getSystemService(activity.TELEPHONY_SERVICE);
         String country = tm.getNetworkCountryIso();

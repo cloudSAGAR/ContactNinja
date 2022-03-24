@@ -57,6 +57,7 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
+    String main_date="";
 
     ImageView iv_back, iv_time, iv_date, iv_down_arrow,iv_big_logo,iv_small_logo;
     TextView save_button, tv_day_txt, tv_occurs_weekly;
@@ -130,7 +131,10 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         String formattedDate = df.format(c);
-        tv_date.setText(formattedDate);
+        String formateChnage = Global.formateChange1(formattedDate);
+        tv_date.setText(formateChnage);
+        main_date=formattedDate;;
+
 
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         String currentDateandTime = sdf.format(new Date());
@@ -140,7 +144,11 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
         if (SessionManager.getBroadcast_flag(getApplicationContext()).equals("edit")) {
             broadcate_save_data = SessionManager.getBroadcate_save_data(getApplicationContext());
             tv_time.setText(broadcate_save_data.getTime());
-            tv_date.setText(broadcate_save_data.getDate());
+            String formateChnage1 = Global.formateChange1(broadcate_save_data.getDate());
+            tv_date.setText(formateChnage1);
+            main_date=broadcate_save_data.getDate();;
+
+
             tv_recurrence.setText(broadcate_save_data.getRecurrence());
             tv_recurrence.setTextColor(getResources().getColor(R.color.text_reg));
             tv_day.setText(broadcate_save_data.getRepeat_every());
@@ -524,7 +532,7 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
                 if (recurring_type.equals("Recurrence")) {
                     Global.Messageshow(getApplicationContext(), mMainLayout, "Select Recurrence", false);
                 } else {
-                    broadcate_save_data.setDate(tv_date.getText().toString());
+                    broadcate_save_data.setDate(main_date);
                     broadcate_save_data.setTime(tv_time.getText().toString());
                     broadcate_save_data.setRecurrence(tv_recurrence.getText().toString());
                     broadcate_save_data.setRepeat_every(tv_day.getText().toString());
@@ -765,7 +773,9 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
                             sdate = String.valueOf(dayOfMonth);
                         }
 
-                        tv_date.setText(year + "-" + sMonth + "-" + sdate);
+                        String formateChnage = Global.formateChange1(year+"-"+sMonth+"-"+sdate);
+                        tv_date.setText(formateChnage);
+                        main_date=year + "-" + sMonth + "-" + sdate;
 
                     }
                 }, mYear, mMonth, mDay);

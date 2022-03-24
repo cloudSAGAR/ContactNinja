@@ -119,7 +119,9 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
             tv_item_num.setBackground(getResources().getDrawable(R.drawable.ic_email_mini));
 
         }
-        tv_date.setText(broadcate_save_data.getDate() + " @ " + broadcate_save_data.getTime());
+
+        String formateChnage = Global.formateChange1(broadcate_save_data.getDate());
+        tv_date.setText(formateChnage + " @ " + broadcate_save_data.getTime());
         tv_repete_type.setText(broadcate_save_data.getRecurrence());
 
         if (SessionManager.getBroadcast_flag(getApplicationContext()).equals("edit")) {

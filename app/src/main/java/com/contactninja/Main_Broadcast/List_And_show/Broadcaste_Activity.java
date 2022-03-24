@@ -103,8 +103,9 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
             tv_title.setText(broadcasteda.getManageBy() + " " + broadcasteda.getType());
             tv_title.setTextColor(getResources().getColor(R.color.tv_push_color));
         }
+        String formateChnage = Global.formateChange1(broadcasteda.getStartDate());
 
-        tv_date.setText(broadcasteda.getStartDate() + " @ " + broadcasteda.getStartTime());
+        tv_date.setText(formateChnage + " @ " + broadcasteda.getStartTime());
 
         if (broadcasteda.getRecurringType().equals("D")) {
             tv_repete_type.setText("Daily");

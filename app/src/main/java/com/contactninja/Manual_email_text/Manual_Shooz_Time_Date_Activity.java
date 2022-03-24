@@ -66,6 +66,7 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
     String id,text,p_number,Type;
     private long mLastClickTime=0;
     int prospect_id=0,seq_task_id=0,record_id=0;
+    String main_date="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +100,10 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         String formattedDate = df.format(c);
         tv_date.setText(formattedDate);
+
+        String formateChnage = Global.formateChange1(formattedDate);
+        tv_date.setText(formateChnage);
+        main_date=formattedDate;
 
         Calendar mcurrentTime = Calendar.getInstance();
         mcurrentTime.add(Calendar.MINUTE, 2);
@@ -246,7 +251,7 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
         paramObject.put("seq_task_id", seq_task_id);
         paramObject.put("status", "SNOOZE");
         paramObject.put("time", tv_time.getText().toString());
-        paramObject.put("date", tv_date.getText().toString());
+        paramObject.put("date", main_date);
         obj.put("data", paramObject);
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
@@ -335,8 +340,10 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
                             sdate = String.valueOf(dayOfMonth);
                         }
 
-
-                        tv_date.setText(year + "-" + sMonth + "-" + sdate);
+                        String formateChnage = Global.formateChange1(year+"-"+sMonth+"-"+sdate);
+                        tv_date.setText(formateChnage);
+                        main_date=year + "-" + sMonth + "-" + sdate;
+                     //   tv_date.setText(year + "-" + sMonth + "-" + sdate);
 
                     }
                 }, mYear, mMonth, mDay);

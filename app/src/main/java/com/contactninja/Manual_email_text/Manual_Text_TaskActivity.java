@@ -64,6 +64,7 @@ public class Manual_Text_TaskActivity extends AppCompatActivity implements View.
     ConstraintLayout mMainLayout;
     String task_name="",from_ac="",from_ac_id="",temaplet_id="";
     private long mLastClickTime=0;
+    String main_date="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +92,10 @@ public class Manual_Text_TaskActivity extends AppCompatActivity implements View.
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         String formattedDate = df.format(c);
-        tv_date.setText(formattedDate);
+
+        String formateChnage = Global.formateChange1(formattedDate);
+        tv_date.setText(formateChnage);
+        main_date=formattedDate;;
 
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         String currentDateandTime = sdf.format(new Date());
@@ -173,7 +177,6 @@ public class Manual_Text_TaskActivity extends AppCompatActivity implements View.
                 mLastClickTime = SystemClock.elapsedRealtime();
                 if (tv_date.getText().toString().equals(""))
                 {
-
                     Global.Messageshow(getApplicationContext(),linearLayout,"Add Date ",false);
                 }
                 else if (tv_time.getText().toString().equals(""))
@@ -269,8 +272,9 @@ public class Manual_Text_TaskActivity extends AppCompatActivity implements View.
                         }
 
 
-                        tv_date.setText(year + "-" + sMonth + "-" + sdate);
-
+                        String formateChnage = Global.formateChange1(year+"-"+sMonth+"-"+sdate);
+                        tv_date.setText(formateChnage);
+                        main_date=year + "-" + sMonth + "-" + sdate;
                     }
                 }, mYear, mMonth, mDay);
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() + (1000 * 60 * 60));
@@ -297,7 +301,7 @@ public class Manual_Text_TaskActivity extends AppCompatActivity implements View.
         paramObject.put("user_id", user_id);
         paramObject.put("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
         paramObject.put("time", tv_time.getText().toString());
-        paramObject.put("date", tv_date.getText().toString());
+        paramObject.put("date", main_date);
         paramObject.put("assign_to", user_id);
         //paramObject.put("task_description", text);
 
