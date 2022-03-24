@@ -2513,13 +2513,14 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.createInstance(mCtx);
             String isoCode = phoneNumberUtil.getRegionCodeForCountryCode(Integer.parseInt(countryCode));
             Phonenumber.PhoneNumber phoneNumber = null;
+            boolean isValid=false ;
             try {
                 phoneNumber = phoneNumberUtil.parse(phNumber, isoCode);
+                isValid = phoneNumberUtil.isValidNumber(phoneNumber);
             } catch (NumberParseException e) {
                 System.err.println(e);
             }
 
-            boolean isValid = phoneNumberUtil.isValidNumber(phoneNumber);
             if (isValid) {
                 String internationalFormat = phoneNumberUtil.format(phoneNumber, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
                 return true;

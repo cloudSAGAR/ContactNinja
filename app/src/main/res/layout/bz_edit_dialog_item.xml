@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bottom_sheet"
     style="@style/CoffeeDialog"
     android:layout_width="match_parent"
@@ -15,53 +16,61 @@
         android:background="@drawable/top_corner15"
         android:orientation="vertical"
         android:padding="10dp">
-
-        <TextView
+        <LinearLayout
             android:id="@+id/selected_Edit"
-            style="@style/tv_regular_12"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_30sdp"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:text="@string/Edit"
-            android:textColor="@color/purple_200" />
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:orientation="horizontal">
 
+            <TextView
+                style="@style/tv_regular_12"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="@dimen/_10sdp"
+                android:textColor="@color/purple_200"
+                android:text="@string/Edit" />
+
+            <ImageView
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_edit_card"
+                tools:ignore="ContentDescription" />
+        </LinearLayout>
         <View
-            android:id="@+id/line_brodcste"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_1sdp"
             android:background="@color/browser_actions_bg_grey">
 
         </View>
-
-        <TextView
-            android:id="@+id/selected_Delete"
-            style="@style/tv_regular_12"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_30sdp"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:text="@string/Delete"
-            android:textColor="@color/purple_200" />
-
-        <View
-            android:id="@+id/line_caampaign"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_1sdp"
-            android:background="@color/browser_actions_bg_grey">
-
-        </View>
-
-        <TextView
+        <LinearLayout
             android:id="@+id/selected_Share"
-            style="@style/tv_regular_12"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_30sdp"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:text="@string/Share"
-            android:textColor="@color/purple_200" />
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:orientation="horizontal">
 
+            <TextView
+                style="@style/tv_regular_12"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="@dimen/_10sdp"
+                android:textColor="@color/purple_200"
+                android:text="@string/Share" />
+
+            <ImageView
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_gravity="center"
+                android:rotation="180"
+                android:src="@drawable/ic_share_bzcard"
+                tools:ignore="ContentDescription" />
+        </LinearLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/_1sdp"
@@ -69,21 +78,100 @@
 
         </View>
 
-        <TextView
+        <LinearLayout
             android:id="@+id/selected_Preview"
-            style="@style/tv_regular_12"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_30sdp"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:text="@string/Preview"
-            android:textColor="@color/purple_200" />
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:orientation="horizontal">
 
+            <TextView
+                style="@style/tv_regular_12"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="@dimen/_10sdp"
+                android:textColor="@color/purple_200"
+                android:text="@string/Preview" />
+
+            <ImageView
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_preview_bzcard"
+                tools:ignore="ContentDescription" />
+        </LinearLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/_1sdp"
             android:background="@color/browser_actions_bg_grey">
 
         </View>
+        <LinearLayout
+            android:id="@+id/selected_Analytics"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/tv_regular_12"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="@dimen/_10sdp"
+                android:textColor="@color/purple_200"
+                android:text="@string/Analytics" />
+
+            <ImageView
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_carbon_analytics__1_"
+                tools:ignore="ContentDescription" />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:background="@color/browser_actions_bg_grey">
+
+        </View>
+
+
+
+        <LinearLayout
+            android:id="@+id/selected_Delete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/tv_regular_12"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="@dimen/_10sdp"
+                android:textColor="@color/red"
+                android:text="@string/manual_Delete" />
+
+            <ImageView
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_man_delete"
+                tools:ignore="ContentDescription" />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:background="@color/browser_actions_bg_grey">
+
+        </View>
+
+
     </LinearLayout>
 </LinearLayout>

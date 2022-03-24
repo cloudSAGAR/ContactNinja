@@ -358,10 +358,11 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.CoffeeDialog);
         bottomSheetDialog.setContentView(mView);
 
-        TextView selected_Edit = bottomSheetDialog.findViewById(R.id.selected_Edit);
-        TextView selected_Delete = bottomSheetDialog.findViewById(R.id.selected_Delete);
-        TextView selected_Share = bottomSheetDialog.findViewById(R.id.selected_Share);
-        TextView selected_Preview = bottomSheetDialog.findViewById(R.id.selected_Preview);
+        LinearLayout selected_Edit = bottomSheetDialog.findViewById(R.id.selected_Edit);
+        LinearLayout selected_Delete = bottomSheetDialog.findViewById(R.id.selected_Delete);
+        LinearLayout selected_Share = bottomSheetDialog.findViewById(R.id.selected_Share);
+        LinearLayout selected_Preview = bottomSheetDialog.findViewById(R.id.selected_Preview);
+        LinearLayout selected_Analytics = bottomSheetDialog.findViewById(R.id.selected_Analytics);
 
 
         selected_Edit.setOnClickListener(new View.OnClickListener() {
@@ -379,6 +380,20 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
                 SessionManager.setBzcard(getActivity(), bizcard);
 
                 startActivity(new Intent(getActivity(), Add_New_Bzcard_Activity.class));
+                bottomSheetDialog.dismiss();
+            }
+        });
+        selected_Analytics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
+
+
                 bottomSheetDialog.dismiss();
             }
         });

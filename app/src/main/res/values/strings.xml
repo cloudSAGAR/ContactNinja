@@ -661,6 +661,7 @@ Number</string>
     <string name="Delete">Delete</string>
     <string name="Share">Share</string>
     <string name="Preview">Preview</string>
+    <string name="Analytics">Analytics</string>
 
     <string name="home_bz_card">Bzcard analytics</string>
     <string name="home_email_text">Connected Email</string>
