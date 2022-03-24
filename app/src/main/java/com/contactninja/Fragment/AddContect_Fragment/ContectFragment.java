@@ -413,8 +413,9 @@ public class ContectFragment extends Fragment {
                 mLastClickTime = SystemClock.elapsedRealtime();
                 if (!SessionManager.getnewContect(getActivity()).equals(null) && !SessionManager.getnewContect(getActivity()).equals("")) {
 
+                    EnableRuntimePermission();
                     Duplicate_remove();
-                    Log.e("Data Is",new Gson().toJson(SessionManager.getnewContect(getActivity())));
+                   // Log.e("Data Is",new Gson().toJson(SessionManager.getnewContect(getActivity())));
                     ArrayList<Contact> listContacts1=new ArrayList<>();
                     listContacts1.addAll(SessionManager.getnewContect(getActivity()));
                     if (listContacts1.size()!=0)
@@ -431,7 +432,7 @@ public class ContectFragment extends Fragment {
                     tv_upload.setEnabled(true);
                 }
                 tv_upload.setEnabled(false);
-                EnableRuntimePermission();
+
                 // splitdata(csv_inviteListData);
             }
         });
@@ -1242,9 +1243,6 @@ public class ContectFragment extends Fragment {
         call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
-                SessionManager.setnewContect(getActivity(), new ArrayList<>());
-
-
                 try {
                     if (response.body().getHttp_status() == 200) {
                         try {
