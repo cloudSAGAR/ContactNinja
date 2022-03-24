@@ -135,6 +135,8 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         // Required empty public constructor
     }
 
+    LinearLayout layout_number,layout_email,address_layout,
+            zip_layout,layout_affiliate;
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -150,6 +152,79 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         companyAdapter = new CompanyAdapter(getActivity(), new ArrayList<>());
 
         return view;
+    }
+
+    private void IntentUI(View view) {
+        layout_affiliate=view.findViewById(R.id.layout_affiliate);
+        zip_layout=view.findViewById(R.id.zip_layout);
+        address_layout=view.findViewById(R.id.address_layout);
+        layout_email=view.findViewById(R.id.layout_email);
+        ev_affiliatecode=view.findViewById(R.id.ev_affiliatecode);
+        iv_copy_affilate=view.findViewById(R.id.iv_copy_affilate);
+        iv_copy_affilate.setOnClickListener(this);
+        layout_referenceCode = view.findViewById(R.id.layout_referenceCode);
+        layout_country_piker = view.findViewById(R.id.layout_country_piker);
+        edt_email = view.findViewById(R.id.edt_email);
+        edt_mobile_no = view.findViewById(R.id.edt_mobile_no);
+        copany_down_arrow = view.findViewById(R.id.copany_down_arrow);
+        iv_down = view.findViewById(R.id.iv_down);
+        tv_phone = view.findViewById(R.id.tv_phone);
+        ev_address = view.findViewById(R.id.ev_address);
+        ev_city = view.findViewById(R.id.ev_city);
+        select_state = view.findViewById(R.id.select_state);
+        ev_zip = view.findViewById(R.id.ev_zip);
+        ev_zoom = view.findViewById(R.id.ev_zoom);
+        ev_note = view.findViewById(R.id.ev_note);
+        add_mobile_Number = view.findViewById(R.id.add_mobile_Number);
+        pulse_icon = view.findViewById(R.id.pulse_icon);
+        pulse_icon.setColorFilter(getActivity().getResources().getColor(R.color.purple_200));
+        layout_Add_phone = view.findViewById(R.id.layout_Add_phone);
+        pulse_icon1 = view.findViewById(R.id.pulse_icon1);
+        pulse_icon1.setColorFilter(getActivity().getResources().getColor(R.color.purple_200));
+        layout_Add_email = view.findViewById(R.id.layout_Add_email);
+        layout_mobile = view.findViewById(R.id.layout_mobile);
+        ev_state = view.findViewById(R.id.ev_state);
+        city_layout = view.findViewById(R.id.city_layout);
+        zoom_layout = view.findViewById(R.id.zoom_layout);
+        note_layout = view.findViewById(R.id.note_layout);
+        tv_more_field = view.findViewById(R.id.tv_more_field);
+        company_url_layout = view.findViewById(R.id.company_url_layout);
+        tv_company_url = view.findViewById(R.id.tv_company_url);
+        ev_company_url = view.findViewById(R.id.ev_company_url);
+        ev_company = view.findViewById(R.id.ev_company);
+        job_layout = view.findViewById(R.id.job_layout);
+        tv_job = view.findViewById(R.id.tv_job);
+        ev_job = view.findViewById(R.id.ev_job);
+        layout_time_zone = view.findViewById(R.id.layout_time_zone);
+        select_label_zone = view.findViewById(R.id.select_label_zone);
+        zone_txt = view.findViewById(R.id.zone_txt);
+        layout_bod = view.findViewById(R.id.layout_bod);
+        ev_bob = view.findViewById(R.id.ev_bob);
+        fb_layout = view.findViewById(R.id.fb_layout);
+        ev_fb = view.findViewById(R.id.ev_fb);
+        twitter_layout = view.findViewById(R.id.twitter_layout);
+        ev_twitter = view.findViewById(R.id.ev_twitter);
+        breakout_layout = view.findViewById(R.id.breakout_layout);
+        ev_breakout = view.findViewById(R.id.ev_breakout);
+        linkedin_layout = view.findViewById(R.id.linkedin_layout);
+        ev_linkedin = view.findViewById(R.id.ev_linkedin);
+        state_layout = view.findViewById(R.id.state_layout);
+        time_layout = view.findViewById(R.id.time_layout);
+        media_layout = view.findViewById(R.id.media_layout);
+        rv_phone = view.findViewById(R.id.rv_phone);
+        rv_email = view.findViewById(R.id.rv_email);
+        mMainLayout = view.findViewById(R.id.mMainLayout);
+        tv_add_social = view.findViewById(R.id.tv_add_social);
+        media_link = view.findViewById(R.id.media_link);
+        img_fb = view.findViewById(R.id.img_fb);
+        img_twitter = view.findViewById(R.id.img_twitter);
+        img_linkdin = view.findViewById(R.id.img_linkdin);
+        img_breakout = view.findViewById(R.id.img_breakout);
+        company_layout = view.findViewById(R.id.company_layout);
+        company_layout.setOnClickListener(this);
+        other_company_layout = view.findViewById(R.id.other_company_layout);
+        ev_othre_company = view.findViewById(R.id.ev_othre_company);
+        layout_number=view.findViewById(R.id.layout_number);
     }
 
     @Override
@@ -368,6 +443,10 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
 
 
             try {
+                phonedetails_list.clear();
+                emaildetails_list.clear();
+                //phoneAdapter.notifyDataSetChanged();
+                //emailAdapter.notifyDataSetChanged();
                 List<ContactDetail> detail_contect = Contect_data.getContactDetails();
                 for (int i = 0; i < detail_contect.size(); i++) {
                     if (!detail_contect.get(i).getEmailNumber().trim().equalsIgnoreCase("")) {
@@ -411,7 +490,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                             rv_phone.setLayoutManager(new LinearLayoutManager(getActivity()));
                             rv_phone.setAdapter(phoneAdapter);
                             addcontectModel.setContactdetails(contactdetails);
-                            Log.e("Add Contect Model is ", new Gson().toJson(addcontectModel));
+//                            Log.e("Add Contect Model is ", new Gson().toJson(addcontectModel));
                         }
                     }
                 }
@@ -430,13 +509,29 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
 
 
 
-        } else if (flag.equals("read")) {
+        }
+        else if (flag.equals("read")) {
 
            // Log.e("Model Data", new Gson().toJson(user_data_model));
             edt_mobile_no.setEnabled(false);
-            edt_mobile_no.setText(user_data_model.getContactNumber());
-            edt_email.setText(user_data_model.getEmail());
-            edt_email.setEnabled(false);
+            if (user_data_model.getContactNumber().toString().trim().equals("") || user_data_model.getContactNumber().toString().trim().equals(null))
+            {
+                layout_number.setVisibility(View.GONE);
+            }
+            else {
+                edt_mobile_no.setText(user_data_model.getContactNumber());
+                layout_number.setVisibility(View.VISIBLE);
+            }
+            if (user_data_model.getEmail().toString().trim().equals("") || user_data_model.getEmail().toString().trim().equals(null))
+            {
+                layout_email.setVisibility(View.GONE);
+            }
+            else {
+                layout_email.setVisibility(View.VISIBLE);
+                edt_email.setText(user_data_model.getEmail());
+                edt_email.setEnabled(false);
+            }
+
             layout_country_piker.setVisibility(View.GONE);
             layout_bod.setEnabled(false);
             ev_affiliatecode.setEnabled(false);
@@ -479,6 +574,12 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             ev_bob.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
             ev_note.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
             ev_affiliatecode.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
+            ev_twitter.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
+            ev_fb.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
+            ev_linkedin.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
+            ev_breakout.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
+
+
 
             // ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
             Userprofile Contect_data = user_data_model.getUserprofile();
@@ -504,37 +605,147 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             img_twitter.setVisibility(View.GONE);
 */
 
-            ev_zip.setText(Contect_data.getZipcode());
-            ev_address.setText(Contect_data.getAddress());
-            ev_zoom.setText(Contect_data.getZoom_id());
-            ev_company.setText(Contect_data.getCompany_name());
-            ev_state.setText(Contect_data.getState());
-            ev_city.setText(Contect_data.getCity());
-            ev_affiliatecode.setText(user_data_model.getReferenceCode());
+            if (Contect_data.getCompany_name().toString().trim().equals("") || Contect_data.getCompany_name().toString().trim().equals(null))
+            {
+                company_layout.setVisibility(View.GONE);
+            }
+            else {
+                company_layout.setVisibility(View.VISIBLE);
+                ev_company.setText(Contect_data.getCompany_name());
+            }
+
+            if (Contect_data.getCompany_url().toString().trim().equals("") || Contect_data.getCompany_url().toString().trim().equals(null))
+            {
+                company_url_layout.setVisibility(View.GONE);
+            }
+            else {
+                company_url_layout.setVisibility(View.VISIBLE);
+                ev_company_url.setText(Contect_data.getCompany_url());
+
+            }
+            if (Contect_data.getJob_title().toString().trim().equals("") || Contect_data.getJob_title().toString().trim().equals(null))
+            {
+                job_layout.setVisibility(View.GONE);
+            }
+            else {
+                job_layout.setVisibility(View.VISIBLE);
+                ev_job.setText(Contect_data.getJob_title());
+            }
+
+            if (Contect_data.getZoom_id().toString().trim().equals("") || Contect_data.getZoom_id().toString().trim().equals(null))
+            {
+                zoom_layout.setVisibility(View.GONE);
+            }
+            else {
+                zoom_layout.setVisibility(View.VISIBLE);
+                ev_zoom.setText(Contect_data.getZoom_id());
+
+            }
+
+            if (Contect_data.getAddress().toString().trim().equals("") || Contect_data.getAddress().toString().trim().equals(null))
+            {
+                address_layout.setVisibility(View.GONE);
+
+            }
+            else {
+                ev_address.setText(Contect_data.getAddress());
+                address_layout.setVisibility(View.VISIBLE);
+            }
+
+            if (Contect_data.getCity().toString().trim().equals("") || Contect_data.getCity().toString().trim().equals(null))
+            {
+              city_layout.setVisibility(View.GONE);
+            }
+            else {
+                city_layout.setVisibility(View.VISIBLE);
+                ev_city.setText(Contect_data.getCity());
+            }
+
+            if (Contect_data.getState().toString().trim().equals("") || Contect_data.getState().toString().trim().equals(null))
+            {
+                state_layout.setVisibility(View.GONE);
+            }
+            else {
+                state_layout.setVisibility(View.VISIBLE);
+                ev_state.setText(Contect_data.getState());
+            }
+
+            if (Contect_data.getZipcode().toString().trim().equals("")|| Contect_data.getZipcode().toString().trim().equals(null))
+            {
+                zip_layout.setVisibility(View.GONE);
+
+            }
+            else {
+                zip_layout.setVisibility(View.VISIBLE);
+                ev_zip.setText(Contect_data.getZipcode());
+
+            }
+            if (Contect_data.getTimezoneId().toString().trim().equals("") || Contect_data.getTimezoneId().toString().trim().equals(null) )
+            {
+                time_layout.setVisibility(View.GONE);
+            }
+            else {
+                time_layout.setVisibility(View.VISIBLE);
+            }
+            if (Contect_data.getDob().toString().trim().equals("") || Contect_data.getDob().toString().trim().equals(null) || Contect_data.getDob().toString().trim().equals("0000-00-00"))
+            {
+                layout_bod.setVisibility(View.GONE);
+            }
+            else {
+                layout_bod.setVisibility(View.VISIBLE);
+                ev_bob.setText(Contect_data.getDob());
+            }
+
+            if (user_data_model.getReferenceCode().toString().trim().equals("") || user_data_model.getReferenceCode().toString().trim().equals(null))
+            {
+                layout_affiliate.setVisibility(View.GONE);
+            }
+            else {
+                layout_affiliate.setVisibility(View.VISIBLE);
+                ev_affiliatecode.setText(user_data_model.getReferenceCode());
+            }
+            note_layout.setVisibility(View.GONE);
+
+
+
             if (String.valueOf(Contect_data.getTimezoneId()).equals("null")) {
                 time_zone_id = TimeZone.getDefault().getID();
                 zone_txt.setText(time_zone_id);
             } else {
-             /*   Log.e("Time Zone Size", String.valueOf(timezoneModels.size()));
-                for (int i = 0; i < timezoneModels.size(); i++) {
-                    Log.e("Time Id1",timezoneModels.get(i).getValue().toString());
-                    Log.e("Time Id2",Contect_data.getTimezoneId().toString());
-
-                    if (String.valueOf(Contect_data.getTimezoneId()).equals(timezoneModels.get(i).getValue().toString())) {
-                        zone_txt.setText(timezoneModels.get(i).getText());
-                        break;
-                    }
-                    else {
-                        Log.e("No Same Data", "Yes");
-                    }
-                } */
             }
-            ev_job.setText(Contect_data.getJob_title());
-            // contect_id = Contect_data.getId();
-            /*            organization_id = String.valueOf(Contect_data.getOrg));*/
-            //team_id = String.valueOf(Contect_data.getTeamId());
-            ev_company_url.setText(Contect_data.getCompany_url());
-            ev_bob.setText(Contect_data.getDob());
+
+            if (Contect_data.getFacebook_link().toString().trim().equals("") || Contect_data.getFacebook_link().toString().trim().equals(null))
+            {
+                fb_layout.setVisibility(View.GONE);
+            }
+            else {
+                fb_layout.setVisibility(View.VISIBLE);
+            }
+
+            if (Contect_data.getTwitter_link().toString().trim().equals("") || Contect_data.getTwitter_link().toString().trim().equals(null))
+            {
+                twitter_layout.setVisibility(View.GONE);
+            }
+            else {
+                twitter_layout.setVisibility(View.VISIBLE);
+            }
+
+            if (Contect_data.getLinkedin_link().toString().trim().equals("") || Contect_data.getLinkedin_link().toString().trim().equals(null))
+            {
+                linkedin_layout.setVisibility(View.GONE);
+            }
+            else {
+                linkedin_layout.setVisibility(View.VISIBLE);
+            }
+
+            if (Contect_data.getBreakout_link().toString().trim().equals("") || Contect_data.getBreakout_link().toString().trim().equals(null))
+            {
+                breakout_layout.setVisibility(View.GONE);
+            }
+            else {
+                breakout_layout.setVisibility(View.VISIBLE);
+            }
+
             media_link.setVisibility(View.GONE);
             try {
 
@@ -587,36 +798,6 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                     startActivity(intent);
                 }
             });
-           /*     try {
-                    if (Contect_data.getLinkedin_link().equals("")) {
-                        img_linkdin.setVisibility(View.GONE);
-                    } else {
-                        img_linkdin.setVisibility(View.VISIBLE);
-                    }
-                } catch (Exception e) {
-                    img_linkdin.setVisibility(View.GONE);
-
-                }*/
-
-
-             /*   try {
-
-                    if (Contect_data.getBreakout_link().equals("")) {
-                        img_breakout.setVisibility(View.GONE);
-                    } else {
-                        img_breakout.setVisibility(View.VISIBLE);
-                    }
-
-                } catch (Exception e) {
-                    img_breakout.setVisibility(View.GONE);
-
-                }*/
-
-
-
-       /*     PhoneViewAdd();
-            EmailViewAdd();
-            TextSet();*/
             try {
                 List<ContactDetail> detail_contect = Contect_data.getContactDetails();
                 for (int i = 0; i < detail_contect.size(); i++) {
@@ -1153,74 +1334,6 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
 
     }
 
-    private void IntentUI(View view) {
-        ev_affiliatecode=view.findViewById(R.id.ev_affiliatecode);
-        iv_copy_affilate=view.findViewById(R.id.iv_copy_affilate);
-        iv_copy_affilate.setOnClickListener(this);
-        layout_referenceCode = view.findViewById(R.id.layout_referenceCode);
-        layout_country_piker = view.findViewById(R.id.layout_country_piker);
-        edt_email = view.findViewById(R.id.edt_email);
-        edt_mobile_no = view.findViewById(R.id.edt_mobile_no);
-        copany_down_arrow = view.findViewById(R.id.copany_down_arrow);
-        iv_down = view.findViewById(R.id.iv_down);
-        tv_phone = view.findViewById(R.id.tv_phone);
-        ev_address = view.findViewById(R.id.ev_address);
-        ev_city = view.findViewById(R.id.ev_city);
-        select_state = view.findViewById(R.id.select_state);
-        ev_zip = view.findViewById(R.id.ev_zip);
-        ev_zoom = view.findViewById(R.id.ev_zoom);
-        ev_note = view.findViewById(R.id.ev_note);
-        add_mobile_Number = view.findViewById(R.id.add_mobile_Number);
-        pulse_icon = view.findViewById(R.id.pulse_icon);
-        pulse_icon.setColorFilter(getActivity().getResources().getColor(R.color.purple_200));
-        layout_Add_phone = view.findViewById(R.id.layout_Add_phone);
-        pulse_icon1 = view.findViewById(R.id.pulse_icon1);
-        pulse_icon1.setColorFilter(getActivity().getResources().getColor(R.color.purple_200));
-        layout_Add_email = view.findViewById(R.id.layout_Add_email);
-        layout_mobile = view.findViewById(R.id.layout_mobile);
-        ev_state = view.findViewById(R.id.ev_state);
-        city_layout = view.findViewById(R.id.city_layout);
-        zoom_layout = view.findViewById(R.id.zoom_layout);
-        note_layout = view.findViewById(R.id.note_layout);
-        tv_more_field = view.findViewById(R.id.tv_more_field);
-        company_url_layout = view.findViewById(R.id.company_url_layout);
-        tv_company_url = view.findViewById(R.id.tv_company_url);
-        ev_company_url = view.findViewById(R.id.ev_company_url);
-        ev_company = view.findViewById(R.id.ev_company);
-        job_layout = view.findViewById(R.id.job_layout);
-        tv_job = view.findViewById(R.id.tv_job);
-        ev_job = view.findViewById(R.id.ev_job);
-        layout_time_zone = view.findViewById(R.id.layout_time_zone);
-        select_label_zone = view.findViewById(R.id.select_label_zone);
-        zone_txt = view.findViewById(R.id.zone_txt);
-        layout_bod = view.findViewById(R.id.layout_bod);
-        ev_bob = view.findViewById(R.id.ev_bob);
-        fb_layout = view.findViewById(R.id.fb_layout);
-        ev_fb = view.findViewById(R.id.ev_fb);
-        twitter_layout = view.findViewById(R.id.twitter_layout);
-        ev_twitter = view.findViewById(R.id.ev_twitter);
-        breakout_layout = view.findViewById(R.id.breakout_layout);
-        ev_breakout = view.findViewById(R.id.ev_breakout);
-        linkedin_layout = view.findViewById(R.id.linkedin_layout);
-        ev_linkedin = view.findViewById(R.id.ev_linkedin);
-        state_layout = view.findViewById(R.id.state_layout);
-        time_layout = view.findViewById(R.id.time_layout);
-        media_layout = view.findViewById(R.id.media_layout);
-        rv_phone = view.findViewById(R.id.rv_phone);
-        rv_email = view.findViewById(R.id.rv_email);
-        mMainLayout = view.findViewById(R.id.mMainLayout);
-        tv_add_social = view.findViewById(R.id.tv_add_social);
-        media_link = view.findViewById(R.id.media_link);
-        img_fb = view.findViewById(R.id.img_fb);
-        img_twitter = view.findViewById(R.id.img_twitter);
-        img_linkdin = view.findViewById(R.id.img_linkdin);
-        img_breakout = view.findViewById(R.id.img_breakout);
-        company_layout = view.findViewById(R.id.company_layout);
-        company_layout.setOnClickListener(this);
-        other_company_layout = view.findViewById(R.id.other_company_layout);
-        ev_othre_company = view.findViewById(R.id.ev_othre_company);
-
-    }
 
 
     void showBottomSheetDialog_For_Home(String moble, TextView phone_txt, TextView email_txt, Contactdetail item, int item_postion) {

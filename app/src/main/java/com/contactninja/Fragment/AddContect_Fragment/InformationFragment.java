@@ -121,6 +121,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
     private int currentPage = PAGE_START;
     private boolean isLastPage = false;
     private boolean isLoading = false;
+    LinearLayout address_layout,zip_layout;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -262,7 +263,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             EmailistSwipe();
 
 
-        } else if (flag.equals("read")) {
+        }
+        else if (flag.equals("read")) {
             iv_down.setVisibility(View.GONE);
 
             company_layout.setEnabled(false);
@@ -297,6 +299,12 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             ev_zip.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
             ev_bob.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
             ev_note.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
+            ev_twitter.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
+            ev_fb.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
+            ev_linkedin.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
+            ev_breakout.setTextColor(getActivity().getResources().getColor(R.color.purple_200));
+
+
 
             ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(getActivity());
             addcontectModel.setTime(String.valueOf(Contect_data.getTimezoneId()));
@@ -312,12 +320,140 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             addcontectModel.setLinkedin(String.valueOf(Contect_data.getLinkedin_link()));
             addcontectModel.setFacebook(String.valueOf(Contect_data.getFacebook_link()));
             addcontectModel.setBirthday(String.valueOf(Contect_data.getDob()));
-            ev_zip.setText("" + Contect_data.getZipcode().toString().trim());
-            ev_address.setText("" + Contect_data.getAddress().toString().trim());
-            ev_zoom.setText("" + Contect_data.getZoomId().toString().trim());
-            ev_company.setText("" + Contect_data.getCompanyName().toString().trim());
-            ev_state.setText("" + Contect_data.getState().toString().trim());
-            ev_city.setText("" + Contect_data.getCity().toString().trim());
+
+            if (Contect_data.getCompanyName().toString().trim().equals("") || Contect_data.getCompanyName().toString().trim().equals(null))
+            {
+                company_layout.setVisibility(View.GONE);
+            }
+            else {
+                company_layout.setVisibility(View.VISIBLE);
+                ev_company.setText("" + Contect_data.getCompanyName().toString().trim());
+
+            }
+
+            if (Contect_data.getCompany_url().toString().trim().equals("") || Contect_data.getCompany_url().toString().trim().equals(null))
+            {
+                company_url_layout.setVisibility(View.GONE);
+            }
+            else {
+                company_url_layout.setVisibility(View.VISIBLE);
+                ev_company_url.setText("" + Contect_data.getCompany_url().toString().trim());
+
+            }
+            if (Contect_data.getJobTitle().toString().trim().equals("") || Contect_data.getJobTitle().toString().trim().equals(null))
+            {
+                job_layout.setVisibility(View.GONE);
+            }
+            else {
+                job_layout.setVisibility(View.VISIBLE);
+                ev_job.setText("" + Contect_data.getJobTitle().toString().trim());
+
+            }
+
+            if (Contect_data.getZoomId().toString().trim().equals("") || Contect_data.getZoomId().toString().trim().equals(null))
+            {
+                zoom_layout.setVisibility(View.GONE);
+            }
+            else {
+                zoom_layout.setVisibility(View.VISIBLE);
+                ev_zoom.setText("" + Contect_data.getZoomId().toString().trim());
+
+            }
+
+            if (Contect_data.getAddress().toString().trim().equals("") || Contect_data.getAddress().toString().trim().equals(null))
+            {
+                address_layout.setVisibility(View.GONE);
+
+            }
+            else {
+                ev_address.setText("" + Contect_data.getAddress().toString().trim());
+                address_layout.setVisibility(View.VISIBLE);
+            }
+
+            if (Contect_data.getCity().toString().trim().equals("") || Contect_data.getCity().toString().trim().equals(null))
+            {
+                city_layout.setVisibility(View.GONE);
+            }
+            else {
+                city_layout.setVisibility(View.VISIBLE);
+                ev_city.setText("" + Contect_data.getCity().toString().trim());
+
+            }
+
+            if (Contect_data.getState().toString().trim().equals("") || Contect_data.getState().toString().trim().equals(null))
+            {
+                state_layout.setVisibility(View.GONE);
+            }
+            else {
+                ev_state.setText("" + Contect_data.getState().toString().trim());
+                state_layout.setVisibility(View.VISIBLE);
+            }
+
+            if (Contect_data.getZipcode().toString().trim().equals("")|| Contect_data.getZipcode().toString().trim().equals(null))
+            {
+                zip_layout.setVisibility(View.GONE);
+
+            }
+            else {
+                zip_layout.setVisibility(View.VISIBLE);
+                ev_zip.setText("" + Contect_data.getZipcode().toString().trim());
+
+            }
+            if (Contect_data.getTimezoneId()==null)
+            {
+                time_layout.setVisibility(View.GONE);
+            }
+            else {
+                time_layout.setVisibility(View.VISIBLE);
+            }
+            if (Contect_data.getDob().toString().trim().equals("") || Contect_data.getDob().toString().trim().equals(null) || Contect_data.getDob().toString().trim().equals("0000-00-00"))
+            {
+                layout_bod.setVisibility(View.GONE);
+            }
+            else {
+
+                layout_bod.setVisibility(View.VISIBLE);
+                ev_bob.setText("" + Contect_data.getDob().toString().trim());
+
+            }
+
+
+
+            note_layout.setVisibility(View.GONE);
+            if (Contect_data.getFacebook_link().toString().trim().equals("") || Contect_data.getFacebook_link().toString().trim().equals(null))
+            {
+                fb_layout.setVisibility(View.GONE);
+            }
+            else {
+                fb_layout.setVisibility(View.VISIBLE);
+            }
+
+            if (Contect_data.getTwitter_link().toString().trim().equals("") || Contect_data.getTwitter_link().toString().trim().equals(null))
+            {
+                twitter_layout.setVisibility(View.GONE);
+            }
+            else {
+                twitter_layout.setVisibility(View.VISIBLE);
+            }
+
+            if (Contect_data.getLinkedin_link().toString().trim().equals("") || Contect_data.getLinkedin_link().toString().trim().equals(null))
+            {
+                linkedin_layout.setVisibility(View.GONE);
+            }
+            else {
+                linkedin_layout.setVisibility(View.VISIBLE);
+            }
+
+            if (Contect_data.getBreakout_link().toString().trim().equals("") || Contect_data.getBreakout_link().toString().trim().equals(null))
+            {
+                breakout_layout.setVisibility(View.GONE);
+            }
+            else {
+                breakout_layout.setVisibility(View.VISIBLE);
+            }
+
+
+
             if (String.valueOf(Contect_data.getTimezoneId()).equals("null")) {
                 String time_zone = TimeZone.getDefault().getID();
                 zone_txt.setText("" + time_zone.toString().trim());
@@ -325,12 +461,9 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 zone_txt.setText(String.valueOf(Contect_data.getTimezoneId()));
             }
 
-            ev_job.setText("" + Contect_data.getJobTitle().toString().trim());
             contect_id = Contect_data.getId();
             organization_id = String.valueOf(Contect_data.getOrganizationId()).toString().trim();
             team_id = String.valueOf(Contect_data.getTeamId().toString().trim());
-            ev_company_url.setText("" + Contect_data.getCompany_url().toString().trim());
-            ev_bob.setText("" + Contect_data.getDob().toString().trim());
             media_link.setVisibility(View.GONE);
             try {
 
@@ -367,7 +500,6 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
             }
 
-            ev_twitter.setText("" + Contect_data.getTwitter_link().toString().trim());
             ev_fb.setText("" + Contect_data.getFacebook_link().toString().trim());
             ev_linkedin.setText("" + Contect_data.getLinkedin_link().toString().trim());
             ev_breakout.setText("" + Contect_data.getBreakout_link().toString().trim());
@@ -435,7 +567,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
 
             List<ContectListData.Contact.ContactDetail> detail_contect = Contect_data.getContactDetails();
-            Log.e("Contect Detail", new Gson().toJson(detail_contect));
+           // Log.e("Contect Detail", new Gson().toJson(detail_contect));
             for (int i = 0; i < detail_contect.size(); i++) {
                 if (!detail_contect.get(i).getEmailNumber().trim().equalsIgnoreCase("")) {
                     if (detail_contect.get(i).getType().equals("EMAIL")) {
@@ -457,7 +589,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         rv_email.setAdapter(emailAdapter);
 
                     } else {
-                        Log.e("Label is ", String.valueOf(detail_contect.get(i).getIsDefault()));
+             //           Log.e("Label is ", String.valueOf(detail_contect.get(i).getIsDefault()));
                         Contactdetail contactdetail = new Contactdetail();
                         contactdetail.setCountry_code(detail_contect.get(i).getCountryCode());
                         contactdetail.setType(detail_contect.get(i).getType());
@@ -1056,6 +1188,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
     }
 
     private void IntentUI(View view) {
+        zip_layout=view.findViewById(R.id.zip_layout);
+        address_layout=view.findViewById(R.id.address_layout);
         tv_phone = view.findViewById(R.id.tv_phone);
         ev_address = view.findViewById(R.id.ev_address);
         ev_city = view.findViewById(R.id.ev_city);

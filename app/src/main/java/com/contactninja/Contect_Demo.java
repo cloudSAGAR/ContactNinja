@@ -70,65 +70,64 @@ String main_url;
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                start_time="";
-                video_id="";
+//                start_time="";
+//                video_id="";
+//
+//                String yourUrl = editText.getText().toString();
+//
+//                if (yourUrl!= null && yourUrl.trim().length() > 0 && yourUrl.startsWith("http"))
+//                {
+//
+//                    String expression = "^.*((youtu.be"+ "\\/)" + "|(v\\/)|(\\/u\\/w\\/)|(embed\\/)|(watch\\?))\\??v?=?([^#\\&\\?]*).*"; // var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+//                    CharSequence input = yourUrl;
+//                    Pattern pattern = Pattern.compile(expression,Pattern.CASE_INSENSITIVE);
+//                    Matcher matcher = pattern.matcher(input);
+//                    if (matcher.matches())
+//                    {
+//                        String groupIndex1 = matcher.group(7);
+//                        if(groupIndex1!=null && groupIndex1.length()==11)
+//                            video_id = groupIndex1;
+//                        Log.e("Video id",video_id);
+//                        String[] split_data=yourUrl.split("t=");
+//                        if (split_data.length!=1)
+//                        {
+//                            Log.e("Time is","?start="+split_data[1]);
+//                            start_time="?start="+split_data[1];
+//                        }
+//                        main_url= Global.youtube_link+video_id+start_time;
+//                        Log.e("main_url",main_url);
+//                        Toast.makeText(getApplicationContext(),video_id,Toast.LENGTH_LONG).show();
+//                    }
+//                }
+//
 
-                String yourUrl = editText.getText().toString();
-
-                if (yourUrl!= null && yourUrl.trim().length() > 0 && yourUrl.startsWith("http"))
-                {
-
-                    String expression = "^.*((youtu.be"+ "\\/)" + "|(v\\/)|(\\/u\\/w\\/)|(embed\\/)|(watch\\?))\\??v?=?([^#\\&\\?]*).*"; // var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
-                    CharSequence input = yourUrl;
-                    Pattern pattern = Pattern.compile(expression,Pattern.CASE_INSENSITIVE);
-                    Matcher matcher = pattern.matcher(input);
-                    if (matcher.matches())
-                    {
-                        String groupIndex1 = matcher.group(7);
-                        if(groupIndex1!=null && groupIndex1.length()==11)
-                            video_id = groupIndex1;
-                        Log.e("Video id",video_id);
-                        String[] split_data=yourUrl.split("t=");
-                        if (split_data.length!=1)
-                        {
-                            Log.e("Time is","?start="+split_data[1]);
-                            start_time="?start="+split_data[1];
-                        }
-                        main_url= Global.youtube_link+video_id+start_time;
-                        Log.e("main_url",main_url);
-                        Toast.makeText(getApplicationContext(),video_id,Toast.LENGTH_LONG).show();
-                    }
-                }
-
-
-              /*  int startSelection=editText.getSelectionStart();
+               int startSelection=editText.getSelectionStart();
                 int endSelection=editText.getSelectionEnd();
 
                 if (startSelection==endSelection)
                 {
-                    *//*String selectedText = "<b>"+editText.getText().toString().substring(startSelection, endSelection)+"</b>";
+                    String selectedText = "<b>"+Html.toHtml(editText.getText()).toString().substring(startSelection, endSelection)+"</b>";
                     Toast.makeText(getApplicationContext(),selectedText,Toast.LENGTH_LONG).show();
                     Log.e("String is",selectedText);
-                    StringBuilder stringBuilder = new StringBuilder(editText.getText().toString());
+                    StringBuilder stringBuilder = new StringBuilder(Html.toHtml(editText.getText()).toString());
                     System.out.println("String :- " + stringBuilder);
 
                     stringBuilder.replace(startSelection, endSelection, selectedText);
                     System.out.println("After Replace :- " + stringBuilder);
-                    editText.setText(Html.fromHtml(stringBuilder.toString()));
-*//*
+                    editText.setText(stringBuilder.toString());
                 }
                 else {
-                    String selectedText = "<b>"+Html.fromHtml(editText.getText().toString()).toString().substring(startSelection, endSelection)+"</b>";
+                    String selectedText = "<b>"+Html.fromHtml(Html.toHtml(editText.getText()).toString()).toString().substring(startSelection, endSelection)+"</b>";
                     Toast.makeText(getApplicationContext(),selectedText,Toast.LENGTH_LONG).show();
                     Log.e("String is",selectedText);
-                    StringBuilder stringBuilder = new StringBuilder(Html.fromHtml(editText.getText().toString()));
+                    StringBuilder stringBuilder = new StringBuilder(Html.fromHtml(Html.toHtml(editText.getText()).toString()));
                     System.out.println("String :- " + stringBuilder);
 
                     stringBuilder.replace(startSelection, endSelection, selectedText);
                     System.out.println("After Replace :- " + stringBuilder);
-                    editText.setText(Html.fromHtml(stringBuilder.toString()));
+                    editText.setText(stringBuilder.toString());
                 }
-*/
+
             }
         });
 

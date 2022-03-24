@@ -47,6 +47,7 @@
 
 
                 <LinearLayout
+                    android:id="@+id/layout_affiliate"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -124,6 +125,7 @@
             app:right_swipe_enabled="true">
 
             <LinearLayout
+                android:id="@+id/layout_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -483,6 +485,7 @@
             tools:ignore="MissingConstraints">
 
             <LinearLayout
+                android:id="@+id/layout_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
@@ -1015,6 +1018,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/address_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
@@ -1229,6 +1233,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/zip_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"

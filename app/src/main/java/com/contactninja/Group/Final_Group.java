@@ -624,6 +624,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
     public void ImageCropFunctionCustom(Uri uri) {
         Intent intent = CropImage.activity(uri)
                 .setGuidelines(CropImageView.Guidelines.ON)
+                .setCropShape(CropImageView.CropShape.RECTANGLE)
                 .getIntent(this);
         startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
     }

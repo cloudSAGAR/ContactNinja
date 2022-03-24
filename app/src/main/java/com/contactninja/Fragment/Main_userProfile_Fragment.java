@@ -1300,6 +1300,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
     public void ImageCropFunctionCustom(Uri uri) {
         Intent intent = CropImage.activity(uri)
                 .setGuidelines(CropImageView.Guidelines.ON)
+                .setCropShape(CropImageView.CropShape.RECTANGLE)
                 .getIntent(getActivity());
         startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
     }

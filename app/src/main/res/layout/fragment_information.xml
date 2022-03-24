@@ -478,6 +478,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/address_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
@@ -690,6 +691,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/zip_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"

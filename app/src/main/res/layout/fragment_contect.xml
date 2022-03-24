@@ -172,6 +172,7 @@
                         <com.reddit.indicatorfastscroll.FastScrollerView
                             android:id="@+id/fastscroller"
                             style="@style/tv_regular_5"
+                            android:layout_gravity="center"
                             android:layout_width="32dp"
                             android:layout_height="match_parent"
                             android:overScrollMode="never"
@@ -181,6 +182,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
+
                 </LinearLayout>
 
 

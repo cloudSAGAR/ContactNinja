@@ -1040,6 +1040,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
 
 
         obj.put("data", param_data);
+        Log.e("Final Data ",new Gson().toJson(obj));
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
         retrofitCalls.Updatecontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(Add_Newcontect_Activity.this), Global.Device, new RetrofitCallback() {
@@ -1421,6 +1422,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
     public void ImageCropFunctionCustom(Uri uri) {
         Intent intent = CropImage.activity(uri)
                 .setGuidelines(CropImageView.Guidelines.ON)
+                .setCropShape(CropImageView.CropShape.RECTANGLE)
                 .getIntent(this);
         startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
     }
