@@ -431,6 +431,7 @@ public class ContectFragment extends Fragment {
                     tv_upload.setEnabled(true);
                 }
                 tv_upload.setEnabled(false);
+                EnableRuntimePermission();
                 // splitdata(csv_inviteListData);
             }
         });
@@ -2556,7 +2557,6 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             // implement API in background and store the response in current variable
             String current = "";
             Log.e("Updaate Contect List ",new Gson().toJson(SessionManager.getupdateContect(getActivity())));
-            EnableRuntimePermission();
             try {
               /*  if (!SessionManager.getnewContect(getActivity()).equals(null) && SessionManager.getnewContect(getActivity()).size()!=0)
                 {
