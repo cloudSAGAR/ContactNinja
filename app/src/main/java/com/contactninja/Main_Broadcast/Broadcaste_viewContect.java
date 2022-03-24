@@ -255,7 +255,7 @@ public class Broadcaste_viewContect extends AppCompatActivity  implements Connec
 
          try {
              last_postion = position;
-             holder.userName.setText(inviteUserDetails.getFirstname());
+             holder.userName.setText(inviteUserDetails.getFirstname()+" "+inviteUserDetails.getLastname());
              holder.top_layout.setVisibility(View.VISIBLE);
 
              if(Global.IsNotNull(inviteUserDetails.getFirstname())||!inviteUserDetails.getFirstname().equals("")){
@@ -388,7 +388,7 @@ public class Broadcaste_viewContect extends AppCompatActivity  implements Connec
                     try {
                         holder1.remove_contect_icon.setVisibility(View.VISIBLE);
                         holder1.add_new_contect_icon.setVisibility(View.GONE);
-                        holder1.userName.setText(Contact_data.getFirstname());
+                        holder1.userName.setText(Contact_data.getFirstname()+" "+Contact_data.getLastname());
                         holder1.userNumber.setVisibility(View.GONE);
 
                         holder1.first_latter.setVisibility(View.VISIBLE);

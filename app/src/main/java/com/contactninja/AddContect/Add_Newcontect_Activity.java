@@ -1363,6 +1363,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
 
                 @Override
                 public void onUploadError(String response) {
+                    user_image_Url="";
                     if (flag.equals("add"))
                     {
                         if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {

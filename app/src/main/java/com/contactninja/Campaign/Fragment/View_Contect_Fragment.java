@@ -482,7 +482,7 @@ public class View_Contect_Fragment extends Fragment implements View.OnClickListe
                 case ITEM:
                     GroupContectAdapter.MovieViewHolder holder1 = (GroupContectAdapter.MovieViewHolder) holder;
                   /*  contacts.get(position).setFlag("true");*/
-                    holder1.userName.setText(Contact_data.getFirstname());
+                    holder1.userName.setText(Contact_data.getFirstname()+" "+Contact_data.getLastname());
                     holder1.userNumber.setVisibility(View.GONE);
 
                     // Manual Ni
