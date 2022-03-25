@@ -27,7 +27,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.contactninja.Bzcard.Media.SwipeHelper;
+import com.contactninja.Campaign.List_itm.Campaign_List_Activity;
 import com.contactninja.MainActivity;
+import com.contactninja.Main_Broadcast.List_And_show.List_Broadcast_activity;
 import com.contactninja.Manual_email_text.Text_And_Email_Auto_Manual;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.CompanyModel;
@@ -1596,6 +1598,68 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
     }
 
+
+
+    private void broadcast_manu(String p_num, int id) {
+
+        @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.select_msg_send_type, null);
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.CoffeeDialog);
+        bottomSheetDialog.setContentView(mView);
+
+        TextView tv_munual = bottomSheetDialog.findViewById(R.id.tv_munual);
+        TextView tv_api = bottomSheetDialog.findViewById(R.id.tv_api);
+
+        tv_munual.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.cancel();
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+                showAlertDialogButtonClicked1(p_num, id, "sim");
+
+            }
+        });
+        tv_api.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+                SessionManager.setMessage_number(p_num);
+                SessionManager.setMessage_type("app");
+                SessionManager.setMessage_id(String.valueOf(id));
+                SessionManager.setEmail_screen_name("only_sms");
+                SessionManager.setCampaign_type("");
+                SessionManager.setCampaign_type_name("");
+                SessionManager.setCampaign_Day("");
+                SessionManager.setCampaign_minute("");
+                Intent intent1 = new Intent(getActivity(), Text_And_Email_Auto_Manual.class);
+                intent1.putExtra("flag", "edit");
+                intent1.putExtra("type", "SMS");
+                startActivity(intent1); //  finish();
+
+
+                /*   Intent intent=new Intent(getActivity(), Message_Activity.class);
+           intent.putExtra("number",p_num);
+           intent.putExtra("id",id);
+           intent.putExtra("type","app");
+           startActivity(intent);*/
+
+                //  showAlertDialogButtonClicked1(p_num, id, "app");
+                bottomSheetDialog.cancel();
+
+            }
+        });
+        bottomSheetDialog.show();
+
+    }
+
+
+
+
     private void SMSAPI(String text, int id, String email) throws JSONException {
 
         Log.e("Phone Number", email);
@@ -2350,9 +2414,9 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                         String countryCode = holder.ccp_id.getSelectedCountryCodeWithPlus();
                         String phoneNumber = holder.edt_mobile_no.getText().toString().trim();
 
-                        Log.e("Contect id ", String.valueOf(contactdetails.get(position).getId()));
+                 //       Log.e("Contect id ", String.valueOf(contactdetails.get(position).getId()));
                         addcontectModel.setContactdetails(contactdetails);
-                        Log.e("Add Contect Model is ", new Gson().toJson(addcontectModel));
+                   //     Log.e("Add Contect Model is ", new Gson().toJson(addcontectModel));
                         SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
 
                         if (PhoneFieldNumber < 5) {
@@ -2496,7 +2560,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                     Log.e("Number is", item.getEmail_number());
                     //showAlertDialogButtonClicked1(item.getEmail_number());
                     //Toast.makeText(getActivity(),String.valueOf(item.getId()),Toast.LENGTH_LONG).show();
-                    showAlertDialogMeassge(item.getEmail_number(), item.getId());
+                   // showAlertDialogMeassge(item.getEmail_number(), item.getId());
+                    broadcast_manu(item.getEmail_number(), item.getId());
                 }
             });
 
