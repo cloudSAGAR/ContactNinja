@@ -37,20 +37,20 @@ import com.chinalwb.are.styles.toolitems.ARE_ToolItem_AlignmentCenter;
 import com.chinalwb.are.styles.toolitems.ARE_ToolItem_AlignmentLeft;
 import com.chinalwb.are.styles.toolitems.ARE_ToolItem_AlignmentRight;
 import com.chinalwb.are.styles.toolitems.ARE_ToolItem_At;
-import com.chinalwb.are.styles.toolitems.ARE_ToolItem_Bold;
 import com.chinalwb.are.styles.toolitems.ARE_ToolItem_Hr;
 import com.chinalwb.are.styles.toolitems.ARE_ToolItem_Image;
-import com.chinalwb.are.styles.toolitems.ARE_ToolItem_Italic;
-import com.chinalwb.are.styles.toolitems.ARE_ToolItem_Link;
 import com.chinalwb.are.styles.toolitems.ARE_ToolItem_ListBullet;
 import com.chinalwb.are.styles.toolitems.ARE_ToolItem_ListNumber;
 import com.chinalwb.are.styles.toolitems.ARE_ToolItem_Quote;
 import com.chinalwb.are.styles.toolitems.ARE_ToolItem_Strikethrough;
 import com.chinalwb.are.styles.toolitems.ARE_ToolItem_Subscript;
 import com.chinalwb.are.styles.toolitems.ARE_ToolItem_Superscript;
-import com.chinalwb.are.styles.toolitems.ARE_ToolItem_Underline;
 import com.chinalwb.are.styles.toolitems.ARE_ToolItem_Video;
 import com.chinalwb.are.styles.toolitems.IARE_ToolItem;
+import com.contactninja.ARE.ARE_ToolItem_Bold;
+import com.contactninja.ARE.ARE_ToolItem_Italic;
+import com.contactninja.ARE.ARE_ToolItem_Link;
+import com.contactninja.ARE.ARE_ToolItem_Underline;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Utils.Global;
@@ -102,5 +102,13 @@ public class Contect_Demo extends AppCompatActivity {
         mToolbar.addToolbarItem(link);
         mEditText = this.findViewById(R.id.arEditText);
         mEditText.setToolbar(mToolbar);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        Log.e("Call","Data"+data.getData());
+        mToolbar.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+
     }
 }

@@ -3,9 +3,11 @@ package com.contactninja.Fragment.Home;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -228,6 +230,7 @@ public class Broadcast_Fragment extends Fragment {
             try {
                 if (item.getType().equals("SMS")) {
                     holder.image_icon.setImageResource(R.drawable.ic_message_tab);
+                    holder.tv_task_description.setTypeface(null, Typeface.BOLD);
                 } else {
                     holder.image_icon.setImageResource(R.drawable.ic_email);
                 }
@@ -255,7 +258,7 @@ public class Broadcast_Fragment extends Fragment {
 
                         break;
                 }
-                holder.tv_task_description.setText(item.getContentBody());
+                holder.tv_task_description.setText(Html.fromHtml(item.getContentBody()));
 
 
             holder.iv_logo.setVisibility(View.GONE);
