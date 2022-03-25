@@ -390,6 +390,8 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
                 if (Global.isNetworkAvailable(Title_bzcardActivity.this, MainActivity.mMainLayout)) {
                     if(validaction()){
                         Data_Upload();
+                    }else {
+                        loadingDialog.cancelLoading();
                     }
                 }
             } catch (JSONException e) {
@@ -638,8 +640,11 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
                 if (UploadCount == TotalFileUpload) {
                     try {
                         if (Global.isNetworkAvailable(Title_bzcardActivity.this, MainActivity.mMainLayout)) {
-
-                            Data_Upload();
+                            if(validaction()) {
+                                Data_Upload();
+                            }else {
+                                loadingDialog.cancelLoading();
+                            }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
