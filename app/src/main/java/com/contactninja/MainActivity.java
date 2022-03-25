@@ -178,7 +178,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String offset = localTime.substring(0, 1);
 
         UpdateManageCheck();
-
         token_api = Global.getToken(sessionManager);
         user_data = SessionManager.getGetUserdata(getApplicationContext());
         user_id = user_data.getUser().getId();
