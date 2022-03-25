@@ -423,8 +423,6 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
                 Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.invalid_phone),false);
             }else if(bzcard_model.getBzcardFieldsModel().getEmail().equals("")){
                 Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.invalid_email),false);
-            }else if(bzcard_model.getBzcardFieldsModel().getJobtitle().equals("")){
-                Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.invalid_jobtitle),false);
             }else {
                 return true;
             }
