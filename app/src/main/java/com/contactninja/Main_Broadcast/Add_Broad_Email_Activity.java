@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +27,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.chinalwb.are.AREditText;
+import com.chinalwb.are.styles.toolbar.IARE_Toolbar;
+import com.chinalwb.are.styles.toolitems.IARE_ToolItem;
+import com.contactninja.ARE.ARE_ToolItem_Bold;
+import com.contactninja.ARE.ARE_ToolItem_Italic;
+import com.contactninja.ARE.ARE_ToolItem_Link;
+import com.contactninja.ARE.ARE_ToolItem_Underline;
 import com.contactninja.Campaign.Campaign_Overview;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
@@ -79,7 +87,7 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
-    static EditText ev_subject, edit_template;
+    static EditText ev_subject;
     LinearLayout top_layout;
     TemplateAdepter templateAdepter;
     RecyclerView rv_direct_list;
@@ -103,6 +111,9 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
     private int FirstTime = 0;
     private long mLastClickTime=0;
     Broadcate_save_data broadcate_save_data=new Broadcate_save_data();
+    private IARE_Toolbar mToolbar;
+    LinearLayout bottombar;
+    static AREditText edit_template;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,6 +126,7 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
 
 
         IntentUI();
+        initToolbar();
         try {
             if (Global.isNetworkAvailable(Add_Broad_Email_Activity.this, MainActivity.mMainLayout)) {
                 Hastag_list();
@@ -134,7 +146,7 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
         {
             broadcate_save_data=SessionManager.getBroadcate_save_data(getApplicationContext());
             ev_subject.setText(broadcate_save_data.getContent_header());
-            edit_template.setText(broadcate_save_data.getContent_body());
+            edit_template.setText(Html.fromHtml(broadcate_save_data.getContent_body()));
             from_ac=broadcate_save_data.getFrom_ac();
             from_ac_id=broadcate_save_data.getFrom_ac_id();
             template_id_is=broadcate_save_data.getTemplate_id();
@@ -182,6 +194,18 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
         Mail_listDetails();
     }
 
+    private void initToolbar() {
+        mToolbar = this.findViewById(R.id.areToolbar);
+        IARE_ToolItem bold = new ARE_ToolItem_Bold();
+        IARE_ToolItem italic = new ARE_ToolItem_Italic();
+        IARE_ToolItem underline = new ARE_ToolItem_Underline();
+        IARE_ToolItem link = new ARE_ToolItem_Link();
+        mToolbar.addToolbarItem(bold);
+        mToolbar.addToolbarItem(italic);
+        mToolbar.addToolbarItem(underline);
+        mToolbar.addToolbarItem(link);
+        edit_template.setToolbar(mToolbar);
+    }
     private void Mail_listDetails() {
         userLinkedGmailList = sessionManager.getUserLinkedGmail(getApplicationContext());
         if (userLinkedGmailList.size() == 0) {
@@ -329,6 +353,7 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
     }
 
     private void IntentUI() {
+        bottombar=findViewById(R.id.bottombar);
         mMainLayout = findViewById(R.id.mMainLayout);
         iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
@@ -373,7 +398,7 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
                         broadcate_save_data.setFrom_ac(from_ac);
                         broadcate_save_data.setFrom_ac_id(from_ac_id);
                         broadcate_save_data.setTemplate_id(template_id_is);
-                        broadcate_save_data.setContent_body(edit_template.getText().toString());
+                        broadcate_save_data.setContent_body(edit_template.getHtml().toString());
                         broadcate_save_data.setContent_header(ev_subject.getText().toString());
                         SessionManager.setBroadcate_save_data(getApplicationContext(),broadcate_save_data);
 
@@ -611,7 +636,7 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
             }
 
             JsonObject paramObject = new JsonObject();
-            paramObject.addProperty("content_body", edit_template.getText().toString());
+            paramObject.addProperty("content_body", edit_template.getHtml().toString());
             paramObject.addProperty("day", day);
             paramObject.addProperty("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
             paramObject.addProperty("minute", minite);
@@ -642,7 +667,7 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
 
 
             JsonObject paramObject = new JsonObject();
-            paramObject.addProperty("content_body", edit_template.getText().toString());
+            paramObject.addProperty("content_body", edit_template.getHtml().toString());
             paramObject.addProperty("day", Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext())));
             paramObject.addProperty("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
             paramObject.addProperty("minute", Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext())));
@@ -1097,7 +1122,18 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
             holder.im_file.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (position == 1) {
+
+                    if (position == 0) {
+                        if (bottombar.getVisibility()==View.VISIBLE)
+                        {
+                            bottombar.setVisibility(View.GONE);
+                        }
+                        else {
+                            bottombar.setVisibility(View.VISIBLE);
+
+                        }
+                    }
+                    else if (position == 1) {
 
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);

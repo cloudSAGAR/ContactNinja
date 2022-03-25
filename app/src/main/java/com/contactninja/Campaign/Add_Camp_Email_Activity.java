@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,6 +34,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.chinalwb.are.AREditText;
+import com.chinalwb.are.styles.toolbar.IARE_Toolbar;
+import com.chinalwb.are.styles.toolitems.IARE_ToolItem;
+import com.contactninja.ARE.ARE_ToolItem_Bold;
+import com.contactninja.ARE.ARE_ToolItem_Italic;
+import com.contactninja.ARE.ARE_ToolItem_Link;
+import com.contactninja.ARE.ARE_ToolItem_Underline;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
@@ -78,7 +86,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
-    static EditText ev_subject, edit_template;
+    static EditText ev_subject;
     LinearLayout top_layout;
     TemplateAdepter templateAdepter;
     RecyclerView rv_direct_list;
@@ -101,7 +109,9 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
     private int amountOfItemsSelected = 0;
     private int FirstTime = 0;
     private long mLastClickTime=0;
-
+    private IARE_Toolbar mToolbar;
+    LinearLayout bottombar;
+    static AREditText edit_template;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,6 +123,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
         templateClick = Add_Camp_Email_Activity.this;
 
         IntentUI();
+        initToolbar();
         try {
             if (Global.isNetworkAvailable(Add_Camp_Email_Activity.this, MainActivity.mMainLayout)) {
                 Hastag_list();
@@ -188,7 +199,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
 
 
         if (flag.equals("edit")) {
-            edit_template.setText(bundle.getString("body"));
+            edit_template.setText(Html.fromHtml(bundle.getString("body")));
 
             seq_task_id = String.valueOf(bundle.getInt("seq_task_id"));
             sequence_id = String.valueOf(bundle.getInt("sequence_id"));
@@ -207,6 +218,18 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
 
     }
 
+    private void initToolbar() {
+        mToolbar = this.findViewById(R.id.areToolbar);
+        IARE_ToolItem bold = new ARE_ToolItem_Bold();
+        IARE_ToolItem italic = new ARE_ToolItem_Italic();
+        IARE_ToolItem underline = new ARE_ToolItem_Underline();
+        IARE_ToolItem link = new ARE_ToolItem_Link();
+        mToolbar.addToolbarItem(bold);
+        mToolbar.addToolbarItem(italic);
+        mToolbar.addToolbarItem(underline);
+        mToolbar.addToolbarItem(link);
+        edit_template.setToolbar(mToolbar);
+    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -359,6 +382,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
     }
 
     private void IntentUI() {
+        bottombar=findViewById(R.id.bottombar);
         mMainLayout = findViewById(R.id.mMainLayout);
         iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
@@ -632,7 +656,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
             }
 
             JsonObject paramObject = new JsonObject();
-            paramObject.addProperty("content_body", edit_template.getText().toString());
+            paramObject.addProperty("content_body", edit_template.getHtml().toString());
             paramObject.addProperty("day", day);
             paramObject.addProperty("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
             paramObject.addProperty("minute", minite);
@@ -663,7 +687,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
 
 
             JsonObject paramObject = new JsonObject();
-            paramObject.addProperty("content_body", edit_template.getText().toString());
+            paramObject.addProperty("content_body", edit_template.getHtml().toString());
             paramObject.addProperty("day", Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext())));
             paramObject.addProperty("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
             paramObject.addProperty("minute", Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext())));
@@ -1121,7 +1145,18 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
             holder.im_file.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (position == 1) {
+                    if (position == 0) {
+                        if (bottombar.getVisibility()==View.VISIBLE)
+                        {
+                            bottombar.setVisibility(View.GONE);
+
+                        }
+                        else {
+                            bottombar.setVisibility(View.VISIBLE);
+
+                        }
+                    }
+                    else if (position == 1) {
 
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);

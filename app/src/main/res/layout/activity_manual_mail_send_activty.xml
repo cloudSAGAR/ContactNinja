@@ -208,7 +208,7 @@
 
         <com.chinalwb.are.AREditText
             android:id="@+id/edit_compose"
-            style="@style/tv_regular_12"
+            style="@style/tv_normal_12"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -227,6 +227,7 @@
     </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
+        android:layout_marginStart="@dimen/_15sdp"
         android:layout_marginBottom="@dimen/_50sdp"
         android:id="@+id/bottombar"
         android:visibility="gone"

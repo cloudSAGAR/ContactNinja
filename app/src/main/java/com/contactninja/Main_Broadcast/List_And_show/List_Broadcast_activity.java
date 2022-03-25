@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.text.Html;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -561,7 +562,7 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
 
                         break;
                 }
-                holder.tv_task_description.setText(item.getContentBody());
+                holder.tv_task_description.setText(Html.fromHtml(item.getContentBody()));
 
                 holder.layout_contec.setOnClickListener(new View.OnClickListener() {
                     @Override

@@ -7,10 +7,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -334,6 +336,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                     if (movieList.get(position).getType().equals("SMS")) {
                     movieViewHolder.iv_email.setVisibility(View.GONE);
                     movieViewHolder.iv_message.setVisibility(View.VISIBLE);
+                    movieViewHolder.tv_detail.setTypeface(null, Typeface.BOLD);
                     }
                     else {
                         movieViewHolder.iv_email.setVisibility(View.VISIBLE);
@@ -350,7 +353,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
 
                         movieViewHolder.tv_title.setText("Step#"+movieList.get(position).getStepNo()+"("+movieList.get(position).getManageBy()+" "+movieList.get(position).getType()+")");
 
-                        movieViewHolder.tv_detail.setText(movieList.get(position).getContentBody().toString());
+                        movieViewHolder.tv_detail.setText(Html.fromHtml(movieList.get(position).getContentBody().toString()));
 
                         movieViewHolder.tv_add_new_step.setOnClickListener(new View.OnClickListener() {
                             @Override

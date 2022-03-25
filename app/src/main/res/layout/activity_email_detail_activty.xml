@@ -304,7 +304,7 @@
                 </LinearLayout>
 
                 <com.chinalwb.are.AREditText
-                    style="@style/tv_regular_12"
+                    style="@style/tv_normal_12"
                     android:id="@+id/edit_compose"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -394,6 +394,7 @@
             </TextView>
         </LinearLayout>
         <LinearLayout
+            android:layout_marginStart="@dimen/_15sdp"
             android:id="@+id/bottombar"
             android:visibility="gone"
             android:layout_width="match_parent"
@@ -404,9 +405,10 @@
             <com.chinalwb.are.styles.toolbar.ARE_ToolbarDefault
                 android:id="@+id/areToolbar"
                 android:layout_width="0dp"
-
+                style="@style/Theme.ContactNinja"
                 android:layout_height="match_parent"
                 android:layout_weight="900"
+
                 android:background="@color/white"
                 android:gravity="center_vertical" />
 

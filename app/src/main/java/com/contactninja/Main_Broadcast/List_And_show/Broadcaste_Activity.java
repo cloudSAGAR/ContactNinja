@@ -3,9 +3,11 @@ package com.contactninja.Main_Broadcast.List_And_show;
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -89,6 +91,7 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
             tv_status.setText(broadcasteda.getBroadcastName());
             image_step.setImageDrawable(getResources().getDrawable(R.drawable.ic_sms_mini));
             layout_email_subject.setVisibility(View.GONE);
+            tv_detail.setTypeface(null, Typeface.BOLD);
         } else {
             layout_email_subject.setVisibility(View.VISIBLE);
             image_icon.setImageDrawable(getResources().getDrawable(R.drawable.ic_email));
@@ -117,7 +120,7 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
             tv_repete_type.setText("Monthly");
         }
         ev_subject.setText(broadcasteda.getContentHeader());
-        tv_detail.setText(broadcasteda.getContentBody());
+        tv_detail.setText(Html.fromHtml(broadcasteda.getContentBody()));
     }
 
     private void IntentUI() {

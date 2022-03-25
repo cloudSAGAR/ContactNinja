@@ -157,9 +157,9 @@
 
             </View>
 
-            <EditText
+            <com.chinalwb.are.AREditText
                 android:id="@+id/edit_template"
-                style="@style/tv_regular_12"
+                style="@style/tv_normal_12"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -176,7 +176,25 @@
 
 
         </LinearLayout>
+        <LinearLayout
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_50sdp"
+            android:id="@+id/bottombar"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
 
+            <com.chinalwb.are.styles.toolbar.ARE_ToolbarDefault
+                android:id="@+id/areToolbar"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="900"
+                android:background="@color/white"
+                android:gravity="center_vertical" />
+
+        </LinearLayout>
         <LinearLayout
             android:id="@+id/lay_bouttom"
             android:layout_width="match_parent"

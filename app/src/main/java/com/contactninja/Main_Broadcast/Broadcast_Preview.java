@@ -6,10 +6,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -108,11 +110,12 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
         user_contect.setAdapter(topUserListDataAdapter);
         tv_title.setText(SessionManager.getCampaign_type_name(getApplicationContext()) + " " + SessionManager.getCampaign_type(getApplicationContext()));
         ev_subject.setText(broadcate_save_data.getContent_header());
-        tv_detail.setText(broadcate_save_data.getContent_body());
+        tv_detail.setText(Html.fromHtml(broadcate_save_data.getContent_body()));
 
         if (SessionManager.getCampaign_type(getApplicationContext()).equals("SMS")) {
 
             tv_item_num.setBackground(getResources().getDrawable(R.drawable.ic_message_select));
+            tv_detail.setTypeface(null, Typeface.BOLD);
             layout_email_subject.setVisibility(View.GONE);
         } else  if (SessionManager.getCampaign_type(getApplicationContext()).equals("EMAIL")){
             layout_email_subject.setVisibility(View.VISIBLE);

@@ -554,7 +554,7 @@
 
             <TextView
                 android:id="@+id/tv_detail"
-                style="@style/tv_regular_12"
+                style="@style/tv_normal_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

@@ -40,11 +40,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.chinalwb.are.AREditText;
 import com.chinalwb.are.styles.toolbar.IARE_Toolbar;
-import com.chinalwb.are.styles.toolitems.ARE_ToolItem_Bold;
-import com.chinalwb.are.styles.toolitems.ARE_ToolItem_Italic;
-import com.chinalwb.are.styles.toolitems.ARE_ToolItem_Link;
-import com.chinalwb.are.styles.toolitems.ARE_ToolItem_Underline;
 import com.chinalwb.are.styles.toolitems.IARE_ToolItem;
+import com.contactninja.ARE.ARE_ToolItem_Bold;
+import com.contactninja.ARE.ARE_ToolItem_Italic;
+import com.contactninja.ARE.ARE_ToolItem_Link;
+import com.contactninja.ARE.ARE_ToolItem_Underline;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
@@ -1128,7 +1128,14 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
                 @Override
                 public void onClick(View view) {
                     if (position == 0) {
-                     bottombar.setVisibility(View.VISIBLE);
+                        if (bottombar.getVisibility()==View.VISIBLE)
+                        {
+                            bottombar.setVisibility(View.GONE);
+                        }
+                        else {
+                            bottombar.setVisibility(View.VISIBLE);
+
+                        }
                     }
                     else if (position == 1) {
 
