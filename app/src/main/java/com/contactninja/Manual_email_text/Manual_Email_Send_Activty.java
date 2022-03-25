@@ -38,6 +38,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.chinalwb.are.AREditText;
+import com.chinalwb.are.styles.toolbar.IARE_Toolbar;
+import com.chinalwb.are.styles.toolitems.ARE_ToolItem_Bold;
+import com.chinalwb.are.styles.toolitems.ARE_ToolItem_Italic;
+import com.chinalwb.are.styles.toolitems.ARE_ToolItem_Link;
+import com.chinalwb.are.styles.toolitems.ARE_ToolItem_Underline;
+import com.chinalwb.are.styles.toolitems.IARE_ToolItem;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
@@ -100,7 +107,8 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
     BottomSheetDialog bottomSheetDialog_templateList;
     TemplateClick templateClick;
 
-    static EditText edit_template, ev_subject, ev_to, ev_from, ev_titale;
+    static EditText  ev_subject, ev_to, ev_from, ev_titale;
+    static AREditText edit_template;
     String email = "", id = "", task_name = "", from_ac = "", from_ac_id = "";
     BottomSheetDialog bottomSheetDialog_templateList1;
     ImageView iv_more;
@@ -111,6 +119,9 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
     private BroadcastReceiver mNetworkReceiver;
     private int FirstTime = 0;
     private long mLastClickTime=0;
+    private IARE_Toolbar mToolbar;
+    LinearLayout bottombar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +134,7 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
         templateClick = this;
 
         IntentUI();
+        initToolbar();
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         task_name = bundle.getString("task_name");
@@ -159,6 +171,18 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
         }
     }
 
+    private void initToolbar() {
+        mToolbar = this.findViewById(R.id.areToolbar);
+        IARE_ToolItem bold = new ARE_ToolItem_Bold();
+        IARE_ToolItem italic = new ARE_ToolItem_Italic();
+        IARE_ToolItem underline = new ARE_ToolItem_Underline();
+        IARE_ToolItem link = new ARE_ToolItem_Link();
+        mToolbar.addToolbarItem(bold);
+        mToolbar.addToolbarItem(italic);
+        mToolbar.addToolbarItem(underline);
+        mToolbar.addToolbarItem(link);
+        edit_template.setToolbar(mToolbar);
+    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -192,6 +216,7 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
     }
 
     private void IntentUI() {
+        bottombar=findViewById(R.id.bottombar);
         iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
         save_button = findViewById(R.id.save_button);
@@ -421,7 +446,7 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
 
                 try {
 
-                    EmailAPI(ev_subject.getText().toString(), edit_template.getText().toString(), Integer.parseInt(id), email);
+                    EmailAPI(ev_subject.getText().toString(), edit_template.getHtml().toString(), Integer.parseInt(id), email);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -434,7 +459,7 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), Manual_Email_TaskActivity_.class);
                 intent.putExtra("subject", ev_subject.getText().toString());
-                intent.putExtra("body", edit_template.getText().toString());
+                intent.putExtra("body", edit_template.getHtml().toString());
                 intent.putExtra("id", id);
                 intent.putExtra("email", email);
                 intent.putExtra("gid", String.valueOf(select_userLinkedGmailList.get(0).getId()));
@@ -522,7 +547,7 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
     }
 
     public void OnClick(@SuppressLint("UnknownNullness") String s) {
-        String curenttext = edit_template.getText().toString();
+        String curenttext = edit_template.getHtml().toString();
         String Newtext = curenttext + s;
         edit_template.setText(Newtext);
         edit_template.setSelection(edit_template.getText().length());
@@ -617,7 +642,7 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
         paramObject.addProperty("content_header", ev_subject.getText().toString().trim());
         String template_slug = template_name.toUpperCase().replace(" ", "_");
         paramObject.addProperty("template_slug", template_slug);
-        paramObject.addProperty("content_body", edit_template.getText().toString().trim());
+        paramObject.addProperty("content_body", edit_template.getHtml().toString().trim());
         paramObject.addProperty("type", "EMAIL");
 
         obj.add("data", paramObject);
@@ -752,7 +777,7 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
         }
 
         paramObject.put("content_header", ev_subject.getText().toString());
-        paramObject.put("content_body", edit_template.getText().toString());
+        paramObject.put("content_body", edit_template.getHtml().toString());
         paramObject.put("from_ac", from_ac);
         paramObject.put("from_ac_id", from_ac_id);
         obj.put("data", paramObject);
@@ -1102,7 +1127,10 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
             holder.im_file.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (position == 1) {
+                    if (position == 0) {
+                     bottombar.setVisibility(View.VISIBLE);
+                    }
+                    else if (position == 1) {
 
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);

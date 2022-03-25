@@ -45,6 +45,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.chinalwb.are.AREditText;
+import com.chinalwb.are.styles.toolbar.IARE_Toolbar;
+import com.chinalwb.are.styles.toolitems.ARE_ToolItem_Bold;
+import com.chinalwb.are.styles.toolitems.ARE_ToolItem_Italic;
+import com.chinalwb.are.styles.toolitems.ARE_ToolItem_Link;
+import com.chinalwb.are.styles.toolitems.ARE_ToolItem_Underline;
+import com.chinalwb.are.styles.toolitems.IARE_ToolItem;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
@@ -100,7 +107,8 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
     ImageView iv_back, iv_body, iv_toolbar_manu1;
     TextView bt_done, tv_taskname, tv_stap;
     RelativeLayout mMainLayout;
-    static  EditText ev_from, ev_to, ev_subject, edit_compose;
+    static  EditText ev_from, ev_to, ev_subject;
+    static AREditText edit_compose;
     EditText ev_titale;
     ImageView iv_more;
     BottomSheetDialog bottomSheetDialog;
@@ -127,7 +135,8 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
     private int amountOfItemsSelected = 0;
     private int FirstTime = 0;
     private long mLastClickTime = 0;
-
+    private IARE_Toolbar mToolbar;
+    LinearLayout bottombar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,6 +148,7 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
         retrofitCalls = new RetrofitCalls(this);
 
         IntentUI();
+        initToolbar();
         try {
             Intent intent = getIntent();
             Bundle bundle = intent.getExtras();
@@ -333,7 +343,7 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
         //    ev_from.setText(manualDetails.getContactMasterFirstname()+" "+manualDetails.getContactMasterLastname());
         ev_to.setText(manualDetails.getEmail());
         ev_subject.setText(manualDetails.getContentHeader());
-        edit_compose.setText(manualDetails.getContentBody());
+        edit_compose.setText(Html.fromHtml(manualDetails.getContentBody()));
         ev_titale.setText(manualDetails.getTaskName());
         tv_taskname.setText(manualDetails.getTaskName());
         //  try {
@@ -359,7 +369,20 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
 
     }
 
+    private void initToolbar() {
+        mToolbar = this.findViewById(R.id.areToolbar);
+        IARE_ToolItem bold = new ARE_ToolItem_Bold();
+        IARE_ToolItem italic = new ARE_ToolItem_Italic();
+        IARE_ToolItem underline = new ARE_ToolItem_Underline();
+        IARE_ToolItem link = new ARE_ToolItem_Link();
+        mToolbar.addToolbarItem(bold);
+        mToolbar.addToolbarItem(italic);
+        mToolbar.addToolbarItem(underline);
+        mToolbar.addToolbarItem(link);
+        edit_compose.setToolbar(mToolbar);
+    }
     private void IntentUI() {
+        bottombar=findViewById(R.id.bottombar);
         tv_stap = findViewById(R.id.tv_stap);
         tv_taskname = findViewById(R.id.tv_taskname);
         lay_seq_stap = findViewById(R.id.lay_seq_stap);
@@ -428,7 +451,7 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
                 try {
-                    SMS_execute(edit_compose.getText().toString(), manualDetails.getProspectId(),
+                    SMS_execute(edit_compose.getHtml().toString(), manualDetails.getProspectId(),
                             manualDetails.getEmail(), String.valueOf(manualDetails.getId()));
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -737,7 +760,7 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
             public void onClick(View view) {
 
                 try {
-                    EmailAPI(ev_subject.getText().toString(), edit_compose.getText().toString(), id, email);
+                    EmailAPI(ev_subject.getText().toString(), edit_compose.getHtml().toString(), id, email);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -750,7 +773,7 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), Manual_Email_TaskActivity_.class);
                 intent.putExtra("subject", ev_subject.getText().toString());
-                intent.putExtra("body", edit_compose.getText().toString());
+                intent.putExtra("body", edit_compose.getHtml().toString());
                 intent.putExtra("id", id);
                 intent.putExtra("email", email);
                 intent.putExtra("gid", String.valueOf(select_userLinkedGmailList.get(0).getId()));
@@ -933,7 +956,7 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
         paramObject.addProperty("content_header", ev_subject.getText().toString().trim());
         String template_slug = template_name.toUpperCase().replace(" ", "_");
         paramObject.addProperty("template_slug", template_slug);
-        paramObject.addProperty("content_body", edit_compose.getText().toString().trim());
+        paramObject.addProperty("content_body", edit_compose.getHtml().toString().trim());
         paramObject.addProperty("type", "EMAIL");
 
         obj.add("data", paramObject);
@@ -1066,7 +1089,7 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
         }
 
         paramObject.put("content_header", ev_subject.getText().toString());
-        paramObject.put("content_body", edit_compose.getText().toString());
+        paramObject.put("content_body", edit_compose.getHtml().toString());
         paramObject.put("from_ac", from_ac);
         paramObject.put("from_ac_id", from_ac_id);
         obj.put("data", paramObject);
@@ -1369,7 +1392,11 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
             holder.im_file.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (position == 1) {
+                    if (position == 0) {
+
+                        bottombar.setVisibility(View.VISIBLE);
+                    }
+                   else if (position == 1) {
 
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -1772,7 +1799,7 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
 
                     String curenttext = edit_compose.getText().toString();
                     String Newtext = curenttext + " \n " + zoomExists.getZoom_meeting_link_with_password();
-                    edit_compose.setText(Newtext);
+                    edit_compose.setText(Html.fromHtml(Newtext));
                     edit_compose.setSelection(edit_compose.getText().length());
 
                 }
