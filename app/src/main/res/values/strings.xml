@@ -467,6 +467,7 @@ Number</string>
     <string name="no_group">👍 You\'re all good ! \n You don\'t have any group here</string>
     <string name="no_company">👍 You\'re all good ! \n You don\'t have any company here</string>
     <string name="no_email">👍 You\'re all good ! \n You don\'t have any Mail here</string>
+    <string name="no_affiliate">👍 You\'re all good ! \n You don\'t have any affiliate here</string>
     <string name="manual_Today">Today</string>
     <string name="manual_Upcoming">Upcoming</string>
     <string name="manual_Due">Due</string>

@@ -21,10 +21,10 @@ public class Des_Task {
     private String taskName;
     @SerializedName("contact_master_firstname")
     @Expose
-    private String contactMasterFirstname;
+    private String contactMasterFirstname="";
     @SerializedName("contact_master_lastname")
     @Expose
-    private String contactMasterLastname;
+    private String contactMasterLastname="";
 
     public Integer getId() {
         return id;

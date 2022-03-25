@@ -49,6 +49,7 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".Bzcard.Bz_card_Analytics"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".Bzcard.CreateBzcard.Title_bzcardActivity"

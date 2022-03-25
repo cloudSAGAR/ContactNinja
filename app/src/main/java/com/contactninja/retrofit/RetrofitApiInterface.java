@@ -127,6 +127,11 @@ public interface RetrofitApiInterface {
                                 @Body JsonObject jsonObject,
                                 @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
 
+    @POST("bizcard/useranalytics")
+    Call<ApiResponse> Analitycs_list(@Header("Accept") String api, @Header("Authorization") String auth,
+                                @Body JsonObject jsonObject,
+                                @Header("deviceType") String deviceType, @Header("appVersion") String appVersion);
+
    @POST("user/zoomIntegrationExists")
     Call<ApiResponse> zoomIntegrationExists(@Header("Accept") String api, @Header("Authorization") String auth,
                                 @Body JsonObject jsonObject,

@@ -71,7 +71,7 @@ public class Affiliate_Report_LavelActivity extends AppCompatActivity implements
     Dashboard dashboard = new Dashboard();
 
     List<String> lavelName = new ArrayList<>();
-    LinearLayout select_label_zone;
+    LinearLayout select_label_zone,layout_list,lay_no_list;
     EditText ev_search;
     private BroadcastReceiver mNetworkReceiver;
     SignResponseModel user_data;
@@ -161,8 +161,8 @@ public class Affiliate_Report_LavelActivity extends AppCompatActivity implements
                 }.getType();
                 dashboard = new Gson().fromJson(headerString, listType);
                 desAffiliateInfo = dashboard.getAffiliate();
-
                 setdate();
+
                 loadingDialog.cancelLoading();
 
             }
@@ -296,6 +296,13 @@ public class Affiliate_Report_LavelActivity extends AppCompatActivity implements
                 e.printStackTrace();
             }
 
+            if(Global.IsNotNull(level1List)&&level1List.size()>1){
+                layout_list.setVisibility(View.VISIBLE);
+                lay_no_list.setVisibility(View.GONE);
+            }else {
+                lay_no_list.setVisibility(View.VISIBLE);
+                layout_list.setVisibility(View.GONE);
+            }
 
             lavelAdapter = new LavelAdapter(Affiliate_Report_LavelActivity.this, level1List);
             rv_lavel_list.setAdapter(lavelAdapter);
@@ -340,6 +347,8 @@ public class Affiliate_Report_LavelActivity extends AppCompatActivity implements
     }
 
     private void IntentView() {
+        layout_list = findViewById(R.id.layout_list);
+        lay_no_list = findViewById(R.id.lay_no_list);
         ev_search = findViewById(R.id.ev_search);
         rv_lavel_list = findViewById(R.id.lavel_list);
         tv_lavel_name = findViewById(R.id.tv_lavel_name);

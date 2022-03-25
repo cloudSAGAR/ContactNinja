@@ -19,6 +19,7 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
+import com.contactninja.Bzcard.Bz_card_Analytics;
 import com.contactninja.Bzcard.CreateBzcard.Add_New_Bzcard_Activity;
 import com.contactninja.Bzcard.Select_Bzcard_Activity;
 import com.contactninja.MainActivity;
@@ -393,7 +394,9 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
                 mLastClickTime = SystemClock.elapsedRealtime();
 
 
-
+                Intent intent=new Intent(getActivity(),Bz_card_Analytics.class);
+                intent.putExtra("Bzcard_id",bizcard.getId());
+                startActivity(intent);
                 bottomSheetDialog.dismiss();
             }
         });
