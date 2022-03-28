@@ -24,6 +24,8 @@ public class CampaignTask_overview {
     @Expose
     private SeqProspectCount seqProspectCount;
 
+
+
     public _0 get0() {
         return _0;
     }
@@ -276,6 +278,10 @@ public class CampaignTask_overview {
         @Expose
         private String createdByName;
 
+        @SerializedName("started_on")
+        @Expose
+        private String started_on="";
+
         public Integer getManualtask() {
             return manualtask;
         }
@@ -396,6 +402,13 @@ public class CampaignTask_overview {
             this.createdByName = createdByName;
         }
 
+        public String getStarted_on() {
+            return started_on;
+        }
+
+        public void setStarted_on(String started_on) {
+            this.started_on = started_on;
+        }
     }
 
 
