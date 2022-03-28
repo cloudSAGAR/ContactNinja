@@ -262,11 +262,11 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
                     .into(holder.iv_select_type);
             holder.tv_email_name.setText(userLinkedGmail.getUserEmail());
             if(userLinkedGmail.getIsDefault().equals(1)){
-                holder.iv_is_default.setVisibility(View.VISIBLE);
+             //   holder.iv_is_default.setVisibility(View.VISIBLE);
                 holder.iv_selected.setVisibility(View.VISIBLE);
                 holder.iv_unselected.setVisibility(View.GONE);
             }else {
-                holder.iv_is_default.setVisibility(View.GONE);
+            //    holder.iv_is_default.setVisibility(View.GONE);
                 holder.iv_selected.setVisibility(View.GONE);
                 holder.iv_unselected.setVisibility(View.VISIBLE);
             }

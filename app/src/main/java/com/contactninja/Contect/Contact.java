@@ -1,8 +1,11 @@
 package com.contactninja.Contect;
+import android.annotation.SuppressLint;
+
 import com.contactninja.Utils.Global;
 
 import java.util.ArrayList;
 
+@SuppressLint("UnknownNullness")
 public class Contact {
     public String id="";
     public String name="";

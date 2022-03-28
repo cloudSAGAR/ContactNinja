@@ -453,7 +453,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
                             intent.putExtra("login_type", Login_type);
                             startActivity(intent);
-                        } else if (!sessionManager.isPayment_Type_Select()) {
+                        } else if (user_model.getUser().getUserprofile().getPurchased_planid().equals("")||
+                            user_model.getUser().getUserprofile().getPurchased_planid().equals("null")){
                             startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
                         } else {
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));

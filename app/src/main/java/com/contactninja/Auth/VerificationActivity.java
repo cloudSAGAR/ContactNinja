@@ -255,13 +255,14 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                             Log.i(TAG, "signInWithCredential:success");
 
                             FirebaseUser user = task.getResult().getUser();
-
+                            SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
                             if (!sessionManager.isEmail_Update()) {
                                 Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
                                 intent.putExtra("login_type", login_type);
                                 startActivity(intent);
                                 finish();
-                            } else if (!sessionManager.isPayment_Type_Select()) {
+                            } else if (user_data.getUser().getUserprofile().getPurchased_planid().equals("")||
+                                    user_data.getUser().getUserprofile().getPurchased_planid().equals("null")) {
                                 startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
                                 finish();
                             } else {
@@ -422,7 +423,8 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                                 intent.putExtra("login_type", login_type);
                                 startActivity(intent);
                             } else {
-                                if (!sessionManager.isPayment_Type_Select()) {
+                                if (user_model.getUser().getUserprofile().getPurchased_planid().equals("")||
+                                        user_model.getUser().getUserprofile().getPurchased_planid().equals("null")) {
                                     startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
                                 } else {
                                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
@@ -444,7 +446,8 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                                 intent.putExtra("login_type", login_type);
                                 startActivity(intent);
                             } else {
-                                if (!sessionManager.isPayment_Type_Select()) {
+                                if (user_model.getUser().getUserprofile().getPurchased_planid().equals("")||
+                                        user_model.getUser().getUserprofile().getPurchased_planid().equals("null")) {
                                     startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
                                 } else {
                                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
@@ -463,7 +466,8 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                         intent.putExtra("login_type", login_type);
                         startActivity(intent);
                         finish();
-                    } else if (!sessionManager.isPayment_Type_Select()) {
+                    } else if (user_model.getUser().getUserprofile().getPurchased_planid().equals("")||
+                            user_model.getUser().getUserprofile().getPurchased_planid().equals("null")) {
                         startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
                         finish();
                     } else {
@@ -520,7 +524,8 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                             intent.putExtra("login_type", login_type);
                             startActivity(intent);
                             finish();
-                        } else if (!sessionManager.isPayment_Type_Select()) {
+                        } else if (user_model.getUser().getUserprofile().getPurchased_planid().equals("")||
+                                user_model.getUser().getUserprofile().getPurchased_planid().equals("null")) {
                             startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
                             finish();
                         } else {
@@ -558,6 +563,7 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
     }
 
 
+    @SuppressLint("ObsoleteSdkInt")
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void registerNetworkBroadcastForNougat() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

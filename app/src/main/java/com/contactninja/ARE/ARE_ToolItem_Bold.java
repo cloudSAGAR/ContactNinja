@@ -19,7 +19,7 @@ import com.chinalwb.are.styles.toolitems.IARE_ToolItem_Updater;
 import com.chinalwb.are.styles.toolitems.styles.ARE_Style_Bold;
 
 /**
- * Created by wliu on 13/08/2018.
+ * Created by shirish on 23/03/2022.
  */
 
 public class ARE_ToolItem_Bold extends ARE_ToolItem_Abstract {

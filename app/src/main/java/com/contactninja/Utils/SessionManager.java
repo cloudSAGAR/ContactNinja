@@ -74,7 +74,6 @@ public class SessionManager {
     private static final String IS_LOGIN = "IsLoggedIn";
     private static final String IS_APPITRO = "Isintro";
     private static final String IS_Email_Update = "IsEmailUpdate";
-    private static final String IS_Payment_Type_Select = "Ispaymenttypeselect";
     public static SharedPreferences pref;
     private static SharedPreferences.Editor editor;
     private final Context _context;
@@ -561,10 +560,7 @@ public class SessionManager {
         editor.commit();
     }
 
-    public void Payment_Type_Select() {
-        editor.putBoolean(IS_Payment_Type_Select, true);
-        editor.commit();
-    }
+
 
     public void Email_Update() {
         editor.putBoolean(IS_Email_Update, true);
@@ -573,10 +569,6 @@ public class SessionManager {
 
     public boolean isEmail_Update() {
         return pref.getBoolean(IS_Email_Update, false);
-    }
-
-    public boolean isPayment_Type_Select() {
-        return pref.getBoolean(IS_Payment_Type_Select, false);
     }
 
     public void appIntro() {

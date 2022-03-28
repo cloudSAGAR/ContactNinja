@@ -58,14 +58,12 @@
                 android:maxEms="40"
                 android:maxLength="40"
                 android:padding="@dimen/_5sdp"
-                android:paddingStart="@dimen/_15sdp"
                 android:textColor="@color/text_reg"
                 tools:ignore="HardcodedText,TextContrastCheck,TouchTargetSizeCheck">
 
             </EditText>
 
             <View
-                android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:layout_marginStart="@dimen/_15sdp"
                 android:background="@color/home_list_sub_data"
