@@ -929,10 +929,15 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
                                     .load(information.getMedia_filePath())
                                     .into(holder.iv_video);
                         }else {
-
-                            Glide.with(mCtx)
-                                    .load(information.getMedia_thumbnail())
-                                    .into(holder.iv_video);
+                            if (!information.getMedia_thumbnail().equals("")) {
+                                Glide.with(mCtx)
+                                        .load(information.getMedia_thumbnail())
+                                        .into(holder.iv_video);
+                            } else {
+                                Glide.with(mCtx)
+                                        .load(Global.getYoutubeThumbnailUrlFromVideoUrl(information.getMedia_url()))
+                                        .into(holder.iv_video);
+                            }
                         }
 
                         holder.layout_pdf.setVisibility(View.GONE);

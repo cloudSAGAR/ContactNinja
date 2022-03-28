@@ -582,7 +582,7 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                 @Override
                 public void onUploadSuccess(String response) {
                     Log.e("Reppnse is",new Gson().toJson(response));
-                    Toast.makeText(Final_Group.this, new Gson().toJson(response), Toast.LENGTH_SHORT).show();
+                //    Toast.makeText(Final_Group.this, new Gson().toJson(response), Toast.LENGTH_SHORT).show();
 
                     if (response.equalsIgnoreCase("Success")) {
                         user_image_Url=contect_group;
