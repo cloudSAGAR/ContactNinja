@@ -153,6 +153,7 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
         Global.checkConnectivity(Add_Company_Activity.this, mMainLayout);
     }
 
+    @SuppressLint("ObsoleteSdkInt")
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void registerNetworkBroadcastForNougat() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -242,11 +243,10 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
 
             if (WorkData.getIs_blocked().equals(1)) {
                 iv_block.setVisibility(View.VISIBLE);
-                no_image.setVisibility(View.VISIBLE);
             } else {
                 iv_block.setVisibility(View.GONE);
-                no_image.setVisibility(View.VISIBLE);
             }
+            no_image.setVisibility(View.VISIBLE);
             add_name.setEnabled(false);
             add_detail.setEnabled(false);
             edit_Mobile.setEnabled(false);
@@ -295,11 +295,10 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
 
                 if (WorkData.getIs_blocked().equals(1)) {
                     iv_block.setVisibility(View.VISIBLE);
-                    no_image.setVisibility(View.VISIBLE);
                 } else {
                     iv_block.setVisibility(View.GONE);
-                    no_image.setVisibility(View.VISIBLE);
                 }
+                no_image.setVisibility(View.VISIBLE);
                 add_name.setEnabled(true);
                 add_detail.setEnabled(true);
                 edit_Mobile.setEnabled(true);
@@ -550,11 +549,10 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
                         iv_block.setVisibility(View.GONE);
                         WorkData.setIs_blocked(block);
                     }
-                    bottomSheetDialog.cancel();
                 } else {
                     Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
-                    bottomSheetDialog.cancel();
                 }
+                bottomSheetDialog.cancel();
             }
 
             @Override
@@ -589,11 +587,10 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
                 loadingDialog.cancelLoading();
                 if (response.body().getHttp_status() == 200) {
                     finish();
-                    bottomSheetDialog.cancel();
                 } else {
                     Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
-                    bottomSheetDialog.cancel();
                 }
+                bottomSheetDialog.cancel();
             }
 
             @Override
