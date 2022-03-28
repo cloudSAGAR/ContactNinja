@@ -1,6 +1,7 @@
 package com.contactninja.ARE;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.text.Editable;
 import android.text.style.CharacterStyle;
 import android.text.style.StyleSpan;
@@ -27,7 +28,7 @@ public class ARE_ToolItem_Bold extends ARE_ToolItem_Abstract {
     @Override
     public IARE_ToolItem_Updater getToolItemUpdater() {
         if (mToolItemUpdater == null) {
-            mToolItemUpdater = new ARE_ToolItem_UpdaterDefault(this, Constants.CHECKED_COLOR, Constants.UNCHECKED_COLOR);
+            mToolItemUpdater = new ARE_ToolItem_UpdaterDefault(this, Color.parseColor("#5495EC"), Constants.UNCHECKED_COLOR);
             setToolItemUpdater(mToolItemUpdater);
         }
         return mToolItemUpdater;
