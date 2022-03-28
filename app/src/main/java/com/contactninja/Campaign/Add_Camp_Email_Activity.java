@@ -278,6 +278,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
 
     @Override
     public void onBackPressed() {
+        SessionManager.setcamp_final_flag("");
         Intent intent = new Intent(getApplicationContext(), Add_Camp_Tab_Select_Activity.class);
         intent.putExtra("flag", "new");
         startActivity(intent);
@@ -733,7 +734,13 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                         SessionManager.setTask(getApplicationContext(), user_model1);
                         startActivity(new Intent(getApplicationContext(), Campaign_Overview.class));
                     }
-                    finish();
+                    else if (SessionManager.getcamp_final_flag(getApplicationContext()).equals("final_edit"))
+                    {
+                        finish();
+                    }
+                    else {
+                        finish();
+                    }
 
                 }
                 else if (response.body().getHttp_status()==403)

@@ -581,7 +581,7 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
                         sequence_id = bundle.getInt("sequence_id");
                     }
                     Log.e("Sequence is is", String.valueOf(sequence_id));
-
+                    SessionManager.setcamp_final_flag("");
                     Intent intent = new Intent(getApplicationContext(), Add_Camp_Tab_Select_Activity.class);
                     intent.putExtra("flag", "edit");
                     intent.putExtra("body", sequenceTask.getContentBody());
@@ -619,6 +619,7 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
                         Bundle bundle = getintent.getExtras();
                         sequence_id = bundle.getInt("sequence_id");
                     }
+                    SessionManager.setcamp_final_flag("");
                     Intent intent = new Intent(getApplicationContext(), Add_Camp_Tab_Select_Activity.class);
                     intent.putExtra("flag", "edit");
                     intent.putExtra("body", sequenceTask.getContentBody());

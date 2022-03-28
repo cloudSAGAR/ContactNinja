@@ -705,9 +705,16 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
                     Intent inten = getIntent();
                     Bundle bundle = inten.getExtras();
                     String flag = bundle.getString("flag");
+
+
                     if (flag.equals("edit")) {
                         finish();
-                    } else {
+                    }
+                    else if (SessionManager.getcamp_final_flag(getApplicationContext()).equals("final_edit"))
+                    {
+                        finish();
+                    }
+                    else {
                         SessionManager.setTask(getApplicationContext(), user_model1);
                         startActivity(new Intent(getApplicationContext(), Campaign_Overview.class));
                         finish();
@@ -776,6 +783,7 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
 
     @Override
     public void onBackPressed() {
+        SessionManager.setcamp_final_flag("");
         Intent intent = new Intent(getApplicationContext(), Add_Camp_Tab_Select_Activity.class);
         intent.putExtra("flag", "new");
         startActivity(intent);

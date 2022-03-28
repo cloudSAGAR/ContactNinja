@@ -156,6 +156,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
         //Log.e("Option Manu is Select", "Yes");
         switch (item.getItemId()) {
             case R.id.mv_save:
+                SessionManager.setcamp_final_flag("");
                 startActivity(new Intent(getApplicationContext(), Campaign_List_Activity.class));
                 finish();
                 return true;
@@ -272,7 +273,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                     List<CampaignTask> campaignTaskList = new ArrayList<>();
                     campaignTaskList.add(campaignTask);
                     SessionManager.setTask(getApplicationContext(), campaignTaskList);
-
+                    SessionManager.setcamp_final_flag("");
                     Intent intent = new Intent(getApplicationContext(), Add_Camp_Tab_Select_Activity.class);
                     intent.putExtra("flag", "new");
                     startActivity(intent);
@@ -389,10 +390,11 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
     @Override
     public void onBackPressed() {
         if (SessionManager.getCampign_flag(getApplicationContext()).equals("read")) {
-
+            SessionManager.setcamp_final_flag("");
             startActivity(new Intent(getApplicationContext(), Campaign_List_Activity.class));
             finish();
         } else if (SessionManager.getCampign_flag(getApplicationContext()).equals("edit")) {
+            SessionManager.setcamp_final_flag("");
             startActivity(new Intent(getApplicationContext(), Campaign_List_Activity.class));
             finish();
         } else if (SessionManager.getCampign_flag(getApplicationContext()).equals("read_name")) {
@@ -435,7 +437,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                         sequence_id = bundle.getInt("sequence_id");
                     }
                     Log.e("Sequence is is", String.valueOf(sequence_id));
-
+                    SessionManager.setcamp_final_flag("");
                     Intent intent = new Intent(getApplicationContext(), Add_Camp_Tab_Select_Activity.class);
                     intent.putExtra("flag", "edit");
                     intent.putExtra("body", sequenceTask.getContentBody());
@@ -473,6 +475,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                         Bundle bundle = getintent.getExtras();
                         sequence_id = bundle.getInt("sequence_id");
                     }
+                    SessionManager.setcamp_final_flag("");
                     Intent intent = new Intent(getApplicationContext(), Add_Camp_Tab_Select_Activity.class);
                     intent.putExtra("flag", "edit");
                     intent.putExtra("body", sequenceTask.getContentBody());
@@ -1005,6 +1008,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                                     campaignTaskList.add(campaignTask);
                                     SessionManager.setTask(getApplicationContext(), campaignTaskList);
                                 }
+                                SessionManager.setcamp_final_flag("");
                                 Intent intent = new Intent(getApplicationContext(), Add_Camp_Tab_Select_Activity.class);
                                 intent.putExtra("flag", "new");
                                 startActivity(intent);

@@ -95,6 +95,7 @@ public class SessionManager {
     public static final String destasks="des_tasks";
     public static final String DesBroadcast="Des_Broadcast";
     public static final String DesSequence="Des_Sequence";
+    public static final String Cam_Final_step="Cam_Final_step";
     // Constructor
     @SuppressLint("CommitPrefEdits")
     public SessionManager(Context context) {
@@ -806,6 +807,19 @@ public class SessionManager {
 
     public void setlogin_type(String plantype) {
         editor.putString(Login_type, plantype);
+        editor.commit();
+    }
+
+
+    public static String getcamp_final_flag(Context context) {
+
+        String type = pref.getString(Cam_Final_step, "");
+        return type;
+
+    }
+
+    public static  void setcamp_final_flag(String flag) {
+        editor.putString(Cam_Final_step, flag);
         editor.commit();
     }
 

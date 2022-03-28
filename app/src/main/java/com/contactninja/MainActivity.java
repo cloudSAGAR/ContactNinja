@@ -1051,6 +1051,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
                 if (Global.IsNotNull(SessionManager.getContectList(getApplicationContext()))) {
+                    SessionManager.setcamp_final_flag("");
                     Intent intent = new Intent(getApplicationContext(), Campaign_List_Activity.class);
                     startActivity(intent);
                 }else {

@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.contactninja.Campaign.Add_Camp_Tab_Select_Activity;
 import com.contactninja.Campaign.Campaign_Overview;
+import com.contactninja.Model.CampaignTask;
 import com.contactninja.Model.CampaignTask_overview;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
@@ -48,7 +49,7 @@ import java.util.List;
 import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
-public class Campaign_Step_Fragment extends Fragment {
+public class Campaign_Step_Fragment extends Fragment implements View.OnClickListener {
 
     RecyclerView item_list;
     SessionManager sessionManager;
@@ -60,7 +61,8 @@ public class Campaign_Step_Fragment extends Fragment {
     List<CampaignTask_overview.SequenceTask> main_data =new ArrayList<>();
     private long mLastClickTime=0;
     String camp_flag="",start="";
-
+    LinearLayout add_new_step;
+    TextView tv_add_new_step;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -80,7 +82,33 @@ public class Campaign_Step_Fragment extends Fragment {
     private void IntentUI(View view) {
         item_list=view.findViewById(R.id.item_list);
         item_list.setLayoutManager(new LinearLayoutManager(getActivity()));
+        add_new_step=view.findViewById(R.id.add_new_step);
+        tv_add_new_step =view.findViewById(R.id.tv_add_new_step);
+        tv_add_new_step.setOnClickListener(this);
+    }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tv_add_new_step:
+                SessionManager.setCampaign_type("");
+                SessionManager.setCampaign_type_name("");
+                SessionManager.setCampaign_minute("00");
+                SessionManager.setCampaign_Day("1");
+
+                CampaignTask campaignTask = new CampaignTask();
+                //Toast.makeText(getApplicationContext(),"Step"+Data.getStepNo(),Toast.LENGTH_LONG).show();
+                campaignTask.setSequenceId(sequence_id);
+                campaignTask.setStepNo(0);
+                List<CampaignTask> campaignTaskList = new ArrayList<>();
+                campaignTaskList.add(campaignTask);
+                SessionManager.setTask(getActivity(), campaignTaskList);
+                SessionManager.setcamp_final_flag("final_edit");
+                Intent newintent = new Intent(getActivity(), Add_Camp_Tab_Select_Activity.class);
+                newintent.putExtra("flag", "new");
+                startActivity(newintent);
+                break;
+        }
     }
 
     public class Campaign_OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -130,20 +158,6 @@ public class Campaign_Step_Fragment extends Fragment {
                     movieViewHolder.add_new_step_layout.setVisibility(View.GONE);
                     movieViewHolder.tv_item_num.setText(String.valueOf(Global.count));
                     Global.count++;
-                  /*  if (position == movieList.size() - 1)
-                    {
-                        movieViewHolder.add_new_step_layout.setVisibility(View.VISIBLE);
-                        int num=movieList.size()+1;
-                        movieViewHolder.tv_add_new_step_num.setText(String.valueOf(num));
-                        movieViewHolder.tv_item_num.setText(String.valueOf(Global.count));
-                        Global.count++;
-                    }
-                    else {
-
-                        movieViewHolder.add_new_step_layout.setVisibility(View.GONE);
-                        movieViewHolder.tv_item_num.setText(String.valueOf(Global.count));
-                        Global.count++;
-                    }*/
                     if(position==(getItemCount()-1)){
                      movieViewHolder.cam_line.setVisibility(View.INVISIBLE);
                     }
@@ -181,7 +195,23 @@ public class Campaign_Step_Fragment extends Fragment {
                     if (camp_flag.equals("I") && !start.equals(""))
                     {
                         movieViewHolder.iv_manu.setVisibility(View.VISIBLE);
-
+                        if (position == movieList.size() - 1)
+                        {
+                            if (movieList.size()<10)
+                            {
+                                movieViewHolder.add_new_step_layout.setVisibility(View.VISIBLE);
+                                int num=movieList.size()+1;
+                                movieViewHolder.tv_add_new_step_num.setText(String.valueOf(num));
+                                movieViewHolder.cam_line.setVisibility(View.VISIBLE);
+                            }
+                            else {
+                                movieViewHolder.cam_line.setVisibility(View.INVISIBLE);
+                                movieViewHolder.add_new_step_layout.setVisibility(View.GONE);
+                            }
+                        }
+                        else {
+                            movieViewHolder.add_new_step_layout.setVisibility(View.GONE);
+                        }
                     }
                     else {
                         movieViewHolder.iv_manu.setVisibility(View.GONE);
@@ -201,19 +231,20 @@ public class Campaign_Step_Fragment extends Fragment {
                     movieViewHolder.tv_detail.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                           if (position==0)
-                           {
+                         if (position!=0)
+                         {
+                             movieViewHolder.run_time_layout.setVisibility(View.VISIBLE);
+                             movieViewHolder.edit_day.setEnabled(false);
+                             movieViewHolder.edit_minutes.setEnabled(false);
+                             movieViewHolder.line_one.setVisibility(View.VISIBLE);
 
-                           }
-                           else {
-                               movieViewHolder.run_time_layout.setVisibility(View.VISIBLE);
-                               movieViewHolder.edit_day.setEnabled(false);
-                               movieViewHolder.edit_minutes.setEnabled(false);
-                               movieViewHolder.line_one.setVisibility(View.VISIBLE);
-                           }
+                         }
 
                         }
                     });
+
+
+
                     movieViewHolder.tv_add_new_step.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -225,25 +256,32 @@ public class Campaign_Step_Fragment extends Fragment {
                             SessionManager.setCampaign_type_name("");
                             SessionManager.setCampaign_minute("00");
                             SessionManager.setCampaign_Day("1");
-                            Intent intent=new Intent(getContext(), Add_Camp_Tab_Select_Activity.class);
+
+                            if(position==(getItemCount()-1)){
+                                CampaignTask campaignTask=new CampaignTask();
+                                CampaignTask_overview.SequenceTask Data=movieList.get(position);
+                                campaignTask.setId(Data.getId());
+                                campaignTask.setDay(Data.getDay());
+                                campaignTask.setStepNo(Data.getStepNo());
+                                campaignTask.setType(Data.getType());
+                                campaignTask.setPriority(Data.getPriority());
+                                campaignTask.setMinute(Data.getMinute());
+                                campaignTask.setContentHeader(Data.getContentHeader());
+                                campaignTask.setContentBody(Data.getContentBody());
+                                campaignTask.setSequenceId(sequence_id);
+                                campaignTask.setManageBy(Data.getManageBy());
+                                List<CampaignTask> campaignTaskList=new ArrayList<>();
+                                campaignTaskList.add(campaignTask);
+                                SessionManager.setTask(getActivity(), campaignTaskList);
+                            }
+                            SessionManager.setcamp_final_flag("final_edit");
+                            Intent intent=new Intent(getActivity(), Add_Camp_Tab_Select_Activity.class);
+                            intent.putExtra("flag","new");
                             startActivity(intent);
-                        }
-                    });
-
-                   /* movieViewHolder.tv_detail.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            if (movieViewHolder.run_time_layout.getVisibility()==View.VISIBLE)
-                            {
-                                movieViewHolder.run_time_layout.setVisibility(View.GONE);
-                            }
-                            else {
-                                movieViewHolder.run_time_layout.setVisibility(View.VISIBLE);
-                            }
+                            //getActivity().finish();
 
                         }
                     });
-*/
 
                     break;
 
@@ -271,8 +309,18 @@ public class Campaign_Step_Fragment extends Fragment {
 
 
         public void remove_item(int position) {
-            movieList.remove(position);
-            notifyDataSetChanged();
+            if (movieList.size()==1)
+            {
+                movieList.remove(position);
+                notifyDataSetChanged();
+                add_new_step.setVisibility(View.VISIBLE);
+            }
+            else {
+                add_new_step.setVisibility(View.GONE);
+                movieList.remove(position);
+                notifyDataSetChanged();
+            }
+
         }
 
         public void remove_all() {
@@ -567,14 +615,20 @@ public class Campaign_Step_Fragment extends Fragment {
                              main_data=user_model1.getSequenceTask();
                              campaign_overviewAdapter.addAll(main_data);
 
-                            //  Log.e("Email Task",user_model1.getSequenceTask().get(0).getActiveTaskEmail().toString());
-                            // Log.e("SMS",user_model1.getSequenceTask().get(0).getActiveTaskContactNumber().toString());
+                            main_data=  user_model1.getSequenceTask();
 
-                            //  tv_email.setText(user_model1.getSequenceTask().get(0).getActiveTaskEmail().toString());
-                            //tv_sms.setText(user_model1.getSequenceTask().get(0).getActiveTaskContactNumber().toString());
-
-
-
+                            if (user_model1.get0().getStatus().equals("I") && !user_model1.get0().getStarted_on().equals(""))
+                            {
+                                if (main_data.size()==0)
+                                {
+                                    add_new_step.setVisibility(View.VISIBLE);
+                                    item_list.setVisibility(View.GONE);
+                                }
+                                else {
+                                    item_list.setVisibility(View.VISIBLE);
+                                    add_new_step.setVisibility(View.GONE);
+                                }
+                            }
 
                         } else {
                             Gson gson = new Gson();

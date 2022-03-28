@@ -168,13 +168,11 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                 List<CampaignTask> campaignTaskList = new ArrayList<>();
                 campaignTaskList.add(campaignTask);
                 SessionManager.setTask(getApplicationContext(), campaignTaskList);
-
+                SessionManager.setcamp_final_flag("");
                 Intent newintent = new Intent(getApplicationContext(), Add_Camp_Tab_Select_Activity.class);
                 newintent.putExtra("flag", "new");
                 startActivity(newintent);
                 finish();
-
-
                 break;
             case R.id.save_button:
                 //Add Api Call
@@ -386,6 +384,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                                     campaignTaskList.add(campaignTask);
                                     SessionManager.setTask(getApplicationContext(), campaignTaskList);
                                 }
+                                SessionManager.setcamp_final_flag("");
                                 Intent intent=new Intent(getApplicationContext(), Add_Camp_Tab_Select_Activity.class);
                                 intent.putExtra("flag","new");
                                 startActivity(intent);
@@ -570,7 +569,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                         sequence_id=bundle.getInt("sequence_id");
                     }
                     Log.e("Sequence is is", String.valueOf(sequence_id));
-
+                    SessionManager.setcamp_final_flag("");
                     Intent intent=new Intent(getApplicationContext(), Add_Camp_Tab_Select_Activity.class);
                     intent.putExtra("flag","edit");
                     intent.putExtra("body",sequenceTask.getContentBody());
@@ -609,6 +608,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                         Bundle bundle=getintent.getExtras();
                         sequence_id=bundle.getInt("sequence_id");
                     }
+                    SessionManager.setcamp_final_flag("");
                     Intent intent=new Intent(getApplicationContext(), Add_Camp_Tab_Select_Activity.class);
                     intent.putExtra("flag","edit");
                     intent.putExtra("body",sequenceTask.getContentBody());
