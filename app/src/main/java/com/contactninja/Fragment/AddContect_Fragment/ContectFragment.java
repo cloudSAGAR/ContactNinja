@@ -2038,12 +2038,11 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    bottomSheetDialog.cancel();
                 } else {
                     loadingDialog.cancelLoading();
                     Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), false);
-                    bottomSheetDialog.cancel();
                 }
+                bottomSheetDialog.cancel();
             }
 
             @Override
@@ -2076,7 +2075,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
 
                 if (response.body().getHttp_status() == 200) {
-                    Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), false);
+                    Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), true);
                     try {
                         fillter_text = "";
                         // loadingDialog.showLoadingDialog();
@@ -2084,12 +2083,11 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    bottomSheetDialog.cancel();
                 } else {
                     loadingDialog.cancelLoading();
                     Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), false);
-                    bottomSheetDialog.cancel();
                 }
+                bottomSheetDialog.cancel();
             }
 
             @Override

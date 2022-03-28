@@ -9,221 +9,228 @@
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar"/>
+
     <androidx.core.widget.NestedScrollView
+        android:layout_above="@+id/lay_bouttom"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar">
-    <LinearLayout
-        android:layout_above="@+id/lay_bouttom"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:ignore="MissingConstraints">
-
 
         <LinearLayout
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                style="@style/tv_Medium_12"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/_5sdp"
-                android:text="@string/task_title_email"
-                android:textColor="@color/home_list_sub_data"
-                tools:ignore="TextContrastCheck">
-
-            </TextView>
-
-            <EditText
-                android:id="@+id/ev_titale"
-                style="@style/tv_regular_12"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:background="@color/add_contect_transpernt"
-                android:focusable="true"
-                android:gravity="left|center"
-                android:imeOptions="actionDone"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:textColor="@color/text_reg"
-                tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields,TouchTargetSizeCheck,SpeakableTextPresentCheck" />
-
-
-
-        </LinearLayout>
-        <View
-            android:layout_marginTop="@dimen/_12sdp"
-            android:background="@color/line_separator"
-            android:layout_width="match_parent"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_height="1dp">
-
-        </View>
-        <LinearLayout
-            android:layout_marginTop="@dimen/_10sdp"
-            android:weightSum="1"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:padding="@dimen/_5sdp"
-                android:layout_gravity="center"
-                style="@style/tv_Medium_12"
-                android:text="@string/from"
-                android:textColor="@color/purple_200"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-            </TextView>
-
-            <EditText
-                android:id="@+id/ev_from"
-                style="@style/tv_regular_12"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:background="@color/add_contect_transpernt"
-                android:enabled="false"
-                android:focusable="true"
-                android:gravity="left|center"
-                android:imeOptions="actionDone"
-                android:textColor="@color/text_reg"
-                tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-            <ImageView
-                android:padding="@dimen/_10sdp"
-                android:id="@+id/iv_more"
-                android:src="@drawable/ic_down"
-                android:layout_width="wrap_content"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:layout_gravity="center"
-                android:layout_height="wrap_content"/>
-
-
-
-        </LinearLayout>
-        <View
-            android:layout_marginTop="@dimen/_8sdp"
-            android:background="@color/line_separator"
-            android:layout_width="match_parent"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_height="1dp">
-
-        </View>
-
-        <LinearLayout
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:padding="@dimen/_5sdp"
-                style="@style/tv_Medium_12"
-                android:text="@string/to"
-                android:textColor="@color/purple_200"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-            </TextView>
-
-            <EditText
-                android:id="@+id/ev_to"
-                style="@style/tv_regular_12"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:background="@color/add_contect_transpernt"
-                android:focusable="true"
-                android:gravity="left|center"
-                android:imeOptions="actionDone"
-                android:textColor="@color/text_reg"
-                tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-
-
-
-        </LinearLayout>
-        <View
-            android:layout_marginTop="@dimen/_12sdp"
-            android:background="@color/line_camp"
-            android:layout_width="match_parent"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_height="1dp">
-
-        </View>
-
-        <LinearLayout
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                style="@style/tv_Medium_12"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/_5sdp"
-                android:text="@string/to_subject"
-                android:textColor="@color/home_list_sub_data"
-                tools:ignore="TextContrastCheck">
-
-            </TextView>
-
-            <EditText
-                android:id="@+id/ev_subject"
-                style="@style/tv_regular_12"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:background="@color/add_contect_transpernt"
-                android:focusable="true"
-                android:gravity="left|center"
-                android:imeOptions="actionDone"
-                android:textColor="@color/text_reg"
-                tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields,TouchTargetSizeCheck,SpeakableTextPresentCheck" />
-
-
-
-        </LinearLayout>
-        <View
-            android:layout_marginTop="@dimen/_12sdp"
-            android:background="@color/line_separator"
-            android:layout_width="match_parent"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_height="1dp">
-
-        </View>
-
-        <com.chinalwb.are.AREditText
-            android:id="@+id/edit_compose"
-            style="@style/tv_normal_12"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:autoLink="web|email"
-            android:background="@color/add_contect_transpernt"
-            android:focusable="true"
-            android:gravity="left"
-            android:hint="@string/ComposeEmail"
-            android:imeOptions="actionDone"
-            android:linksClickable="true"
-            android:padding="15dp"
-            android:textColor="@color/text_reg"
-            tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields,TextContrastCheck" />
+            android:layout_above="@+id/lay_bouttom"
+            android:orientation="vertical"
+            tools:ignore="MissingConstraints">
 
-    </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp">
+
+                <TextView
+                    style="@style/tv_Medium_12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_5sdp"
+                    android:text="@string/task_title_email"
+                    android:textColor="@color/home_list_sub_data"
+                    tools:ignore="TextContrastCheck">
+
+                </TextView>
+
+                <EditText
+                    android:id="@+id/ev_titale"
+                    style="@style/tv_regular_12"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@color/add_contect_transpernt"
+                    android:focusable="true"
+                    android:gravity="left|center"
+                    android:imeOptions="actionDone"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="@color/text_reg"
+                    tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields,TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="@color/line_separator">
+
+            </View>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:weightSum="1">
+
+                <TextView
+                    style="@style/tv_Medium_12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="@dimen/_5sdp"
+                    android:text="@string/from"
+                    android:textColor="@color/purple_200">
+
+                </TextView>
+
+                <EditText
+                    android:id="@+id/ev_from"
+                    style="@style/tv_regular_12"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@color/add_contect_transpernt"
+                    android:enabled="false"
+                    android:focusable="true"
+                    android:gravity="left|center"
+                    android:imeOptions="actionDone"
+                    android:textColor="@color/text_reg"
+                    tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+                <ImageView
+                    android:id="@+id/iv_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:padding="@dimen/_10sdp"
+                    android:src="@drawable/ic_down" />
+
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="@color/line_separator">
+
+            </View>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp">
+
+                <TextView
+                    style="@style/tv_Medium_12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_5sdp"
+                    android:text="@string/to"
+                    android:textColor="@color/purple_200">
+
+                </TextView>
+
+                <EditText
+                    android:id="@+id/ev_to"
+                    style="@style/tv_regular_12"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@color/add_contect_transpernt"
+                    android:focusable="true"
+                    android:gravity="left|center"
+                    android:imeOptions="actionDone"
+                    android:textColor="@color/text_reg"
+                    tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="@color/line_camp">
+
+            </View>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp">
+
+                <TextView
+                    style="@style/tv_Medium_12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_5sdp"
+                    android:text="@string/to_subject"
+                    android:textColor="@color/home_list_sub_data"
+                    tools:ignore="TextContrastCheck">
+
+                </TextView>
+
+                <EditText
+                    android:id="@+id/ev_subject"
+                    style="@style/tv_regular_12"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@color/add_contect_transpernt"
+                    android:focusable="true"
+                    android:gravity="left|center"
+                    android:imeOptions="actionDone"
+                    android:textColor="@color/text_reg"
+                    tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields,TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="@color/line_separator">
+
+            </View>
+
+            <com.chinalwb.are.AREditText
+                android:id="@+id/edit_compose"
+                style="@style/tv_normal_12"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:autoLink="web|email"
+                android:background="@color/add_contect_transpernt"
+                android:focusable="true"
+                android:gravity="left"
+                android:hint="@string/ComposeEmail"
+                android:imeOptions="actionDone"
+                android:linksClickable="true"
+                android:padding="15dp"
+                android:textColor="@color/text_reg"
+                tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields,TextContrastCheck" />
+
+        </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
     <LinearLayout

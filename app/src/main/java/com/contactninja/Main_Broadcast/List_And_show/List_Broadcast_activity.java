@@ -61,7 +61,7 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     ImageView iv_back, iv_cancle_search_icon;
-    TextView save_button;
+    TextView save_button,tv_create;
 
     LinearLayout mMainLayout,add_new_contect_layout;
     LinearLayout demo_layout,  lay_no_list;
@@ -206,6 +206,9 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
         iv_back.setOnClickListener(this);
         save_button.setText("Next");
         mMainLayout = findViewById(R.id.mMainLayout);
+
+        tv_create = findViewById(R.id.tv_create);
+        tv_create.setText(getString(R.string.txt_broadcast));
 
 
         lay_mainlayout = findViewById(R.id.lay_mainlayout);

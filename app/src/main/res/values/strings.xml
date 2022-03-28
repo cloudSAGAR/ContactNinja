@@ -421,6 +421,7 @@ Number</string>
     <string name="composse_email">Compose email</string>
     <string name="email_txt">Click here to send \n an email </string>
     <string name="txt_task">Click here to create \n a task </string>
+    <string name="txt_broadcast">Click here to create \n a broadcast </string>
     <string name="create_new_email">Create new email</string>
     <string name="create_new_text">Create new task</string>
     <string name="email_task_txt">Schedule my task</string>
