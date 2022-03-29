@@ -194,11 +194,14 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
         TextView selected_campaign = bottomSheetDialog.findViewById(R.id.selected_campaign);
         TextView selected_broadcast = bottomSheetDialog.findViewById(R.id.selected_broadcast);
         TextView selected_task = bottomSheetDialog.findViewById(R.id.selected_task);
-       if (broadcasteda.getStatus().equals("A"))
+      if (broadcasteda.getStatus().equals("") && broadcasteda.getStatus().equals(null))
+      {
+
+      }
+      else if (broadcasteda.getStatus().equals("A"))
        {
            selected_broadcast.setText("Pause Broadcast");
            selected_broadcast.setVisibility(View.VISIBLE);
-           //StartBroadCastApi(broadcasteda,1);
        }
        else if (broadcasteda.getStatus().equals("I")){
            selected_broadcast.setText("Active Broadcast");

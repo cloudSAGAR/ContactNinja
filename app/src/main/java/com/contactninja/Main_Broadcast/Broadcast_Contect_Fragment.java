@@ -1192,13 +1192,13 @@ public class Broadcast_Contect_Fragment extends Fragment {
 
                                     } else if (detailList.size() >= 1) {
                                         for (int i = 0; i < detailList.size(); i++) {
-                                            if (detailList.get(i).getIsDefault() == 1) {
+                                            if (i==0) {
                                                 detailList.get(i).setPhoneSelect(true);
                                                 break;
                                             }
                                         }
                                         for (int i = 0; i < detailList1.size(); i++) {
-                                            if (detailList1.get(i).getIsDefault() == 1) {
+                                            if (i==0) {
                                                 detailList1.get(i).setPhoneSelect(true);
                                                 break;
                                             }
@@ -1207,13 +1207,13 @@ public class Broadcast_Contect_Fragment extends Fragment {
                                         //   Log.e("Size is","More ONE");
                                     } else if (detailList1.size() >= 1) {
                                         for (int i = 0; i < detailList.size(); i++) {
-                                            if (detailList.get(i).getIsDefault() == 1) {
+                                            if (i==0) {
                                                 detailList.get(i).setPhoneSelect(true);
                                                 break;
                                             }
                                         }
                                         for (int i = 0; i < detailList1.size(); i++) {
-                                            if (detailList1.get(i).getIsDefault() == 1) {
+                                            if (i==0) {
                                                 detailList1.get(i).setPhoneSelect(true);
                                                 break;
                                             }

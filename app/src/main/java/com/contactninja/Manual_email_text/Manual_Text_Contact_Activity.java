@@ -639,13 +639,13 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity implements V
                                     finish();
                                 } else if (detailList.size() >= 1) {
                                     for (int i = 0; i < detailList.size(); i++) {
-                                        if (detailList.get(i).getIsDefault() == 1) {
+                                        if (i==0) {
                                             detailList.get(i).setPhoneSelect(true);
                                             break;
                                         }
                                     }
 
-                                    Log.e("DataList SI", new Gson().toJson(detailList));
+                                 //   Log.e("DataList SI", new Gson().toJson(detailList));
                                     Phone_bouttomSheet(detailList, holder1, contacts, position);
                                 }
 

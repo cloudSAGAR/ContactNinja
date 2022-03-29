@@ -644,7 +644,7 @@ public class Manual_Email_Contect_Activity extends AppCompatActivity implements 
                                     finish();
                                 } else if (detailList.size() >= 1) {
                                     for (int i = 0; i < detailList.size(); i++) {
-                                        if (detailList.get(i).getIsDefault() == 1) {
+                                        if (i == 0) {
                                             detailList.get(i).setPhoneSelect(true);
                                             break;
                                         }
