@@ -380,7 +380,7 @@
                                     android:id="@+id/iv_all_up"
                                     android:layout_width="@dimen/_17sdp"
                                     android:layout_height="@dimen/_17sdp"
-                                    android:src="@drawable/ic_home_grow_up"
+                                    android:src="@drawable/ic_home_grow_down"
                                     tools:ignore="ImageContrastCheck">
 
                                 </ImageView>
@@ -393,8 +393,8 @@
                                     android:layout_gravity="center|left"
                                     android:layout_marginStart="@dimen/_5sdp"
                                     android:gravity="center"
-                                    android:text="+0%"
-                                    android:textColor="@color/home_per_text"
+                                    android:text="0%"
+                                    android:textColor="@color/red"
                                     tools:ignore="TextContrastCheck" />
 
                             </LinearLayout>
@@ -468,7 +468,7 @@
                                     android:id="@+id/iv_1_up"
                                     android:layout_width="@dimen/_15sdp"
                                     android:layout_height="@dimen/_15sdp"
-                                    android:src="@drawable/ic_home_grow_up"
+                                    android:src="@drawable/ic_home_grow_down"
                                     tools:ignore="ImageContrastCheck" />
 
 
@@ -480,8 +480,8 @@
                                     android:layout_gravity="center|left"
                                     android:layout_marginStart="@dimen/_5sdp"
                                     android:gravity="center|left"
-                                    android:text="+0%"
-                                    android:textColor="@color/home_per_text"
+                                    android:text="0%"
+                                    android:textColor="@color/red"
                                     tools:ignore="TextContrastCheck" />
 
                             </LinearLayout>
@@ -528,7 +528,7 @@
                                     android:id="@+id/iv_2_up"
                                     android:layout_width="@dimen/_15sdp"
                                     android:layout_height="@dimen/_15sdp"
-                                    android:src="@drawable/ic_home_grow_up"
+                                    android:src="@drawable/ic_home_grow_down"
                                     tools:ignore="ImageContrastCheck" />
 
 
@@ -540,8 +540,8 @@
                                     android:layout_gravity="center|left"
                                     android:layout_marginStart="@dimen/_5sdp"
                                     android:gravity="center|left"
-                                    android:text="+0%"
-                                    android:textColor="@color/home_per_text"
+                                    android:text="0%"
+                                    android:textColor="@color/red"
                                     tools:ignore="TextContrastCheck" />
 
                             </LinearLayout>
@@ -588,7 +588,7 @@
                                     android:id="@+id/iv_3_up"
                                     android:layout_width="@dimen/_15sdp"
                                     android:layout_height="@dimen/_15sdp"
-                                    android:src="@drawable/ic_home_grow_up"
+                                    android:src="@drawable/ic_home_grow_down"
                                     tools:ignore="ImageContrastCheck" />
 
 
@@ -600,8 +600,8 @@
                                     android:layout_gravity="center|left"
                                     android:layout_marginStart="@dimen/_5sdp"
                                     android:gravity="center|left"
-                                    android:text="+0%"
-                                    android:textColor="@color/home_per_text"
+                                    android:text="0%"
+                                    android:textColor="@color/red"
                                     tools:ignore="TextContrastCheck" />
 
                             </LinearLayout>
@@ -648,7 +648,7 @@
                                     android:id="@+id/iv_4_up"
                                     android:layout_width="@dimen/_15sdp"
                                     android:layout_height="@dimen/_15sdp"
-                                    android:src="@drawable/ic_home_grow_up"
+                                    android:src="@drawable/ic_home_grow_down"
                                     tools:ignore="ImageContrastCheck" />
 
 
@@ -660,8 +660,8 @@
                                     android:layout_gravity="center|left"
                                     android:layout_marginStart="@dimen/_5sdp"
                                     android:gravity="center|left"
-                                    android:text="+0%"
-                                    android:textColor="@color/home_per_text"
+                                    android:text="0%"
+                                    android:textColor="@color/red"
                                     tools:ignore="TextContrastCheck" />
 
                             </LinearLayout>
@@ -708,7 +708,7 @@
                                     android:id="@+id/iv_5_up"
                                     android:layout_width="@dimen/_15sdp"
                                     android:layout_height="@dimen/_15sdp"
-                                    android:src="@drawable/ic_home_grow_up"
+                                    android:src="@drawable/ic_home_grow_down"
                                     tools:ignore="ImageContrastCheck" />
 
 
@@ -720,8 +720,8 @@
                                     android:layout_gravity="center|left"
                                     android:layout_marginStart="@dimen/_5sdp"
                                     android:gravity="center|left"
-                                    android:text="+0%"
-                                    android:textColor="@color/home_per_text"
+                                    android:text="0%"
+                                    android:textColor="@color/red"
                                     tools:ignore="TextContrastCheck" />
 
                             </LinearLayout>

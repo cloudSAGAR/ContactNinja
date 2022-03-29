@@ -12,6 +12,7 @@
 
     <color name="red">#F64F50</color>
     <color name="green">#08910D</color>
+    <color name="green_rate">#27AE60</color>
     <color name="otp_background">#5495EC</color>
     <color name="otp_header_text_color">#777777</color>
     <color name="gray_C4C4C4">#C4C4C4</color>
