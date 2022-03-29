@@ -869,26 +869,22 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                             }
                             mLastClickTime = SystemClock.elapsedRealtime();
 
+                              if(item.getSequence_task_from()==2){
+                                  if (item.getType().toString().equals("SMS")) {
+                                      Intent intent = new Intent(getActivity(), Item_List_Text_Detail_Activty.class);
+                                      intent.putExtra("record_id", item.getId());
+                                      startActivity(intent);
+                                  } else {
+                                      try {
+                                          if(Global.isNetworkAvailable(mCtx, MainActivity.mMainLayout)) {
+                                              Mail_Checklist(item);
+                                          }
+                                      } catch (JSONException e) {
+                                          e.printStackTrace();
+                                      }
+                                  }
 
-                                if (item.getType().toString().equals("SMS")) {
-                                    Intent intent = new Intent(getActivity(), Item_List_Text_Detail_Activty.class);
-                                    intent.putExtra("record_id", item.getId());
-                                    startActivity(intent);
-                                } else {
-                                    try {
-                                        if(Global.isNetworkAvailable(mCtx, MainActivity.mMainLayout)) {
-                                            Mail_Checklist(item);
-                                        }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                   /* Intent intent = new Intent(getActivity(), Item_List_Email_Detail_activty.class);
-                                    intent.putExtra("record_id", item.getId());
-                                    startActivity(intent);*/
                                 }
-
-
-
                         }else {
                             if(Global.IsNotNull(item.getStage())){
                                 if(!item.getStage().equals("FINISHED")) {
