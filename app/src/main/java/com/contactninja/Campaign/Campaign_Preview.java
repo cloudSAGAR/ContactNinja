@@ -446,7 +446,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                     intent.putExtra("seq_task_id", sequenceTask.getId());
                     intent.putExtra("sequence_id", sequence_id);
                     intent.putExtra("type", sequenceTask.getType());
-                    intent.putExtra("minute", sequenceTask.getMinute());
+                    intent.putExtra("minute", sequenceTask.getHours());
                     intent.putExtra("header", sequenceTask.getContentHeader());
                     intent.putExtra("step", sequenceTask.getStepNo());
                     intent.putExtra("from_ac", sequenceTask.getMail_module());
@@ -455,7 +455,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                     finish();
                     // startActivity(new Intent(getActivity(),First_Step_Activity.class));
                     SessionManager.setCampaign_Day(String.valueOf(sequenceTask.getDay()));
-                    SessionManager.setCampaign_minute(String.valueOf(sequenceTask.getMinute()));
+                    SessionManager.setCampaign_minute(String.valueOf(sequenceTask.getHours()));
                     SessionManager.setCampaign_type(String.valueOf(sequenceTask.getType()));
                     SessionManager.setCampaign_type_name(String.valueOf(sequenceTask.getManageBy()));
 
@@ -484,14 +484,14 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                     intent.putExtra("seq_task_id", sequenceTask.getId());
                     intent.putExtra("sequence_id", sequence_id);
                     intent.putExtra("type", sequenceTask.getType());
-                    intent.putExtra("minute", sequenceTask.getMinute());
+                    intent.putExtra("minute", sequenceTask.getHours());
                     intent.putExtra("step", sequenceTask.getStepNo());
                     intent.putExtra("from_ac", sequenceTask.getMail_module());
                     intent.putExtra("from_ac_id", sequenceTask.getSent_tbl_id());
                     startActivity(intent);
                     //  SessionManager.setTask(getActivity(),campaignTasks1);
                     SessionManager.setCampaign_Day(String.valueOf(sequenceTask.getDay()));
-                    SessionManager.setCampaign_minute(String.valueOf(sequenceTask.getMinute()));
+                    SessionManager.setCampaign_minute(String.valueOf(sequenceTask.getHours()));
                     SessionManager.setCampaign_type(String.valueOf(sequenceTask.getType()));
                     SessionManager.setCampaign_type_name(String.valueOf(sequenceTask.getManageBy()));
 
@@ -939,7 +939,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                         movieViewHolder.iv_email.setVisibility(View.VISIBLE);
                         movieViewHolder.iv_message.setVisibility(View.GONE);
                     }
-                    movieViewHolder.edit_minutes.setText(movieList.get(position).getMinute().toString());
+                    movieViewHolder.edit_minutes.setText(movieList.get(position).getHours().toString());
                     movieViewHolder.edit_day.setText(movieList_data.getDay().toString());
 
                     movieViewHolder.tv_title.setText("Step#" + movieList.get(position).getStepNo() + "(" + movieList.get(position).getManageBy() + " " + movieList.get(position).getType() + ")");
@@ -999,7 +999,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                                     campaignTask.setStepNo(Data.getStepNo());
                                     campaignTask.setType(Data.getType());
                                     campaignTask.setPriority(Data.getPriority());
-                                    campaignTask.setMinute(Data.getMinute());
+                                    campaignTask.setMinute(Data.getHours());
                                     campaignTask.setContentHeader(Data.getContentHeader());
                                     campaignTask.setContentBody(Data.getContentBody());
                                     campaignTask.setSequenceId(sequence_id);

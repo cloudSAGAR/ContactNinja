@@ -6,6 +6,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
+
 @SuppressLint("UnknownNullness")
 
 public class CampaignTask_overview {
@@ -23,7 +24,6 @@ public class CampaignTask_overview {
     @SerializedName("seq_prospect_count")
     @Expose
     private SeqProspectCount seqProspectCount;
-
 
 
     public _0 get0() {
@@ -58,7 +58,7 @@ public class CampaignTask_overview {
         this.seqProspectCount = seqProspectCount;
     }
 
-   public static class SequenceTask {
+    public static class SequenceTask {
 
         @SerializedName("id")
         @Expose
@@ -76,24 +76,29 @@ public class CampaignTask_overview {
         @Expose
         private String templateId;
 
-       @SerializedName("mail_module")
-       @Expose
-       private String mail_module;
-       @SerializedName("sent_tbl_id")
-       @Expose
-       private String sent_tbl_id;
+        @SerializedName("mail_module")
+        @Expose
+        private String mail_module;
+        @SerializedName("sent_tbl_id")
+        @Expose
+        private String sent_tbl_id;
         @SerializedName("content_header")
         @Expose
-        private String contentHeader="";
+        private String contentHeader = "";
         @SerializedName("content_body")
         @Expose
-        private String contentBody="";
+        private String contentBody = "";
         @SerializedName("manage_by")
         @Expose
         private String manageBy;
         @SerializedName("minute")
         @Expose
         private Integer minute;
+
+
+        @SerializedName("hours")
+        @Expose
+        private Integer hours;
         @SerializedName("priority")
         @Expose
         private String priority;
@@ -211,23 +216,30 @@ public class CampaignTask_overview {
             this.activeTaskContactNumber = activeTaskContactNumber;
         }
 
-       public String getMail_module() {
-           return mail_module;
-       }
+        public String getMail_module() {
+            return mail_module;
+        }
 
-       public void setMail_module(String mail_module) {
-           this.mail_module = mail_module;
-       }
+        public void setMail_module(String mail_module) {
+            this.mail_module = mail_module;
+        }
 
-       public String getSent_tbl_id() {
-           return sent_tbl_id;
-       }
+        public String getSent_tbl_id() {
+            return sent_tbl_id;
+        }
 
-       public void setSent_tbl_id(String sent_tbl_id) {
-           this.sent_tbl_id = sent_tbl_id;
-       }
-   }
+        public void setSent_tbl_id(String sent_tbl_id) {
+            this.sent_tbl_id = sent_tbl_id;
+        }
 
+        public Integer getHours() {
+            return hours;
+        }
+
+        public void setHours(Integer hours) {
+            this.hours = hours;
+        }
+    }
 
 
     public static class _0 {
@@ -280,7 +292,7 @@ public class CampaignTask_overview {
 
         @SerializedName("started_on")
         @Expose
-        private String started_on="";
+        private String started_on = "";
 
         public Integer getManualtask() {
             return manualtask;
@@ -411,23 +423,6 @@ public class CampaignTask_overview {
         }
     }
 
-
-    public class SeqProspectCount {
-
-        @SerializedName("total")
-        @Expose
-        private Integer total;
-
-        public Integer getTotal() {
-            return total;
-        }
-
-        public void setTotal(Integer total) {
-            this.total = total;
-        }
-
-    }
-
     public static class SequenceProspect {
 
         @SerializedName("contact_id")
@@ -435,7 +430,7 @@ public class CampaignTask_overview {
         private Integer contactId;
         @SerializedName("firstname")
         @Expose
-        private String firstname="";
+        private String firstname = "";
 
         @SerializedName("group_detail")
         @Expose
@@ -497,7 +492,7 @@ public class CampaignTask_overview {
 
         @SerializedName("email")
         @Expose
-        private String email="";
+        private String email = "";
 
         public String getContact_number() {
             return contact_number;
@@ -658,6 +653,7 @@ public class CampaignTask_overview {
         public void setAday(String aday) {
             this.aday = aday;
         }
+
         public GroupDetail getGroupDetail() {
             return groupDetail;
         }
@@ -694,6 +690,22 @@ public class CampaignTask_overview {
 
         }
 
+
+    }
+
+    public class SeqProspectCount {
+
+        @SerializedName("total")
+        @Expose
+        private Integer total;
+
+        public Integer getTotal() {
+            return total;
+        }
+
+        public void setTotal(Integer total) {
+            this.total = total;
+        }
 
     }
 

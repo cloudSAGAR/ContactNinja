@@ -340,7 +340,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                         movieViewHolder.iv_email.setVisibility(View.VISIBLE);
                         movieViewHolder.iv_message.setVisibility(View.GONE);
                     }
-                        movieViewHolder.edit_minutes.setText(movieList.get(position).getMinute().toString());
+                        movieViewHolder.edit_minutes.setText(movieList.get(position).getHours().toString());
                         movieViewHolder.edit_day.setText(movieList_data.getDay().toString());
                         movieViewHolder.iv_manu.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -375,7 +375,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                                     campaignTask.setStepNo(Data.getStepNo());
                                     campaignTask.setType(Data.getType());
                                     campaignTask.setPriority(Data.getPriority());
-                                    campaignTask.setMinute(Data.getMinute());
+                                    campaignTask.setMinute(Data.getHours());
                                     campaignTask.setContentHeader(Data.getContentHeader());
                                     campaignTask.setContentBody(Data.getContentBody());
                                     campaignTask.setSequenceId(sequence_id);
@@ -568,7 +568,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                         Bundle bundle=getintent.getExtras();
                         sequence_id=bundle.getInt("sequence_id");
                     }
-                    Log.e("Sequence is is", String.valueOf(sequence_id));
+                 //   Log.e("Sequence is is", String.valueOf(sequence_id));
                     SessionManager.setcamp_final_flag("");
                     Intent intent=new Intent(getApplicationContext(), Add_Camp_Tab_Select_Activity.class);
                     intent.putExtra("flag","edit");
@@ -578,7 +578,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                     intent.putExtra("seq_task_id",sequenceTask.getId());
                     intent.putExtra("sequence_id",sequence_id);
                     intent.putExtra("type",sequenceTask.getType());
-                    intent.putExtra("minute",sequenceTask.getMinute());
+                    intent.putExtra("minute",sequenceTask.getHours());
                     intent.putExtra("header",sequenceTask.getContentHeader());
                     intent.putExtra("step",sequenceTask.getStepNo());
                     intent.putExtra("from_ac",sequenceTask.getMail_module());
@@ -617,13 +617,13 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                     intent.putExtra("seq_task_id",sequenceTask.getId());
                     intent.putExtra("sequence_id",sequence_id);
                     intent.putExtra("type",sequenceTask.getType());
-                    intent.putExtra("minute",sequenceTask.getMinute());
+                    intent.putExtra("minute",sequenceTask.getHours());
                     intent.putExtra("step",sequenceTask.getStepNo());
                     intent.putExtra("from_ac",sequenceTask.getMail_module());
                     intent.putExtra("from_ac_id",sequenceTask.getSent_tbl_id());
                     startActivity(intent);
                     SessionManager.setCampaign_Day(String.valueOf(sequenceTask.getDay()));
-                    SessionManager.setCampaign_minute(String.valueOf(sequenceTask.getMinute()));
+                    SessionManager.setCampaign_minute(String.valueOf(sequenceTask.getHours()));
                     SessionManager.setCampaign_type(String.valueOf(sequenceTask.getType()));
                     SessionManager.setCampaign_type_name(String.valueOf(sequenceTask.getManageBy()));
 

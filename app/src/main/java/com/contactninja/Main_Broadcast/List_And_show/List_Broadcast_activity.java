@@ -731,6 +731,10 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
                         {
                             Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.plan_validation),false);
                         }
+                        else
+                        {
+                            Global.Messageshow(getApplicationContext(),mMainLayout,response.body().getMessage(),false);
+                        }
                     }
 
                     @Override

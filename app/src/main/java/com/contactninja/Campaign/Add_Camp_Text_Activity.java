@@ -642,7 +642,7 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
             paramObject.addProperty("content_body", edit_template.getText().toString());
             paramObject.addProperty("day", day);
             paramObject.addProperty("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
-            paramObject.addProperty("minute", minite);
+            paramObject.addProperty("hours", minite);
             paramObject.addProperty("organization_id", "1");
             if (!template_id_is.equals("")) {
                 paramObject.addProperty("template_id", template_id_is);
@@ -669,7 +669,7 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
             paramObject.addProperty("content_body", edit_template.getText().toString());
             paramObject.addProperty("day", Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext())));
             paramObject.addProperty("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
-            paramObject.addProperty("minute", Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext())));
+            paramObject.addProperty("hours", Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext())));
             paramObject.addProperty("organization_id", "1");
             paramObject.addProperty("sequence_id", bundle.getString("sequence_id"));
             paramObject.addProperty("team_id", "1");
