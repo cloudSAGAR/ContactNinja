@@ -676,4 +676,5 @@ Number</string>
     <string name="plan_69">prod_LAUJLCbnF7yEZQ</string>
 
     <string name="plan_validation">You don\'t have active plan or quota.</string>
+    <string name="broadcatse_delete">Delete Broadcatse</string>
 </resources>

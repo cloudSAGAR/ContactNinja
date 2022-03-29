@@ -190,13 +190,19 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
 
     private void broadcast_manu() {
 
-        @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.brodcaste_dialog_item, null);
+        @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.brodcaste_broadcaste_dialog_item, null);
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Broadcaste_Activity.this, R.style.CoffeeDialog);
         bottomSheetDialog.setContentView(mView);
         TextView selected_campaign = bottomSheetDialog.findViewById(R.id.selected_campaign);
         TextView selected_broadcast = bottomSheetDialog.findViewById(R.id.selected_broadcast);
         TextView selected_task = bottomSheetDialog.findViewById(R.id.selected_task);
+        TextView romove_task=bottomSheetDialog.findViewById(R.id.romove_task);
 
+        if (!broadcasteda.getStatus().equals("A"))
+        {
+            romove_task.setVisibility(View.VISIBLE);
+
+        }
         try {
             if (broadcasteda.getStatus().equals("A")) {
                 selected_broadcast.setText("Pause Broadcast");
@@ -312,6 +318,17 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
         }catch (Exception e)
         {
         }
+
+
+
+        romove_task.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StartBroadCastApi(broadcasteda, 4);
+                bottomSheetDialog.cancel();
+
+            }
+        });
 
 
         selected_broadcast.setOnClickListener(new View.OnClickListener() {
@@ -465,8 +482,6 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
         String user_id = String.valueOf(user_data.getUser().getId());
         String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
         String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-
-
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("organization_id", "1");
@@ -477,7 +492,11 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
             paramObject.addProperty("status", "I");
         } else if (status == 0) {
             paramObject.addProperty("status", "A");
-        } else {
+        }
+        else if (status == 4) {
+            paramObject.addProperty("status", "D");
+        }
+        else {
             paramObject.addProperty("status", "A");
         }
         obj.add("data", paramObject);
@@ -487,11 +506,18 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
                     public void success(Response<ApiResponse> response) {
                         //                loadingDialog.cancelLoading();
                         if (response.body().getHttp_status() == 200) {
-                            try {
-                                Mail_list();
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                            if (status==4)
+                            {
+                                finish();
                             }
+                            else {
+                                try {
+                                    Mail_list();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
                         } else if (response.body().getHttp_status() == 403) {
                             Global.Messageshow(getApplicationContext(), main_layout, getResources().getString(R.string.plan_validation), false);
                         }

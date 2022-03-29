@@ -710,8 +710,6 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
                     public void success(Response<ApiResponse> response) {
                         loadingDialog.cancelLoading();
                         if (response.body().getHttp_status()==200) {
-
-
                             currentPage = PAGE_START;
                             isLastPage = false;
                             broadcastActivityListModels.clear();
