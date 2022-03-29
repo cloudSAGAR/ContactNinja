@@ -862,29 +862,29 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                 holder.layout_contec.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (!item.getManage_by().toString().equals("AUTO")||
-                        !item.getStatus().equals("FINISHED")) {
+                        if (!item.getManage_by().toString().equals("AUTO")
+                        ) {
                             if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                                 return;
                             }
                             mLastClickTime = SystemClock.elapsedRealtime();
+                            if(!item.getStatus().equals("FINISHED")){
 
-                              if(item.getSequence_task_from()==2){
-                                  if (item.getType().toString().equals("SMS")) {
-                                      Intent intent = new Intent(getActivity(), Item_List_Text_Detail_Activty.class);
-                                      intent.putExtra("record_id", item.getId());
-                                      startActivity(intent);
-                                  } else {
-                                      try {
-                                          if(Global.isNetworkAvailable(mCtx, MainActivity.mMainLayout)) {
-                                              Mail_Checklist(item);
-                                          }
-                                      } catch (JSONException e) {
-                                          e.printStackTrace();
-                                      }
-                                  }
-
+                                if (item.getType().toString().equals("SMS")) {
+                                    Intent intent = new Intent(getActivity(), Item_List_Text_Detail_Activty.class);
+                                    intent.putExtra("record_id", item.getId());
+                                    startActivity(intent);
+                                } else {
+                                    try {
+                                        if(Global.isNetworkAvailable(mCtx, MainActivity.mMainLayout)) {
+                                            Mail_Checklist(item);
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
+                            }
+
                         }else {
                             if(Global.IsNotNull(item.getStage())){
                                 if(!item.getStage().equals("FINISHED")) {
