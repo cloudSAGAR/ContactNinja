@@ -1,12 +1,16 @@
 package com.contactninja.Auth;
 
 import android.annotation.SuppressLint;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.IntentSender;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -42,6 +46,10 @@ import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
+import com.google.android.gms.auth.api.credentials.Credential;
+import com.google.android.gms.auth.api.credentials.Credentials;
+import com.google.android.gms.auth.api.credentials.CredentialsApi;
+import com.google.android.gms.auth.api.credentials.HintRequest;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
@@ -86,6 +94,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     RelativeLayout forgot_password;
     ImageView iv_showPassword;
     private BroadcastReceiver mNetworkReceiver;
+    private static final int CREDENTIAL_PICKER_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,8 +110,37 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Global.checkConnectivity(LoginActivity.this, mMainLayout);
         btn_chnage_forgot.setOnClickListener(this);
         enterPhoneNumber();
+
+        HintRequest hintRequest = new HintRequest.Builder()
+                .setPhoneNumberIdentifierSupported(true)
+                .build();
+
+
+        PendingIntent intent = Credentials.getClient(this).getHintPickerIntent(hintRequest);
+        try
+        {
+            startIntentSenderForResult(intent.getIntentSender(), CREDENTIAL_PICKER_REQUEST, null, 0, 0, 0,new Bundle());
+        }
+        catch (IntentSender.SendIntentException e)
+        {
+            e.printStackTrace();
+        }
+
     }
 
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CREDENTIAL_PICKER_REQUEST && resultCode == RESULT_OK)
+        {
+            // Obtain the phone number from the result
+            Credential credentials = data.getParcelableExtra(Credential.EXTRA_KEY);
+            edit_Mobile.setText(credentials.getId().substring(3));
+        }
+
+    }
 
     private void enterPhoneNumber() {
         edit_Mobile.addTextChangedListener(new TextWatcher() {
