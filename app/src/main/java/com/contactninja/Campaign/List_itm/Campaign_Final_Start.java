@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -24,6 +25,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.contactninja.Campaign.Fragment.Campaign_Stats_Fragment;
 import com.contactninja.Campaign.Fragment.Campaign_Step_Fragment;
+import com.contactninja.Manual_email_text.List_And_show.Item_List_Email_Detail_activty;
 import com.contactninja.Model.Broadcast_image_list;
 import com.contactninja.Model.CampaignTask_overview;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -35,6 +37,7 @@ import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -47,24 +50,24 @@ import java.util.List;
 import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
-public class Campaign_Final_Start extends AppCompatActivity  implements View.OnClickListener , ConnectivityReceiver.ConnectivityReceiverListener{
+public class Campaign_Final_Start extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     TabLayout tabLayout;
     ViewPager viewPager;
     String strtext = "";
     Campaign_Step_Fragment campaign_step_fragment;
     ViewpaggerAdapter adapter;
-    ImageView iv_back, iv_Setting;
+    ImageView iv_back, iv_Setting, iv_toolbar_manu_vertical;
     TextView save_button;
-    List<Broadcast_image_list> broadcast_image_list=new ArrayList<>();
+    List<Broadcast_image_list> broadcast_image_list = new ArrayList<>();
     private BroadcastReceiver mNetworkReceiver;
 
     LinearLayout main_layout;
     SessionManager sessionManager;
-    int sequence_id,seq_task_id;
+    int sequence_id, seq_task_id;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
-    TextView tv_email,tv_sms,tv_contect,tv_pending,tv_contec_reach,tv_camp_name;
-    private long mLastClickTime=0;
+    TextView tv_email, tv_sms, tv_contect, tv_pending, tv_contec_reach, tv_camp_name;
+    private long mLastClickTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,13 +75,13 @@ public class Campaign_Final_Start extends AppCompatActivity  implements View.OnC
         setContentView(R.layout.activity_campaign_final_start);
         mNetworkReceiver = new ConnectivityReceiver();
         IntentUI();
-        Global.count=1;
+        Global.count = 1;
         loadingDialog = new LoadingDialog(this);
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
-        Intent getintent=getIntent();
-        Bundle bundle=getintent.getExtras();
-        sequence_id=bundle.getInt("sequence_id");
+        Intent getintent = getIntent();
+        Bundle bundle = getintent.getExtras();
+        sequence_id = bundle.getInt("sequence_id");
         StepData();
 
         tabLayout.addTab(tabLayout.newTab().setText("Steps"));
@@ -108,6 +111,7 @@ public class Campaign_Final_Start extends AppCompatActivity  implements View.OnC
         });
 
     }
+
     private void IntentUI() {
         main_layout = findViewById(R.id.main_layout);
         tv_camp_name = findViewById(R.id.tv_camp_name);
@@ -116,6 +120,8 @@ public class Campaign_Final_Start extends AppCompatActivity  implements View.OnC
         iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
         save_button = findViewById(R.id.save_button);
+        iv_toolbar_manu_vertical = findViewById(R.id.iv_toolbar_manu_vertical);
+        iv_toolbar_manu_vertical.setOnClickListener(this);
         iv_Setting = findViewById(R.id.iv_Setting);
         iv_Setting.setVisibility(View.GONE);
         iv_back.setOnClickListener(this);
@@ -123,11 +129,11 @@ public class Campaign_Final_Start extends AppCompatActivity  implements View.OnC
         save_button.setVisibility(View.VISIBLE);
         save_button.setText(getString(R.string.view_contect));
         save_button.setTextColor(getResources().getColor(R.color.purple_200));
-        tv_email=findViewById(R.id.tv_email);
-        tv_sms=findViewById(R.id.tv_sms);
-        tv_contect=findViewById(R.id.tv_contect);
-        tv_pending=findViewById(R.id.tv_pending);
-        tv_contec_reach=findViewById(R.id.tv_contec_reach);
+        tv_email = findViewById(R.id.tv_email);
+        tv_sms = findViewById(R.id.tv_sms);
+        tv_contect = findViewById(R.id.tv_contect);
+        tv_pending = findViewById(R.id.tv_pending);
+        tv_contec_reach = findViewById(R.id.tv_contec_reach);
     }
 
     @Override
@@ -137,14 +143,19 @@ public class Campaign_Final_Start extends AppCompatActivity  implements View.OnC
             case R.id.iv_back:
                 finish();
                 break;
+            case R.id.iv_toolbar_manu_vertical:
+
+                Select_to_update();
+
+                break;
             case R.id.save_button:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                Intent getintent=getIntent();
-                Bundle bundle=getintent.getExtras();
-                sequence_id=bundle.getInt("sequence_id");
+                Intent getintent = getIntent();
+                Bundle bundle = getintent.getExtras();
+                sequence_id = bundle.getInt("sequence_id");
                 Intent intent = new Intent(getApplicationContext(), Campaign_Viewcontect.class);
                 intent.putExtra("sequence_id", sequence_id);
                 startActivity(intent);
@@ -152,6 +163,83 @@ public class Campaign_Final_Start extends AppCompatActivity  implements View.OnC
         }
     }
 
+    private void Select_to_update() {
+        @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.campaning_item_update, null);
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Campaign_Final_Start.this, R.style.CoffeeDialog);
+        bottomSheetDialog.setContentView(mView);
+        LinearLayout layout_Play = bottomSheetDialog.findViewById(R.id.layout_Play);
+        LinearLayout layout_delete = bottomSheetDialog.findViewById(R.id.layout_delete);
+
+
+
+        layout_Play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+
+                StartCampignApi(sequence_id, 0);
+
+            }
+        });
+
+
+        layout_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.dismiss();
+                StartCampignApi(sequence_id, 1);
+
+            }
+        });
+
+
+        bottomSheetDialog.show();
+    }
+    public void StartCampignApi(int sequence_id, int status) {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel user_data = SessionManager.getGetUserdata(this);
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+
+
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("record_id", sequence_id);
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("user_id", user_id);
+        if (status == 1) {
+            paramObject.addProperty("status", "D");
+        } else {
+            paramObject.addProperty("status", "A");
+        }
+        obj.add("data", paramObject);
+        retrofitCalls.Sequence_settings(sessionManager, obj,
+                loadingDialog, Global.getToken(sessionManager),
+                Global.getVersionname(Campaign_Final_Start.this),
+                Global.Device, new RetrofitCallback() {
+                    @Override
+                    public void success(Response<ApiResponse> response) {
+                        loadingDialog.cancelLoading();
+
+                        if (response.body().getHttp_status()==200)
+                        {
+                            onBackPressed();
+                        }
+                        else if (response.body().getHttp_status()==403)
+                        {
+                            Global.Messageshow(getApplicationContext(),main_layout,getResources().getString(R.string.plan_validation),false);
+                        }
+
+                    }
+
+                    @Override
+                    public void error(Response<ApiResponse> response) {
+                        loadingDialog.cancelLoading();
+                    }
+                });
+    }
     class ViewpaggerAdapter extends FragmentPagerAdapter {
 
         Context context;
@@ -185,6 +273,7 @@ public class Campaign_Final_Start extends AppCompatActivity  implements View.OnC
             return totalTabs;
         }
     }
+
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         Global.checkConnectivity(Campaign_Final_Start.this, main_layout);
@@ -206,7 +295,6 @@ public class Campaign_Final_Start extends AppCompatActivity  implements View.OnC
         super.onDestroy();
         unregisterNetworkChanges();
     }
-
 
 
     public void StepData() {
@@ -243,43 +331,43 @@ public class Campaign_Final_Start extends AppCompatActivity  implements View.OnC
                     public void success(Response<ApiResponse> response) {
                         loadingDialog.cancelLoading();
 
+                        Gson gson = new Gson();
+                        String headerString = gson.toJson(response.body().getData());
                         if (response.body().getHttp_status() == 200) {
 
-                            Gson gson = new Gson();
-                            String headerString = gson.toJson(response.body().getData());
                             Type listType = new TypeToken<CampaignTask_overview>() {
                             }.getType();
 
                             CampaignTask_overview campData = new Gson().fromJson(headerString, listType);
                             SessionManager.setCampaign_data(campData);
-                              try {
-                                String prospect_count=campData.getSeqProspectCount().getTotal().toString();
+                            try {
+                                String prospect_count = campData.getSeqProspectCount().getTotal().toString();
                                 tv_contect.setText(prospect_count);
                                 tv_camp_name.setText(campData.get0().getSeqName());
-                                int sms_count=0;
-                                int email_count=0;
-                                for (int i=0;i<campData.getSequenceTask().size();i++)
-                                {
-                                    if (campData.getSequenceTask().get(i).getType().equals("SMS"))
-                                    {
-                                        sms_count=sms_count+1;
-                                    }
-                                    else {
-                                        email_count=email_count+1;
+                                int sms_count = 0;
+                                int email_count = 0;
+                                for (int i = 0; i < campData.getSequenceTask().size(); i++) {
+                                    if (campData.getSequenceTask().get(i).getType().equals("SMS")) {
+                                        sms_count = sms_count + 1;
+                                    } else {
+                                        email_count = email_count + 1;
                                     }
                                 }
                                 tv_sms.setText(String.valueOf(sms_count));
                                 tv_email.setText(String.valueOf(email_count));
 
 
-                            }catch (Exception e){
+                                if(campData.get0().getStatus().equals("I")){
+                                    iv_toolbar_manu_vertical.setVisibility(View.VISIBLE);
+                                }else {
+                                    iv_toolbar_manu_vertical.setVisibility(View.GONE);
+                                }
+
+
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
 
-
-                        } else {
-                            Gson gson = new Gson();
-                            String headerString = gson.toJson(response.body().getData());
 
                         }
                     }

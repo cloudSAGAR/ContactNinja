@@ -475,6 +475,7 @@ Number</string>
     <string name="manual_Completed">Completed</string>
     <string name="manual_Skipped">Skipped</string>
     <string name="manual_Paused">Paused</string>
+    <string name="Play">Play</string>
     <string name="manual_mark">Mark as complete</string>
     <string name="manual_Snooze">Snooze</string>
     <string name="manual_Delete">Delete</string>

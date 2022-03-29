@@ -869,13 +869,25 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                             }
                             mLastClickTime = SystemClock.elapsedRealtime();
 
-                            try {
-                                if(Global.isNetworkAvailable(mCtx, MainActivity.mMainLayout)) {
-                                    Mail_Checklist(item);
+
+                                if (item.getType().toString().equals("SMS")) {
+                                    Intent intent = new Intent(getActivity(), Item_List_Text_Detail_Activty.class);
+                                    intent.putExtra("record_id", item.getId());
+                                    startActivity(intent);
+                                } else {
+                                    try {
+                                        if(Global.isNetworkAvailable(mCtx, MainActivity.mMainLayout)) {
+                                            Mail_Checklist(item);
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                   /* Intent intent = new Intent(getActivity(), Item_List_Email_Detail_activty.class);
+                                    intent.putExtra("record_id", item.getId());
+                                    startActivity(intent);*/
                                 }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+
+
 
                         }else {
                             if(Global.IsNotNull(item.getStage())){
@@ -962,30 +974,30 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                     }else {
                         if(List.size()==1){
                             if(List.get(0).getIsDefault()==1){
-                                if (item.getType().toString().equals("SMS")) {
+                            /*    if (item.getType().toString().equals("SMS")) {
                                     Intent intent = new Intent(getActivity(), Item_List_Text_Detail_Activty.class);
                                     intent.putExtra("record_id", item.getId());
                                     startActivity(intent);
-                                } else {
+                                } else {*/
                                     Intent intent = new Intent(getActivity(), Item_List_Email_Detail_activty.class);
                                     intent.putExtra("record_id", item.getId());
                                     startActivity(intent);
-                                }
+                               /* }*/
                             }else {
                                 Global.Messageshow(getActivity(),mMainLayout,getResources().getString(R.string.setting_mail_defoult),false);
                             }
                         }else {
-                            if (item.getType().toString().equals("SMS")) {
+                           /* if (item.getType().toString().equals("SMS")) {
 
                                 Intent intent = new Intent(getActivity(), Item_List_Text_Detail_Activty.class);
                                 intent.putExtra("record_id", item.getId());
                                 startActivity(intent);
-                            } else {
+                            } else {*/
 
                                 Intent intent = new Intent(getActivity(), Item_List_Email_Detail_activty.class);
                                 intent.putExtra("record_id", item.getId());
                                 startActivity(intent);
-                            }
+                           /* }*/
                         }
 
                     }
