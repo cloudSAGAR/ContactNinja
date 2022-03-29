@@ -223,6 +223,7 @@
                         android:textColor="@color/text_reg" />
 
                     <View
+                        android:layout_weight="2"
                         android:id="@+id/view_single"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
@@ -232,16 +233,16 @@
                         android:background="@color/home_list_search_border" />
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_marginEnd="@dimen/_15sdp"
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:visibility="gone">
+                        android:gravity="center">
 
                         <TextView
                             style="@style/tv_regular_12"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="center"
@@ -250,6 +251,7 @@
                             tools:ignore="TextContrastCheck" />
 
                         <ImageView
+                            android:visibility="gone"
                             android:layout_width="@dimen/_10sdp"
                             android:layout_height="@dimen/_10sdp"
                             android:layout_marginStart="@dimen/_5sdp"
