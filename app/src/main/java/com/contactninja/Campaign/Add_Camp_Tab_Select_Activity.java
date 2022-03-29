@@ -216,6 +216,7 @@ public class Add_Camp_Tab_Select_Activity extends AppCompatActivity implements V
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
+                Global.hideKeyboard(Add_Camp_Tab_Select_Activity.this);
                 if (sessionManager.getCampaign_type_name(getApplicationContext()).equals(""))
                 {
                     Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.select_type),false);
@@ -238,7 +239,7 @@ public class Add_Camp_Tab_Select_Activity extends AppCompatActivity implements V
                        String flag=bundle.getString("flag");
                        if (flag.equals("edit"))
                        {
-                           Log.e("ID IS",String.valueOf(bundle.getString("sequence_id")));
+                           //Log.e("ID IS",String.valueOf(bundle.getString("sequence_id")));
                            Intent new_task=new Intent(getApplicationContext(), Add_Camp_Text_Activity.class);
                            new_task.putExtra("flag","edit");
                            new_task.putExtra("body",bundle.getString("body"));
@@ -267,13 +268,48 @@ public class Add_Camp_Tab_Select_Activity extends AppCompatActivity implements V
                        {
                            Global.Messageshow(getApplicationContext(),mMainLayout,"Select Campaign Day",false);
                        }
-                       else  if (SessionManager.getCampaign_Day(getApplicationContext()).equals("0"))
-                       {
-                           Global.Messageshow(getApplicationContext(),mMainLayout,"Select Campaign Day",false);
-                       }
                        else if (SessionManager.getCampaign_minute(getApplicationContext()).equals(""))
                        {
                            Global.Messageshow(getApplicationContext(),mMainLayout,"Select Campaign Minute",false);
+                       }
+                       else if (SessionManager.getCampaign_Day(getApplicationContext()).equals("0"))
+                       {
+
+                           if (SessionManager.getCampaign_minute(getApplicationContext()).equals("0") || SessionManager.getCampaign_minute(getApplicationContext()).equals("00") || SessionManager.getCampaign_minute(getApplicationContext()).equals("000"))
+                           {
+                               Global.Messageshow(getApplicationContext(),mMainLayout,"Select Campaign Minute",false);
+
+                           }
+                           else {
+                               Intent intent=getIntent();
+                               Bundle bundle=intent.getExtras();
+                               String flag=bundle.getString("flag");
+                               if (flag.equals("edit"))
+                               {
+                                   Log.e("ID IS",String.valueOf(bundle.getString("sequence_id")));
+
+                                   Intent new_task=new Intent(getApplicationContext(), Add_Camp_Text_Activity.class);
+                                   new_task.putExtra("flag","edit");
+                                   new_task.putExtra("body",bundle.getString("body"));
+                                   new_task.putExtra("day",Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext())));
+                                   new_task.putExtra("manage_by",bundle.getInt("manage_by"));
+                                   new_task.putExtra("seq_task_id",bundle.getInt("seq_task_id"));
+                                   new_task.putExtra("sequence_id",String.valueOf(bundle.getInt("sequence_id")));
+                                   new_task.putExtra("type",bundle.getString("type"));
+                                   new_task.putExtra("minute",Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext())));
+                                   new_task.putExtra("step",bundle.getInt("step"));
+                                   new_task.putExtra("from_ac",bundle.getString("from_ac"));
+                                   new_task.putExtra("from_ac_id",bundle.getString("from_ac_id"));
+                                   startActivity(new_task);
+                                   finish();
+                               }
+                               else {
+                                   Intent new_task=new Intent(getApplicationContext(), Add_Camp_Text_Activity.class);
+                                   new_task.putExtra("flag","add");
+                                   startActivity(new_task);
+                                   finish();
+                               }
+                           }
                        }
                        else {
 

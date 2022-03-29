@@ -368,7 +368,7 @@ Number</string>
     <string name="campaign_button_txt">Add New Step</string>
     <string name="campaign_txt">Once the campaign is setup, add your prospects \n from your contacts and groups.</string>
     <string name="campaing_email_text"><![CDATA[An Email will be automatically delivered immediately,  after a prospect is added to this sequence.]]></string>
-    <string name="minutes">minutes</string>
+    <string name="minutes">hours</string>
     <string name="and">and</string>
     <string name="Day">Day</string>
     <string name="Run_this_step_on">Run this step on</string>
