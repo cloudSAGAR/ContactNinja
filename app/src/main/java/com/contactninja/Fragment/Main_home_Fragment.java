@@ -70,7 +70,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
     LoadingDialog loadingDialog;
     SessionManager sessionManager;
     ImageView iv_toolbar_notification;
-    LinearLayout layout_toolbar_logo;
+    LinearLayout layout_toolbar_logo,layout_level;
     TabLayout tabLayout;
     Integer user_id = 0;
     String token_api = "", organization_id = "", team_id = "";
@@ -244,7 +244,11 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
 
             }
             tv_total_lavel.setText(String.valueOf(Total_Affiliate));
-
+                if(Total_Affiliate!=0){
+                    layout_level.setVisibility(View.VISIBLE);
+                }else {
+                    layout_level.setVisibility(View.GONE);
+                }
             if (Total_rat > 0) {
                 iv_all_up.setImageResource(R.drawable.ic_home_grow_up);
                 tv_rat_total.setTextColor(getActivity().getResources().getColor(R.color.green_rate));
@@ -454,6 +458,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         iv_toolbar_notification.setOnClickListener(this);
         mBarChart = view.findViewById(R.id.cubiclinechart);
         mBarChart1 = view.findViewById(R.id.rkt_pie_chart);
+        layout_level = view.findViewById(R.id.layout_level);
 
 
         tv_rat_total = view.findViewById(R.id.tv_rat_total);
