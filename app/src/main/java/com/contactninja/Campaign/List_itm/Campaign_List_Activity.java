@@ -678,6 +678,10 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                            Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.plan_validation),false);
                            dialog.dismiss();
                        }
+                       else {
+                           Global.Messageshow(getApplicationContext(),mMainLayout,response.body().getMessage(),false);
+                           dialog.dismiss();
+                       }
 
                     }
 

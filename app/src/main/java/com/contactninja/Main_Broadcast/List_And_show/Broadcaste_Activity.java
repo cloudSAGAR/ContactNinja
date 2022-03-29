@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Response;
+
 @SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Broadcaste_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     ImageView iv_back, iv_Setting, image_icon, image_step, iv_toolbar_manu_vertical;
@@ -59,9 +60,10 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
             tv_date, tv_repete_type, ev_subject, tv_detail;
     LinearLayout layout_email_subject;
     Broadcate_save_data broadcate_save_data;
+    int Broadcate_ID = 0;
     private long mLastClickTime = 0;
     private BroadcastReceiver mNetworkReceiver;
-    int Broadcate_ID=0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -194,143 +196,123 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
         TextView selected_campaign = bottomSheetDialog.findViewById(R.id.selected_campaign);
         TextView selected_broadcast = bottomSheetDialog.findViewById(R.id.selected_broadcast);
         TextView selected_task = bottomSheetDialog.findViewById(R.id.selected_task);
-      if (broadcasteda.getStatus().equals("") && broadcasteda.getStatus().equals(null))
-      {
 
-      }
-      else if (broadcasteda.getStatus().equals("A"))
-       {
-           selected_broadcast.setText("Pause Broadcast");
-           selected_broadcast.setVisibility(View.VISIBLE);
-       }
-       else if (broadcasteda.getStatus().equals("I")){
-           selected_broadcast.setText("Active Broadcast");
-           selected_broadcast.setVisibility(View.VISIBLE);
-       }
-       else if (broadcasteda.getStatus().equals("P")){
-           selected_broadcast.setText("Active Broadcast");
-           selected_broadcast.setVisibility(View.VISIBLE);
-       }
-        selected_task.setText("Edit Broadcast");
-        selected_task.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        try {
+            if (broadcasteda.getStatus().equals("A")) {
+                selected_broadcast.setText("Pause Broadcast");
+                selected_broadcast.setVisibility(View.VISIBLE);
+            } else if (broadcasteda.getStatus().equals("I")) {
+                selected_broadcast.setText("Active Broadcast");
+                selected_broadcast.setVisibility(View.VISIBLE);
+            } else if (broadcasteda.getStatus().equals("P")) {
+                selected_broadcast.setText("Active Broadcast");
+                selected_broadcast.setVisibility(View.VISIBLE);
+            }
+            selected_task.setText("Edit Broadcast");
+            selected_task.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-                if (broadcasteda.getStatus().equals("A"))
-                {
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
+                    if (broadcasteda.getStatus().equals("A")) {
 
-                    Global.Messageshow(getApplicationContext(),main_layout,"Pause the Broadcast before Edit",false);
-                }
-                else {
-                    SessionManager.setCampaign_type_name(broadcasteda.getManageBy());
-                    SessionManager.setCampaign_type(broadcasteda.getType());
-                    SessionManager.setBroadcast_flag("edit");
-                    broadcate_save_data.setBroadcastname(broadcasteda.getBroadcastName());
-                    broadcate_save_data.setContent_body(broadcasteda.getContentBody());
-                    broadcate_save_data.setContent_header(broadcasteda.getContentHeader());
-                    broadcate_save_data.setTime(broadcasteda.getStartTime());
-                    broadcate_save_data.setDate(broadcasteda.getStartDate());
-                    if (broadcasteda.getRecurringType().equals("M")) {
-                        broadcate_save_data.setRecurrence("Monthly");
+                        Global.Messageshow(getApplicationContext(), main_layout, "Pause the Broadcast before Edit", false);
+                    } else {
+                        SessionManager.setCampaign_type_name(broadcasteda.getManageBy());
+                        SessionManager.setCampaign_type(broadcasteda.getType());
+                        SessionManager.setBroadcast_flag("edit");
+                        broadcate_save_data.setBroadcastname(broadcasteda.getBroadcastName());
+                        broadcate_save_data.setContent_body(broadcasteda.getContentBody());
+                        broadcate_save_data.setContent_header(broadcasteda.getContentHeader());
+                        broadcate_save_data.setTime(broadcasteda.getStartTime());
+                        broadcate_save_data.setDate(broadcasteda.getStartDate());
+                        if (broadcasteda.getRecurringType().equals("M")) {
+                            broadcate_save_data.setRecurrence("Monthly");
 
-                                      BroadcastActivityModel._0.OccursOn r_data = broadcasteda.getRecurringDetail().getOccursOn();
-                                      try {
-                                          if (!r_data.getDay_of_month().equals(null))
-                                          {
-                                              broadcate_save_data.setDay_of_month(r_data.getDay_of_month());
-                                              broadcate_save_data.setOccurs_monthly("Day");
-                                          }
-                                          else {
-                                              broadcate_save_data.setEvery_second(r_data.getEveryWeekNo());
-                                              broadcate_save_data.setEvery_day(r_data.getEveryDayofweek());
-                                              broadcate_save_data.setOccurs_monthly("Every");
-
-                                          }
-                                      }
-                                      catch (Exception e)
-                                      {
-                                          broadcate_save_data.setEvery_second(r_data.getEveryWeekNo());
-                                          broadcate_save_data.setEvery_day(r_data.getEveryDayofweek());
-                                          broadcate_save_data.setOccurs_monthly("Every");
-
-                                      }
-
-
-
-                                  //  broadcate_save_data.setOccurs_weekly(r_data.get(i).getEveryWeekNo());
-
-
-
-
-
-
-                    } else if (broadcasteda.getRecurringType().equals("W")) {
-                        broadcate_save_data.setRecurrence("Weekly");
-                        String data="";
-                       for (int i=0;i<broadcasteda.getRecurringDetail().getOccursOn().getDayOfWeek().size();i++)
-                        {
-                            if (data.equals(""))
-                            {
-
-                                data=broadcasteda.getRecurringDetail().getOccursOn().getDayOfWeek().get(i).toString();
+                            BroadcastActivityModel._0.OccursOn r_data = broadcasteda.getRecurringDetail().getOccursOn();
+                            try {
+                                if (!r_data.getDay_of_month().equals(null)) {
+                                    broadcate_save_data.setDay_of_month(r_data.getDay_of_month());
+                                    broadcate_save_data.setOccurs_monthly("Day");
+                                } else {
+                                    broadcate_save_data.setEvery_second(r_data.getEveryWeekNo());
+                                    broadcate_save_data.setEvery_day(r_data.getEveryDayofweek());
+                                    broadcate_save_data.setOccurs_monthly("Every");
 
                                 }
-                            else {
-                                data=data+","+broadcasteda.getRecurringDetail().getOccursOn().getDayOfWeek().get(i).toString();
+                            } catch (Exception e) {
+                                broadcate_save_data.setEvery_second(r_data.getEveryWeekNo());
+                                broadcate_save_data.setEvery_day(r_data.getEveryDayofweek());
+                                broadcate_save_data.setOccurs_monthly("Every");
 
                             }
 
+
+                            //  broadcate_save_data.setOccurs_weekly(r_data.get(i).getEveryWeekNo());
+
+
+                        } else if (broadcasteda.getRecurringType().equals("W")) {
+                            broadcate_save_data.setRecurrence("Weekly");
+                            String data = "";
+                            for (int i = 0; i < broadcasteda.getRecurringDetail().getOccursOn().getDayOfWeek().size(); i++) {
+                                if (data.equals("")) {
+
+                                    data = broadcasteda.getRecurringDetail().getOccursOn().getDayOfWeek().get(i).toString();
+
+                                } else {
+                                    data = data + "," + broadcasteda.getRecurringDetail().getOccursOn().getDayOfWeek().get(i).toString();
+
+                                }
+
+                            }
+                            broadcate_save_data.setOccurs_weekly(data);
+
+                        } else if (broadcasteda.getRecurringType().equals("D")) {
+                            broadcate_save_data.setRecurrence("Daily");
+
                         }
-                        broadcate_save_data.setOccurs_weekly(data);
+                        broadcate_save_data.setRepeat_every(broadcasteda.getRecurringDetail().getRepeatEvery());
 
-                    } else if (broadcasteda.getRecurringType().equals("D")) {
-                        broadcate_save_data.setRecurrence("Daily");
 
+                        List<ContectListData.Contact> Contect_List = new ArrayList<>();
+
+                        for (int i = 0; i < broadcastProspects.size(); i++) {
+                            ContectListData.Contact contact = new ContectListData.Contact();
+                            contact.setFirstname(broadcastProspects.get(i).getFirstname());
+                            contact.setId(broadcastProspects.get(i).getContactId());
+                            contact.setLastname(broadcastProspects.get(i).getLastname());
+                            List<ContectListData.Contact.ContactDetail> contactDetails = new ArrayList<>();
+                            ContectListData.Contact.ContactDetail contactDetail = new ContectListData.Contact.ContactDetail();
+                            contact.setFlag("false");
+                            contactDetail.setContactId(broadcastProspects.get(0).getContactId());
+                            contactDetail.setEmailNumber(broadcastProspects.get(0).getContactNumber());
+                            contactDetail.setType("NUMBER");
+                            contactDetails.add(contactDetail);
+                            contact.setContactDetails(contactDetails);
+                            Contect_List.add(contact);
+
+                        }
+                        broadcate_save_data.setFrom_ac_id(broadcasteda.getSent_tbl_id());
+                        broadcate_save_data.setFrom_ac(broadcasteda.getMail_module());
+                        broadcate_save_data.setId(String.valueOf(broadcasteda.getId()));
+                        SessionManager.setBroadcate_save_data(getApplicationContext(), broadcate_save_data);
+                        SessionManager.setGroupList(getApplicationContext(), Contect_List);
+                        Intent broad_caste_preview = new Intent(getApplicationContext(), Broadcast_Preview.class);
+                        startActivity(broad_caste_preview);
+                        finish();
                     }
-                   broadcate_save_data.setRepeat_every(broadcasteda.getRecurringDetail().getRepeatEvery());
 
 
-
-
-                    List<ContectListData.Contact> Contect_List = new ArrayList<>();
-
-                    for (int i=0;i<broadcastProspects.size();i++)
-                    {
-                        ContectListData.Contact contact=new ContectListData.Contact();
-                        contact.setFirstname(broadcastProspects.get(i).getFirstname());
-                        contact.setId(broadcastProspects.get(i).getContactId());
-                        contact.setLastname(broadcastProspects.get(i).getLastname());
-                        List<ContectListData.Contact.ContactDetail> contactDetails=new ArrayList<>();
-                        ContectListData.Contact.ContactDetail contactDetail=new ContectListData.Contact.ContactDetail();
-                        contact.setFlag("false");
-                        contactDetail.setContactId(broadcastProspects.get(0).getContactId());
-                        contactDetail.setEmailNumber(broadcastProspects.get(0).getContactNumber());
-                        contactDetail.setType("NUMBER");
-                        contactDetails.add(contactDetail);
-                        contact.setContactDetails(contactDetails);
-                        Contect_List.add(contact);
-
-                    }
-                    broadcate_save_data.setFrom_ac_id(broadcasteda.getSent_tbl_id());
-                    broadcate_save_data.setFrom_ac(broadcasteda.getMail_module());
-                    broadcate_save_data.setId(String.valueOf(broadcasteda.getId()));
-                    SessionManager.setBroadcate_save_data(getApplicationContext(),broadcate_save_data);
-                    SessionManager.setGroupList(getApplicationContext(),Contect_List);
-                    Intent broad_caste_preview=new Intent(getApplicationContext(), Broadcast_Preview.class);
-                    startActivity(broad_caste_preview);
-                    finish();
+                    bottomSheetDialog.dismiss();
                 }
+            });
+        }catch (Exception e)
+        {
+        }
 
-
-
-
-                bottomSheetDialog.dismiss();
-            }
-        });
 
         selected_broadcast.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -339,23 +321,20 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                if (broadcasteda.getStatus().equals("A"))
-                {
-                    StartBroadCastApi(broadcasteda,1);
-                }
-                else if (broadcasteda.getStatus().equals("I")){
-                    if (broadcasteda.getFirstActivated() != null&&!broadcasteda.getFirstActivated().equals("")) {
-                        StartBroadCastApi(broadcasteda,0);
+                if (broadcasteda.getStatus().equals("A")) {
+                    StartBroadCastApi(broadcasteda, 1);
+                } else if (broadcasteda.getStatus().equals("I")) {
+                    if (broadcasteda.getFirstActivated() != null && !broadcasteda.getFirstActivated().equals("")) {
+                        StartBroadCastApi(broadcasteda, 0);
                     } else {
-                        StartBroadCastApi(broadcasteda,3);
+                        StartBroadCastApi(broadcasteda, 3);
                     }
 
-                }
-                else if (broadcasteda.getStatus().equals("P")){
-                    if (broadcasteda.getFirstActivated() != null&&!broadcasteda.getFirstActivated().equals("")) {
-                        StartBroadCastApi(broadcasteda,0);
+                } else if (broadcasteda.getStatus().equals("P")) {
+                    if (broadcasteda.getFirstActivated() != null && !broadcasteda.getFirstActivated().equals("")) {
+                        StartBroadCastApi(broadcasteda, 0);
                     } else {
-                        StartBroadCastApi(broadcasteda,3);
+                        StartBroadCastApi(broadcasteda, 3);
                     }
 
                 }
@@ -433,41 +412,35 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                     if (response.body().getHttp_status() == 200) {
-                       try {
-                           Type listType = new TypeToken<BroadcastActivityModel>() {
-                           }.getType();
-                           BroadcastActivityModel emailActivityListModel = new Gson().fromJson(headerString, listType);
-                           broadcasteda = emailActivityListModel.get0();
-                           try {
-                               setData();
-                               tv_contect.setText(String.valueOf(emailActivityListModel.getBroadcastProspect().size()));
-                               int sms_count=0;
-                               int email_count=0;
+                        try {
+                            Type listType = new TypeToken<BroadcastActivityModel>() {
+                            }.getType();
+                            BroadcastActivityModel emailActivityListModel = new Gson().fromJson(headerString, listType);
+                            broadcasteda = emailActivityListModel.get0();
+                            try {
+                                setData();
+                                tv_contect.setText(String.valueOf(emailActivityListModel.getBroadcastProspect().size()));
+                                int sms_count = 0;
+                                int email_count = 0;
 
-                                   if (emailActivityListModel.get0().getType().equals("SMS"))
-                                   {
-                                       sms_count=sms_count+1;
-                                   }
-                                   else {
-                                       email_count=email_count+1;
-                                   }
-                               tv_sms.setText(String.valueOf(sms_count));
-                               tv_email.setText(String.valueOf(email_count));
-                           }
-                           catch (Exception e)
-                           {
+                                if (emailActivityListModel.get0().getType().equals("SMS")) {
+                                    sms_count = sms_count + 1;
+                                } else {
+                                    email_count = email_count + 1;
+                                }
+                                tv_sms.setText(String.valueOf(sms_count));
+                                tv_email.setText(String.valueOf(email_count));
+                            } catch (Exception e) {
 
-                           }
+                            }
 
-                           broadcastProspects = emailActivityListModel.getBroadcastProspect();
-                           SessionManager.setBroadcast_Contect(getApplicationContext(), broadcastProspects);
+                            broadcastProspects = emailActivityListModel.getBroadcastProspect();
+                            SessionManager.setBroadcast_Contect(getApplicationContext(), broadcastProspects);
 
-                           save_button.setEnabled(true);
-                       }
-                       catch (Exception e)
-                       {
+                            save_button.setEnabled(true);
+                        } catch (Exception e) {
 
-                       }
+                        }
 
 
                     }
@@ -486,9 +459,8 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
     }
 
 
-
     public void StartBroadCastApi(BroadcastActivityModel._0 broadcast, int status) {
-      //  loadingDialog.showLoadingDialog();
+        //  loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
         String user_id = String.valueOf(user_data.getUser().getId());
         String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
@@ -501,11 +473,11 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
         paramObject.addProperty("id", broadcast.getId());
         paramObject.addProperty("team_id", "1");
         paramObject.addProperty("user_id", user_id);
-        if(status==1){
+        if (status == 1) {
             paramObject.addProperty("status", "I");
-        }else if(status==0){
+        } else if (status == 0) {
             paramObject.addProperty("status", "A");
-        }else {
+        } else {
             paramObject.addProperty("status", "A");
         }
         obj.add("data", paramObject);
@@ -513,21 +485,22 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
                 Global.getVersionname(Broadcaste_Activity.this), Global.Device, new RetrofitCallback() {
                     @Override
                     public void success(Response<ApiResponse> response) {
-        //                loadingDialog.cancelLoading();
-                        if (response.body().getHttp_status()==200)
-                        {
+                        //                loadingDialog.cancelLoading();
+                        if (response.body().getHttp_status() == 200) {
                             try {
                                 Mail_list();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
+                        } else if (response.body().getHttp_status() == 403) {
+                            Global.Messageshow(getApplicationContext(), main_layout, getResources().getString(R.string.plan_validation), false);
                         }
-                        else if (response.body().getHttp_status()==403)
-                        {
-                            Global.Messageshow(getApplicationContext(),main_layout,getResources().getString(R.string.plan_validation),false);
+                        else {
+                            Global.Messageshow(getApplicationContext(), main_layout, response.body().getMessage(), false);
                         }
 
                     }
+
                     @Override
                     public void error(Response<ApiResponse> response) {
                         loadingDialog.cancelLoading();
