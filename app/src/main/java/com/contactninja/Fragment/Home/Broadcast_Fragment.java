@@ -236,14 +236,13 @@ public class Broadcast_Fragment extends Fragment {
                 holder.tv_username.setText(conactname);
                 switch (item.getRecurringType()) {
                     case "D":
-                        holder.tv_task_time.setText("Daily - " + item.getStartTime());
+                        holder.tv_task_time.setText("Daily - " + Global.TimeFormateAMPM(item.getStartTime()));
                         break;
                     case "W":
-                        holder.tv_task_time.setText("Weekly - " + item.getStartTime());
-
+                        holder.tv_task_time.setText("Weekly - " + Global.TimeFormateAMPM(item.getStartTime()));
                         break;
                     case "M":
-                        holder.tv_task_time.setText("Monthly - " + item.getStartTime());
+                        holder.tv_task_time.setText("Monthly - " + Global.TimeFormateAMPM(item.getStartTime()));
 
                         break;
                 }
@@ -260,9 +259,9 @@ public class Broadcast_Fragment extends Fragment {
                 }
 
 
-
                 switch (item.getStatus()) {
                     case "I":
+
                         holder.iv_hold.setVisibility(View.VISIBLE);
                         holder.tv_status.setText("Inactive");
                         holder.tv_status.setTextColor(mCtx.getResources().getColor(R.color.red));
@@ -271,13 +270,13 @@ public class Broadcast_Fragment extends Fragment {
                     case "P":
                         holder.iv_puse_icon.setVisibility(View.VISIBLE);
                         holder.tv_status.setText("Paused");
-                        holder.tv_status.setTextColor(mCtx.getResources().getColor(R.color.text_green));
+                        holder.tv_status.setTextColor(mCtx.getResources().getColor(R.color.tv_push_color));
 
                         break;
                     case "A":
                         holder.iv_play_icon.setVisibility(View.VISIBLE);
                         holder.tv_status.setText("Active");
-                        holder.tv_status.setTextColor(mCtx.getResources().getColor(R.color.tv_push_color));
+                        holder.tv_status.setTextColor(mCtx.getResources().getColor(R.color.text_green));
 
                         break;
                 }

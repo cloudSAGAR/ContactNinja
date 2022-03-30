@@ -94,7 +94,6 @@
                 android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_2sdp"
                 android:gravity="center"
-                android:padding="@dimen/_2sdp"
                 android:singleLine="true"
                 android:textColor="@color/text_gray"
                 android:textStyle="bold" />

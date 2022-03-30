@@ -33,8 +33,8 @@
                 android:textColor="@color/text_reg" />
 
             <ImageView
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_mark"
                 tools:ignore="ContentDescription" />
@@ -63,8 +63,8 @@
                 android:text="@string/manual_Paused" />
 
             <ImageView
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_pause"
                 tools:ignore="ContentDescription" />
@@ -94,8 +94,8 @@
                 android:text="@string/manual_Snooze" />
 
             <ImageView
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_snooze"
                 tools:ignore="ContentDescription" />
@@ -125,8 +125,8 @@
                 android:text="@string/manual_Delete" />
 
             <ImageView
-                android:layout_width="@dimen/_20sdp"
-                android:layout_height="@dimen/_20sdp"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_man_delete"
                 tools:ignore="ContentDescription" />

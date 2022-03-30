@@ -50,7 +50,6 @@
         android:layout_marginEnd="@dimen/_5sdp"
         android:gravity="center"
         android:padding="@dimen/_2sdp"
-        android:singleLine="true"
         android:textColor="@color/black"
         android:textSize="@dimen/_14sdp" />
 

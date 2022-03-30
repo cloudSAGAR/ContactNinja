@@ -227,7 +227,6 @@
                     android:padding="@dimen/_15sdp"
                     android:text="@string/campaign_step_one_email_manual"
                     android:textColor="@color/text_reg"
-                    android:textSize="@dimen/_15sdp"
                     tools:ignore="RtlHardcoded,RtlSymmetry">
 
                 </TextView>

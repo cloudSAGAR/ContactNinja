@@ -1238,7 +1238,7 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
                     String changeurl=curenttext.replace(oldUrl,newUrl);
                     Newtext = changeurl;
                 }else {
-                    Newtext = curenttext+newUrl;
+                    Newtext = curenttext+" "+newUrl;
                 }
                 edit_compose.setText(Newtext);
                 edit_compose.setSelection(edit_compose.getText().length());

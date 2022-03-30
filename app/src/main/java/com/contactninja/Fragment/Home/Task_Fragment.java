@@ -43,7 +43,7 @@ import org.json.JSONObject;
 
 import retrofit2.Response;
 
-
+@SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Task_Fragment extends Fragment  {
     RecyclerView rv_Task_list;
     TaslListAdepter taslListAdepter;

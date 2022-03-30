@@ -290,7 +290,7 @@ public class Global extends Application {
        Date oneWayTripDate=null;
        String tripDate="";
         SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        SimpleDateFormat output = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+        SimpleDateFormat output = new SimpleDateFormat("dd-MMM-yyyy HH:mmaaa");
         try {
             oneWayTripDate = input.parse(dateTime);                 // parse input
             tripDate= output.format(oneWayTripDate);    // format output

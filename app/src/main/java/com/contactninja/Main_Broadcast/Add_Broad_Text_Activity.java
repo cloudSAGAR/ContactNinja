@@ -726,7 +726,7 @@ public class Add_Broad_Text_Activity extends AppCompatActivity implements View.O
                     String changeurl=curenttext.replace(oldUrl,newUrl);
                     Newtext = changeurl;
                 }else {
-                    Newtext = curenttext+newUrl;
+                    Newtext = curenttext+" "+newUrl;
                 }
                 edit_template.setText(Newtext);
                 edit_template.setSelection(edit_template.getText().length());

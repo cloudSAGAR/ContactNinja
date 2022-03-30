@@ -76,7 +76,6 @@
                     android:padding="@dimen/_5sdp"
                     android:text="Task title:"
                     android:textColor="@color/purple_200"
-                    android:textSize="@dimen/_14sdp"
                     tools:ignore="HardcodedText">
 
                 </TextView>
@@ -135,7 +134,7 @@
                     android:padding="@dimen/_5sdp"
                     android:text="@string/from"
                     android:textColor="@color/purple_200"
-                    android:textSize="@dimen/_14sdp">
+                    >
 
                 </TextView>
 
@@ -191,7 +190,7 @@
                     android:padding="@dimen/_5sdp"
                     android:text="@string/to"
                     android:textColor="@color/purple_200"
-                    android:textSize="@dimen/_14sdp">
+                    >
 
                 </TextView>
 
@@ -237,7 +236,6 @@
                     android:padding="@dimen/_5sdp"
                     android:text="Date: "
                     android:textColor="@color/text_gray"
-                    android:textSize="@dimen/_14sdp"
                     tools:ignore="HardcodedText,TextContrastCheck" />
 
                 <TextView
@@ -268,7 +266,7 @@
                 android:layout_marginTop="@dimen/_20sdp"
                 android:text="@string/text_txt"
                 android:textColor="@color/text_reg"
-                android:textSize="@dimen/_14sdp" />
+                />
 
             <EditText
                 android:id="@+id/edit_compose"

@@ -191,7 +191,7 @@
                         android:padding="@dimen/_5sdp"
                         android:text="@string/to"
                         android:textColor="@color/purple_200"
-                        android:textSize="@dimen/_14sdp">
+                        >
 
                     </TextView>
 
@@ -304,6 +304,8 @@
                 </LinearLayout>
 
                 <com.chinalwb.are.AREditText
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
                     style="@style/tv_normal_12"
                     android:id="@+id/edit_compose"
                     android:layout_width="match_parent"

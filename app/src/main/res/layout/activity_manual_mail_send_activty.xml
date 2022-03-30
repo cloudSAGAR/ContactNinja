@@ -11,9 +11,9 @@
         layout="@layout/toolbar"/>
 
     <androidx.core.widget.NestedScrollView
-        android:layout_above="@+id/lay_bouttom"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/lay_bouttom"
         android:layout_below="@+id/toolbar">
 
         <LinearLayout
@@ -219,6 +219,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
                 android:autoLink="web|email"
                 android:background="@color/add_contect_transpernt"
                 android:focusable="true"

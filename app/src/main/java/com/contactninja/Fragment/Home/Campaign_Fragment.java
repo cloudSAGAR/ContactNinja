@@ -49,7 +49,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Response;
-
+@SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Campaign_Fragment extends Fragment implements Des_CampaingClick {
 
     RecyclerView rv_campaign_list;

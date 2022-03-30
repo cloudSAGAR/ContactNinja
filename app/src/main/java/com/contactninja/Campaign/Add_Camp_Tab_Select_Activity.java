@@ -467,10 +467,10 @@ public class Add_Camp_Tab_Select_Activity extends AppCompatActivity implements V
                 Intent intent=getIntent();
                 Bundle bundle=intent.getExtras();
                 String flag=bundle.getString("flag");
+                Intent new_task=new Intent(getApplicationContext(), Add_Camp_Email_Activity.class);
                 if (flag.equals("edit"))
                 {
 
-                    Intent new_task=new Intent(getApplicationContext(), Add_Camp_Email_Activity.class);
                     new_task.putExtra("flag","edit");
                     new_task.putExtra("body",bundle.getString("body"));
                     new_task.putExtra("day",Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext())));
@@ -484,16 +484,12 @@ public class Add_Camp_Tab_Select_Activity extends AppCompatActivity implements V
                     new_task.putExtra("from_ac",bundle.getString("from_ac"));
                     new_task.putExtra("from_ac_id",bundle.getString("from_ac_id"));
 
-                    startActivity(new_task);
-                    finish();
-
                 }
                 else {
-                    Intent new_task=new Intent(getApplicationContext(), Add_Camp_Email_Activity.class);
                     new_task.putExtra("flag","add");
-                    startActivity(new_task);
-                    finish();
                 }
+                startActivity(new_task);
+                finish();
 
 
             }
@@ -505,6 +501,7 @@ public class Add_Camp_Tab_Select_Activity extends AppCompatActivity implements V
         Global.checkConnectivity(Add_Camp_Tab_Select_Activity.this, mMainLayout);
     }
 
+    @SuppressLint("ObsoleteSdkInt")
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void registerNetworkBroadcastForNougat() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
