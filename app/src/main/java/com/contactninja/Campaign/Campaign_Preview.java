@@ -136,6 +136,8 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
             campaign_overviewAdapter = new Campaign_OverviewAdapter(getApplicationContext());
             item_list.setAdapter(campaign_overviewAdapter);
 
+
+
         }
 
 
@@ -291,12 +293,20 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                SessionManager.setContect_flag("edit");
-                Intent intent_two = new Intent(getApplicationContext(), ContectAndGroup_Actvity.class);
-                intent_two.putExtra("sequence_id", sequence_id);
-                intent_two.putExtra("seq_task_id", sequence_task_id);
-                startActivity(intent_two);
-                finish();
+
+                if (main_data.size()==0)
+                {
+                    Global.Messageshow(getApplicationContext(),mMainLayout,"Please assigned task",false);
+                }
+                else {
+                    SessionManager.setContect_flag("edit");
+                    Intent intent_two = new Intent(getApplicationContext(), ContectAndGroup_Actvity.class);
+                    intent_two.putExtra("sequence_id", sequence_id);
+                    intent_two.putExtra("seq_task_id", sequence_task_id);
+                    startActivity(intent_two);
+                    finish();
+                }
+
                 break;
             case R.id.contect_count:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
@@ -610,6 +620,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                             main_data = user_model1.getSequenceTask();
                             if (main_data.size() == 0) {
                                 add_new_step.setVisibility(View.VISIBLE);
+
 
                             } else {
                                 add_new_step.setVisibility(View.GONE);
