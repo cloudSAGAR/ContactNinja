@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="wrap_content">
@@ -9,7 +10,8 @@
         android:layout_marginStart="@dimen/_18sdp"
         android:layout_marginTop="@dimen/_15sdp"
         android:layout_marginEnd="@dimen/_15sdp"
-        android:layout_marginBottom="@dimen/_15sdp">
+        android:layout_marginBottom="@dimen/_15sdp"
+        tools:ignore="UselessParent">
 
         <TextView
             android:id="@+id/tv_bzname"
@@ -20,7 +22,8 @@
             android:layout_weight="1"
             android:gravity="center|left"
             android:textColor="@color/text_reg"
-            android:textSize="@dimen/_12sdp"/>
+            android:textSize="@dimen/_12sdp"
+            tools:ignore="InefficientWeight,RtlHardcoded,SelectableText" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -37,7 +40,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:textColor="@color/okey_button"/>
+                android:textColor="@color/okey_button"
+                tools:ignore="SelectableText" />
 
             <TextView
                 style="@style/tv_regular_12"
@@ -46,8 +50,8 @@
                 android:layout_gravity="center|end"
                 android:gravity="center|end"
                 android:text="Impressions"
-
-                android:textColor="@color/text_gray"/>
+                android:textColor="@color/text_gray"
+                tools:ignore="HardcodedText" />
 
         </LinearLayout>
     </LinearLayout>

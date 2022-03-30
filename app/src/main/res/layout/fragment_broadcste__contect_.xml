@@ -217,7 +217,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/fastscroller"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/fastscroller"
-            app:layout_constraintTop_toTopOf="@+id/fastscroller"></androidx.core.widget.NestedScrollView>
+            app:layout_constraintTop_toTopOf="@+id/fastscroller" />
     </LinearLayout>
 
 
