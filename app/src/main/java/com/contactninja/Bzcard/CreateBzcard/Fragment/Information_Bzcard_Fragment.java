@@ -1,5 +1,7 @@
 package com.contactninja.Bzcard.CreateBzcard.Fragment;
 
+import static com.contactninja.Utils.PaginationListener.PAGE_START;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -22,12 +24,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.BZcardListModel;
-import com.contactninja.Model.Bzcard_Fields_Model;
 import com.contactninja.Model.CompanyModel;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -55,18 +63,11 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import io.michaelrocks.libphonenumber.android.NumberParseException;
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
 import io.michaelrocks.libphonenumber.android.Phonenumber;
 import retrofit2.Response;
 
-import static com.contactninja.Utils.PaginationListener.PAGE_START;
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 public class Information_Bzcard_Fragment extends Fragment implements View.OnClickListener {
 
@@ -664,8 +665,6 @@ public class Information_Bzcard_Fragment extends Fragment implements View.OnClic
                 if (resultCode == getActivity().RESULT_OK) {
                     Uri resultUri = result.getUri();
                     bzcard_model=SessionManager.getBzcard(getActivity());
-                  //  bzcard_model.getBzcardFieldsModel().setCover_url(bzcard_model.getBzcardFieldsModel().getCover_image());
-                   // bzcard_model.getBzcardFieldsModel().setProfile_url(bzcard_model.getBzcardFieldsModel().getProfile_image());
                     bzcard_model.getBzcardFieldsModel().setCompany_logo_url(result.getUri().getPath());
                     Log.e("Url is",resultUri.getPath());
                     Log.e("Info is",new Gson().toJson(bzcard_model));

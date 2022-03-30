@@ -98,6 +98,7 @@ public class AppIntroActivity extends AppCompatActivity implements View.OnClickL
         Global.checkConnectivity(AppIntroActivity.this, mMainLayout);
     }
 
+    @SuppressLint("ObsoleteSdkInt")
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void registerNetworkBroadcastForNougat() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

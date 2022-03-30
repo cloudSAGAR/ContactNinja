@@ -55,6 +55,7 @@ public class Thankyou_Screen extends AppCompatActivity implements ConnectivityRe
         Global.checkConnectivity(Thankyou_Screen.this, mMainLayout);
     }
 
+    @SuppressLint("ObsoleteSdkInt")
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void registerNetworkBroadcastForNougat() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

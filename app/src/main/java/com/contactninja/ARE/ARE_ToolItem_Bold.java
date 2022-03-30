@@ -1,5 +1,6 @@
 package com.contactninja.ARE;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.Editable;
@@ -22,7 +23,7 @@ import com.chinalwb.are.styles.toolitems.styles.ARE_Style_Bold;
 /**
  * Created by shirish on 23/03/2022.
  */
-
+@SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class ARE_ToolItem_Bold extends ARE_ToolItem_Abstract {
 
     @Override

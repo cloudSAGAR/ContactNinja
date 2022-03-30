@@ -303,6 +303,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         Global.checkConnectivity(EmailSend_Activity.this, mMainLayout);
     }
 
+    @SuppressLint("ObsoleteSdkInt")
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void registerNetworkBroadcastForNougat() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -348,12 +349,6 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
                 } else {
 
                     broadcast_manu();
-                    /*try {
-
-                        EmailAPI(ev_subject.getText().toString(), edit_template.getText().toString(), Integer.parseInt(id), email);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }*/
                 }
 
                 break;
@@ -701,9 +696,6 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
             JSONObject paramObject1 = new JSONObject();
             paramObject1.put("prospect_id", id);
             paramObject1.put("email", email);
-           /* JSONArray contect_array = new JSONArray();
-            contect_array.put(email);
-            paramObject1.put("email_mobile", contect_array);*/
             jsonArray.put(paramObject1);
             break;
         }
@@ -1295,7 +1287,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         String formattedDate = df.format(c);
         tv_date.setText(formattedDate);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         String currentDateandTime = sdf.format(new Date());
         tv_time.setText(currentDateandTime);
         la_date.setOnClickListener(new View.OnClickListener() {

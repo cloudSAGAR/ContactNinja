@@ -194,6 +194,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
         Global.checkConnectivity(ForgotPasswordActivity.this, mMainLayout);
     }
 
+    @SuppressLint("ObsoleteSdkInt")
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void registerNetworkBroadcastForNougat() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

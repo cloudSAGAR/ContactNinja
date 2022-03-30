@@ -247,6 +247,7 @@ public class PlanType_Screen extends AppCompatActivity implements View.OnClickLi
         Global.checkConnectivity(PlanType_Screen.this, mMainLayout);
     }
 
+    @SuppressLint("ObsoleteSdkInt")
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void registerNetworkBroadcastForNougat() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

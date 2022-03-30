@@ -613,6 +613,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     }
 
 
+    @SuppressLint("ObsoleteSdkInt")
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void registerNetworkBroadcastForNougat() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

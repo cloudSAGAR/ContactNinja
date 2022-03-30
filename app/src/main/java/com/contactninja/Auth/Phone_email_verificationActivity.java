@@ -481,6 +481,7 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
     public void onNetworkConnectionChanged(boolean isConnected) {
         Global.checkConnectivity(Phone_email_verificationActivity.this, mMainLayout);
     }
+    @SuppressLint("ObsoleteSdkInt")
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void registerNetworkBroadcastForNougat() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

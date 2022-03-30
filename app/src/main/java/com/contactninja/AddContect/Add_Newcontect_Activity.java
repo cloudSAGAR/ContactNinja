@@ -83,15 +83,15 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Response;
 
-@SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
+@SuppressLint("ClickableViewAccessibility,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 public class Add_Newcontect_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener, YourFragmentInterface {
     S3Uploader s3uploaderObj;
     private long mLastClickTime = 0;
     Integer CAPTURE_IMAGE = 3;
     String urlFromS3 = null;
-    String Validation="";
+    String Validation = "";
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
-    int image_flag=1;
+    int image_flag = 1;
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
     public static final int RequestPermissionCode = 1;
     private static final String TAG_HOME = "Addcontect";
@@ -115,7 +115,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
     String option_type = "";
     private BroadcastReceiver mNetworkReceiver;
     ImageView iv_toolbar_manu_vertical, iv_block;
-    String filePath1="";
+    String filePath1 = "";
 
 
     // ListPhoneContactsActivity use this method to start this activity.
@@ -173,8 +173,6 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
         String flag = sessionManager.getContect_flag(this);
 
 
-
-
         if (flag.equals("edit")) {
             ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(this);
             edt_FirstName.setText(Contect_data.getFirstname().toString().trim());
@@ -215,7 +213,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
             } else {
                 iv_user.setVisibility(View.VISIBLE);
                 layout_pulse.setVisibility(View.GONE);
-                Log.e("Image is",Contect_data.getContactImage());
+                Log.e("Image is", Contect_data.getContactImage());
                 Glide.with(getApplicationContext()).
                         load(Contect_data.getContactImage())
                         .placeholder(R.drawable.shape_primary_back)
@@ -224,7 +222,6 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
             }
             user_image_Url = Contect_data.getContactImage();
             save_button.setText("Save Contact");
-
 
 
         } else if (flag.equals("read")) {
@@ -267,7 +264,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
             } else {
                 iv_user.setVisibility(View.VISIBLE);
                 layout_pulse.setVisibility(View.GONE);
-                Log.e("Image is",Contect_data.getContactImage());
+                Log.e("Image is", Contect_data.getContactImage());
                 Glide.with(getApplicationContext()).
                         load(Contect_data.getContactImage())
                         .placeholder(R.drawable.shape_primary_back)
@@ -298,12 +295,12 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frameContainer, fragment, "Fragment");
         fragmentTransaction.commitAllowingStateLoss();
-        if (flag.equals("edit"))
-        {
+        if (flag.equals("edit")) {
 
-            LinearLayout tabStrip = ((LinearLayout)tabLayout.getChildAt(0));
-            for(int i = 0; i < tabStrip.getChildCount(); i++) {
+            LinearLayout tabStrip = ((LinearLayout) tabLayout.getChildAt(0));
+            for (int i = 0; i < tabStrip.getChildCount(); i++) {
                 tabStrip.getChildAt(i).setOnTouchListener(new View.OnTouchListener() {
+                    @SuppressLint("ClickableViewAccessibility")
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
                         return true;
@@ -311,13 +308,12 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
                 });
             }
 
-        }
-        else if (flag.equals("save"))
-        {
+        } else if (flag.equals("save")) {
 
-            LinearLayout tabStrip = ((LinearLayout)tabLayout.getChildAt(0));
-            for(int i = 0; i < tabStrip.getChildCount(); i++) {
+            LinearLayout tabStrip = ((LinearLayout) tabLayout.getChildAt(0));
+            for (int i = 0; i < tabStrip.getChildCount(); i++) {
                 tabStrip.getChildAt(i).setOnTouchListener(new View.OnTouchListener() {
+                    @SuppressLint("ClickableViewAccessibility")
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
                         return true;
@@ -333,10 +329,9 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
                 Fragment fragment = null;
                 switch (tab.getPosition()) {
                     case 0:
-                        if (flag.equals("edit"))
-                        {
-                            LinearLayout tabStrip = ((LinearLayout)tabLayout.getChildAt(0));
-                            for(int i = 0; i < tabStrip.getChildCount(); i++) {
+                        if (flag.equals("edit")) {
+                            LinearLayout tabStrip = ((LinearLayout) tabLayout.getChildAt(0));
+                            for (int i = 0; i < tabStrip.getChildCount(); i++) {
                                 tabStrip.getChildAt(i).setOnTouchListener(new View.OnTouchListener() {
                                     @Override
                                     public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -344,11 +339,9 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
                                     }
                                 });
                             }
-                        }
-                        else if (flag.equals("save"))
-                        {
-                            LinearLayout tabStrip = ((LinearLayout)tabLayout.getChildAt(0));
-                            for(int i = 0; i < tabStrip.getChildCount(); i++) {
+                        } else if (flag.equals("save")) {
+                            LinearLayout tabStrip = ((LinearLayout) tabLayout.getChildAt(0));
+                            for (int i = 0; i < tabStrip.getChildCount(); i++) {
                                 tabStrip.getChildAt(i).setOnTouchListener(new View.OnTouchListener() {
                                     @Override
                                     public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -358,7 +351,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
                             }
                         }
                         fragment = new InformationFragment();
-                      break;
+                        break;
                     case 1:
                         fragment = new ExposuresFragment();
 
@@ -416,42 +409,36 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
 
                     } else {
 
-                            if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
-                                //AddContect_Update();
+                        if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
+                            //AddContect_Update();
 
 
-                                AddcontectModel save_data = SessionManager.getAdd_Contect_Detail(getApplicationContext());
-                                List<Contactdetail> contect_list=save_data.getContactdetails();
-                                List<Contactdetail> email_list=save_data.getContactdetails_email();
+                            AddcontectModel save_data = SessionManager.getAdd_Contect_Detail(getApplicationContext());
+                            List<Contactdetail> contect_list = save_data.getContactdetails();
+                            List<Contactdetail> email_list = save_data.getContactdetails_email();
 
-                                if (email_list.size()==0 && contect_list.size()==0)
-                                {
+                            if (email_list.size() == 0 && contect_list.size() == 0) {
 
-                                    Global.Messageshow(getApplicationContext(),mMainLayout,"Add Contect Or Emaail",false);
-                                }
-                                else {
-                                    for (int i=0;i<contect_list.size();i++)
-                                    {
-                                        if (contect_list.get(i).getEmail_number().equals(""))
-                                        {
-                                            contect_list.remove(i);
-                                        }
+                                Global.Messageshow(getApplicationContext(), mMainLayout, "Add Contect Or Emaail", false);
+                            } else {
+                                for (int i = 0; i < contect_list.size(); i++) {
+                                    if (contect_list.get(i).getEmail_number().equals("")) {
+                                        contect_list.remove(i);
                                     }
-
-                                    for (int i=0;i<email_list.size();i++)
-                                    {
-                                        if (email_list.get(i).getEmail_number().equals(""))
-                                        {
-                                            email_list.remove(i);
-                                        }
-                                    }
-                                    save_data.setContactdetails(contect_list);
-                                    save_data.setContactdetails_email(email_list);
-                                    SessionManager.setAdd_Contect_Detail(getApplicationContext(),save_data);
-                                    uploadImageTos3(filePath1,"update");
                                 }
 
+                                for (int i = 0; i < email_list.size(); i++) {
+                                    if (email_list.get(i).getEmail_number().equals("")) {
+                                        email_list.remove(i);
+                                    }
+                                }
+                                save_data.setContactdetails(contect_list);
+                                save_data.setContactdetails_email(email_list);
+                                SessionManager.setAdd_Contect_Detail(getApplicationContext(), save_data);
+                                uploadImageTos3(filePath1, "update");
                             }
+
+                        }
 
 
                     }
@@ -468,39 +455,37 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
                     } else {
 
 
-                            if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
+                        if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
 
 
-                                AddcontectModel save_data = SessionManager.getAdd_Contect_Detail(getApplicationContext());
-                                List<Contactdetail> contect_list=save_data.getContactdetails();
-                                List<Contactdetail> email_list=save_data.getContactdetails_email();
+                            AddcontectModel save_data = SessionManager.getAdd_Contect_Detail(getApplicationContext());
+                            List<Contactdetail> contect_list = save_data.getContactdetails();
+                            List<Contactdetail> email_list = save_data.getContactdetails_email();
 
-                                if (email_list.size()==0 && contect_list.size()==0)
-                                {
+                            if (email_list.size() == 0 && contect_list.size() == 0) {
 
-                                    Global.Messageshow(getApplicationContext(),mMainLayout,"Add Contect Or Emaail",false);
-                                }
-                                else {
-                                    for (int i = 0; i < contect_list.size(); i++) {
-                                        if (contect_list.get(i).getEmail_number().equals("")) {
-                                            contect_list.remove(i);
-                                        }
+                                Global.Messageshow(getApplicationContext(), mMainLayout, "Add Contect Or Emaail", false);
+                            } else {
+                                for (int i = 0; i < contect_list.size(); i++) {
+                                    if (contect_list.get(i).getEmail_number().equals("")) {
+                                        contect_list.remove(i);
                                     }
-
-                                    for (int i = 0; i < email_list.size(); i++) {
-                                        if (email_list.get(i).getEmail_number().equals("")) {
-                                            email_list.remove(i);
-                                        }
-                                    }
-                                    save_data.setContactdetails(contect_list);
-                                    save_data.setContactdetails_email(email_list);
-                                    SessionManager.setAdd_Contect_Detail(getApplicationContext(), save_data);
-                                    uploadImageTos3(filePath1,"add");
                                 }
 
-
-                                //AddContect_Api();
+                                for (int i = 0; i < email_list.size(); i++) {
+                                    if (email_list.get(i).getEmail_number().equals("")) {
+                                        email_list.remove(i);
+                                    }
+                                }
+                                save_data.setContactdetails(contect_list);
+                                save_data.setContactdetails_email(email_list);
+                                SessionManager.setAdd_Contect_Detail(getApplicationContext(), save_data);
+                                uploadImageTos3(filePath1, "add");
                             }
+
+
+                            //AddContect_Api();
+                        }
 
 
                     }
@@ -520,34 +505,32 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
                         save_button.setText("Save Contact");
                         edt_FirstName.setEnabled(true);
                         edt_lastname.setEnabled(true);
-                            if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
-                                AddcontectModel save_data = SessionManager.getAdd_Contect_Detail(getApplicationContext());
-                                List<Contactdetail> contect_list=save_data.getContactdetails();
-                                List<Contactdetail> email_list=save_data.getContactdetails_email();
+                        if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
+                            AddcontectModel save_data = SessionManager.getAdd_Contect_Detail(getApplicationContext());
+                            List<Contactdetail> contect_list = save_data.getContactdetails();
+                            List<Contactdetail> email_list = save_data.getContactdetails_email();
 
-                                if (email_list.size()==0 && contect_list.size()==0)
-                                {
+                            if (email_list.size() == 0 && contect_list.size() == 0) {
 
-                                    Global.Messageshow(getApplicationContext(),mMainLayout,"Add Contect Or Emaail",false);
-                                }
-                                else {
-                                    for (int i = 0; i < contect_list.size(); i++) {
-                                        if (contect_list.get(i).getEmail_number().equals("")) {
-                                            contect_list.remove(i);
-                                        }
+                                Global.Messageshow(getApplicationContext(), mMainLayout, "Add Contect Or Emaail", false);
+                            } else {
+                                for (int i = 0; i < contect_list.size(); i++) {
+                                    if (contect_list.get(i).getEmail_number().equals("")) {
+                                        contect_list.remove(i);
                                     }
-
-                                    for (int i = 0; i < email_list.size(); i++) {
-                                        if (email_list.get(i).getEmail_number().equals("")) {
-                                            email_list.remove(i);
-                                        }
-                                    }
-                                    save_data.setContactdetails(contect_list);
-                                    save_data.setContactdetails_email(email_list);
-                                    SessionManager.setAdd_Contect_Detail(getApplicationContext(), save_data);
-                                    uploadImageTos3(filePath1, "update");
                                 }
+
+                                for (int i = 0; i < email_list.size(); i++) {
+                                    if (email_list.get(i).getEmail_number().equals("")) {
+                                        email_list.remove(i);
+                                    }
+                                }
+                                save_data.setContactdetails(contect_list);
+                                save_data.setContactdetails_email(email_list);
+                                SessionManager.setAdd_Contect_Detail(getApplicationContext(), save_data);
+                                uploadImageTos3(filePath1, "update");
                             }
+                        }
 
                     }
 
@@ -713,10 +696,8 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
             // Get the newly created contact raw id.
             long ret = ContentUris.parseId(rawContactUri);
             return ret;
-        }
-        catch (Exception e)
-        {
-            return  0;
+        } catch (Exception e) {
+            return 0;
         }
 
     }
@@ -732,10 +713,8 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
             contentValues.put(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, displayName);
             getContentResolver().insert(addContactsUri, contentValues);
 
-        }
-        catch (Exception e)
-        {
-
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -771,7 +750,6 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
 
     public void AddContect_Api() throws JSONException {
 
-        //loadingDialog.showLoadingDialog();
 
         f_name = edt_FirstName.getText().toString().trim();
         l_name = edt_lastname.getText().toString().trim();
@@ -801,19 +779,13 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
         paramObject.put("address", address);
         paramObject.put("breakout_link", addcontectModel.getBreakoutu().toString().trim());
         paramObject.put("city", city.toString().trim());
-       /* if (olld_image != null) {
-            paramObject.put("oldImage", olld_image);
-        } else {
-            paramObject.put("oldImage", "");
-        }*/
+
 
         paramObject.put("company_url", "");
-        if (addcontectModel.getBirthday().equals("0000-00-00"))
-        {
-            paramObject.put("dob","");
-        }
-        else {
-            paramObject.put("dob",addcontectModel.getBirthday());
+        if (addcontectModel.getBirthday().equals("0000-00-00")) {
+            paramObject.put("dob", "");
+        } else {
+            paramObject.put("dob", addcontectModel.getBirthday());
         }
         paramObject.put("dynamic_fields_value", "");
         paramObject.put("facebook_link", addcontectModel.getFacebook().toString().trim());
@@ -833,10 +805,8 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
         paramObject.put("zoom_id", zoom_id.toString().trim());
 
         paramObject.put("imei", Global.imei);
-        paramObject.put("contact_image",user_image_Url.toString().trim());
-      ///  paramObject.put("contact_image", user_image_Url);
-        //paramObject.put("image_extension", File_extension);
-       // paramObject.put("contact_image_name", File_name);
+        paramObject.put("contact_image", user_image_Url.toString().trim());
+
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < contactdetails.size(); i++) {
             JSONObject paramObject1 = new JSONObject();
@@ -877,10 +847,8 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
                     try {
                         insertContactPhoneNumber(addContactsUri, rowContactId, phone, phone_type);
 
-                    }
-                    catch (Exception e)
-                    {
-
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                     save_button.setText("Edit Contact");
                     finish();
@@ -964,12 +932,10 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
 
 
         paramObject.put("company_url", "");
-        if (addcontectModel.getBirthday().equals("0000-00-00"))
-        {
-            paramObject.put("dob","");
-        }
-        else {
-            paramObject.put("dob",addcontectModel.getBirthday());
+        if (addcontectModel.getBirthday().equals("0000-00-00")) {
+            paramObject.put("dob", "");
+        } else {
+            paramObject.put("dob", addcontectModel.getBirthday());
         }
 
 
@@ -989,22 +955,8 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
         paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("zipcode", zip_code.toString().trim());
         paramObject.put("zoom_id", zoom_id.toString().trim());
-       /* if (!user_image_Url.equals("")) {
-            paramObject.put("contact_image", user_image_Url);
-            paramObject.put("contact_image_name", File_name);
-            paramObject.put("image_extension", File_extension);
-            if (olld_image != null) {
-                paramObject.put("oldImage", olld_image);
-            } else {
-                paramObject.put("oldImage", "");
-            }
 
-        } else {
-            paramObject.put("contact_image", "");
-            //   paramObject.put("contact_image", "");
-            //   paramObject.put("contact_image_name", "");
-        }*/
-        paramObject.put("contact_image",user_image_Url.toString().trim());
+        paramObject.put("contact_image", user_image_Url.toString().trim());
         paramObject.put("notes", addcontectModel.getNote().toString().trim());
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < contactdetails.size(); i++) {
@@ -1025,10 +977,9 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
                 paramObject1.put("label", contactdetails.get(i).getLabel());
                 paramObject1.put("type", contactdetails.get(i).getType());
                 paramObject1.put("contact_id", Contect_data.getId());
-               if (contactdetails.get(i).getStatus().equals("D"))
-               {
-                   paramObject1.put("status", "D");
-               }
+                if (contactdetails.get(i).getStatus().equals("D")) {
+                    paramObject1.put("status", "D");
+                }
                 param_data.put("team_id", 1);
 
             }
@@ -1042,7 +993,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
         obj.put("data", param_data);
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
-        Log.e("Final Data ",new Gson().toJson(gsonObject));
+        Log.e("Final Data ", new Gson().toJson(gsonObject));
 
         retrofitCalls.Updatecontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(Add_Newcontect_Activity.this), Global.Device, new RetrofitCallback() {
             @Override
@@ -1053,13 +1004,11 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
                     Uri addContactsUri = ContactsContract.Data.CONTENT_URI;
                     long rowContactId = getRawContactId();
                     insertContactDisplayName(addContactsUri, rowContactId, edt_FirstName.getText().toString());
-                   try {
-                       insertContactPhoneNumber(addContactsUri, rowContactId, phone, phone_type);
-                   }
-                   catch (Exception e)
-                   {
-
-                   }
+                    try {
+                        insertContactPhoneNumber(addContactsUri, rowContactId, phone, phone_type);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     save_button.setText("Edit Contact");
                     SessionManager.setContect_edit(true);
                     finish();
@@ -1158,9 +1107,9 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
                 iv_user.setVisibility(View.GONE);
                 layout_pulse.setVisibility(View.VISIBLE);
                 tv_nameLetter.setVisibility(View.GONE);
-                if(Global.IsNotNull(user_image_Url)){
-                    AmazonUtil.deleteS3Client(getApplicationContext(),user_image_Url);
-                    user_image_Url="";
+                if (Global.IsNotNull(user_image_Url)) {
+                    AmazonUtil.deleteS3Client(getApplicationContext(), user_image_Url);
+                    user_image_Url = "";
                     Glide.with(getApplicationContext()).load(user_image_Url).into(iv_user);
                 }
                 bottomSheetDialog.dismiss();
@@ -1174,21 +1123,19 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
                 }
-                image_flag=0;
+                image_flag = 0;
                 mLastClickTime = SystemClock.elapsedRealtime();
-               /* Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, 0);*/
-                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    String fileName = "temp.jpg";
-                    ContentValues values = new ContentValues();
-                    values.put(MediaStore.Images.Media.TITLE, fileName);
-                    mCapturedImageURI = getContentResolver()
-                            .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                                    values);
-                    takePictureIntent
-                            .putExtra(MediaStore.EXTRA_OUTPUT, mCapturedImageURI);
-                    startActivityForResult(takePictureIntent, CAPTURE_IMAGE);
 
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                String fileName = "temp.jpg";
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Images.Media.TITLE, fileName);
+                mCapturedImageURI = getContentResolver()
+                        .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                values);
+                takePictureIntent
+                        .putExtra(MediaStore.EXTRA_OUTPUT, mCapturedImageURI);
+                startActivityForResult(takePictureIntent, CAPTURE_IMAGE);
 
 
                 bottomSheetDialog.dismiss();
@@ -1201,11 +1148,8 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
                 }
-                image_flag=0;
+                image_flag = 0;
                 mLastClickTime = SystemClock.elapsedRealtime();
-/*                Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(pickPhoto, 1);*/
-
 
                 Intent takePictureIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 String fileName = "temp.jpg";
@@ -1231,73 +1175,61 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-     //   Log.e("requestCode", String.valueOf(requestCode));
-      //  Log.e("resultCode",String.valueOf(resultCode));
+        if (requestCode == 0) {
+            if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                if (resultCode == RESULT_OK) {
+                    Uri resultUri = result.getUri();
+                    File_name = "Image";
+                    File file = new File(result.getUri().getPath());
+                    Uri uri = Uri.fromFile(file);
+                    filePath1 = uri.getPath();
+                    String profilePath = Global.getPathFromUri(getApplicationContext(), uri);
+                    iv_user.setVisibility(View.VISIBLE);
+                    layout_pulse.setVisibility(View.GONE);
+                    Glide.with(getApplicationContext()).load(resultUri).into(iv_user);
 
-     if (requestCode==0)
-     {
-         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-             CropImage.ActivityResult result = CropImage.getActivityResult(data);
-             if (resultCode == RESULT_OK) {
-                 Uri resultUri = result.getUri();
-                 File_name = "Image";
-                 File file=new File(result.getUri().getPath());
-                 Uri uri = Uri.fromFile(file);
-                 filePath1 = uri.getPath();
-                 String profilePath = Global.getPathFromUri(getApplicationContext(), uri);
-                 iv_user.setVisibility(View.VISIBLE);
-                 layout_pulse.setVisibility(View.GONE);
-                 Glide.with(getApplicationContext()).load(resultUri).into(iv_user);
-
-                 //    uploadImageTos3(filePath1);
+                    //    uploadImageTos3(filePath1);
 
 
-             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                 Exception error = result.getError();
-             }
-         }
-     }
-     else if (requestCode == CAPTURE_IMAGE) {
-         ImageCropFunctionCustom(mCapturedImageURI);
-     }
-     else if (requestCode==203)
-     {
-         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)
-         {
-             CropImage.ActivityResult result = CropImage.getActivityResult(data);
-             if (resultCode == RESULT_OK) {
-                 Uri resultUri = result.getUri();
-                 File file=new File(result.getUri().getPath());
-                 Uri uri = Uri.fromFile(file);
-                 filePath1 = uri.getPath();
-                 iv_user.setVisibility(View.VISIBLE);
-                 layout_pulse.setVisibility(View.GONE);
-                 Glide.with(getApplicationContext()).load(resultUri).into(iv_user);
-                // uploadImageTos3(filePath1);
+                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    Exception error = result.getError();
+                }
+            }
+        } else if (requestCode == CAPTURE_IMAGE) {
+            ImageCropFunctionCustom(mCapturedImageURI);
+        } else if (requestCode == 203) {
+            if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                if (resultCode == RESULT_OK) {
+                    Uri resultUri = result.getUri();
+                    File file = new File(result.getUri().getPath());
+                    Uri uri = Uri.fromFile(file);
+                    filePath1 = uri.getPath();
+                    iv_user.setVisibility(View.VISIBLE);
+                    layout_pulse.setVisibility(View.GONE);
+                    Glide.with(getApplicationContext()).load(resultUri).into(iv_user);
+                    // uploadImageTos3(filePath1);
 
 
-             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                 Exception error = result.getError();
-             }
-         }
-     }
-     else {
-         if (image_flag==0)
-         {
-             image_flag=1;
-             try {
-                 Log.e("Data is", String.valueOf(data.getData()));
-                 CropImage.activity(data.getData())
-                         .start(this);
-             }
-             catch (Exception e)
-             {
+                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    Exception error = result.getError();
+                }
+            }
+        } else {
+            if (image_flag == 0) {
+                image_flag = 1;
+                try {
+                    Log.e("Data is", String.valueOf(data.getData()));
+                    CropImage.activity(data.getData())
+                            .start(this);
+                } catch (Exception e) {
+e.printStackTrace();
+                }
 
-             }
+            }
 
-         }
-
-     }
+        }
 
 
     }
@@ -1321,20 +1253,19 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
         SignResponseModel signResponseModel = SessionManager.getGetUserdata(Add_Newcontect_Activity.this);
 
         if (!imageUri.toString().equals("")) {
-            olld_image=user_image_Url;
-            String contect_url=s3uploaderObj.initUpload(imageUri,"contact_image", Integer.valueOf(signResponseModel.getUser().getId()));
+            olld_image = user_image_Url;
+            String contect_url = s3uploaderObj.initUpload(imageUri, "contact_image", signResponseModel.getUser().getId());
             s3uploaderObj.setOns3UploadDone(new S3Uploader.S3UploadInterface() {
                 @Override
                 public void onUploadSuccess(String response) {
-                    Log.e("Reppnse is",new Gson().toJson(response));
+                    Log.e("Reppnse is", new Gson().toJson(response));
 
                     if (response.equalsIgnoreCase("Success")) {
-                        user_image_Url=contect_url;
-                        if(Global.IsNotNull(olld_image)){
-                            AmazonUtil.deleteS3Client(getApplicationContext(),olld_image);
+                        user_image_Url = contect_url;
+                        if (Global.IsNotNull(olld_image)) {
+                            AmazonUtil.deleteS3Client(getApplicationContext(), olld_image);
                         }
-                        if (flag.equals("add"))
-                        {
+                        if (flag.equals("add")) {
                             if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
 
                                 try {
@@ -1343,9 +1274,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
                                     e.printStackTrace();
                                 }
                             }
-                        }
-                        else if (flag.equals("update"))
-                        {
+                        } else if (flag.equals("update")) {
 
                             if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
 
@@ -1363,9 +1292,8 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
 
                 @Override
                 public void onUploadError(String response) {
-                    user_image_Url="";
-                    if (flag.equals("add"))
-                    {
+                    user_image_Url = "";
+                    if (flag.equals("add")) {
                         if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
 
                             try {
@@ -1374,9 +1302,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
                                 e.printStackTrace();
                             }
                         }
-                    }
-                    else if (flag.equals("update"))
-                    {
+                    } else if (flag.equals("update")) {
 
                         if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
 
@@ -1392,9 +1318,8 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
 
                 }
             });
-        }else{
-            if (flag.equals("add"))
-            {
+        } else {
+            if (flag.equals("add")) {
                 if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
 
                     try {
@@ -1403,9 +1328,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
                         e.printStackTrace();
                     }
                 }
-            }
-            else if (flag.equals("update"))
-            {
+            } else if (flag.equals("update")) {
 
                 if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
 
@@ -1550,6 +1473,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
         Global.checkConnectivity(Add_Newcontect_Activity.this, mMainLayout);
     }
 
+    @SuppressLint("ObsoleteSdkInt")
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void registerNetworkBroadcastForNougat() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

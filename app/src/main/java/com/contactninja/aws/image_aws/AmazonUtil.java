@@ -1,5 +1,6 @@
 package com.contactninja.aws.image_aws;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 
@@ -14,7 +15,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
-
+@SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class AmazonUtil {
 
     // We only need one instance of the clients and credentials provider
@@ -93,6 +94,7 @@ public class AmazonUtil {
      * @param bytes number of bytes to be converted.
      * @return A string that represents the bytes in a proper scale.
      */
+    @SuppressLint("DefaultLocale")
     public static String getBytesString(long bytes) {
         String[] quantifiers = new String[]{
                 "KB", "MB", "GB", "TB"

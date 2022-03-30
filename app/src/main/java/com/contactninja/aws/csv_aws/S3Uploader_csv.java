@@ -1,5 +1,6 @@
 package com.contactninja.aws.csv_aws;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 
@@ -11,11 +12,10 @@ import com.amazonaws.services.s3.Headers;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.StorageClass;
-import com.contactninja.aws.image_aws.AWSKeys;
-import com.contactninja.aws.image_aws.AmazonUtil;
 
 import java.io.File;
 
+@SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class S3Uploader_csv {
 
     private static final String TAG = "S3Uploader";
@@ -38,12 +38,14 @@ public class S3Uploader_csv {
             s3UploadInterface.onUploadError("Error");
         }
 
+        @SuppressLint("LogConditional")
         @Override
         public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
             Log.d(TAG, String.format("onProgressChanged: %d, total: %d, current: %d",
                     id, bytesTotal, bytesCurrent));
         }
 
+        @SuppressLint("LogConditional")
         @Override
         public void onStateChanged(int id, TransferState newState) {
             Log.d(TAG, "onStateChanged: " + id + ", " + newState);

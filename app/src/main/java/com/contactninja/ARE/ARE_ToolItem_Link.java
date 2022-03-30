@@ -1,5 +1,6 @@
 package com.contactninja.ARE;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,7 +13,7 @@ import com.chinalwb.are.styles.toolitems.ARE_ToolItem_Abstract;
 import com.chinalwb.are.styles.toolitems.IARE_ToolItem_Updater;
 import com.chinalwb.are.styles.toolitems.styles.ARE_Style_Link;
 import com.contactninja.R;
-
+@SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class ARE_ToolItem_Link extends ARE_ToolItem_Abstract {
 
     @Override
