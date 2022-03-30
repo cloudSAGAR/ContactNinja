@@ -176,7 +176,6 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user_profile_main, container, false);
         intentView(view);
-        Log.e("On Click Method ","2");
         SessionManager.setOneCotect_deatil(getActivity(), new ContectListData.Contact());
 
         mNetworkReceiver = new ConnectivityReceiver();
@@ -549,7 +548,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                             .error(R.drawable.shape_primary_back).
                             into(iv_user);
                 }
-                user_image_Url = Contect_data.getContactImage();
+                user_image_Url = user_data.getUser().getUserprofile().getProfilePic();
 
                 save_button.setText("Save");
 
@@ -605,7 +604,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                     }
 
                 }
-                user_image_Url = Contect_data.getContactImage();
+                user_image_Url = user_data.getUser().getUserprofile().getProfilePic();
 
             } else {
                 pulse_icon.setEnabled(false);
@@ -894,7 +893,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         JSONArray jsonArray = new JSONArray();
         JSONObject paramObject1 = null;
 
-        Log.e("Size is ", String.valueOf(contactdetails1.size()));
+       // Log.e("Size is ", String.valueOf(contactdetails1.size()));
         contactdetails1 = removeDuplicates((ArrayList<Contactdetail>) contactdetails1);
         for (int i = 0; i < contactdetails1.size(); i++) {
             paramObject1 = new JSONObject();
@@ -1308,8 +1307,8 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
             s3uploaderObj.setOns3UploadDone(new S3Uploader.S3UploadInterface() {
                 @Override
                 public void onUploadSuccess(String response) {
-                    Log.e("Reppnse is", new Gson().toJson(response));
-                    Toast.makeText(getActivity(), new Gson().toJson(response), Toast.LENGTH_SHORT).show();
+                 //   Log.e("Reppnse is", new Gson().toJson(response));
+                  //  Toast.makeText(getActivity(), new Gson().toJson(response), Toast.LENGTH_SHORT).show();
 
                     if (response.equalsIgnoreCase("Success")) {
                         user_image_Url = contect_group;
@@ -1334,11 +1333,12 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    Log.e("Error", "Error Uploading");
+                  //  Log.e("Error", "Error Uploading");
 
                 }
             });
-        } else {
+        }
+        else {
             try {
                 if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
                     AddContect_Update();
