@@ -497,21 +497,20 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
 
                 switch (item.getStatus()) {
                     case "I":
-                        holder.iv_hold.setVisibility(View.VISIBLE);
-                        holder.tv_status.setText("Inactive");
-                        holder.tv_status.setTextColor(getResources().getColor(R.color.red));
-
-                        break;
-                    case "P":
-                        holder.iv_puse_icon.setVisibility(View.VISIBLE);
-                        holder.tv_status.setText("Paused");
-                        holder.tv_status.setTextColor(getResources().getColor(R.color.text_green));
-
+                        if(Global.IsNotNull(item.getFirstActivated())){
+                            holder.iv_puse_icon.setVisibility(View.VISIBLE);
+                            holder.tv_status.setText("Paused");
+                            holder.tv_status.setTextColor(getResources().getColor(R.color.tv_push_color));
+                        }else {
+                            holder.iv_hold.setVisibility(View.VISIBLE);
+                            holder.tv_status.setText("Inactive");
+                            holder.tv_status.setTextColor(getResources().getColor(R.color.red));
+                        }
                         break;
                     case "A":
                         holder.iv_play_icon.setVisibility(View.VISIBLE);
                         holder.tv_status.setText("Active");
-                        holder.tv_status.setTextColor(getResources().getColor(R.color.tv_push_color));
+                        holder.tv_status.setTextColor(getResources().getColor(R.color.text_green));
 
                         break;
                 }

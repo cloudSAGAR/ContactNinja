@@ -439,11 +439,9 @@
                     android:background="@null"
                     android:enabled="false"
                     android:gravity="center|left"
-                    android:hint="@string/Enter_subject_here"
                     android:imeOptions="actionDone"
                     android:inputType="textEmailAddress"
                     android:textColor="@color/purple_200"
-                    android:textColorHint="@color/purple_200"
                     tools:ignore="Autofill,RtlHardcoded,TouchTargetSizeCheck,DuplicateSpeakableTextCheck" />
 
 
@@ -479,11 +477,9 @@
                     android:background="@null"
                     android:enabled="false"
                     android:gravity="center|left"
-                    android:hint="@string/Enter_subject_here"
                     android:imeOptions="actionDone"
                     android:inputType="textEmailAddress"
                     android:textColor="@color/purple_200"
-                    android:textColorHint="@color/purple_200"
                     tools:ignore="Autofill,RtlHardcoded,TouchTargetSizeCheck" />
 
 
@@ -532,11 +528,9 @@
                         android:background="@null"
                         android:enabled="false"
                         android:gravity="center|left"
-                        android:hint="@string/Enter_subject_here"
                         android:imeOptions="actionDone"
                         android:inputType="textEmailAddress"
                         android:textColor="@color/text_reg"
-                        android:textColorHint="@color/otp_header_text_color"
                         tools:ignore="Autofill,RtlHardcoded,TouchTargetSizeCheck" />
 
 

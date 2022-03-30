@@ -195,12 +195,10 @@ public class Task_Fragment extends Fragment  {
 
         List<Des_Task> taskList;
         public Context mCtx;
-        LinearLayout layout_Add_email;
 
         public TaslListAdepter(Context context,List<Des_Task> taskList) {
             this.mCtx = context;
             this.taskList = taskList;
-            this.layout_Add_email = layout_Add_email;
         }
 
         @NonNull

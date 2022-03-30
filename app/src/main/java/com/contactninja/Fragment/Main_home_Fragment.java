@@ -295,14 +295,6 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         }
 
 
-
-     /*   final int[] MY_COLORS = {Color.rgb(192, 0, 0), Color.rgb(255, 0, 0), Color.rgb(255, 192, 0), Color.rgb(127, 127, 127), Color.rgb(146, 208, 80), Color.rgb(0, 176, 80), Color.rgb(79, 129, 189)};
-
-        ArrayList<Integer> colors = new ArrayList<Integer>();
-
-        for (int c : MY_COLORS) colors.add(c);*/
-
-
     }
 
     private void setLavel(TextView text_lavelNumber, TextView text_lavelRate, Integer countOfLevel,
@@ -392,7 +384,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
                 }
                 catch (Exception e)
                 {
-
+                    e.printStackTrace();
                 }
 
 
@@ -449,9 +441,6 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         iv_toolbar_notification = view.findViewById(R.id.iv_toolbar_notification);
         iv_toolbar_notification.setVisibility(View.GONE);
 
-      /*  iv_toolbar_select = view.findViewById(R.id.iv_toolbar_select);
-        iv_toolbar_select.setVisibility(View.VISIBLE);
-        iv_toolbar_select.setOnClickListener(this);*/
         layout_toolbar_logo = view.findViewById(R.id.layout_toolbar_logo);
         layout_toolbar_logo.setVisibility(View.VISIBLE);
         tabLayout = view.findViewById(R.id.tabLayout);
@@ -519,15 +508,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
                 Intent intent = new Intent(getActivity(), NotificationListActivity.class);
                 startActivity(intent);
                 break;
-           /* case R.id.iv_toolbar_select:
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-                if(Global.IsNotNull(SessionManager.getContectList(getActivity()))){
-                    startActivity(new Intent(getActivity(), List_Manual_Activty.class));
-                }
-                break;*/
+
 
         }
     }
@@ -561,7 +542,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
     }
 
 
-    public class BzcardlistAdepter extends RecyclerView.Adapter<BzcardlistAdepter.InviteListDataclass> {
+    public static class BzcardlistAdepter extends RecyclerView.Adapter<BzcardlistAdepter.InviteListDataclass> {
 
         List<Des_Bizcard> des_bizcardList;
         public Context mCtx;
@@ -576,7 +557,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         public BzcardlistAdepter.InviteListDataclass onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             View view = inflater.inflate(R.layout.item_bzlist, parent, false);
-            return new BzcardlistAdepter.InviteListDataclass(view);
+            return new InviteListDataclass(view);
         }
 
         @Override
@@ -605,7 +586,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         }
 
 
-        public class InviteListDataclass extends RecyclerView.ViewHolder {
+        public static class InviteListDataclass extends RecyclerView.ViewHolder {
             TextView tv_bzname, tv_count;
 
 

@@ -1,12 +1,5 @@
 package com.contactninja.Main_Broadcast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import de.hdodenhof.circleimageview.CircleImageView;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -15,8 +8,6 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,19 +19,19 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.contactninja.Campaign.Campaign_Preview;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.contactninja.Model.BroadcastActivityModel;
-import com.contactninja.Model.CampaignTask_overview;
-import com.contactninja.Model.ContectListData;
 import com.contactninja.R;
-import com.contactninja.Setting.WebActivity;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.RetrofitCalls;
-import com.google.gson.Gson;
 import com.reddit.indicatorfastscroll.FastScrollItemIndicator;
 import com.reddit.indicatorfastscroll.FastScrollerThumbView;
 import com.reddit.indicatorfastscroll.FastScrollerView;
@@ -48,14 +39,17 @@ import com.reddit.indicatorfastscroll.FastScrollerView;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
-public class Broadcaste_viewContect extends AppCompatActivity  implements ConnectivityReceiver.ConnectivityReceiverListener {
-    ImageView iv_back,iv_cancle_search_icon;
+public class Broadcaste_viewContect extends AppCompatActivity implements ConnectivityReceiver.ConnectivityReceiverListener {
+    ImageView iv_back, iv_cancle_search_icon;
     TextView save_button;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
-    RecyclerView add_contect_list,contect_list_unselect;
+    RecyclerView add_contect_list, contect_list_unselect;
     TopUserListDataAdapter topUserListDataAdapter;
     List<BroadcastActivityModel.BroadcastProspect> broadcastProspects;
 
@@ -77,8 +71,8 @@ public class Broadcaste_viewContect extends AppCompatActivity  implements Connec
         mNetworkReceiver = new ConnectivityReceiver();
 
         IntentUI();
-        broadcastProspects=SessionManager.getBroadcast_Contect(getApplicationContext());
-        topUserListDataAdapter=new TopUserListDataAdapter(this,getApplicationContext(),broadcastProspects);
+        broadcastProspects = SessionManager.getBroadcast_Contect(getApplicationContext());
+        topUserListDataAdapter = new TopUserListDataAdapter(this, getApplicationContext(), broadcastProspects);
         add_contect_list.setAdapter(topUserListDataAdapter);
         groupContectAdapter = new GroupContectAdapter(this);
         contect_list_unselect.setAdapter(groupContectAdapter);
@@ -97,10 +91,8 @@ public class Broadcaste_viewContect extends AppCompatActivity  implements Connec
                             }
                         }
                         groupContectAdapter.updateList(temp);
-                    }
-                    catch (Exception e)
-                    {
-
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
 
 
@@ -148,11 +140,13 @@ public class Broadcaste_viewContect extends AppCompatActivity  implements Connec
                 }
         );
     }
+
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         Global.checkConnectivity(Broadcaste_viewContect.this, mMainLayout);
     }
 
+    @SuppressLint("ObsoleteSdkInt")
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void registerNetworkBroadcastForNougat() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -185,12 +179,12 @@ public class Broadcaste_viewContect extends AppCompatActivity  implements Connec
         contect_list_unselect.setLayoutManager(layoutManager1);
         fastscroller = findViewById(R.id.fastscroller);
         fastscroller_thumb = findViewById(R.id.fastscroller_thumb);
-        ev_search =findViewById(R.id.ev_search);
-        iv_cancle_search_icon =findViewById(R.id.iv_cancle_search_icon);
-        mMainLayout =findViewById(R.id.mMainLayout);
+        ev_search = findViewById(R.id.ev_search);
+        iv_cancle_search_icon = findViewById(R.id.iv_cancle_search_icon);
+        mMainLayout = findViewById(R.id.mMainLayout);
 
-        add_contect_list=findViewById(R.id.add_contect_list);
-        add_contect_list.setLayoutManager(new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false));
+        add_contect_list = findViewById(R.id.add_contect_list);
+        add_contect_list.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
         save_button = findViewById(R.id.save_button);
@@ -253,59 +247,54 @@ public class Broadcaste_viewContect extends AppCompatActivity  implements Connec
         public void onBindViewHolder(@NonNull TopUserListDataAdapter.InviteListDataclass holder, int position) {
             BroadcastActivityModel.BroadcastProspect inviteUserDetails = userDetails.get(position);
 
-         try {
-             last_postion = position;
-             holder.userName.setText(inviteUserDetails.getFirstname()+" "+inviteUserDetails.getLastname());
-             holder.top_layout.setVisibility(View.VISIBLE);
+            try {
+                last_postion = position;
+                holder.userName.setText(inviteUserDetails.getFirstname() + " " + inviteUserDetails.getLastname());
+                holder.top_layout.setVisibility(View.VISIBLE);
 
-             if(Global.IsNotNull(inviteUserDetails.getFirstname())||!inviteUserDetails.getFirstname().equals("")){
-                 String first_latter =inviteUserDetails.getFirstname().substring(0, 1).toUpperCase();
+                if (Global.IsNotNull(inviteUserDetails.getFirstname()) || !inviteUserDetails.getFirstname().equals("")) {
+                    String first_latter = inviteUserDetails.getFirstname().substring(0, 1).toUpperCase();
 
-                 if (second_latter.equals("")) {
-                     current_latter = first_latter;
-                     second_latter = first_latter;
+                    if (second_latter.equals("")) {
+                        current_latter = first_latter;
+                        second_latter = first_latter;
 
-                 } else if (second_latter.equals(first_latter)) {
-                     current_latter = second_latter;
-                 } else {
+                    } else if (second_latter.equals(first_latter)) {
+                        current_latter = second_latter;
+                    } else {
 
-                     current_latter = first_latter;
-                     second_latter = first_latter;
-                 }
-             }
-
-
+                        current_latter = first_latter;
+                        second_latter = first_latter;
+                    }
+                }
 
 
+                holder.no_image.setVisibility(View.VISIBLE);
+                holder.profile_image.setVisibility(View.GONE);
+                String name = inviteUserDetails.getFirstname();
+                holder.profile_image.setVisibility(View.GONE);
+                String add_text = "";
+                String[] split_data = name.split(" ");
+                try {
+                    for (int i = 0; i < split_data.length; i++) {
+                        if (i == 0) {
+                            add_text = split_data[i].substring(0, 1);
+                        } else {
+                            add_text = add_text + split_data[i].charAt(0);
+                            break;
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-             holder.no_image.setVisibility(View.VISIBLE);
-             holder.profile_image.setVisibility(View.GONE);
-             String name = inviteUserDetails.getFirstname();
-             holder.profile_image.setVisibility(View.GONE);
-             String add_text = "";
-             String[] split_data = name.split(" ");
-             try {
-                 for (int i = 0; i < split_data.length; i++) {
-                     if (i == 0) {
-                         add_text = split_data[i].substring(0, 1);
-                     } else {
-                         add_text = add_text + split_data[i].charAt(0);
-                         break;
-                     }
-                 }
-             } catch (Exception e) {
-                 e.printStackTrace();
-             }
 
+                holder.no_image.setText(add_text);
+                holder.no_image.setVisibility(View.VISIBLE);
 
-             holder.no_image.setText(add_text);
-             holder.no_image.setVisibility(View.VISIBLE);
-
-         }
-         catch (Exception e)
-         {
-
-         }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         }
 
@@ -388,7 +377,7 @@ public class Broadcaste_viewContect extends AppCompatActivity  implements Connec
                     try {
                         holder1.remove_contect_icon.setVisibility(View.VISIBLE);
                         holder1.add_new_contect_icon.setVisibility(View.GONE);
-                        holder1.userName.setText(Contact_data.getFirstname()+" "+Contact_data.getLastname());
+                        holder1.userName.setText(Contact_data.getFirstname() + " " + Contact_data.getLastname());
                         holder1.userNumber.setVisibility(View.GONE);
 
                         holder1.first_latter.setVisibility(View.VISIBLE);
@@ -441,10 +430,8 @@ public class Broadcaste_viewContect extends AppCompatActivity  implements Connec
                         holder1.no_image.setVisibility(View.VISIBLE);
                         holder1.profile_image.setVisibility(View.GONE);
 
-                    }
-                    catch (Exception c)
-                    {
-
+                    } catch (Exception c) {
+                        c.printStackTrace();
                     }
 
                     //  holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
@@ -479,8 +466,6 @@ public class Broadcaste_viewContect extends AppCompatActivity  implements Connec
             isLoadingAdded = true;
             add(new BroadcastActivityModel.BroadcastProspect());
         }
-
-
 
 
         public void removeLoadingFooter() {

@@ -93,7 +93,7 @@ public class Manual_Email_TaskActivity_ extends AppCompatActivity implements Vie
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         String formattedDate = df.format(c);
-        String formateChnage = Global.formateChange1(formattedDate);
+        String formateChnage = Global.DateFormateMonth(formattedDate);
         tv_date.setText(formateChnage);
         main_date=formattedDate;;
 
@@ -422,7 +422,7 @@ public class Manual_Email_TaskActivity_ extends AppCompatActivity implements Vie
                         }
 
 
-                        String formateChnage = Global.formateChange1(year+"-"+sMonth+"-"+sdate);
+                        String formateChnage = Global.DateFormateMonth(year+"-"+sMonth+"-"+sdate);
                         tv_date.setText(formateChnage);
                         main_date=year + "-" + sMonth + "-" + sdate;
 

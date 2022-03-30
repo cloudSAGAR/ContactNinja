@@ -1,10 +1,12 @@
 package com.contactninja.Model;
 
+import android.annotation.SuppressLint;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
-
+@SuppressLint("UnknownNullness")
 public class BroadcastActivityModel {
 
         @SerializedName("0")
@@ -31,7 +33,7 @@ public class BroadcastActivityModel {
         }
 
 
-    public class _0 {
+    public static class _0 {
 
         @SerializedName("id")
         @Expose
@@ -266,7 +268,7 @@ public class BroadcastActivityModel {
         }
 
 
-        public class RecurringDetail {
+        public static class RecurringDetail {
 
             @SerializedName("repeat_every")
             @Expose
@@ -292,7 +294,7 @@ public class BroadcastActivityModel {
             }
 
         }
-        public class OccursOn {
+        public static class OccursOn {
 
             @SerializedName("day_of_week")
             @Expose
@@ -372,10 +374,10 @@ public class BroadcastActivityModel {
         private Object groupDetail;
         @SerializedName("firstname")
         @Expose
-        private String firstname;
+        private String firstname="";
         @SerializedName("lastname")
         @Expose
-        private String lastname;
+        private String lastname="";
 
         public Integer getContactId() {
             return contactId;

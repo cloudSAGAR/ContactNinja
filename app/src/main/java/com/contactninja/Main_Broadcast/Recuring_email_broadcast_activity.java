@@ -1,7 +1,6 @@
 package com.contactninja.Main_Broadcast;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.BroadcastReceiver;
@@ -29,7 +28,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.contactninja.AddContect.Add_Company_Activity;
 import com.contactninja.Model.Broadcate_save_data;
 import com.contactninja.Model.Broadcste_Coman_Model;
 import com.contactninja.R;
@@ -131,7 +129,7 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         String formattedDate = df.format(c);
-        String formateChnage = Global.formateChange1(formattedDate);
+        String formateChnage = Global.DateFormateMonth(formattedDate);
         tv_date.setText(formateChnage);
         main_date=formattedDate;;
 
@@ -144,7 +142,7 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
         if (SessionManager.getBroadcast_flag(getApplicationContext()).equals("edit")) {
             broadcate_save_data = SessionManager.getBroadcate_save_data(getApplicationContext());
             tv_time.setText(broadcate_save_data.getTime());
-            String formateChnage1 = Global.formateChange1(broadcate_save_data.getDate());
+            String formateChnage1 = Global.DateFormateMonth(broadcate_save_data.getDate());
             tv_date.setText(formateChnage1);
             main_date=broadcate_save_data.getDate();;
 
@@ -773,7 +771,7 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
                             sdate = String.valueOf(dayOfMonth);
                         }
 
-                        String formateChnage = Global.formateChange1(year+"-"+sMonth+"-"+sdate);
+                        String formateChnage = Global.DateFormateMonth(year+"-"+sMonth+"-"+sdate);
                         tv_date.setText(formateChnage);
                         main_date=year + "-" + sMonth + "-" + sdate;
 

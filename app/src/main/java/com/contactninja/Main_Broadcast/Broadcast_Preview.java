@@ -25,6 +25,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.contactninja.Campaign.Add_Camp_Tab_Select_Activity;
 import com.contactninja.Main_Broadcast.List_And_show.List_Broadcast_activity;
 import com.contactninja.Model.Broadcate_save_data;
@@ -52,13 +60,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Response;
 
@@ -117,13 +118,13 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
             tv_item_num.setBackground(getResources().getDrawable(R.drawable.ic_message_select));
             tv_detail.setTypeface(null, Typeface.BOLD);
             layout_email_subject.setVisibility(View.GONE);
-        } else  if (SessionManager.getCampaign_type(getApplicationContext()).equals("EMAIL")){
+        } else if (SessionManager.getCampaign_type(getApplicationContext()).equals("EMAIL")) {
             layout_email_subject.setVisibility(View.VISIBLE);
             tv_item_num.setBackground(getResources().getDrawable(R.drawable.ic_email_mini));
 
         }
 
-        String formateChnage = Global.formateChange1(broadcate_save_data.getDate());
+        String formateChnage = Global.DateFormateMonth(broadcate_save_data.getDate());
         tv_date.setText(formateChnage + " @ " + broadcate_save_data.getTime());
         tv_repete_type.setText(broadcate_save_data.getRecurrence());
 
@@ -137,11 +138,9 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
             iv_camp_edit.setVisibility(View.GONE);
         }
 
-        if (broadcate_save_data.getId().equals(""))
-        {
-                tv_start_broadcast.setText("Create Broadcast");
-        }
-        else {
+        if (broadcate_save_data.getId().equals("")) {
+            tv_start_broadcast.setText("Create Broadcast");
+        } else {
 
             tv_start_broadcast.setText("Update Broadcast");
         }
@@ -158,8 +157,6 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
 
-        //  Toast.makeText(getApplicationContext(), "Manu Clcik", Toast.LENGTH_LONG).show();
-        //Log.e("Option Manu is Select", "Yes");
         switch (item.getItemId()) {
             case R.id.mv_save:
                 startActivity(new Intent(getApplicationContext(), List_Broadcast_activity.class));
@@ -230,6 +227,7 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
         Global.checkConnectivity(Broadcast_Preview.this, mMainLayout);
     }
 
+    @SuppressLint("ObsoleteSdkInt")
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void registerNetworkBroadcastForNougat() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -276,9 +274,7 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-/*                Intent intent=new Intent(getApplicationContext(),Brodcsast_Tankyou.class);
-                intent.putExtra("s_name","final");
-                startActivity(intent);*/
+
                 break;
 
             case R.id.iv_toolbar_manu:
@@ -291,7 +287,7 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
                 mLastClickTime = SystemClock.elapsedRealtime();
                 SessionManager.setContect_flag("add");
                 Intent broad_caste = new Intent(getApplicationContext(), Broadcast_Contact_Selction_Actvity.class);
-                broad_caste.putExtra("Activty","Preview");
+                broad_caste.putExtra("Activty", "Preview");
                 startActivity(broad_caste);
                 finish();
                 break;
@@ -335,7 +331,7 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
                 Intent caste = new Intent(getApplicationContext(), Broadcast_Name_Activity.class);
-                caste.putExtra("Activty","Preview");
+                caste.putExtra("Activty", "Preview");
                 startActivity(caste);
                 finish();
                 break;
@@ -389,16 +385,10 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
         tv_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(),List_Broadcast_activity.class);
+                Intent intent = new Intent(getApplicationContext(), List_Broadcast_activity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
 
-               /* Broadcast_Name_Activity.Broadcast_Name.finish();
-                Recuring_email_broadcast_activity.Recuring_email_broadcast.finish();
-                Add_Broad_Text_Activity.Add_Broad_Text.finish();
-                Add_Broad_Email_Activity.Add_Broad_Email.finish();
-                Broadcast_Contact_Selction_Actvity.Broadcast_Contact_Selction.finish();
-                Text_And_Email_Auto_Manual_Broadcast.Text_And_Email_Auto_Manual_Broadcast_Activity.finish();*/
                 finish();
                 dialog.dismiss();
             }
@@ -425,24 +415,27 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
         paramObject.put("start_date", broadcate_save_data.getDate());
         paramObject.put("assign_to", user_id);
 
-        if (broadcate_save_data.getRecurrence().equals("Daily")) {
-            paramObject.put("recurring_type", "D");
-        } else if (broadcate_save_data.getRecurrence().equals("Weekly")) {
-            paramObject.put("recurring_type", "W");
-        } else if (broadcate_save_data.getRecurrence().equals("Monthly")) {
-            paramObject.put("recurring_type", "M");
+        switch (broadcate_save_data.getRecurrence()) {
+            case "Daily":
+                paramObject.put("recurring_type", "D");
+                break;
+            case "Weekly":
+                paramObject.put("recurring_type", "W");
+                break;
+            case "Monthly":
+                paramObject.put("recurring_type", "M");
+                break;
         }
 
 
         JSONArray jsonArray = new JSONArray();
         List<ContectListData.Contact> s = SessionManager.getGroupList(getApplicationContext());
-      //  Log.e("Coontect Detail is", new Gson().toJson(s));
+        //  Log.e("Coontect Detail is", new Gson().toJson(s));
         for (int i = 0; i < s.size(); i++) {
             JSONObject paramObject1 = new JSONObject();
             for (int j = 0; j < s.get(i).getContactDetails().size(); j++) {
 
-                if (!s.get(i).getContactDetails().get(j).getEmailNumber().equals("")||!s.get(i).getContactDetails().get(j).getEmailNumber().equals("null"))
-                {
+                if (!s.get(i).getContactDetails().get(j).getEmailNumber().equals("") || !s.get(i).getContactDetails().get(j).getEmailNumber().equals("null")) {
                     paramObject1.put("prospect_id", s.get(i).getContactDetails().get(j).getContactId());
                     if (s.get(i).getContactDetails().get(j).getType().equals("EMAIL")) {
                         paramObject1.put("email", s.get(i).getContactDetails().get(j).getEmailNumber());
@@ -451,7 +444,6 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
                     }
                     jsonArray.put(paramObject1);
                 }
-
 
 
             }
@@ -485,22 +477,18 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
             JSONArray coccurs_on_data_array = new JSONArray();
             JSONObject day_of_month_data = new JSONObject();
             JSONArray coccurs_on_array = new JSONArray();
-            String[] splitdata=broadcate_save_data.getOccurs_weekly().toString().split(",");
-            for (int i=0;i<splitdata.length;i++)
-            {
+            String[] splitdata = broadcate_save_data.getOccurs_weekly().toString().split(",");
+            for (int i = 0; i < splitdata.length; i++) {
                 coccurs_on_array.put(Integer.parseInt(splitdata[i]));
             }
 
-            day_of_month_data.put("day_of_week",coccurs_on_array);
-            repeat_every_obj.put("occurs_on",day_of_month_data);
-        }
-        else if (broadcate_save_data.getRecurrence().equals("Monthly")) {
+            day_of_month_data.put("day_of_week", coccurs_on_array);
+            repeat_every_obj.put("occurs_on", day_of_month_data);
+        } else if (broadcate_save_data.getRecurrence().equals("Monthly")) {
             JSONObject occurs_on_data = new JSONObject();
-            if (broadcate_save_data.getOccurs_monthly().equals("Day"))
-            {
-                  occurs_on_data.put("day_of_month", broadcate_save_data.getDay_of_month());
-            }
-            else {
+            if (broadcate_save_data.getOccurs_monthly().equals("Day")) {
+                occurs_on_data.put("day_of_month", broadcate_save_data.getDay_of_month());
+            } else {
                 occurs_on_data.put("every_week_no", broadcate_save_data.getEvery_day());
                 occurs_on_data.put("every_dayofweek", broadcate_save_data.getEvery_second());
 
@@ -512,9 +500,8 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
         }
 
         paramObject.put("recurring_detail", repeat_every_obj);
-        if (!broadcate_save_data.getId().equals(""))
-        {
-            paramObject.put("id",broadcate_save_data.getId());
+        if (!broadcate_save_data.getId().equals("")) {
+            paramObject.put("id", broadcate_save_data.getId());
         }
 
         obj.put("data", paramObject);
@@ -525,20 +512,17 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
         retrofitCalls.Broadcast_store(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(Broadcast_Preview.this), Global.Device, new RetrofitCallback() {
 
             public void success(Response<ApiResponse> response) {
-                Log.e("Response is",new Gson().toJson(response.body()));
+                Log.e("Response is", new Gson().toJson(response.body()));
                 if (response.body().getHttp_status() == 200) {
                     //  loadingDialog.cancelLoading();
                     loadingDialog.cancelLoading();
-                    Intent intent=new Intent(getApplicationContext(),Brodcsast_Tankyou.class);
+                    Intent intent = new Intent(getApplicationContext(), Brodcsast_Tankyou.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     finish();
-                }
-                else if (response.body().getHttp_status()==403)
-                {
-                    Global.Messageshow(getApplicationContext(),mMainLayout,response.body().getMessage().toString(),false);
-                }
-                else {
+                } else if (response.body().getHttp_status() == 403) {
+                    Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage().toString(), false);
+                } else {
                     loadingDialog.cancelLoading();
                 }
             }
@@ -597,14 +581,7 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
                     intent.putExtra("from_ac_id", sequenceTask.getSent_tbl_id());
                     startActivity(intent);
                     finish();
-                    // startActivity(new Intent(getActivity(),First_Step_Activity.class));
-                    SessionManager.setCampaign_Day(String.valueOf(sequenceTask.getDay()));
-                    SessionManager.setCampaign_minute(String.valueOf(sequenceTask.getMinute()));
-                    SessionManager.setCampaign_type(String.valueOf(sequenceTask.getType()));
-                    SessionManager.setCampaign_type_name(String.valueOf(sequenceTask.getManageBy()));
 
-//                    finish();
-                    bottomSheetDialog.cancel();
 
                 } else {
 
@@ -633,15 +610,13 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
                     intent.putExtra("from_ac", sequenceTask.getMail_module());
                     intent.putExtra("from_ac_id", sequenceTask.getSent_tbl_id());
                     startActivity(intent);
-                    //  SessionManager.setTask(getActivity(),campaignTasks1);
-                    SessionManager.setCampaign_Day(String.valueOf(sequenceTask.getDay()));
-                    SessionManager.setCampaign_minute(String.valueOf(sequenceTask.getMinute()));
-                    SessionManager.setCampaign_type(String.valueOf(sequenceTask.getType()));
-                    SessionManager.setCampaign_type_name(String.valueOf(sequenceTask.getManageBy()));
 
-                    //                finish();
-                    bottomSheetDialog.cancel();
                 }
+                SessionManager.setCampaign_Day(String.valueOf(sequenceTask.getDay()));
+                SessionManager.setCampaign_minute(String.valueOf(sequenceTask.getMinute()));
+                SessionManager.setCampaign_type(String.valueOf(sequenceTask.getType()));
+                SessionManager.setCampaign_type_name(String.valueOf(sequenceTask.getManageBy()));
+                bottomSheetDialog.cancel();
                 //              finish();
                 bottomSheetDialog.cancel();
 
@@ -732,9 +707,7 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
                 holder.no_image.setText(add_text);
                 holder.no_image.setVisibility(View.VISIBLE);
 
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 holder.no_image.setVisibility(View.VISIBLE);
                 holder.profile_image.setVisibility(View.GONE);
                 String name = inviteUserDetails.getContactDetails().get(0).getEmailNumber();
@@ -759,11 +732,6 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
                 holder.no_image.setText(add_text);
                 holder.no_image.setVisibility(View.VISIBLE);
             }
-
-
-
-
-
 
 
         }

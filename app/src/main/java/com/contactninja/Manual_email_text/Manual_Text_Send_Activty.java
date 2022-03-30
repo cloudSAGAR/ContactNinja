@@ -736,7 +736,7 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
 
     public void OnClick(@SuppressLint("UnknownNullness") String s) {
         String curenttext = edit_template.getText().toString();
-        String Newtext = curenttext + s;
+        String Newtext = curenttext +" "+ s + " ";
         edit_template.setText(Newtext);
         edit_template.setSelection(edit_template.getText().length());
     }
@@ -1489,7 +1489,7 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
 
 
                     String curenttext = edit_template.getText().toString();
-                    String Newtext = curenttext + " \n "+ zoomExists.getZoom_meeting_link_with_password();
+                    String Newtext = curenttext +" "+ " \n "+ zoomExists.getZoom_meeting_link_with_password();
                     edit_template.setText(Newtext);
                     edit_template.setSelection(edit_template.getText().length());
 

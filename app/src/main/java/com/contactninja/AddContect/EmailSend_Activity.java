@@ -490,7 +490,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
 
     public void OnClick(@SuppressLint("UnknownNullness") String s) {
         String curenttext = edit_template.getText().toString();
-        String Newtext = curenttext + s;
+        String Newtext = curenttext +" "+ s +"";
         edit_template.setText(Newtext);
         edit_template.setSelection(edit_template.getText().length());
     }

@@ -40,7 +40,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -101,7 +100,7 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
         String formattedDate = df.format(c);
         tv_date.setText(formattedDate);
 
-        String formateChnage = Global.formateChange1(formattedDate);
+        String formateChnage = Global.DateFormateMonth(formattedDate);
         tv_date.setText(formateChnage);
         main_date=formattedDate;
 
@@ -340,7 +339,7 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
                             sdate = String.valueOf(dayOfMonth);
                         }
 
-                        String formateChnage = Global.formateChange1(year+"-"+sMonth+"-"+sdate);
+                        String formateChnage = Global.DateFormateMonth(year+"-"+sMonth+"-"+sdate);
                         tv_date.setText(formateChnage);
                         main_date=year + "-" + sMonth + "-" + sdate;
                      //   tv_date.setText(year + "-" + sMonth + "-" + sdate);

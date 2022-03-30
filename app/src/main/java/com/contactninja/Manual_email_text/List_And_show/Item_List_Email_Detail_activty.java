@@ -313,6 +313,7 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
         Global.checkConnectivity(Item_List_Email_Detail_activty.this, mMainLayout);
     }
 
+    @SuppressLint("ObsoleteSdkInt")
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void registerNetworkBroadcastForNougat() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -862,7 +863,7 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
 
     public void OnClick(@SuppressLint("UnknownNullness") String s) {
         String curenttext = edit_compose.getText().toString();
-        String Newtext = curenttext + s;
+        String Newtext = curenttext +" "+ s +" ";
         edit_compose.setText(Newtext);
         edit_compose.setSelection(edit_compose.getText().length());
     }
@@ -1068,9 +1069,6 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
             JSONObject paramObject1 = new JSONObject();
             paramObject1.put("prospect_id", id);
             paramObject1.put("email", email);
-           /* JSONArray contect_array = new JSONArray();
-            contect_array.put(email);
-            paramObject1.put("email_mobile", contect_array);*/
             jsonArray.put(paramObject1);
             break;
         }
@@ -1806,7 +1804,7 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
                     ZoomExists zoomExists = new Gson().fromJson(headerString, listType);
 
                     String curenttext = edit_compose.getText().toString();
-                    String Newtext = curenttext + " \n " + zoomExists.getZoom_meeting_link_with_password();
+                    String Newtext = curenttext +" "+ " \n " + zoomExists.getZoom_meeting_link_with_password();
                     edit_compose.setText(Html.fromHtml(Newtext));
                     edit_compose.setSelection(edit_compose.getText().length());
 

@@ -301,13 +301,26 @@ public class Global extends Application {
     }
 
 
-    public static String formateChange1(String dateTime) {
+    public static String DateFormateMonth(String dateTime) {
         Date oneWayTripDate=null;
         String tripDate="";
         SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat output = new SimpleDateFormat("dd-MMM-yyyy");
         try {
             oneWayTripDate = input.parse(dateTime);                 // parse input
+            tripDate= output.format(oneWayTripDate);    // format output
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return tripDate;
+    }
+    public static String TimeFormateAMPM(String Time) {
+        Date oneWayTripDate=null;
+        String tripDate="";
+        SimpleDateFormat input = new SimpleDateFormat("HH:mm:ss");
+        SimpleDateFormat output = new SimpleDateFormat("hh:mm aaa");
+        try {
+            oneWayTripDate = input.parse(Time);                 // parse input
             tripDate= output.format(oneWayTripDate);    // format output
         } catch (ParseException e) {
             e.printStackTrace();
@@ -380,7 +393,7 @@ public class Global extends Application {
     @SuppressLint("NewApi")
     public static String getPathFromUri(final Context context, final Uri uri) {
 
-        final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+        @SuppressLint("ObsoleteSdkInt") final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
         // DocumentProvider
         if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
             // ExternalStorageProvider

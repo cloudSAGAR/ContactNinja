@@ -558,7 +558,7 @@ public class Add_Broad_Text_Activity extends AppCompatActivity implements View.O
 
     public void OnClick(@SuppressLint("UnknownNullness") String s) {
         String curenttext = edit_template.getText().toString();
-        String Newtext = curenttext + s;
+        String Newtext = curenttext +" "+ s +" ";
         edit_template.setText(Newtext);
         edit_template.setSelection(edit_template.getText().length());
     }

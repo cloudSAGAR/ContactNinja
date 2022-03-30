@@ -2,11 +2,9 @@ package com.contactninja.Fragment.Home;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,7 +21,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.contactninja.MainActivity;
-import com.contactninja.Main_Broadcast.List_And_show.Broadcaste_Activity;
 import com.contactninja.Model.Dashboard.Dashboard;
 import com.contactninja.Model.Dashboard.Des_Broadcast;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -62,12 +59,12 @@ public class Broadcast_Fragment extends Fragment {
     LoadingDialog loadingDialog;
     Dashboard dashboard = new Dashboard();
     List<Des_Broadcast> des_broadcasts = new ArrayList<>();
-    private long mLastClickTime=0;
+    private long mLastClickTime = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_droadcast_deshboard, container, false);
+        View view = inflater.inflate(R.layout.fragment_droadcast_deshboard, container, false);
         retrofitCalls = new RetrofitCalls(getActivity());
         loadingDialog = new LoadingDialog(getActivity());
         sessionManager = new SessionManager(getActivity());
@@ -76,16 +73,16 @@ public class Broadcast_Fragment extends Fragment {
         user_id = user_data.getUser().getId();
         IntentUI(view);
 
-        des_broadcasts =SessionManager.getDes_Broadcast(getActivity());
-        if(des_broadcasts.size()==0){
+        des_broadcasts = SessionManager.getDes_Broadcast(getActivity());
+        if (des_broadcasts.size() == 0) {
             rv_broadcast_list.setVisibility(View.GONE);
             iv_demo.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             rv_broadcast_list.setVisibility(View.VISIBLE);
             iv_demo.setVisibility(View.GONE);
             broadcastListAdepter.add(des_broadcasts);
         }
-        MyAsyncTasks myAsyncTasks=new MyAsyncTasks();
+        MyAsyncTasks myAsyncTasks = new MyAsyncTasks();
         myAsyncTasks.execute();
 
 
@@ -94,8 +91,8 @@ public class Broadcast_Fragment extends Fragment {
 
     private void IntentUI(View view) {
 
-        iv_demo=view.findViewById(R.id.iv_demo);
-        rv_broadcast_list=view.findViewById(R.id.rv_broadcast_list);
+        iv_demo = view.findViewById(R.id.iv_demo);
+        rv_broadcast_list = view.findViewById(R.id.rv_broadcast_list);
 
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -136,6 +133,7 @@ public class Broadcast_Fragment extends Fragment {
         }
 
     }
+
     private void Api_Dashboard() throws JSONException {
         JSONObject obj = new JSONObject();
         JSONObject paramObject = new JSONObject();
@@ -167,29 +165,27 @@ public class Broadcast_Fragment extends Fragment {
 
 
                 try {
-                    SessionManager.setDes_Broadcast(getActivity(),new ArrayList<>());
+                    SessionManager.setDes_Broadcast(getActivity(), new ArrayList<>());
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<Dashboard>() {
                     }.getType();
                     dashboard = new Gson().fromJson(headerString, listType);
                     des_broadcasts = dashboard.getBroadcast();
-                    SessionManager.setDes_Broadcast(getActivity(),des_broadcasts);
+                    SessionManager.setDes_Broadcast(getActivity(), des_broadcasts);
 
-                    if(Global.IsNotNull(des_broadcasts)&&des_broadcasts.size()!=0){
+                    if (Global.IsNotNull(des_broadcasts) && des_broadcasts.size() != 0) {
                         broadcastListAdepter.clear();
                         broadcastListAdepter.add(des_broadcasts);
 
                         rv_broadcast_list.setVisibility(View.VISIBLE);
                         iv_demo.setVisibility(View.GONE);
-                    }else {
+                    } else {
                         rv_broadcast_list.setVisibility(View.GONE);
                         iv_demo.setVisibility(View.VISIBLE);
                     }
 
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -203,13 +199,12 @@ public class Broadcast_Fragment extends Fragment {
         });
     }
 
-
-    public class BroadcastListAdepter extends RecyclerView.Adapter<BroadcastListAdepter.InviteListDataclass> {
+    static class BroadcastListAdepter extends RecyclerView.Adapter<BroadcastListAdepter.InviteListDataclass> {
 
         List<Des_Broadcast> broadcastList;
         public Context mCtx;
 
-        public BroadcastListAdepter(Context context,List<Des_Broadcast> broadcastList) {
+        public BroadcastListAdepter(Context context, List<Des_Broadcast> broadcastList) {
             this.mCtx = context;
             this.broadcastList = broadcastList;
         }
@@ -219,9 +214,10 @@ public class Broadcast_Fragment extends Fragment {
         public BroadcastListAdepter.InviteListDataclass onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             View view = inflater.inflate(R.layout.item_brodadcastlist, parent, false);
-            return new BroadcastListAdepter.InviteListDataclass(view);
+            return new InviteListDataclass(view);
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
         public void onBindViewHolder(@NonNull BroadcastListAdepter.InviteListDataclass holder, int position) {
 
@@ -234,13 +230,6 @@ public class Broadcast_Fragment extends Fragment {
                 } else {
                     holder.image_icon.setImageResource(R.drawable.ic_email);
                 }
-
-
-
-
-
-
-
 
 
                 String conactname = item.getBroadcastName();
@@ -261,35 +250,42 @@ public class Broadcast_Fragment extends Fragment {
                 holder.tv_task_description.setText(Html.fromHtml(item.getContentBody()));
 
 
-            holder.iv_logo.setVisibility(View.GONE);
+                holder.iv_logo.setVisibility(View.GONE);
 
 
-
-                if(position==(getItemCount()-1)){
+                if (position == (getItemCount() - 1)) {
                     holder.view_last_line.setVisibility(View.GONE);
-                }else {
+                } else {
                     holder.view_last_line.setVisibility(View.VISIBLE);
                 }
 
 
+
+                switch (item.getStatus()) {
+                    case "I":
+                        holder.iv_hold.setVisibility(View.VISIBLE);
+                        holder.tv_status.setText("Inactive");
+                        holder.tv_status.setTextColor(mCtx.getResources().getColor(R.color.red));
+
+                        break;
+                    case "P":
+                        holder.iv_puse_icon.setVisibility(View.VISIBLE);
+                        holder.tv_status.setText("Paused");
+                        holder.tv_status.setTextColor(mCtx.getResources().getColor(R.color.text_green));
+
+                        break;
+                    case "A":
+                        holder.iv_play_icon.setVisibility(View.VISIBLE);
+                        holder.tv_status.setText("Active");
+                        holder.tv_status.setTextColor(mCtx.getResources().getColor(R.color.tv_push_color));
+
+                        break;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-          /*  holder.layout_contec.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                        return;
-                    }
-                    mLastClickTime = SystemClock.elapsedRealtime();
-                    //SessionManager.setBroadcate_List_Detail(getApplicationContext(), item);
-                    Intent getintent = new Intent(getActivity(), Broadcaste_Activity.class);
-                  //  getintent.putExtra("id",item.getId());
-                    startActivity(getintent);
 
-                }
-            });*/
         }
 
         @Override
@@ -297,18 +293,20 @@ public class Broadcast_Fragment extends Fragment {
             return broadcastList.size();
         }
 
+        @SuppressLint("NotifyDataSetChanged")
         public void add(List<Des_Broadcast> des_broadcasts) {
-            broadcastList=des_broadcasts;
+            broadcastList = des_broadcasts;
             notifyDataSetChanged();
         }
 
+        @SuppressLint("NotifyDataSetChanged")
         public void clear() {
             broadcastList.clear();
             notifyDataSetChanged();
         }
 
 
-        public class InviteListDataclass extends RecyclerView.ViewHolder {
+        public static class InviteListDataclass extends RecyclerView.ViewHolder {
             TextView tv_username, tv_task_description, tv_time, no_image, tv_status, tv_task_time;
             ImageView image_icon, iv_camp, iv_hold, iv_play_icon, iv_puse_icon;
             RelativeLayout iv_logo;
@@ -339,5 +337,4 @@ public class Broadcast_Fragment extends Fragment {
         }
 
     }
-
 }
