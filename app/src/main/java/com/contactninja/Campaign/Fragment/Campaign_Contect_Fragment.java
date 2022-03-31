@@ -1722,7 +1722,28 @@ public class Campaign_Contect_Fragment extends Fragment {
         public void addAll_item(List<ContectListData.Contact> contectListData) {
             select_contectListData.clear();
             contacts.clear();
-            for (int i = 0; i < contectListData.size(); i++) {
+
+            int i = 0;
+            for(ContectListData.Contact song : contectListData) {
+                if (contectListData.get(i).getIs_blocked().equals(1)) {
+                    group_flag = "true";
+                    contectListData.get(i).setFlag("true");
+                } else {
+                    contect_list_unselect.setItemViewCacheSize(50000);
+                    groupContectAdapter = new GroupContectAdapter(getContext());
+                    contect_list_unselect.setAdapter(groupContectAdapter);
+                    group_flag = "true";
+                    contectListData.get(i).setFlag("false");
+                    groupContectAdapter.addAll(contectListData);
+                    groupContectAdapter.notifyDataSetChanged();
+                    select_contectListData.add(contectListData.get(i));
+                    topUserListDataAdapter.notifyDataSetChanged();
+
+                }
+              i++;
+            }
+
+      /*      for (int i = 0; i < contectListData.size(); i++) {
 
                 if (contectListData.get(i).getIs_blocked().equals(1)) {
                     group_flag = "true";
@@ -1742,7 +1763,7 @@ public class Campaign_Contect_Fragment extends Fragment {
 
                 //  save_button.setTextColor(getResources().getColor(R.color.purple_200));
 
-            }
+            }*/
             SessionManager.setGroupList(getActivity(), new ArrayList<>());
             SessionManager.setGroupList(getActivity(), select_contectListData);
             /*

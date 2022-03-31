@@ -1202,7 +1202,31 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         public void addAll_item(List<ContectListData.Contact> contectListData) {
             select_contectListData.clear();
             contacts.clear();
-            for (int i = 0; i < contectListData.size(); i++) {
+
+            int i = 0;
+            for(ContectListData.Contact song : contectListData) {
+                if (contectListData.get(i).getIs_blocked().equals(1)) {
+                    group_flag = "true";
+                    contectListData.get(i).setFlag("true");
+
+                } else {
+                    groupContectAdapter = new GroupContectAdapter(getApplicationContext());
+                    contect_list_unselect.setAdapter(groupContectAdapter);
+                    group_flag = "false";
+                    contectListData.get(i).setFlag("false");
+                    groupContectAdapter.addAll(contectListData);
+                    groupContectAdapter.notifyDataSetChanged();
+                    select_contectListData.add(contectListData.get(i));
+                    add_contect_list.setItemViewCacheSize(5000);
+                    topUserListDataAdapter.notifyDataSetChanged();
+                    save_button.setTextColor(getResources().getColor(R.color.purple_200));
+
+                }
+                i++;
+            }
+
+
+          /*  for (int i = 0; i < contectListData.size(); i++) {
 
 
                     if (contectListData.get(i).getIs_blocked().equals(1)) {
@@ -1225,7 +1249,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
 
 
 
-            }
+            }*/
           /*  contect_list_unselect.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
