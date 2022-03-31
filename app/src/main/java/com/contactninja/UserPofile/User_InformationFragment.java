@@ -1679,6 +1679,19 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         ImageView search_icon = bottomSheetDialog_company.findViewById(R.id.search_icon);
         EditText ev_search = bottomSheetDialog_company.findViewById(R.id.ev_search);
         LinearLayout add_new = bottomSheetDialog_company.findViewById(R.id.add_new);
+        LinearLayout lay_no_list=bottomSheetDialog_company.findViewById(R.id.lay_no_list);
+        LinearLayout main_top_layout=bottomSheetDialog_company.findViewById(R.id.main_top_layout);
+
+        if (companyList.size()==0)
+        {
+            lay_no_list.setVisibility(View.VISIBLE);
+            main_top_layout.setVisibility(View.GONE);
+        }
+        else {
+            lay_no_list.setVisibility(View.GONE);
+            main_top_layout.setVisibility(View.VISIBLE);
+        }
+
         search_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1798,7 +1811,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                         Type listType = new TypeToken<CompanyModel>() {
                         }.getType();
                         CompanyModel data = new Gson().fromJson(headerString, listType);
-                        List<CompanyModel.Company> companyList = data.getData();
+                        companyList = data.getData();
                         // sessionManager.setCompanylist(getActivity(), data.getData());
 
 

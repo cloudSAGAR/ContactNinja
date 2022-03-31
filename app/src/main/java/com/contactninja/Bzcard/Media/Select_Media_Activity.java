@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -38,7 +39,6 @@ public class Select_Media_Activity extends AppCompatActivity implements Connecti
     private BroadcastReceiver mNetworkReceiver;
     RelativeLayout mMainLayout;
     ImageView iv_back;
-
     RelativeLayout layout_video,layout_Image,layout_pdf;
     private long mLastClickTime = 0;
     SessionManager sessionManager;
@@ -64,6 +64,8 @@ public class Select_Media_Activity extends AppCompatActivity implements Connecti
     @Override
     protected void onResume() {
         super.onResume();
+        Log.e("On Resume ","media");
+
     }
 
     private void setCount() {

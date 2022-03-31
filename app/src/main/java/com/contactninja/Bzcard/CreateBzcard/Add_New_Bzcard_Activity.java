@@ -587,5 +587,12 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
         startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e("On Resume ","Main");
+    }
+
+
 
 }
