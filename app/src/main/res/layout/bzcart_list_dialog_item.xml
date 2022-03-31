@@ -30,5 +30,34 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp" />
 
+        <LinearLayout
+            android:id="@+id/lay_no_list"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_150sdp"
+            android:layout_above="@+id/lay_bouttom"
+            android:layout_below="@+id/line"
+            android:layout_gravity="center"
+            android:layout_marginTop="-2dp"
+            android:layout_marginBottom="3dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_small_logo" />
+
+            <TextView
+                style="@style/tv_Medium_12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/no_bzcard"
+                android:textColor="@color/text_reg" />
+        </LinearLayout>
+
+
     </LinearLayout>
 </LinearLayout>

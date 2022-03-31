@@ -1411,6 +1411,17 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
                                 R.style.DialogStyle);
                         bottomSheetDialog.setContentView(mView);
                         RecyclerView rv_image_card = bottomSheetDialog.findViewById(R.id.rv_image_card);
+                        LinearLayout lay_no_list = bottomSheetDialog.findViewById(R.id.lay_no_list);
+
+                        if(bizcardList.size()!=0){
+                            rv_image_card.setVisibility(View.VISIBLE);
+                            lay_no_list.setVisibility(View.GONE);
+                        }else {
+                            rv_image_card.setVisibility(View.GONE);
+                            lay_no_list.setVisibility(View.VISIBLE);
+                        }
+
+
 
                         rv_image_card.setLayoutManager(new LinearLayoutManager(Item_List_Email_Detail_activty.this,
                                 LinearLayoutManager.HORIZONTAL, false));
