@@ -136,8 +136,6 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
             campaign_overviewAdapter = new Campaign_OverviewAdapter(getApplicationContext());
             item_list.setAdapter(campaign_overviewAdapter);
 
-
-
         }
 
 
@@ -148,6 +146,14 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.option_menu, menu);
+        MenuItem item = menu.findItem(R.id.mv_edit);
+        if (SessionManager.getCampign_flag(getApplicationContext()).equals("edit"))
+        {
+            item.setVisible(false);
+        }
+        else {
+            item.setVisible(true);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -163,11 +169,19 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                 finish();
                 return true;
             case R.id.mv_edit:
-                SessionManager.setCampign_flag("edit");
-                Intent intent = new Intent(getApplicationContext(), Campaign_Preview.class);
-                intent.putExtra("sequence_id", sequence_id);
-                startActivity(intent);
-                finish();
+                if (SessionManager.getCampign_flag(getApplicationContext()).equals("edit"))
+                {
+                    item.setVisible(false);
+                }
+                else {
+                    SessionManager.setCampign_flag("edit");
+                    Intent intent = new Intent(getApplicationContext(), Campaign_Preview.class);
+                    intent.putExtra("sequence_id", sequence_id);
+                    startActivity(intent);
+                    finish();
+                    item.setVisible(true);
+                }
+
                 return true;
 
             default:
