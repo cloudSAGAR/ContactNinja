@@ -60,7 +60,7 @@
         app:tabIndicatorHeight="2dp"
         app:tabSelectedTextColor="@color/text_reg"
         app:tabTextAppearance="@style/CustomTextAppearanceTab"
-        app:tabTextColor="@color/text_reg"
+        app:tabTextColor="@color/text_gray"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <View
