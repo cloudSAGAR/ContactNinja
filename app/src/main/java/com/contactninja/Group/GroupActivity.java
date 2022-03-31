@@ -17,6 +17,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -233,7 +234,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                 add_contect_list.setItemViewCacheSize(50000);
 
                 if (add_new_contect_icon1.getVisibility() == View.GONE) {
-                    loadingDialog.showLoadingDialog();
+                    Global.Messageshow(GroupActivity.this,mMainLayout,"Please Wait...",false);
                     Handler handler = new Handler();
                     Runnable r = new Runnable() {
                         @SuppressLint("NotifyDataSetChanged")
@@ -241,6 +242,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                             add_new_contect_icon1.setVisibility(View.VISIBLE);
                             add_new_contect_icon.setVisibility(View.GONE);
                             groupContectAdapter.addAll_item(contectListData);
+                            loadingDialog.cancelLoading();
                             add_new_contect.setText(getString(R.string.remove_new_contect1));
                             select_Contact(contectListData.size());
                         }
@@ -1197,11 +1199,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
             contacts.clear();
             for (int i = 0; i < contectListData.size(); i++) {
 
-                if (i+1==contectListData.size())
-                {
-                loadingDialog.cancelLoading();
-                }
-                else {
+
                     if (contectListData.get(i).getIs_blocked().equals(1)) {
                         group_flag = "true";
                         contectListData.get(i).setFlag("true");
@@ -1219,10 +1217,18 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                         save_button.setTextColor(getResources().getColor(R.color.purple_200));
 
                     }
-                }
+
 
 
             }
+          /*  contect_list_unselect.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                  loadingDialog.cancelLoading();
+                  contect_list_unselect.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+            });*/
+
             contacts.clear();
             contacts.addAll(contectListData);
             notifyDataSetChanged();

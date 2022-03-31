@@ -13,6 +13,12 @@ public class Des_Task {
     @SerializedName("type")
     @Expose
     private String type;
+    @SerializedName("date")
+    @Expose
+    private String date="";
+    @SerializedName("time")
+    @Expose
+    private String time="";
     @SerializedName("task_from")
     @Expose
     private Integer taskFrom;
@@ -72,5 +78,21 @@ public class Des_Task {
 
     public void setContactMasterLastname(String contactMasterLastname) {
         this.contactMasterLastname = contactMasterLastname;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }

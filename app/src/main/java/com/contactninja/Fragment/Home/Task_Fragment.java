@@ -2,6 +2,7 @@ package com.contactninja.Fragment.Home;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.Dashboard.Dashboard;
 import com.contactninja.Model.Dashboard.Des_Task;
+import com.contactninja.Model.ManualTaskModel;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.Global;
@@ -29,7 +31,9 @@ import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -267,6 +271,11 @@ public class Task_Fragment extends Fragment  {
                 }
 
 
+                String FullDate="",curendate="";
+                    FullDate = item.getDate() + " " + item.getTime();
+                    curendate =item.getDate();
+
+                compareDates(curendate, FullDate, holder.tv_status, item);
 
 
             }
@@ -312,6 +321,35 @@ public class Task_Fragment extends Fragment  {
 
         }
 
+    }
+
+    public static void compareDates(String onlyDate, String FullDate, TextView tv_status,
+                                   Des_Task item) {
+        try {
+
+
+            Date date1 = Global.defoult_date_formate.parse(Global.getCurrentDate());
+            Date date2 = Global.defoult_date_formate.parse(onlyDate);
+
+
+            if (date1.after(date2)) {
+                    tv_status.setText("Due");
+                    tv_status.setTextColor(Color.parseColor("#EC5454"));
+
+            } else if (date1.before(date2)) {
+                    tv_status.setText("Upcoming");
+                    tv_status.setTextColor(Color.parseColor("#2DA602"));
+
+            } else if (date1.equals(date2)) {
+                    tv_status.setText("Today");
+                tv_status.setTextColor(Color.parseColor("#ABABAB"));
+
+            }
+
+            System.out.println();
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+        }
     }
 }
 
