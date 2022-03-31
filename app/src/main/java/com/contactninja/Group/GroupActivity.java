@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -116,7 +117,7 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
         IntentUI();
         Global.checkConnectivity(GroupActivity.this, mMainLayout);
         sessionManager = new SessionManager(this);
-        loadingDialog = new LoadingDialog(this);
+        loadingDialog = new LoadingDialog(GroupActivity.this);
         retrofitCalls = new RetrofitCalls(this);
         contect_list_unselect.setHasFixedSize(true);
         contect_list_unselect.setItemViewCacheSize(50000);
@@ -226,31 +227,37 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
                 }
+
                 mLastClickTime = SystemClock.elapsedRealtime();
                 contect_list_unselect.setItemViewCacheSize(50000);
                 add_contect_list.setItemViewCacheSize(50000);
 
                 if (add_new_contect_icon1.getVisibility() == View.GONE) {
-                    add_new_contect_icon1.setVisibility(View.VISIBLE);
-                    add_new_contect_icon.setVisibility(View.GONE);
-                    groupContectAdapter.addAll_item(contectListData);
-                    add_new_contect.setText(getString(R.string.remove_new_contect1));
-                    /*
-                     * set select contact count */
-                    select_Contact(contectListData.size());
+                    loadingDialog.showLoadingDialog();
+                    Handler handler = new Handler();
+                    Runnable r = new Runnable() {
+                        @SuppressLint("NotifyDataSetChanged")
+                        public void run() {
+                            add_new_contect_icon1.setVisibility(View.VISIBLE);
+                            add_new_contect_icon.setVisibility(View.GONE);
+                            groupContectAdapter.addAll_item(contectListData);
+                            add_new_contect.setText(getString(R.string.remove_new_contect1));
+                            select_Contact(contectListData.size());
+                        }
+                    };
+                    handler.postDelayed(r, 1000);
                 } else {
                     add_new_contect_icon1.setVisibility(View.GONE);
                     add_new_contect_icon.setVisibility(View.VISIBLE);
                     select_contectListData.clear();
                     group_flag = "true";
-                    //groupContectAdapter.addAll(contectListData);
+                    groupContectAdapter.addAll(contectListData);
                     groupContectAdapter.notifyDataSetChanged();
                     add_new_contect.setText(getString(R.string.add_new_contect1));
                     SessionManager.setGroupList(GroupActivity.this, new ArrayList<>());
                     onResume();
-                    /*
-                     * set select contact count */
                     select_Contact(0);
+
                 }
             }
         });
@@ -1190,23 +1197,30 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
             contacts.clear();
             for (int i = 0; i < contectListData.size(); i++) {
 
-                if (contectListData.get(i).getIs_blocked().equals(1)) {
-                    group_flag = "true";
-                    contectListData.get(i).setFlag("true");
-
-                } else {
-                    groupContectAdapter = new GroupContectAdapter(getApplicationContext());
-                    contect_list_unselect.setAdapter(groupContectAdapter);
-                    group_flag = "false";
-                    contectListData.get(i).setFlag("false");
-                    groupContectAdapter.addAll(contectListData);
-                    groupContectAdapter.notifyDataSetChanged();
-                    select_contectListData.add(contectListData.get(i));
-                    add_contect_list.setItemViewCacheSize(5000);
-                    topUserListDataAdapter.notifyDataSetChanged();
-                    save_button.setTextColor(getResources().getColor(R.color.purple_200));
-
+                if (i+1==contectListData.size())
+                {
+                loadingDialog.cancelLoading();
                 }
+                else {
+                    if (contectListData.get(i).getIs_blocked().equals(1)) {
+                        group_flag = "true";
+                        contectListData.get(i).setFlag("true");
+
+                    } else {
+                        groupContectAdapter = new GroupContectAdapter(getApplicationContext());
+                        contect_list_unselect.setAdapter(groupContectAdapter);
+                        group_flag = "false";
+                        contectListData.get(i).setFlag("false");
+                        groupContectAdapter.addAll(contectListData);
+                        groupContectAdapter.notifyDataSetChanged();
+                        select_contectListData.add(contectListData.get(i));
+                        add_contect_list.setItemViewCacheSize(5000);
+                        topUserListDataAdapter.notifyDataSetChanged();
+                        save_button.setTextColor(getResources().getColor(R.color.purple_200));
+
+                    }
+                }
+
 
             }
             contacts.clear();
