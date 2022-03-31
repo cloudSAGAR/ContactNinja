@@ -60,7 +60,7 @@ import retrofit2.Response;
 @SuppressLint("UnknownNullness,SyntheticAccessor,SetTextI18n,StaticFieldLeak")
 public class GroupFragment extends Fragment implements View.OnClickListener {
     private long mLastClickTime = 0;
-    LinearLayout main_layout,  group_name;
+    LinearLayout main_layout,  group_name,add_new_contect_layout;
     SessionManager sessionManager;
     RecyclerView rv_group_list;
     LinearLayoutManager layoutManager;
@@ -101,7 +101,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         paginationAdapter = new PaginationAdapter(getActivity());
         rv_group_list.setAdapter(paginationAdapter);
 
-        iv_add_new_contect_icon.setOnClickListener(this);
+        add_new_contect_layout.setOnClickListener(this);
         group_name.setOnClickListener(this);
         demo_layout.setOnClickListener(this);
 
@@ -173,7 +173,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
     private void IntentUI(View view) {
 
-        /*   main_layout = view.findViewById(R.id.main_layout);*/
+        add_new_contect_layout =view.findViewById(R.id.add_new_contect_layout);
         iv_cancle_search_icon=view.findViewById(R.id.iv_cancle_search_icon);
         iv_cancle_search_icon.setOnClickListener(this);
         iv_add_new_contect_icon = view.findViewById(R.id.iv_add_new_contect_icon);
@@ -199,7 +199,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_add_new_contect_icon:
+            case R.id.add_new_contect_layout:
             case R.id.demo_layout:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
