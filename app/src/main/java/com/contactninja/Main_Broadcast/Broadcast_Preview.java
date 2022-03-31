@@ -151,6 +151,14 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.option_menu, menu);
+        MenuItem item = menu.findItem(R.id.mv_edit);
+        if (SessionManager.getBroadcast_flag(getApplicationContext()).equals("edit"))
+        {
+            item.setVisible(false);
+        }
+        else {
+            item.setVisible(true);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -163,10 +171,17 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
                 finish();
                 return true;
             case R.id.mv_edit:
-                SessionManager.setBroadcast_flag("edit");
-                Intent intent = new Intent(getApplicationContext(), Broadcast_Preview.class);
-                startActivity(intent);
-                finish();
+                if (!SessionManager.getBroadcast_flag(getApplicationContext()).equals("edit"))
+                {
+                    SessionManager.setBroadcast_flag("edit");
+                    Intent intent = new Intent(getApplicationContext(), Broadcast_Preview.class);
+                    startActivity(intent);
+                    finish();
+                    item.setVisible(true);
+                }
+                else {
+                    item.setVisible(false);
+                }
                 return true;
 
             default:

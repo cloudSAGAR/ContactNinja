@@ -42,7 +42,7 @@ public class WebActivity extends AppCompatActivity implements ConnectivityReceiv
         mMainLayout = findViewById(R.id.mMainLayout);
         wv_url = findViewById(R.id.wv_url);
         wv_url.getSettings().setJavaScriptEnabled(true);
-        wv_url.getSettings().setBlockNetworkLoads(true);
+        //wv_url.getSettings().setBlockNetworkLoads(true);
         WebSettings webSettings = wv_url.getSettings();
         webSettings.setJavaScriptEnabled(true);
 

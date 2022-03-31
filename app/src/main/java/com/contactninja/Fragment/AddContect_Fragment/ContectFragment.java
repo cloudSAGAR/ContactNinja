@@ -297,7 +297,7 @@ public class ContectFragment extends Fragment {
                             int indicatorCenterY,
                             int itemPosition
                     ) {
-                         }
+                    }
                 }
         );
 
@@ -463,7 +463,7 @@ public class ContectFragment extends Fragment {
                         FastScrollItemIndicator fastScrollItemIndicator = new FastScrollItemIndicator.Text(
                                 paginationAdapter.getItem(position).getFirstname().substring(0, 1)
                                         .substring(0, 1)
-                                        .toUpperCase()// Grab the first letter and capitalize it
+                                        .toUpperCase()
                         );
                         return fastScrollItemIndicator;
                     } catch (Exception e) {

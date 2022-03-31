@@ -126,7 +126,6 @@
             android:background="@color/line_separator" />
 
         <LinearLayout
-            android:layout_marginBottom="@dimen/_30sdp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
@@ -157,6 +156,7 @@
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/contact_list"
+                            android:layout_marginBottom="@dimen/_30sdp"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:clipToPadding="false" />
@@ -172,6 +172,7 @@
                         <com.reddit.indicatorfastscroll.FastScrollerView
                             android:id="@+id/fastscroller"
                             style="@style/tv_regular_5"
+
                             android:layout_gravity="center"
                             android:layout_width="32dp"
                             android:layout_height="match_parent"
@@ -234,7 +235,10 @@
                 app:layout_constraintTop_toTopOf="@+id/fastscroller"/>
         </LinearLayout>
         <TextView
+            android:visibility="visible"
             android:layout_marginTop="-30dp"
+            android:layout_marginEnd="@dimen/_60sdp"
+            android:layout_marginStart="@dimen/_60sdp"
             android:id="@+id/num_count"
             style="@style/tv_Medium_12"
             android:paddingTop="@dimen/_5sdp"
