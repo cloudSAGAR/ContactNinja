@@ -21,6 +21,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.contactninja.Bzcard.Select_Bzcard_Activity;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.BZcardListModel;
 import com.contactninja.Model.Bzcard_Fields_Model;
@@ -616,6 +617,7 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
                 if (response.body().getHttp_status() == 200) {
                     UploadCount = 0;
                     TotalFileUpload=0;
+                    Select_Bzcard_Activity.activity.finish();
                     finish();
                 }
             }

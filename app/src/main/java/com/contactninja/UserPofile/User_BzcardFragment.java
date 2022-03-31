@@ -226,6 +226,7 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
         if(Global.IsNotNull(getActivity())){
             customViewPagerAdapter = new CustomViewPagerAdapter(getActivity(), bizcardList);
             viewPager.setAdapter(customViewPagerAdapter);
+            txt_card_name.setText(bizcardList.get(0).getBzcardFieldsModel().getCard_name());
             backButton.setVisibility(View.INVISIBLE);
             if (bizcardList.size()>1){
                 nextButton.setVisibility(View.VISIBLE);
@@ -596,7 +597,6 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
             BZcardListModel.Bizcard bizcard = bizcardList.get(position);
             ImageView imageView = itemView.findViewById(R.id.iv_card);
             ImageView iv_edit = itemView.findViewById(R.id.iv_edit);
-
             int resID = mContext.getResources().getIdentifier("my_" + bizcard.getCardName()
                     .replace(" ", "_").toLowerCase(), "drawable", mContext.getPackageName());
             if (resID != 0) {

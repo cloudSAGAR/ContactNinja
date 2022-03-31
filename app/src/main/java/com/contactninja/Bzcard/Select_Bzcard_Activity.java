@@ -65,11 +65,12 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
     int Card_id=1;
     private long mLastClickTime=0;
     BZcardListModel bZcardListModel = new BZcardListModel();
-
+    public static  Select_Bzcard_Activity activity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_bzcard);
+        activity=Select_Bzcard_Activity.this;
         mNetworkReceiver = new ConnectivityReceiver();
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(Select_Bzcard_Activity.this);
