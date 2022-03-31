@@ -263,7 +263,7 @@ public class Campaign_Fragment extends Fragment implements Des_CampaingClick {
 
             Des_Sequence item = desSequenceList.get(position);
             holder.tv_camp_name.setText(item.getSeqName());
-            holder.tv_total_contact.setText(String.valueOf(item.getMaxProspect()));
+            holder.tv_total_contact.setText(String.valueOf(item.getProspect()));
 
 
 

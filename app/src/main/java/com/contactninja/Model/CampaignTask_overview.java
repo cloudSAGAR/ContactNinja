@@ -437,7 +437,7 @@ public class CampaignTask_overview {
         private GroupDetail groupDetail;
         @SerializedName("lastname")
         @Expose
-        private String lastname;
+        private String lastname="";
         @SerializedName("mcompleted_on")
         @Expose
         private String mcompletedOn;
