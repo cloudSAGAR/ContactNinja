@@ -199,6 +199,24 @@ public class Global extends Application {
         textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         snackbar.show();
     }
+    @SuppressLint("NewApi")
+    public static void Please_wait(Context context, View frameLayout, String message, boolean success) {
+        Snackbar snackbar;
+        View sbview;
+
+        snackbar = Snackbar.make(frameLayout, message,1000);
+        sbview = snackbar.getView();
+
+        TextView textView = sbview.findViewById(R.id.snackbar_text);
+        textView.setTextColor(Color.WHITE);
+        if (success) {
+            sbview.setBackgroundColor(ContextCompat.getColor(context, R.color.green));
+        } else {
+            sbview.setBackgroundColor(ContextCompat.getColor(context, R.color.red));
+        }
+        textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        snackbar.show();
+    }
 
     public static CircularProgressDrawable setplaceholder(Context context) {
         CircularProgressDrawable circularProgressDrawable;

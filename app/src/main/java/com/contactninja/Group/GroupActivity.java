@@ -234,11 +234,12 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                 add_contect_list.setItemViewCacheSize(50000);
 
                 if (add_new_contect_icon1.getVisibility() == View.GONE) {
-                    Global.Messageshow(GroupActivity.this,mMainLayout,"Please Wait...",false);
+                    Global.Please_wait(GroupActivity.this,mMainLayout,"Please Wait...",false);
                     Handler handler = new Handler();
                     Runnable r = new Runnable() {
                         @SuppressLint("NotifyDataSetChanged")
                         public void run() {
+                            select_contectListData.clear();
                             add_new_contect_icon1.setVisibility(View.VISIBLE);
                             add_new_contect_icon.setVisibility(View.GONE);
                             groupContectAdapter.addAll_item(contectListData);
@@ -910,8 +911,8 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                 case ITEM:
                     GroupContectAdapter.MovieViewHolder holder1 = (GroupContectAdapter.MovieViewHolder) holder;
 
-                  /*  contacts.get(position).setFlag(group_flag);
-                    if (contacts.get(position).getFlag().equals("false")) {
+                   contacts.get(position).setFlag(group_flag);
+                    /*if (contacts.get(position).getFlag().equals("false")) {
                         holder1.add_new_contect_icon.setVisibility(View.GONE);
                         holder1.remove_contect_icon.setVisibility(View.VISIBLE);
                     } else {
@@ -920,6 +921,8 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                     }*/
                     /*
                      * Contact already block not select */
+                    Log.e("Group Flag",group_flag);
+                    Log.e("Flag other",contacts.get(position).getFlag());
                     if (contacts.get(position).getIs_blocked().equals(1)) {
                         holder1.iv_block.setVisibility(View.VISIBLE);
                         holder1.add_new_contect_icon.setVisibility(View.GONE);
@@ -929,9 +932,11 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                         holder1.iv_block.setVisibility(View.GONE);
                         holder1.userName.setTextColor(context.getResources().getColor(R.color.unblock_item));
                         if (contacts.get(position).getFlag().equals("false")) {
+                            Log.e("Same","yes");
                             holder1.add_new_contect_icon.setVisibility(View.GONE);
                             holder1.remove_contect_icon.setVisibility(View.VISIBLE);
                         } else {
+                            Log.e("Same","no");
                             holder1.remove_contect_icon.setVisibility(View.GONE);
                             holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
                         }

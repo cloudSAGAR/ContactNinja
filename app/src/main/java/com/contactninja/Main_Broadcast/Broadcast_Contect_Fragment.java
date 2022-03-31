@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -24,6 +25,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.contactninja.Campaign.Fragment.Campaign_Contect_Fragment;
+import com.contactninja.Group.GroupActivity;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Model.GroupListData;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -152,10 +154,20 @@ public class Broadcast_Contect_Fragment extends Fragment {
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
                 if (add_new_contect_icon1.getVisibility() == View.GONE) {
-                    add_new_contect_icon1.setVisibility(View.VISIBLE);
-                    add_new_contect_icon.setVisibility(View.GONE);
-                    groupContectAdapter.addAll_item(contectListData);
-                    add_new_contect.setText(getString(R.string.remove_new_contect1));
+
+                    Global.Please_wait(getActivity(),mMainLayout,"Please Wait...",false);
+                    Handler handler = new Handler();
+                    Runnable r = new Runnable() {
+                        @SuppressLint("NotifyDataSetChanged")
+                        public void run() {
+                            add_new_contect_icon1.setVisibility(View.VISIBLE);
+                            add_new_contect_icon.setVisibility(View.GONE);
+                            groupContectAdapter.addAll_item(contectListData);
+                            add_new_contect.setText(getString(R.string.remove_new_contect1));
+                        }
+                    };
+                    handler.postDelayed(r, 1000);
+
                 } else {
                     add_new_contect_icon1.setVisibility(View.GONE);
                     add_new_contect_icon.setVisibility(View.VISIBLE);
@@ -181,10 +193,20 @@ public class Broadcast_Contect_Fragment extends Fragment {
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
                 if (add_new_contect_icon1.getVisibility() == View.GONE) {
-                    add_new_contect_icon1.setVisibility(View.VISIBLE);
-                    add_new_contect_icon.setVisibility(View.GONE);
-                    groupContectAdapter.addAll_item(contectListData);
-                    add_new_contect.setText(getString(R.string.remove_new_contect1));
+                    Global.Please_wait(getActivity(),mMainLayout,"Please Wait...",false);
+                    Handler handler = new Handler();
+                    Runnable r = new Runnable() {
+                        @SuppressLint("NotifyDataSetChanged")
+                        public void run() {
+                            add_new_contect_icon1.setVisibility(View.VISIBLE);
+                            add_new_contect_icon.setVisibility(View.GONE);
+                            groupContectAdapter.addAll_item(contectListData);
+                            add_new_contect.setText(getString(R.string.remove_new_contect1));
+                        }
+                    };
+                    handler.postDelayed(r, 1000);
+
+
                 } else {
                     add_new_contect_icon1.setVisibility(View.GONE);
                     add_new_contect_icon.setVisibility(View.VISIBLE);
