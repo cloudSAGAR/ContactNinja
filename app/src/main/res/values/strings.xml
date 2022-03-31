@@ -504,7 +504,7 @@ Number</string>
 
     <string-array name="manual_filter">
         <item>TODAY</item>
-        <item>UPCOMINGE</item>
+        <item>UPCOMING</item>
         <item>DUE</item>
         <item>FINISHED</item>
         <item>SKIPPED</item>

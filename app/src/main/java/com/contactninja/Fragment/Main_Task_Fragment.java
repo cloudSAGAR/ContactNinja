@@ -235,8 +235,6 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
     @Override
     public void onResume() {
         super.onResume();
-        //   Filter = "";
-        //   iv_filter_icon.setImageResource(R.drawable.ic_filter);
         currentPage = PAGE_START;
         isLastPage = false;
         manualTaskModelList.clear();
@@ -354,6 +352,9 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
 
             case "FINISHED_AUTO":
                 ch_auto_complate_task.setChecked(true);
+                break;
+            case "":
+                ch_all_task.setChecked(true);
                 break;
         }
 

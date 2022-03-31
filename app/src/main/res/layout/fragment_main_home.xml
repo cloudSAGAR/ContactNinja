@@ -291,7 +291,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center|left"
                                 android:padding="@dimen/_2sdp"
-                                android:text="congratulations  🎉"
+                                android:text="Congratulations  🎉"
                                 android:textColor="@color/text_reg" />
 
                             <TextView
