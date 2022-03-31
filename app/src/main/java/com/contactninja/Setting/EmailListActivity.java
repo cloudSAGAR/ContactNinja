@@ -255,11 +255,32 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
         public void onBindViewHolder(@NonNull EmailAdepter.viewData holder, int position) {
             UserLinkedList.UserLinkedGmail userLinkedGmail=userLinkedGmailList.get(position);
 
-            Glide.with(mCtx)
-                    .load(userLinkedGmail.getPicture())
-                    .circleCrop()
-                    .placeholder(Global.setplaceholder(mCtx))
-                    .into(holder.iv_select_type);
+            if(Global.IsNotNull(userLinkedGmail.getPicture())){
+                holder.layout_name.setVisibility(View.GONE);
+                holder.iv_select_type.setVisibility(View.VISIBLE);
+                Glide.with(mCtx)
+                        .load(userLinkedGmail.getPicture())
+                        .circleCrop()
+                        .placeholder(Global.setplaceholder(mCtx))
+                        .into(holder.iv_select_type);
+            }else {
+                holder.layout_name.setVisibility(View.VISIBLE);
+                holder.iv_select_type.setVisibility(View.GONE);
+                String name = userLinkedGmail.getUserEmail();
+                String add_text = "";
+                String[] split_data = name.split("@");
+                try {
+                    for (int i = 0; i < split_data.length; i++) {
+                        if (i == 0) {
+                            add_text = split_data[i].substring(0, 1);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            holder.txt_name.setText(add_text);
+
+            }
             holder.tv_email_name.setText(userLinkedGmail.getUserEmail());
             if(userLinkedGmail.getIsDefault().equals(1)){
              //   holder.iv_is_default.setVisibility(View.VISIBLE);
@@ -295,18 +316,21 @@ public class EmailListActivity extends AppCompatActivity implements View.OnClick
 
 
         public class viewData extends RecyclerView.ViewHolder {
-            TextView tv_email_name;
+            TextView tv_email_name,txt_name;
             LinearLayout layout_email;
             ImageView iv_is_default,iv_selected,iv_unselected;
             RoundedImageView iv_select_type;
+            LinearLayout layout_name;
             public viewData(@NonNull View itemView) {
                 super(itemView);
+                txt_name = itemView.findViewById(R.id.txt_name);
                 tv_email_name = itemView.findViewById(R.id.tv_email_name);
                 layout_email = itemView.findViewById(R.id.layout_email);
                 iv_select_type = itemView.findViewById(R.id.iv_select_type);
                 iv_is_default = itemView.findViewById(R.id.iv_is_default);
                 iv_selected = itemView.findViewById(R.id.iv_selected);
                 iv_unselected = itemView.findViewById(R.id.iv_unselected);
+                layout_name = itemView.findViewById(R.id.layout_name);
             }
         }
     }

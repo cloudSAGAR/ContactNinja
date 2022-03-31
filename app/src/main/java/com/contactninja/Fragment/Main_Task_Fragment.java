@@ -56,8 +56,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -177,7 +181,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                 currentPage++;
                 try {
                     if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
-                        Mail_list();
+                        Manual_Task_list();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -245,7 +249,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                 if (!swipeToRefresh.isRefreshing()) {
                     loadingDialog.showLoadingDialog();
                 }
-                Mail_list();
+                Manual_Task_list();
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -502,7 +506,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
         bottomSheetDialog.show();
     }
 
-    void Mail_list() throws JSONException {
+    void Manual_Task_list() throws JSONException {
         /*
         Create By :- Paras
         Date:-1-2-22
@@ -538,6 +542,22 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                         }.getType();
                         EmailActivityListModel emailActivityListModel = new Gson().fromJson(headerString, listType);
                         manualTaskModelList = emailActivityListModel.getManualTask();
+
+                     /*   Collections.sort(manualTaskModelList, new Comparator<ManualTaskModel>() {
+                            DateFormat f = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                            @Override
+                            public int compare(ManualTaskModel lhs, ManualTaskModel rhs) {
+                                try {
+
+                                    return f.parse(rhs.getDate()+" "+rhs.getTime())
+                                            .compareTo(f.parse(lhs.getDate()+" "+lhs.getTime()));
+                                } catch (ParseException e) {
+                                    throw new IllegalArgumentException(e);
+                                }
+                            }
+                        });
+*/
+
                         if (!ev_search.getText().toString().equals("") || !Filter.equals("")) {
                             if (manualTaskModelList.size() == 0) {
                                 rv_Task_list.setVisibility(View.GONE);
@@ -618,7 +638,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                 if (!swipeToRefresh.isRefreshing()) {
                     loadingDialog.showLoadingDialog();
                 }
-                Mail_list();
+                Manual_Task_list();
             }
         } catch (JSONException e) {
             e.printStackTrace();
