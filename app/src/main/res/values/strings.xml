@@ -454,7 +454,7 @@ Number</string>
     <string name="fillter_all">All Contacts</string>
     <string name="fillter_compnay_block">Blacklist Companies</string>
     <string name="fillter_compnay_all">All Contacts</string>
-    <string name="company_add">Add new company</string>
+    <string name="company_add">Add new Companies</string>
     <string name="company_blacklst">Blacklist Companies</string>
     <string name="company_all">All Companies</string>
     <string name="delete_company">Delete company</string>

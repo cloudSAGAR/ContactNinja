@@ -1196,7 +1196,25 @@ public class Broadcast_Contect_Fragment extends Fragment {
                                          * selected number list show
                                          * */
 
-                                    } else if (detailList1.size() == 1 && detailList.size() == 0) {
+                                    }
+                                   else if (detailList.size() == 1 && detailList1.size() == 1) {
+                                        holder1.remove_contect_icon.setVisibility(View.VISIBLE);
+                                        holder1.add_new_contect_icon.setVisibility(View.GONE);
+                                        select_contectListData.add(contacts.get(position));
+                                        //userDetailsfull.get(position).setId(position);
+                                        topUserListDataAdapter.notifyDataSetChanged();
+                                        /*
+                                         * set select contact count */
+                                        select_Contact(select_contectListData.size());
+                                        contacts.get(position).setFlag("false");
+                                        SessionManager.setGroupList(getActivity(), new ArrayList<>());
+                                        SessionManager.setGroupList(getActivity(), select_contectListData);
+                                        /*
+                                         * selected number list show
+                                         * */
+
+                                    }
+                                    else if (detailList1.size() == 1 && detailList.size() == 0) {
                                         holder1.remove_contect_icon.setVisibility(View.VISIBLE);
                                         holder1.add_new_contect_icon.setVisibility(View.GONE);
                                         select_contectListData.add(contacts.get(position));

@@ -1079,7 +1079,28 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                                         } else {
                                             layout_list_number_select.setVisibility(View.GONE);
                                         }
-                                    } else if (detailList1.size() == 1 && detailList.size() == 0) {
+                                    }
+                                    else if (detailList.size() == 1 && detailList1.size() == 1) {
+                                        holder1.remove_contect_icon.setVisibility(View.VISIBLE);
+                                        holder1.add_new_contect_icon.setVisibility(View.GONE);
+                                        select_contectListData.add(contacts.get(position));
+                                        SessionManager.setGroupList(getApplicationContext(), select_contectListData);
+                                        topUserListDataAdapter.notifyDataSetChanged();
+                                        /*
+                                         * set select contact count */
+                                        select_Contact(select_contectListData.size());
+                                        contacts.get(position).setFlag("false");
+                                        save_button.setTextColor(getResources().getColor(R.color.purple_200));
+                                        /*
+                                         * selected number list show
+                                         * */
+                                        if (select_contectListData.size() != 0) {
+                                            layout_list_number_select.setVisibility(View.VISIBLE);
+                                        } else {
+                                            layout_list_number_select.setVisibility(View.GONE);
+                                        }
+                                    }
+                                    else if (detailList1.size() == 1 && detailList.size() == 0) {
                                         holder1.remove_contect_icon.setVisibility(View.VISIBLE);
                                         holder1.add_new_contect_icon.setVisibility(View.GONE);
                                         select_contectListData.add(contacts.get(position));
