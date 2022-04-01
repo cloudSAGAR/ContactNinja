@@ -66,7 +66,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     ImageView iv_back, iv_cancle_search_icon;
-    TextView tv_create, sub_txt;
+    TextView tv_create, sub_txt,txt_toolbar;
     LinearLayout demo_layout,  mMainLayout1, mMainLayout,add_campaign_layout;
     EditText ev_search;
     SwipeRefreshLayout swipeToRefresh;
@@ -160,6 +160,9 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         sub_txt = findViewById(R.id.sub_txt);
         ev_search = findViewById(R.id.ev_search);
         add_campaign_layout = findViewById(R.id.add_campaign_layout);
+        txt_toolbar = findViewById(R.id.txt_toolbar);
+        txt_toolbar.setVisibility(View.VISIBLE);
+        txt_toolbar.setText(getResources().getText(R.string.campaign));
         tv_create.setText(getString(R.string.campaign_alert_txt));
         sub_txt.setText(getString(R.string.campaign_alert_sub_txt));
 

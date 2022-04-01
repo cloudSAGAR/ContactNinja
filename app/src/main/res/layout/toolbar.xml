@@ -16,7 +16,15 @@
         android:padding="@dimen/_12sdp"
         android:visibility="gone"
         tools:ignore="ContentDescription" />
-
+    <TextView
+        android:id="@+id/txt_toolbar"
+        style="@style/tv_Medium_12"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="end|center"
+        android:textColor="@color/text_reg"
+        android:padding="@dimen/_5sdp"
+        android:visibility="gone"/>
 
     <LinearLayout
         android:layout_gravity="end|center"

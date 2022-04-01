@@ -434,7 +434,7 @@ public class Company_Fragment extends Fragment {
                        Type listType = new TypeToken<CompanyModel>() {
                        }.getType();
                        CompanyModel data = new Gson().fromJson(headerString, listType);
-                       num_count.setText(String.valueOf(data.getTotal() + " Company"));
+                       num_count.setText(String.valueOf(data.getTotal() + " Companies"));
                        List<CompanyModel.Company> companyList;
                        if (Filter.equals("BLOCK")) {
                            companyList = data.getBlocked_companies();
@@ -494,12 +494,12 @@ public class Company_Fragment extends Fragment {
                                layout_list.setVisibility(View.VISIBLE);
                            }
                        }
-                       num_count.setText(String.valueOf(0 + " Company"));
+                       num_count.setText(String.valueOf(0 + " Companies"));
                    }
                }
                catch (Exception e)
                {
-
+                    e.printStackTrace();
                }
 
 
