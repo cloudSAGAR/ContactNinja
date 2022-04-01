@@ -207,7 +207,7 @@ public class Add_Camp_Tab_Select_Activity extends AppCompatActivity implements V
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.iv_back:
                 finish();
                 break;
@@ -217,94 +217,85 @@ public class Add_Camp_Tab_Select_Activity extends AppCompatActivity implements V
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
                 Global.hideKeyboard(Add_Camp_Tab_Select_Activity.this);
-                if (sessionManager.getCampaign_type_name(getApplicationContext()).equals(""))
-                {
-                    Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.select_type),false);
-                }
-               else if (sessionManager.getCampaign_type(getApplicationContext()).equals("EMAIL")){
-                    try {
-                        if(Global.isNetworkAvailable(Add_Camp_Tab_Select_Activity.this, MainActivity.mMainLayout)) {
-                            Mail_list();
+                if (sessionManager.getCampaign_type_name(getApplicationContext()).equals("")) {
+                    Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.select_type), false);
+                } else if (sessionManager.getCampaign_type(getApplicationContext()).equals("EMAIL")) {
+                    if (ValidactionDay()) {
+                        try {
+                            if (Global.isNetworkAvailable(Add_Camp_Tab_Select_Activity.this, MainActivity.mMainLayout)) {
+                                Mail_list();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
-               }
-               else {
-                   if (SessionManager.getTask(getApplicationContext()).equals(null))
-                   {
+                } else {
+                    if (ValidactionDay()) {
+                        if (SessionManager.getTask(getApplicationContext()).equals(null)) {
 
-                       Intent intent=getIntent();
-                       Bundle bundle=intent.getExtras();
-                       String flag=bundle.getString("flag");
-                       if (flag.equals("edit"))
-                       {
-                           //Log.e("ID IS",String.valueOf(bundle.getString("sequence_id")));
-                           Intent new_task=new Intent(getApplicationContext(), Add_Camp_Text_Activity.class);
-                           new_task.putExtra("flag","edit");
-                           new_task.putExtra("body",bundle.getString("body"));
-                           new_task.putExtra("day",Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext())));
-                           new_task.putExtra("manage_by",bundle.getString("manage_by"));
-                           new_task.putExtra("seq_task_id",bundle.getInt("seq_task_id"));
-                           new_task.putExtra("sequence_id",bundle.getInt("sequence_id"));
-                           new_task.putExtra("type",bundle.getString("type"));
-                           new_task.putExtra("minute",Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext())));
-                           new_task.putExtra("step",bundle.getInt("step"));
-                           new_task.putExtra("from_ac",bundle.getString("from_ac"));
-                           new_task.putExtra("from_ac_id",bundle.getString("from_ac_id"));
-                           startActivity(new_task);
-                           finish();
-                       }
-                       else {
-                           Intent new_task=new Intent(getApplicationContext(), Add_Camp_Text_Activity.class);
-                           new_task.putExtra("flag","add");
-                           startActivity(new_task);
-                           finish();
-                       }
+                            Intent intent = getIntent();
+                            Bundle bundle = intent.getExtras();
+                            String flag = bundle.getString("flag");
+                            if (flag.equals("edit")) {
+                                //Log.e("ID IS",String.valueOf(bundle.getString("sequence_id")));
+                                Intent new_task = new Intent(getApplicationContext(), Add_Camp_Text_Activity.class);
+                                new_task.putExtra("flag", "edit");
+                                new_task.putExtra("body", bundle.getString("body"));
+                                new_task.putExtra("day", Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext())));
+                                new_task.putExtra("manage_by", bundle.getString("manage_by"));
+                                new_task.putExtra("seq_task_id", bundle.getInt("seq_task_id"));
+                                new_task.putExtra("sequence_id", bundle.getInt("sequence_id"));
+                                new_task.putExtra("type", bundle.getString("type"));
+                                new_task.putExtra("minute", Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext())));
+                                new_task.putExtra("step", bundle.getInt("step"));
+                                new_task.putExtra("from_ac", bundle.getString("from_ac"));
+                                new_task.putExtra("from_ac_id", bundle.getString("from_ac_id"));
+                                startActivity(new_task);
+                                finish();
+                            } else {
+                                Intent new_task = new Intent(getApplicationContext(), Add_Camp_Text_Activity.class);
+                                new_task.putExtra("flag", "add");
+                                startActivity(new_task);
+                                finish();
+                            }
 
-                   }
-                   else {
+                        } else {
 
-                       if(ValidactionDay()){
-                           Intent intent=getIntent();
-                           Bundle bundle=intent.getExtras();
-                           String flag=bundle.getString("flag");
-                           if (flag.equals("edit"))
-                           {
-                               Log.e("ID IS",String.valueOf(bundle.getString("sequence_id")));
+                            Intent intent = getIntent();
+                            Bundle bundle = intent.getExtras();
+                            String flag = bundle.getString("flag");
+                            if (flag.equals("edit")) {
+                                Log.e("ID IS", String.valueOf(bundle.getString("sequence_id")));
 
-                               Intent new_task=new Intent(getApplicationContext(), Add_Camp_Text_Activity.class);
-                               new_task.putExtra("flag","edit");
-                               new_task.putExtra("body",bundle.getString("body"));
-                               new_task.putExtra("day",Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext())));
-                               new_task.putExtra("manage_by",bundle.getInt("manage_by"));
-                               new_task.putExtra("seq_task_id",bundle.getInt("seq_task_id"));
-                               new_task.putExtra("sequence_id",String.valueOf(bundle.getInt("sequence_id")));
-                               new_task.putExtra("type",bundle.getString("type"));
-                               new_task.putExtra("minute",Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext())));
-                               new_task.putExtra("step",bundle.getInt("step"));
-                               new_task.putExtra("from_ac",bundle.getString("from_ac"));
-                               new_task.putExtra("from_ac_id",bundle.getString("from_ac_id"));
-                               startActivity(new_task);
-                           }
-                           else {
-                               Intent new_task=new Intent(getApplicationContext(), Add_Camp_Text_Activity.class);
-                               new_task.putExtra("flag","add");
-                               startActivity(new_task);
-                           }
-                           finish();
-                       }
+                                Intent new_task = new Intent(getApplicationContext(), Add_Camp_Text_Activity.class);
+                                new_task.putExtra("flag", "edit");
+                                new_task.putExtra("body", bundle.getString("body"));
+                                new_task.putExtra("day", Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext())));
+                                new_task.putExtra("manage_by", bundle.getInt("manage_by"));
+                                new_task.putExtra("seq_task_id", bundle.getInt("seq_task_id"));
+                                new_task.putExtra("sequence_id", String.valueOf(bundle.getInt("sequence_id")));
+                                new_task.putExtra("type", bundle.getString("type"));
+                                new_task.putExtra("minute", Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext())));
+                                new_task.putExtra("step", bundle.getInt("step"));
+                                new_task.putExtra("from_ac", bundle.getString("from_ac"));
+                                new_task.putExtra("from_ac_id", bundle.getString("from_ac_id"));
+                                startActivity(new_task);
+                            } else {
+                                Intent new_task = new Intent(getApplicationContext(), Add_Camp_Text_Activity.class);
+                                new_task.putExtra("flag", "add");
+                                startActivity(new_task);
+                            }
+                            finish();
+                        }
 
-                   }
-
-               }
+                    }
 
 
-                //
-                break;
+                    //
+                    break;
 
+                }
         }
-
 
     }
 
