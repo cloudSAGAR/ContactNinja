@@ -788,7 +788,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onResume();
         SessionManager.setupdateContect(getApplicationContext(),new ArrayList<>());
         SessionManager.setOneCotect_deatil(getApplicationContext(), new ContectListData.Contact());
-        SessionManager.setnewContect(getApplicationContext(),new ArrayList<>());
+       // SessionManager.setnewContect(getApplicationContext(),new ArrayList<>());
         Global.getInstance().setConnectivityListener(MainActivity.this);
     }
 

@@ -635,11 +635,6 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
 
     private void addContact(String given_name, String name, String mobile, String home, String email, String note) {
 
-        Log.e("Name", name);
-        Log.e("mobile", mobile);
-        Log.e("home", home);
-        Log.e("email", email);
-        Log.e("Note", note);
 
         ArrayList<ContentProviderOperation> contact = new ArrayList<ContentProviderOperation>();
         contact.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
