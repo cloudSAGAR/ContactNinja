@@ -1276,6 +1276,7 @@ public class ContectFragment extends Fragment {
                                 String headerString = gson.toJson(response.body().getData());
                                 Type listType = new TypeToken<ContectListData>() {
                                 }.getType();
+                                contectListData.clear();
                                 ContectListData contectListData1 = new Gson().fromJson(headerString, listType);
                                 contectListData.addAll(contectListData1.getContacts());
                                 // paginationAdapter.addAll(contectListData);
