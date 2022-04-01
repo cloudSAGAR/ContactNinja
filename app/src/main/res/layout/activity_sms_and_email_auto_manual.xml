@@ -71,7 +71,7 @@
             app:tabIndicatorHeight="2dp"
             app:tabMode="fixed"
             app:tabSelectedTextColor="@color/text_reg"
-            app:tabTextColor="@color/text_reg"
+            app:tabTextColor="@color/text_gray"
             tools:ignore="SpeakableTextPresentCheck"/>
 
         <View

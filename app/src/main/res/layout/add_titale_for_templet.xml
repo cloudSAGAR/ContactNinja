@@ -32,6 +32,7 @@
         <EditText
             android:id="@+id/editText"
             style="@style/tv_regular_12"
+            android:inputType="textCapSentences"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_25sdp"
             android:layout_marginStart="@dimen/_15sdp"

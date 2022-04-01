@@ -43,8 +43,9 @@
                     android:textColor="@color/purple_200" />
 
                 <EditText
+                    android:inputType="textCapSentences"
                     android:id="@+id/edit_template_name"
-                    style="@style/tv_Medium_12"
+                    style="@style/tv_regular_12"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
@@ -53,7 +54,6 @@
                     android:gravity="center|left"
                     android:hint="@string/Enter_template_name"
                     android:imeOptions="actionDone"
-                    android:inputType="textEmailAddress"
                     android:textColor="@color/text_reg"
                     android:textColorHint="@color/text_gray"
 
@@ -98,6 +98,7 @@
                     android:textColor="@color/purple_200" />
 
                 <EditText
+                    android:inputType="textCapSentences"
                     android:id="@+id/edit_template_subject"
                     style="@style/tv_regular_12"
                     android:layout_width="0dp"
@@ -108,7 +109,6 @@
                     android:gravity="center|left"
                     android:hint="@string/Enter_subject_here"
                     android:imeOptions="actionDone"
-                    android:inputType="textEmailAddress"
                     android:textColor="@color/text_reg"
                     android:textColorHint="@color/text_gray"
                     tools:ignore="Autofill,RtlHardcoded" />
@@ -131,6 +131,7 @@
 
 
     <EditText
+        android:inputType="textCapSentences"
         android:id="@+id/edit_template"
         style="@style/tv_regular_12"
         android:layout_width="match_parent"

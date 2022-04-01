@@ -28,6 +28,7 @@
             android:textColor="@color/text_reg" />
 
         <EditText
+            android:inputType="textCapSentences"
             android:id="@+id/edt_image_title"
             style="@style/tv_regular_12"
             android:layout_width="match_parent"
@@ -49,6 +50,7 @@
         <EditText
             android:id="@+id/edt_Add_description"
             style="@style/tv_regular_12"
+            android:inputType="textCapSentences"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_80sdp"
             android:layout_gravity="center|left"

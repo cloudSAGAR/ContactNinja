@@ -95,6 +95,7 @@
                     <EditText
                         android:id="@+id/ev_titale"
                         style="@style/tv_regular_12"
+                        android:inputType="textCapSentences"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
@@ -241,6 +242,7 @@
                     <EditText
                         android:id="@+id/ev_subject"
                         style="@style/tv_regular_12"
+                        android:inputType="textCapSentences"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
@@ -307,6 +309,7 @@
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
                     style="@style/tv_normal_12"
+                    android:inputType="textCapSentences"
                     android:id="@+id/edit_compose"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

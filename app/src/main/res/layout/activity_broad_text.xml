@@ -107,7 +107,7 @@
                 </View>
 
                 <EditText
-
+                    android:inputType="textCapSentences"
                     android:id="@+id/edit_template"
                     style="@style/tv_regular_12"
                     android:layout_width="match_parent"

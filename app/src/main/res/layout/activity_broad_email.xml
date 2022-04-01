@@ -127,6 +127,7 @@
                         />
 
                     <EditText
+                        android:inputType="textCapSentences"
                         android:id="@+id/ev_subject"
                         style="@style/tv_regular_12"
                         android:layout_width="0dp"
@@ -137,7 +138,6 @@
                         android:gravity="center|left"
                         android:hint="@string/Enter_subject_here"
                         android:imeOptions="actionDone"
-                        android:inputType="textEmailAddress"
                         android:textColor="@color/text_reg"
                         android:textColorHint="@color/otp_header_text_color"
                         tools:ignore="Autofill,RtlHardcoded,TouchTargetSizeCheck" />
@@ -159,6 +159,7 @@
             <com.chinalwb.are.AREditText
                 android:id="@+id/edit_template"
                 style="@style/tv_normal_12"
+                android:inputType="textCapSentences"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"

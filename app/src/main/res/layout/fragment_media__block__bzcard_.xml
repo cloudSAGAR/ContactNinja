@@ -87,6 +87,7 @@
                     android:orientation="vertical">
 
                     <EditText
+                        android:inputType="textCapSentences"
                         android:id="@+id/edt_title_1"
                         style="@style/tv_regular_12"
                         android:layout_width="match_parent"
@@ -113,6 +114,7 @@
                     android:orientation="vertical">
 
                     <EditText
+                        android:inputType="textCapSentences"
                         android:id="@+id/edt_add_url_1"
                         style="@style/tv_regular_12"
                         android:layout_width="match_parent"
@@ -172,6 +174,7 @@
                         android:orientation="vertical">
 
                         <EditText
+                            android:inputType="textCapSentences"
                             android:id="@+id/edt_title_2"
                             style="@style/tv_regular_12"
                             android:layout_width="match_parent"
@@ -198,6 +201,7 @@
                         android:orientation="vertical">
 
                         <EditText
+                            android:inputType="textCapSentences"
                             android:id="@+id/edt_add_url_2"
                             style="@style/tv_regular_12"
                             android:layout_width="match_parent"
@@ -233,6 +237,7 @@
                     android:textColor="@color/text_reg" />
 
                 <EditText
+                    android:inputType="textCapSentences"
                     android:id="@+id/edt_Bio"
                     style="@style/tv_regular_12"
                     android:layout_width="match_parent"
@@ -251,6 +256,7 @@
                     android:background="@color/line_separator" />
 
                 <EditText
+                    android:inputType="textCapSentences"
                     android:id="@+id/edt_Add_description"
                     style="@style/tv_regular_12"
                     android:layout_width="match_parent"
@@ -744,6 +750,7 @@
                 android:visibility="gone">
 
                 <EditText
+                    android:inputType="textCapSentences"
                     android:id="@+id/edt_add_Custom_HTML"
                     style="@style/tv_regular_12"
                     android:layout_width="match_parent"

@@ -29,6 +29,7 @@
             android:textColor="@color/text_reg" />
 
         <EditText
+            android:inputType="textCapSentences"
             android:id="@+id/edt_video_title"
             style="@style/tv_regular_12"
             android:layout_width="match_parent"
@@ -48,6 +49,7 @@
             android:background="@color/line_separator" />
 
         <EditText
+            android:inputType="textCapSentences"
             android:id="@+id/edt_Add_description"
             style="@style/tv_regular_12"
             android:layout_width="match_parent"
