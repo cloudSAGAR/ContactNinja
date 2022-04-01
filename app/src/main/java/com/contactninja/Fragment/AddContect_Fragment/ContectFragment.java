@@ -421,10 +421,21 @@ public class ContectFragment extends Fragment {
                     listContacts1.addAll(SessionManager.getnewContect(getActivity()));
                     if (listContacts1.size() != 0) {
                         loadingDialog.showLoadingDialog();
-                        List<Contact> newList = listContacts1.stream()
+                       List<Contact> newList = listContacts1.stream()
                                 .distinct()
                                 .collect(Collectors.toList());
-                        //  Log.e("New Contect List",new Gson().toJson(newList));
+
+
+                     /*   for(int i=0;i<listContacts1.size();i++){
+
+                            for(int j=i+1;j<listContacts1.size();j++){
+                                if(listContacts1.get(i).numbers.equals(listContacts1.get(j).numbers)){
+                                    listContacts1.remove(j);
+                                    j--;
+                                }
+                            }
+
+                        }*/
                         splitdata(newList);
                     } else {
                         tv_upload.setEnabled(true);
