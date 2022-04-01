@@ -713,7 +713,11 @@ public class ContectFragment extends Fragment {
                         if (number.equals("")) {
                             number = response.get(i).numbers.get(j).number;
                         } else {
-                            number = number + "," + response.get(i).numbers.get(j).number;
+                            if (!number.contains(response.get(i).numbers.get(j).number))
+                            {
+                                number = number + "," + response.get(i).numbers.get(j).number;
+                            }
+
                         }
                     } catch (Exception e) {
                         number = "";

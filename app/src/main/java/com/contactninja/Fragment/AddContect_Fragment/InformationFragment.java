@@ -202,7 +202,14 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             organization_id = String.valueOf(Contect_data.getOrganizationId());
             team_id = String.valueOf(Contect_data.getTeamId());
             ev_company_url.setText("" + Contect_data.getCompany_url().toString().trim());
-            ev_bob.setText("" + Contect_data.getDob().toString().trim());
+            if (Contect_data.getDob().toString().trim().equals("0000-00-00"))
+            {
+                ev_bob.setText("");
+            }
+            else {
+                ev_bob.setText("" + Contect_data.getDob().toString().trim());
+            }
+
             ev_twitter.setText("" + Contect_data.getTwitter_link().toString().trim());
             ev_fb.setText("" + Contect_data.getFacebook_link().toString().trim());
             ev_linkedin.setText("" + Contect_data.getLinkedin_link().toString().trim());
@@ -392,7 +399,14 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             } else {
 
                 layout_bod.setVisibility(View.VISIBLE);
-                ev_bob.setText("" + Contect_data.getDob().toString().trim());
+
+                if (Contect_data.getDob().toString().trim().equals("0000-00-00"))
+                {
+                    ev_bob.setText("");
+                }
+                else {
+                    ev_bob.setText("" + Contect_data.getDob().toString().trim());
+                }
 
             }
 

@@ -1347,7 +1347,7 @@
                         android:id="@+id/select_label_zone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginStart="@dimen/_15sdp"
                         android:layout_weight="1"
                         android:background="@drawable/shape_5_white_ccc_line"
                         android:paddingStart="@dimen/_20sdp"

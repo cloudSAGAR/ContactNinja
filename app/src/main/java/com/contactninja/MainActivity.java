@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     S3Uploader_csv s3uploaderObj;
     static  String csv_file="";
     public static MainActivity activity;
-
+    String characterFilter = "[^\\p{L}\\p{M}\\p{N}\\p{P}\\p{Z}\\p{Cf}\\p{Cs}\\s]";
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(@SuppressLint("UnknownNullness") Bundle savedInstanceState) {
@@ -473,7 +473,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         if (number.equals("")) {
                             number = response.get(i).numbers.get(j).number;
                         } else {
-                            number = number + "," + response.get(i).numbers.get(j).number;
+                            if (!number.contains(response.get(i).numbers.get(j).number))
+                            {
+                                number = number + "," + response.get(i).numbers.get(j).number;
+                            }
+
                         }
                     }
                     catch (Exception e)
@@ -485,8 +489,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
 
                 if (Global.IsNotNull(number) && !number.equals("null") && !number.equals("")) {
-                    data.append('\n' + response.get(i).name.replaceAll("[-+.^:,]", "") +
-                            ',' + response.get(i).last_name.replaceAll("[-+.^:,]", "") +
+                    data.append('\n' + response.get(i).name.toString().trim().replaceAll("[-+.^:,]", "") +
+                            ',' + response.get(i).last_name.toString().trim().replaceAll("[-+.^:,]", "") +
                             ',' + ' ' +
                             ',' + ' ' +
                             ',' + ' ' +
@@ -501,23 +505,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             ',' + ' ' +
                             ',' + ' ' +
                             ',' + ' ' +
-                            ',' + '"' + email + '"' +
-                            ',' + '"' + number + ',' + '"' +
+                            ',' + '"' + email.toString().trim() + '"' +
+                            ',' + '"' + number.toString().trim() + ',' + '"' +
                             ',' + ' ' +
-                            ',' + Global.imei
+                            ',' + Global.imei.toString().trim()
                     );
                 }
             }
 
         }
 
-        //Log.e("Data Is", String.valueOf(data));
+    //    Log.e("Data Is", String.valueOf(data));
        /* CreateCSV(data);*/  //Api Pass Csv
 
 
         // Buket Upload Csv
 
-        if (!data.toString().equals(null) &&  !data.toString().equals(""))
+      if (!data.toString().equals(null) &&  !data.toString().equals(""))
         {
             Calendar calendar = Calendar.getInstance();
             long time = calendar.getTimeInMillis();

@@ -428,7 +428,14 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
 
 
             ev_company_url.setText(Contect_data.getCompany_url());
-            ev_bob.setText(Contect_data.getDob());
+            if (Contect_data.getDob().equals("0000-00-00"))
+            {
+                ev_bob.setText("");
+            }
+            else {
+                ev_bob.setText(Contect_data.getDob());
+            }
+
             ev_twitter.setText(Contect_data.getTwitter_link());
             ev_fb.setText(Contect_data.getFacebook_link());
             ev_linkedin.setText(Contect_data.getLinkedin_link());
@@ -695,7 +702,13 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             }
             else {
                 layout_bod.setVisibility(View.VISIBLE);
-                ev_bob.setText(Contect_data.getDob());
+                if (Contect_data.getDob().equals("0000-00-00"))
+                {
+                    ev_bob.setText("");
+                }
+                else {
+                    ev_bob.setText(Contect_data.getDob());
+                }
             }
 
             if (user_data_model.getReferenceCode().toString().trim().equals("") || user_data_model.getReferenceCode().toString().trim().equals(null))
