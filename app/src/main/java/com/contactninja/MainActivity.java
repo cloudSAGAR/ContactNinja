@@ -343,6 +343,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         e.printStackTrace();
                     }
                 }*/
+
+
                 if (SessionManager.getContectList(getApplicationContext()).size() == 0) {
                     loadingDialog.showLoadingDialog();
                 }
@@ -365,7 +367,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         if (Is_contact_exist.equals("0")) {
                             limit = listContacts.size();
                             try {
-                                splitdata(listContacts);
+                                if (contectListData.size()==0 || contectListData.equals(null))
+                                {
+                                    splitdata(listContacts);
+                                }
+
                             }
                             catch (Exception e)
                             {
@@ -778,6 +784,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onResume();
         SessionManager.setupdateContect(getApplicationContext(),new ArrayList<>());
         SessionManager.setOneCotect_deatil(getApplicationContext(), new ContectListData.Contact());
+        SessionManager.setnewContect(getApplicationContext(),new ArrayList<>());
         Global.getInstance().setConnectivityListener(MainActivity.this);
     }
 

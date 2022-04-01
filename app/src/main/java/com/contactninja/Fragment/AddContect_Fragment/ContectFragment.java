@@ -32,12 +32,22 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSmoothScroller;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.bumptech.glide.Glide;
 import com.contactninja.AddContect.Add_Newcontect_Activity;
 import com.contactninja.Contect.Contact;
 import com.contactninja.Contect.ContactFetcher;
 import com.contactninja.Contect.ContactPhone;
-import com.contactninja.MainActivity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.BuketModel;
 import com.contactninja.Model.ContectListData;
@@ -81,17 +91,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.FileProvider;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.LinearSmoothScroller;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -102,7 +103,6 @@ import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged")
 public class ContectFragment extends Fragment {
-  MyAsyncTasks1 myAsyncTasks1;
     private final static String[] DATA_COLS = {
 
             ContactsContract.Data.MIMETYPE,
@@ -111,6 +111,7 @@ public class ContectFragment extends Fragment {
     };
     public static ArrayList<InviteListData> inviteListData = new ArrayList<>();
     static String csv_file = "";
+    MyAsyncTasks1 myAsyncTasks1;
     List<Contact> update_listContacts = new ArrayList<>();
     S3Uploader_csv s3uploaderObj;
     ArrayList<Contact> listContacts;
@@ -153,6 +154,7 @@ public class ContectFragment extends Fragment {
     private List<ContectListData.Contact> contectListData;
     private List<ContectListData.Contact> main_contectListData = new ArrayList<>();
     private long mLastClickTime = 0;
+
     public ContectFragment(View view, FragmentActivity activity) {
 
         this.view1 = view;
@@ -390,19 +392,18 @@ public class ContectFragment extends Fragment {
             }
         });
         if (!SessionManager.getnewContect(getActivity()).equals(null) && !SessionManager.getnewContect(getActivity()).equals("")) {
-            Log.e("Data Is",new Gson().toJson(SessionManager.getnewContect(getActivity())));
-            ArrayList<Contact> listContacts1=new ArrayList<>();
+            Log.e("Data Is", new Gson().toJson(SessionManager.getnewContect(getActivity())));
+            ArrayList<Contact> listContacts1 = new ArrayList<>();
             listContacts1.addAll(SessionManager.getnewContect(getActivity()));
-            if (listContacts1.size()!=0)
-            {
+            if (listContacts1.size() != 0) {
                 tv_upload.setVisibility(View.VISIBLE);
-            }
-            else {
+            } else {
                 tv_upload.setVisibility(View.GONE);
             }
         }
 
         tv_upload.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
 
@@ -415,20 +416,21 @@ public class ContectFragment extends Fragment {
 
                     EnableRuntimePermission();
                     Duplicate_remove();
-                   // Log.e("Data Is",new Gson().toJson(SessionManager.getnewContect(getActivity())));
-                    ArrayList<Contact> listContacts1=new ArrayList<>();
+                    // Log.e("Data Is",new Gson().toJson(SessionManager.getnewContect(getActivity())));
+                    ArrayList<Contact> listContacts1 = new ArrayList<>();
                     listContacts1.addAll(SessionManager.getnewContect(getActivity()));
-                    if (listContacts1.size()!=0)
-                    {
+                    if (listContacts1.size() != 0) {
                         loadingDialog.showLoadingDialog();
-                        splitdata(listContacts1);
-                    }
-                    else {
+                        List<Contact> newList = listContacts1.stream()
+                                .distinct()
+                                .collect(Collectors.toList());
+                        //  Log.e("New Contect List",new Gson().toJson(newList));
+                        splitdata(newList);
+                    } else {
                         tv_upload.setEnabled(true);
                     }
 
-                }
-                else {
+                } else {
                     tv_upload.setEnabled(true);
                 }
                 tv_upload.setEnabled(false);
@@ -492,8 +494,7 @@ public class ContectFragment extends Fragment {
                 //Get All Contect Locale Room Database  No Data Then Upload Csv Code Call
                 if (contect_list.size() == 0) {
                     //    splitdata(csv_inviteListData);
-                }
-                else if (contect_list.size() == listContacts.size()) {
+                } else if (contect_list.size() == listContacts.size()) {
                     for (int i = 0; i < listContacts.size(); i++) {
                         String num = listContacts.get(i).numbers.get(0).number;
                         String f_name = listContacts.get(i).name;
@@ -664,7 +665,7 @@ public class ContectFragment extends Fragment {
 
     }
 
-    private void splitdata(ArrayList<Contact> response) {
+    private void splitdata(List<Contact> response) {
         data = new StringBuilder();
         data.append("Firstname" +
                 "," + "Lastname" +
@@ -677,7 +678,7 @@ public class ContectFragment extends Fragment {
                 "Facebook Link" + "," + "Twitter Link" + "," +
                 "Breakout Link" + "," + "Linkedin Link" + "," +
                 "Email" + "," + "Phone" + "," +
-                "Fax"+","+"imei");
+                "Fax" + "," + "imei");
 
         for (int i = 0; i < response.size(); i++) {
             if (Global.IsNotNull(response.get(i).name) && !response.get(i).name.equals("null") &&
@@ -703,9 +704,7 @@ public class ContectFragment extends Fragment {
                         } else {
                             number = number + "," + response.get(i).numbers.get(j).number;
                         }
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                         number = "";
                     }
 
@@ -730,7 +729,7 @@ public class ContectFragment extends Fragment {
                             ',' + ' ' +
                             ',' + '"' + email + '"' +
                             ',' + '"' + number + ',' + '"' +
-                            ',' + ' '+
+                            ',' + ' ' +
                             ',' + Global.imei
                     );
 
@@ -738,11 +737,10 @@ public class ContectFragment extends Fragment {
             }
         }
 
-        if (!data.toString().equals(null) &&  !data.toString().equals(""))
-        {
+        if (!data.toString().equals(null) && !data.toString().equals("")) {
             Calendar calendar = Calendar.getInstance();
             long time = calendar.getTimeInMillis();
-            csv_file=SessionManager.getGetUserdata(getActivity()).getUser().getId()+"_CSV_ANDROID_" + time ;
+            csv_file = SessionManager.getGetUserdata(getActivity()).getUser().getId() + "_CSV_ANDROID_" + time;
 
             SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
             String user_id = String.valueOf(user_data.getUser().getId());
@@ -754,7 +752,7 @@ public class ContectFragment extends Fragment {
             paramObject.addProperty("organization_id", 1);
             paramObject.addProperty("team_id", 1);
             paramObject.addProperty("user_id", user_id);
-            paramObject.addProperty("csv_name",csv_file+".csv");
+            paramObject.addProperty("csv_name", csv_file + ".csv");
             obj.add("data", paramObject);
 
             JsonParser jsonParser = new JsonParser();
@@ -775,7 +773,7 @@ public class ContectFragment extends Fragment {
                         Type listType = new TypeToken<BuketModel>() {
                         }.getType();
                         BuketModel Data = new Gson().fromJson(headerString, listType);
-                        csv_file=csv_file+"_"+Data.getId();
+                        csv_file = csv_file + "_" + Data.getId();
                         CreateCSV(data);
 
                     }
@@ -788,12 +786,11 @@ public class ContectFragment extends Fragment {
 
                 }
             });
-        }
-        else {
+        } else {
             tv_upload.setEnabled(true);
         }
 
-       /* CreateCSV(data);*/ //This CsV Upload Time Set
+        /* CreateCSV(data);*/ //This CsV Upload Time Set
 
     }
 /*
@@ -822,8 +819,8 @@ public class ContectFragment extends Fragment {
         long time = calendar.getTimeInMillis();
         try {
             //
-            if(csv_file.equals("")){
-                csv_file="CSV_ANDROID_" + time ;
+            if (csv_file.equals("")) {
+                csv_file = "CSV_ANDROID_" + time;
             }
             FileOutputStream out = getActivity().openFileOutput(csv_file + ".csv", Context.MODE_PRIVATE);//old Csv Set Path csv_file+ ".csv"
 
@@ -849,7 +846,7 @@ public class ContectFragment extends Fragment {
             startActivity(intent);*/
 
             if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
-               // Uploadcsv(file); //Csv api Upload
+                // Uploadcsv(file); //Csv api Upload
                 s3uploaderObj = new S3Uploader_csv(getActivity());
 
 
@@ -866,15 +863,17 @@ public class ContectFragment extends Fragment {
         s3uploaderObj.setOns3UploadDone(new S3Uploader_csv.S3UploadInterface() {
             @Override
             public void onUploadSuccess(String response) {
-               // Log.e("Reppnse is", new Gson().toJson(response));
+                // Log.e("Reppnse is", new Gson().toJson(response));
                 loadingDialog.cancelLoading();
-                SessionManager.setnewContect(getActivity(),new ArrayList<>());
+                SessionManager.setnewContect(getActivity(), new ArrayList<>());
                 tv_upload.setEnabled(true);
                 tv_upload.setVisibility(View.GONE);
+
             }
 
             @Override
             public void onUploadError(String response) {
+                SessionManager.setnewContect(getActivity(), new ArrayList<>());
                 loadingDialog.cancelLoading();
                 tv_upload.setEnabled(true);
                 Log.e("Error is", new Gson().toJson(response));
@@ -904,7 +903,7 @@ public class ContectFragment extends Fragment {
         RequestBody is_phonebook = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(1));
 
         retrofitCalls.Upload_csv(sessionManager, loadingDialog, Global.getToken(sessionManager),
-                organization_id1, team_id1, user_id1,  body, Global.getVersionname(getActivity()), Global.Device,is_phonebook, imei, new RetrofitCallback() {
+                organization_id1, team_id1, user_id1, body, Global.getVersionname(getActivity()), Global.Device, is_phonebook, imei, new RetrofitCallback() {
                     @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
                     public void success(Response<ApiResponse> response) {
@@ -918,7 +917,7 @@ public class ContectFragment extends Fragment {
                             SessionManager.setUserdata(getActivity(), user_data);
 
                             loadingDialog.cancelLoading();
-                            SessionManager.setnewContect(getActivity(),new ArrayList<>());
+                            SessionManager.setnewContect(getActivity(), new ArrayList<>());
                             try {
                                 ContectEvent1(main_store);
                             } catch (JSONException e) {
@@ -936,7 +935,7 @@ public class ContectFragment extends Fragment {
                     public void error(Response<ApiResponse> response) {
                         loadingDialog.cancelLoading();
                         tv_upload.setEnabled(true);
-                        SessionManager.setnewContect(getActivity(),new ArrayList<>());
+                        SessionManager.setnewContect(getActivity(), new ArrayList<>());
 
                     }
 
@@ -951,7 +950,7 @@ public class ContectFragment extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onPermissionGranted() {
-               // loadingDialog.showLoadingDialog();
+                // loadingDialog.showLoadingDialog();
                /* try {
                     ContectEvent();
                 } catch (JSONException e) {
@@ -987,7 +986,7 @@ public class ContectFragment extends Fragment {
                         e.printStackTrace();
                     }
                 } else {
-                 //   loadingDialog.showLoadingDialog();
+                    //   loadingDialog.showLoadingDialog();
                     String isContact = SessionManager.getcontectexits();
                     if (isContact.equals("0")) {
                         //Not Upload Contect Then If Call
@@ -1012,7 +1011,7 @@ public class ContectFragment extends Fragment {
                     } else {
 
 
-                         //  splitdata(listContacts);
+                        //  splitdata(listContacts);
                         myAsyncTasks = new MyAsyncTasks();
                         myAsyncTasks.execute();
                     }
@@ -1304,8 +1303,7 @@ public class ContectFragment extends Fragment {
                             e.printStackTrace();
                         }
 
-                    }
-                    else {
+                    } else {
                         num_count.setText("0 Contacts");
                         sessionManager.setContectList(getActivity(), new ArrayList<>());
                         txt_nolist.setText(mCtx.getResources().getString(R.string.no_contact));
@@ -1314,9 +1312,7 @@ public class ContectFragment extends Fragment {
                     }
                     loadingDialog.cancelLoading();
                     swipeToRefresh.setRefreshing(false);
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
 
                 }
 
@@ -1398,13 +1394,13 @@ public class ContectFragment extends Fragment {
         ev_search.setText("");
         SessionManager.setAdd_Contect_Detail(getActivity(), new AddcontectModel());
         SessionManager.setOneCotect_deatil(getActivity(), new ContectListData.Contact());
-        if(SessionManager.getContect_edit(getActivity())){
+        if (SessionManager.getContect_edit(getActivity())) {
             loadingDialog.showLoadingDialog();
             SessionManager.setContect_edit(false);
         }
         try {
             if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
-                fillter_text="";
+                fillter_text = "";
                 ContectEvent();
             }
         } catch (Exception e) {
@@ -1434,43 +1430,41 @@ public class ContectFragment extends Fragment {
                 if (Sesion_contect.get(i).getId().toString().equals(list_Data.get(count).getId().toString())) {
 
                     JSONObject paramObject = new JSONObject();
-                    paramObject.put("company_name", ""+Sesion_contect.get(i).getCompanyName().toString().trim());
+                    paramObject.put("company_name", "" + Sesion_contect.get(i).getCompanyName().toString().trim());
                     paramObject.put("company_id", "");
 
-                    paramObject.put("id", ""+Sesion_contect.get(i).getId());
-                    paramObject.put("address", ""+Sesion_contect.get(i).getAddress().trim());
-                    paramObject.put("breakout_link", ""+Sesion_contect.get(i).getBreakout_link().toString().trim());
-                    paramObject.put("city", ""+Sesion_contect.get(i).getCity());
+                    paramObject.put("id", "" + Sesion_contect.get(i).getId());
+                    paramObject.put("address", "" + Sesion_contect.get(i).getAddress().trim());
+                    paramObject.put("breakout_link", "" + Sesion_contect.get(i).getBreakout_link().toString().trim());
+                    paramObject.put("city", "" + Sesion_contect.get(i).getCity());
 
 
-                    paramObject.put("company_url", ""+Sesion_contect.get(i).getCompany_url());
+                    paramObject.put("company_url", "" + Sesion_contect.get(i).getCompany_url());
 
-                    if (Sesion_contect.get(i).getDob().equals("0000-00-00"))
-                    {
-                        paramObject.put("dob","");
-                    }
-                    else {
-                        paramObject.put("dob",Sesion_contect.get(i).getDob());
+                    if (Sesion_contect.get(i).getDob().equals("0000-00-00")) {
+                        paramObject.put("dob", "");
+                    } else {
+                        paramObject.put("dob", Sesion_contect.get(i).getDob());
                     }
 
 
                     paramObject.put("dynamic_fields_value", "");
-                    paramObject.put("facebook_link", ""+Sesion_contect.get(i).getFacebook_link().trim());
-                    paramObject.put("firstname", ""+list_Data.get(count).getName().trim());
-                    paramObject.put("lastname", ""+list_Data.get(count).getLast_name().trim());
-                    paramObject.put("job_title", ""+Sesion_contect.get(i).getJobTitle().toString().trim());
-                    paramObject.put("linkedin_link", ""+Sesion_contect.get(i).getLinkedin_link().toString().trim());
+                    paramObject.put("facebook_link", "" + Sesion_contect.get(i).getFacebook_link().trim());
+                    paramObject.put("firstname", "" + list_Data.get(count).getName().trim());
+                    paramObject.put("lastname", "" + list_Data.get(count).getLast_name().trim());
+                    paramObject.put("job_title", "" + Sesion_contect.get(i).getJobTitle().toString().trim());
+                    paramObject.put("linkedin_link", "" + Sesion_contect.get(i).getLinkedin_link().toString().trim());
                     paramObject.put("organization_id", 1);
-                    paramObject.put("state", ""+Sesion_contect.get(i).getState().toString().trim());
+                    paramObject.put("state", "" + Sesion_contect.get(i).getState().toString().trim());
                     paramObject.put("team_id", 1);
                     // addcontectModel.getTime()
                     paramObject.put("timezone_id", Sesion_contect.get(i).getTimezoneId());
-                    paramObject.put("twitter_link", ""+Sesion_contect.get(i).getTwitter_link().toString().trim());
-                    paramObject.put("user_id", ""+user_data.getUser().getId());
-                    paramObject.put("zipcode", ""+Sesion_contect.get(i).getZipcode().toString().trim());
-                    paramObject.put("zoom_id", ""+Sesion_contect.get(i).getZoomId().toString().trim());
+                    paramObject.put("twitter_link", "" + Sesion_contect.get(i).getTwitter_link().toString().trim());
+                    paramObject.put("user_id", "" + user_data.getUser().getId());
+                    paramObject.put("zipcode", "" + Sesion_contect.get(i).getZipcode().toString().trim());
+                    paramObject.put("zoom_id", "" + Sesion_contect.get(i).getZoomId().toString().trim());
 
-                    paramObject.put("contact_image", ""+Sesion_contect.get(i).getContactImage().toString().trim());
+                    paramObject.put("contact_image", "" + Sesion_contect.get(i).getContactImage().toString().trim());
                     paramObject.put("notes", "");
                     JSONArray jsonArray = new JSONArray();
 
@@ -1499,7 +1493,7 @@ public class ContectFragment extends Fragment {
                     paramObject.put("contact_details", jsonArray);
                    */
                     jsonArray_contect.put(paramObject);
-                    Log.e("Object is",new Gson().toJson(jsonArray_contect));
+                    Log.e("Object is", new Gson().toJson(jsonArray_contect));
 
 
                 }
@@ -2552,7 +2546,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             // implement API in background and store the response in current variable
             String current = "";
-            Log.e("Updaate Contect List ",new Gson().toJson(SessionManager.getupdateContect(getActivity())));
+            Log.e("Updaate Contect List ", new Gson().toJson(SessionManager.getupdateContect(getActivity())));
             try {
               /*  if (!SessionManager.getnewContect(getActivity()).equals(null) && SessionManager.getnewContect(getActivity()).size()!=0)
                 {
@@ -2572,7 +2566,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     }
                 }
 */
-                if (!SessionManager.getupdateContect(getActivity()).equals(null) && SessionManager.getupdateContect(getActivity()).size()!=0) {
+                if (!SessionManager.getupdateContect(getActivity()).equals(null) && SessionManager.getupdateContect(getActivity()).size() != 0) {
                     try {
                         AddContect_Update();
                     } catch (JSONException e) {
