@@ -899,7 +899,7 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 if (editText.getText().toString().equals("")) {
-                    Global.Messageshow(getApplicationContext(), c_layout, "Enter template name ", false);
+                    Global.Messageshow(getApplicationContext(), c_layout,  getResources().getString(R.string.add_tamplate), false);
                 } else {
                     try {
                         if (Global.isNetworkAvailable(Item_List_Email_Detail_activty.this, MainActivity.mMainLayout)) {

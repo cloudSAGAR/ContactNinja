@@ -242,7 +242,7 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
                     mLastClickTime = SystemClock.elapsedRealtime();
                     if (broadcasteda.getStatus().equals("A")) {
 
-                        Global.Messageshow(getApplicationContext(), main_layout, "Pause the Broadcast before Edit", false);
+                        Global.Messageshow(getApplicationContext(), main_layout, getResources().getString(R.string.push_broadcast), false);
                     } else {
                         SessionManager.setCampaign_type_name(broadcasteda.getManageBy());
                         SessionManager.setCampaign_type(broadcasteda.getType());

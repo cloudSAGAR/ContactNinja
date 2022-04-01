@@ -201,11 +201,11 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
                 if (tv_date.getText().toString().equals(""))
                 {
 
-                    Global.Messageshow(getApplicationContext(),linearLayout,"Add Date ",false);
+                    Global.Messageshow(getApplicationContext(),linearLayout,getResources().getString(R.string.add_date),false);
                 }
                 else if (tv_time.getText().toString().equals(""))
                 {
-                    Global.Messageshow(getApplicationContext(),linearLayout,"Add Time",false);
+                    Global.Messageshow(getApplicationContext(),linearLayout,getResources().getString(R.string.add_time),false);
 
                 }
                 else {

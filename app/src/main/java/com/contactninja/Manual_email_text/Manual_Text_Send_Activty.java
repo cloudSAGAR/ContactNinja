@@ -391,7 +391,7 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
                 mLastClickTime = SystemClock.elapsedRealtime();
                 //  Log.e("Text is",edit_template.getText().toString());
                 if (edit_template.getText().toString().equals("")) {
-                    Global.Messageshow(getApplicationContext(), mMainLayout, "Add Message", false);
+                    Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.add_message), false);
                 } else {
                     if (SessionManager.getEmail_screen_name(getApplicationContext()).equals("only_sms")) {
                        /* try {
@@ -772,7 +772,7 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
             public void onClick(View v) {
 
                 if (editText.getText().toString().equals("")) {
-                    Global.Messageshow(getApplicationContext(), c_layout, "Enter template name ", false);
+                    Global.Messageshow(getApplicationContext(), c_layout, getResources().getString(R.string.add_tamplate), false);
                 } else {
                     try {
                         if (Global.isNetworkAvailable(Manual_Text_Send_Activty.this, MainActivity.mMainLayout)) {
@@ -1506,7 +1506,7 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
 
             @Override
             public void error(Response<ApiResponse> response) {
-                Global.Messageshow(getApplicationContext(),mMainLayout,"Reconnect zoom account",false);
+                Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.reconnect_zoom),false);
                 loadingDialog.cancelLoading();
             }
         });

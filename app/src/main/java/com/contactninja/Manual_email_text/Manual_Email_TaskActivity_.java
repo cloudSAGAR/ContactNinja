@@ -180,11 +180,11 @@ public class Manual_Email_TaskActivity_ extends AppCompatActivity implements Vie
                 mLastClickTime = SystemClock.elapsedRealtime();
                 if (tv_date.getText().toString().equals(""))
                 {
-                    Global.Messageshow(getApplicationContext(),linearLayout,"Add Date ",false);
+                    Global.Messageshow(getApplicationContext(),linearLayout,getResources().getString(R.string.add_date),false);
                 }
                 else if (tv_time.getText().toString().equals(""))
                 {
-                    Global.Messageshow(getApplicationContext(),linearLayout,"Add Time",false);
+                    Global.Messageshow(getApplicationContext(),linearLayout,getResources().getString(R.string.add_time),false);
 
                 }
                 else {

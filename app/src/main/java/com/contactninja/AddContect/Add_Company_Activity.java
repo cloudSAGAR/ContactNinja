@@ -402,7 +402,7 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
                         finish();
                     } else {
                         if (add_name.getText().toString().equals("")) {
-                            Global.Messageshow(getApplicationContext(), mMainLayout, "Add Company Name", false);
+                            Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.add_company_name), false);
 
                         } else {
                             iv_invalid.setVisibility(View.GONE);

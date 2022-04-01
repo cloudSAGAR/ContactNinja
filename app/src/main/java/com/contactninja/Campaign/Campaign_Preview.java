@@ -310,7 +310,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
 
                 if (main_data.size()==0)
                 {
-                    Global.Messageshow(getApplicationContext(),mMainLayout,"Please assigned task",false);
+                    Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.task_add),false);
                 }
                 else {
                     SessionManager.setContect_flag("edit");

@@ -528,7 +528,7 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
 
                 String recurring_type= tv_recurrence.getText().toString();
                 if (recurring_type.equals("Recurrence")) {
-                    Global.Messageshow(getApplicationContext(), mMainLayout, "Select Recurrence", false);
+                    Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.Select_Recurrence), false);
                 } else {
                     broadcate_save_data.setDate(main_date);
                     broadcate_save_data.setTime(tv_time.getText().toString());

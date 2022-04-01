@@ -158,7 +158,7 @@ public class View_Contect_Fragment extends Fragment implements View.OnClickListe
 
                 if (contect_list_data.get0().getStatus().toString().equals("A"))
                 {
-                    Global.Messageshow(getActivity(),mMainLayout,"Pause the campaign before adding new prospects",false);
+                    Global.Messageshow(getActivity(),mMainLayout,getResources().getString(R.string.add_camp_prospact),false);
                 }
                 else {
                     showBottomSheetDialog_For_TimeZone();
@@ -175,7 +175,7 @@ public class View_Contect_Fragment extends Fragment implements View.OnClickListe
                 mLastClickTime = SystemClock.elapsedRealtime();
                 if (contect_list_data.get0().getStatus().toString().equals("A"))
                 {
-                    Global.Messageshow(getActivity(),mMainLayout,"Pause the campaign before adding new prospects",false);
+                    Global.Messageshow(getActivity(),mMainLayout,getResources().getString(R.string.add_camp_prospact),false);
                 }
                 else {
                     showBottomSheetDialog_For_TimeZone();
@@ -192,7 +192,7 @@ public class View_Contect_Fragment extends Fragment implements View.OnClickListe
                 mLastClickTime = SystemClock.elapsedRealtime();
                 if (contect_list_data.get0().getStatus().toString().equals("A"))
                 {
-                    Global.Messageshow(getActivity(),mMainLayout,"Pause the campaign before adding new prospects",false);
+                    Global.Messageshow(getActivity(),mMainLayout,getResources().getString(R.string.add_camp_prospact),false);
                 }
                 else {
                     showBottomSheetDialog_For_TimeZone();

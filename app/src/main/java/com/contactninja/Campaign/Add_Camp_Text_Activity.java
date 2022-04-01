@@ -576,9 +576,9 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
             @Override
             public void onClick(View v) {
                 if (editText.getText().toString().equals("")) {
-                    Global.Messageshow(getApplicationContext(), c_layout, "Enter template name ", false);
+                    Global.Messageshow(getApplicationContext(), c_layout, getResources().getString(R.string.add_tamplate), false);
                 } else if (body_text.equals("")) {
-                    Global.Messageshow(getApplicationContext(), c_layout, "Enter template Text ", false);
+                    Global.Messageshow(getApplicationContext(), c_layout, getResources().getString(R.string.add_tamplate_txt), false);
 
                 } else {
                     try {

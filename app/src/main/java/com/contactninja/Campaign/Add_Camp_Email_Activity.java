@@ -419,7 +419,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                 mLastClickTime = SystemClock.elapsedRealtime();
                 Global.hideKeyboard(Add_Camp_Email_Activity.this);
                 if (ev_subject.getText().toString().equals("")) {
-                    Global.Messageshow(getApplicationContext(), mMainLayout, "Add Subject", false);
+                    Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.add_subject), false);
                 } else if (edit_template.getText().toString().equals("")) {
                     Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.ComposeEmail), false);
 
@@ -597,9 +597,9 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
             @Override
             public void onClick(View v) {
                 if (edt_template_name.getText().toString().equals("")) {
-                    Global.Messageshow(getApplicationContext(), c_layout, "Enter template name ", false);
+                    Global.Messageshow(getApplicationContext(), c_layout, getResources().getString(R.string.add_tamplate), false);
                 } else if (edit_template.equals("")) {
-                    Global.Messageshow(getApplicationContext(), c_layout, "Enter template Text ", false);
+                    Global.Messageshow(getApplicationContext(), c_layout,  getResources().getString(R.string.add_tamplate_txt), false);
 
                 } else {
                     try {

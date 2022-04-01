@@ -355,7 +355,7 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
                 if (ev_subject.getText().toString().equals("")) {
-                    Global.Messageshow(getApplicationContext(), mMainLayout, "Add Subject", false);
+                    Global.Messageshow(getApplicationContext(), mMainLayout,  getResources().getString(R.string.add_subject), false);
                 } else if (edit_template.getText().toString().equals("")) {
                     Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.ComposeEmail), false);
 
@@ -584,7 +584,7 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
             @Override
             public void onClick(View v) {
                 if (editText.getText().toString().equals("")) {
-                    Global.Messageshow(getApplicationContext(), c_layout, "Enter template name ", false);
+                    Global.Messageshow(getApplicationContext(), c_layout, getResources().getString(R.string.add_tamplate), false);
                 } else {
                     try {
                         if (Global.isNetworkAvailable(Manual_Email_Send_Activty.this, MainActivity.mMainLayout)) {

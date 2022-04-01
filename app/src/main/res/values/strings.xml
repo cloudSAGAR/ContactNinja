@@ -679,4 +679,23 @@ Number</string>
 
     <string name="plan_validation">You don\'t have active plan or quota.</string>
     <string name="broadcatse_delete">Delete Broadcatse</string>
+    <string name="add_email_contact">Add contect or email</string>
+    <string name="add_company_name">Add company name</string>
+    <string name="add_subject">Add subject</string>
+    <string name="add_tamplate">Enter template name</string>
+    <string name="reconnect_zoom">Reconnect zoom account</string>
+    <string name="upgrade_plane">Upgrade Your Plan On Web</string>
+    <string name="add_tamplate_txt">Enter template text</string>
+    <string name="select_day">Select campaign day</string>
+    <string name="select_hours">Select campaign hours</string>
+    <string name="add_huors">Add validate hours</string>
+    <string name="add_valid_day">Add validate day</string>
+    <string name="task_add">Please assigned task</string>
+    <string name="add_camp_prospact">Pause the campaign before adding new prospects</string>
+    <string name="upload_complate">Upload complate</string>
+    <string name="add_title">Add title</string>
+    <string name="add_time">Add time</string>
+    <string name="add_date">Add date</string>
+    <string name="Select_Recurrence">Select recurrence</string>
+    <string name="push_broadcast">Pause the broadcast before edit</string>
 </resources>

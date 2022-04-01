@@ -302,12 +302,12 @@ public class Add_Camp_Tab_Select_Activity extends AppCompatActivity implements V
     private boolean ValidactionDay() {
         if (SessionManager.getCampaign_Day(getApplicationContext()).equals(""))
         {
-            Global.Messageshow(getApplicationContext(),mMainLayout,"Select campaign day",false);
+            Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.select_day),false);
             return false;
         }
         else if (SessionManager.getCampaign_minute(getApplicationContext()).equals(""))
         {
-            Global.Messageshow(getApplicationContext(),mMainLayout,"Select campaign hours",false);
+            Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.select_hours),false);
             return false;
 
         }else  if (SessionManager.getCampaign_Day(getApplicationContext()).equals("0"))
@@ -315,14 +315,14 @@ public class Add_Camp_Tab_Select_Activity extends AppCompatActivity implements V
 
             if (SessionManager.getCampaign_minute(getApplicationContext()).equals("0") || SessionManager.getCampaign_minute(getApplicationContext()).equals("00") || SessionManager.getCampaign_minute(getApplicationContext()).equals("000"))
             {
-                Global.Messageshow(getApplicationContext(),mMainLayout,"Select campaign hours",false);
+                Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.select_hours),false);
             }
             else {
                 if(Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext())) <= 24 &&
                         Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext())) >= 1){
                     return true;
                 }else {
-                    Global.Messageshow(getApplicationContext(),mMainLayout,"Add validate hours",false);
+                    Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.add_huors),false);
                 }
             }
         }else {
@@ -333,14 +333,14 @@ public class Add_Camp_Tab_Select_Activity extends AppCompatActivity implements V
                             Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext())) >= 1){
                         return true;
                     }else {
-                        Global.Messageshow(getApplicationContext(),mMainLayout,"Add validate hours",false);
+                        Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.add_camp_prospact),false);
                     }
                 }else {
                     return true;
                 }
 
             }else {
-                Global.Messageshow(getApplicationContext(),mMainLayout,"Add validate day",false);
+                Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.add_valid_day),false);
             }
 
 

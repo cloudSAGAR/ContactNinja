@@ -419,7 +419,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
 
                             if (email_list.size() == 0 && contect_list.size() == 0) {
 
-                                Global.Messageshow(getApplicationContext(), mMainLayout, "Add Contect Or Emaail", false);
+                                Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.add_email_contact), false);
                             } else {
                                 for (int i = 0; i < contect_list.size(); i++) {
                                     if (contect_list.get(i).getEmail_number().equals("")) {
@@ -464,7 +464,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
 
                             if (email_list.size() == 0 && contect_list.size() == 0) {
 
-                                Global.Messageshow(getApplicationContext(), mMainLayout, "Add Contect Or Emaail", false);
+                                Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.add_email_contact), false);
                             } else {
                                 for (int i = 0; i < contect_list.size(); i++) {
                                     if (contect_list.get(i).getEmail_number().equals("")) {
@@ -512,7 +512,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
 
                             if (email_list.size() == 0 && contect_list.size() == 0) {
 
-                                Global.Messageshow(getApplicationContext(), mMainLayout, "Add Contect Or Emaail", false);
+                                Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.add_email_contact), false);
                             } else {
                                 for (int i = 0; i < contect_list.size(); i++) {
                                     if (contect_list.get(i).getEmail_number().equals("")) {

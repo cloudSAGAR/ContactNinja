@@ -98,7 +98,7 @@ public class CurrentPlanActivity extends AppCompatActivity implements View.OnCli
             public void onClick(View view) {
                 if (tv_save.getText().toString().equals(getResources().getString(R.string.Upgrade_Plan)))
                 {
-                    Global.Messageshow(getApplicationContext(),mMainLayout,"Upgrade Your Plan On Web",true);
+                    Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.upgrade_plane),true);
                 }
             }
         });

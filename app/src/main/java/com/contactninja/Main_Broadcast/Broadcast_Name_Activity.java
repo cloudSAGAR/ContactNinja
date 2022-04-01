@@ -129,7 +129,7 @@ public class Broadcast_Name_Activity extends AppCompatActivity implements View.O
 
                 if (ev_titale.getText().toString().equals(""))
                 {
-                    Global.Messageshow(getApplicationContext(),mMainLayout,"Add Title",false);
+                    Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.add_title),false);
                 }
                 else {
                    // SessionManager.setBroadcast_flag("edit");
