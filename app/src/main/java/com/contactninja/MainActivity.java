@@ -402,6 +402,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+                try {
+                    ContectEvent();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 //  EnableRuntimePermission();
             }
 
