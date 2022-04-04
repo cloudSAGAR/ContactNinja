@@ -293,7 +293,7 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
 
 
     private void EmailUpdate() throws JSONException {
-        Log.e("Email","Yes");
+       // Log.e("Email","Yes");
 
         Global.getInstance().setConnectivityListener(this);
         loadingDialog.showLoadingDialog();
@@ -338,7 +338,7 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
                     loadingDialog.cancelLoading();
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
-                    Log.e("String is",headerString);
+                 //   Log.e("String is",headerString);
                     Type listType = new TypeToken<UservalidateModel>() {
                     }.getType();
                     UservalidateModel user_model = new Gson().fromJson(headerString, listType);
@@ -350,7 +350,7 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
                     try {
                         Gson gson = new Gson();
                         String headerString = gson.toJson(response.body().getData());
-                        Log.e("String is",headerString);
+                      //  Log.e("String is",headerString);
                         Type listType = new TypeToken<UservalidateModel>() {
                         }.getType();
                         UservalidateModel user_model = new Gson().fromJson(headerString, listType);
@@ -378,7 +378,7 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
 
 
     private void PhoneUpdate() throws JSONException {
-        Log.e("Phone","Yes");
+       // Log.e("Phone","Yes");
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         String type = bundle.getString("login_type");
@@ -405,7 +405,7 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
         paramObject.addProperty("update_type", type);
         paramObject.addProperty("user_id", user_id);
         obj.add("data", paramObject);
-        Log.e("Data is",new Gson().toJson(obj));
+       // Log.e("Data is",new Gson().toJson(obj));
 
         retrofitCalls.EmailNumberUpdate(sessionManager,obj, loadingDialog, Global.getToken(sessionManager),Global.getVersionname(Phone_email_verificationActivity.this),Global.Device, new RetrofitCallback() {
             @Override
@@ -422,7 +422,7 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
                     loadingDialog.cancelLoading();
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
-                    Log.e("String is",headerString);
+                  //  Log.e("String is",headerString);
                     Type listType = new TypeToken<UservalidateModel>() {
                     }.getType();
                     UservalidateModel user_model = new Gson().fromJson(headerString, listType);
@@ -434,7 +434,7 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
                     try {
                         Gson gson = new Gson();
                         String headerString = gson.toJson(response.body().getData());
-                        Log.e("String is",headerString);
+                      //  Log.e("String is",headerString);
                         Type listType = new TypeToken<UservalidateModel>() {
                         }.getType();
                         UservalidateModel user_model = new Gson().fromJson(headerString, listType);

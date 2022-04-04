@@ -199,13 +199,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void onVerificationCompleted(PhoneAuthCredential credential) {
-                Log.e(TAG, "onVerificationCompleted:" + credential);
+            //    Log.e(TAG, "onVerificationCompleted:" + credential);
                 loadingDialog.cancelLoading();
             }
 
             @Override
             public void onVerificationFailed(FirebaseException e) {
-                Log.e(TAG, "onVerificationFailed", e);
+               // Log.e(TAG, "onVerificationFailed", e);
                 loadingDialog.cancelLoading();
 
                 Toast.makeText(getApplicationContext(), "VERIFY FAILED", Toast.LENGTH_LONG).show();

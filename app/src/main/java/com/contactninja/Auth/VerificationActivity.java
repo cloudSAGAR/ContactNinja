@@ -323,7 +323,7 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                     @Override
                     public void onComplete(@NonNull Task<String> task) {
                         if (!task.isSuccessful()) {
-                            Log.e("FCM registration failed", task.getException() + "");
+                          //  Log.e("FCM registration failed", task.getException() + "");
                             return;
                         }
 
@@ -335,13 +335,13 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
 
             @Override
             public void onVerificationCompleted(PhoneAuthCredential credential) {
-                Log.e("FCM registration failed", credential + "");
+              //  Log.e("FCM registration failed", credential + "");
 
             }
 
             @Override
             public void onVerificationFailed(FirebaseException e) {
-                Log.e(TAG, "onVerificationFailed", e);
+             //   Log.e(TAG, "onVerificationFailed", e);
                 Toast.makeText(getApplicationContext(), "VERIFY FAILED", Toast.LENGTH_LONG).show();
 
             }
@@ -349,7 +349,7 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
             @Override
             public void onCodeSent(@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken token) {
 
-                Log.e("Code is Send", "Yes");
+           //     Log.e("Code is Send", "Yes");
 
                 v_id = verificationId;
                 second = -1;
@@ -360,7 +360,7 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
     }
 
     public void showTimer() {
-        Log.e("Show TImmer", "Yes");
+       // Log.e("Show TImmer", "Yes");
         countDownTimer = new CountDownTimer(60 * 1000, 1000) {
             @SuppressLint({"NewApi", "DefaultLocale"})
             @Override
@@ -404,7 +404,7 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
-                Log.e("Response is", new Gson().toJson(response.body()));
+           //     Log.e("Response is", new Gson().toJson(response.body()));
                 if (response.body().getHttp_status() == 200) {
 
                     Gson gson = new Gson();
@@ -488,7 +488,7 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
     }
 
     public void LoginData() throws JSONException {
-        Log.e("Code is", countrycode);
+       // Log.e("Code is", countrycode);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("firebase_fcm_token", SessionManager.getFcm_Token(getApplicationContext()));

@@ -132,7 +132,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onVerificationCompleted(PhoneAuthCredential credential) {
                 loadingDialog.cancelLoading();
-                Log.e(TAG, "onVerificationCompleted:" + credential);
+               // Log.e(TAG, "onVerificationCompleted:" + credential);
 
             }
 
@@ -141,7 +141,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 // This callback is invoked in an invalid request for verification is made,
                 // for instance if the the phone number format is not valid.
                 loadingDialog.cancelLoading();
-                Log.e(TAG, "onVerificationFailed", e);
+              //  Log.e(TAG, "onVerificationFailed", e);
                 Toast.makeText(getApplicationContext(), "VERIFY FAILED", Toast.LENGTH_LONG).show();
 
             }
@@ -406,7 +406,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                     try {
                         Gson gson = new Gson();
                         String headerString = gson.toJson(response.body().getData());
-                        Log.e("String is", headerString);
+                       // Log.e("String is", headerString);
                         Type listType = new TypeToken<UservalidateModel>() {
                         }.getType();
                         UservalidateModel user_model = new Gson().fromJson(headerString, listType);
