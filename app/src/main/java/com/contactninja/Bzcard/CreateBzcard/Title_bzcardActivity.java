@@ -659,7 +659,7 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
             public void onUploadError (String response) {
 
                 loadingDialog.cancelLoading();
-                Toast.makeText(Title_bzcardActivity.this, new Gson().toJson(response), Toast.LENGTH_SHORT).show();
+               // Toast.makeText(Title_bzcardActivity.this, new Gson().toJson(response), Toast.LENGTH_SHORT).show();
 
             }
 

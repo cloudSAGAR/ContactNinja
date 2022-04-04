@@ -103,7 +103,7 @@ public class Image_List_Activity extends AppCompatActivity implements Connectivi
 
                                 imagelistAdepter.removeItem(pos,item);
 
-                                Toast.makeText(Image_List_Activity.this, "Item was removed from the list.", Toast.LENGTH_LONG).show();
+                              //  Toast.makeText(Image_List_Activity.this, "Item was removed from the list.", Toast.LENGTH_LONG).show();
                             }
                         }
                 ));

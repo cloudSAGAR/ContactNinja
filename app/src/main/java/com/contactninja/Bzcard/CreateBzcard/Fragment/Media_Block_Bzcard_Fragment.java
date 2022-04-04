@@ -276,7 +276,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
 
                                 medialistAdepter.removeItem(pos,item);
 
-                                Toast.makeText(getContext(), "Item was removed from the list.", Toast.LENGTH_LONG).show();
+                               // Toast.makeText(getContext(), "Item was removed from the list.", Toast.LENGTH_LONG).show();
                             }
                         }
                 ));
