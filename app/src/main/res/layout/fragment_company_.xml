@@ -176,7 +176,8 @@
                                 android:id="@+id/contact_list"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:clipToPadding="false" />
+                                android:clipToPadding="false"
+                                android:overScrollMode="never" />
 
                             <com.reddit.indicatorfastscroll.FastScrollerThumbView
                                 android:id="@+id/fastscroller_thumb"

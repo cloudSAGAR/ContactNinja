@@ -24,7 +24,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.contactninja.Group.GroupActivity;
 import com.contactninja.Group.SendBroadcast;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -497,15 +496,10 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
                     movieViewHolder.add_new_contect_icon.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
-                            //  Log.e("Data is",new Gson().toJson(Group_data));
-                            //userDetailsfull.get(position).setId(position);
                             movieViewHolder.remove_contect_icon.setVisibility(View.VISIBLE);
                             movieViewHolder.add_new_contect_icon.setVisibility(View.GONE);
                             movieList.get(position).setFlag("false");
                             select_contectListData.add(Group_data);
-                            //userDetailsfull.get(position).setId(position);
-                            //  topUserListDataAdapter.notifyDataSetChanged();
                             topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
                             add_contect_list.setAdapter(topUserListDataAdapter);
                             /*
@@ -523,9 +517,7 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
                     movieViewHolder.remove_contect_icon.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            //  Log.e("On Click Remove ","Remove");
-                            // Log.e("Data is",new Gson().toJson(contacts.get(position)));
-                            //userDetailsfull.get(position).setId(0);
+
                             movieViewHolder.remove_contect_icon.setVisibility(View.GONE);
                             movieViewHolder.add_new_contect_icon.setVisibility(View.VISIBLE);
                             movieList.get(position).setFlag("true");
@@ -805,12 +797,6 @@ public class Broadcast_Group_Fragment extends Fragment implements View.OnClickLi
                 }
 
             }
-           /* try {
-                userDetails.remove(item);
-                notifyItemRemoved(item);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }*/
 
         }
 
