@@ -436,12 +436,12 @@ Number</string>
     <string name="remove_blacklist">Remove to blacklist</string>
     <string name="delete_contact">Delete contact</string>
     <string name="fillter_block">Blacklist</string>
-    <string name="fillter_all">All Contacts</string>
-    <string name="fillter_compnay_block">Blacklist Companies</string>
-    <string name="fillter_compnay_all">All Contacts</string>
-    <string name="company_add">Add new Company</string>
-    <string name="company_blacklst">Blacklist Companies</string>
-    <string name="company_all">All Companies</string>
+    <string name="fillter_all">All contacts</string>
+    <string name="fillter_compnay_block">Blacklist companies</string>
+    <string name="fillter_compnay_all">All contacts</string>
+    <string name="company_add">Add new company</string>
+    <string name="company_blacklst">Blacklist companies</string>
+    <string name="company_all">All companies</string>
     <string name="delete_company">Delete company</string>
 
     <string name="no_Task">👍 You\'re all good ! \n You don\'t have any tasks here</string>
@@ -468,25 +468,25 @@ Number</string>
     <string name="manual_Delete">Delete</string>
     <string name="manual_All_tasks">All tasks</string>
     <string name="manual_auto_complate_tasks">Automted completed</string>
-    <string name="manual_auto_upcoming_tasks">Automted Upcoming</string>
+    <string name="manual_auto_upcoming_tasks">Automted upcoming</string>
     <string name="Filters">Filters</string>
     <string name="send_complate">Send now &amp; mark task as complete</string>
     <string name="Snooze_task">Snooze task</string>
     <string name="Auto_play">play</string>
 
-    <string name="manual_aleart_delete">Remove Task ?</string>
+    <string name="manual_aleart_delete">Remove task ?</string>
     <string name="manual_aleart_delete_des">Are you sure that you would like to task remove?</string>
-    <string name="manual_aleart_paused">Paused Task ?</string>
+    <string name="manual_aleart_paused">Paused task ?</string>
     <string name="manual_aleart_paused_des">Are you sure that you would like to task paused?</string>
-    <string name="manual_aleart_finished">Finished Task ?</string>
+    <string name="manual_aleart_finished">Finished task ?</string>
     <string name="manual_aleart_finished_des">Are you sure that you would like to task finished?</string>
-    <string name="manual_aleart_snooze">Snooze Task ?</string>
+    <string name="manual_aleart_snooze">Snooze task ?</string>
     <string name="manual_aleart_snooze_des">Are you sure that you would like to task snooze?</string>
 
-    <string name="auto_aleart_play">Paly Task ?</string>
+    <string name="auto_aleart_play">Paly task ?</string>
     <string name="auto_aleart_play_des">Are you sure that you would like to task play?</string>
 
-    <string name="auto_aleart_Paused">Paused Task ?</string>
+    <string name="auto_aleart_Paused">Paused task ?</string>
     <string name="auto_aleart_Paused_des">Are you sure that you would like to task Paused?</string>
 
     <string-array name="manual_filter">
@@ -545,7 +545,7 @@ Number</string>
     <string name="broadcast_email">Recurring email broadcast</string>
     <string name="broadcast_text">Recurring text broadcast</string>
     <string name="broadcast_info_text">ContactNinja allows you to schedule texts or emails with multiple \n  occurrences. You can schedule these in daily, \n weekly, and monthly increments.</string>
-    <string name="create_company">Create new Company</string>
+    <string name="create_company">Create new company</string>
     <string name="repet_every">Repeat every</string>
     <string name="repet_day">Day</string>
     <string name="occurs_weekly">Occurs weekly</string>
@@ -559,7 +559,7 @@ Number</string>
     <string name="connect_zoom_account">Connect zoom account</string>
     <string name="zoom_account">Your zoom account</string>
     <string name="dis_account">Disconnect my account</string>
-    <string name="meeting">Meeting Duration</string>
+    <string name="meeting">Meeting duration</string>
     <string name="m_5">5 mins</string>
     <string name="m_15">15 mins</string>
     <string name="m_30">30 mins</string>
@@ -568,13 +568,13 @@ Number</string>
 
     <string name="select_bzcard">Select Bzcard</string>
     <string name="preview">Preview</string>
-    <string name="use_template">Use This Template</string>
-    <string name="edit_template">Edit This Template</string>
+    <string name="use_template">Use this template</string>
+    <string name="edit_template">Edit this template</string>
     <string name="bz_footer">*Represents dummy data, upload photos, videos, and text content to make it your own!</string>
     <string name="bz_footer2">Share your mission with the world when you bring your business contact info to life on a virtual BZcard.</string>
     <string name="Bzcard_theme_colour">Bzcard theme colour</string>
     <string name="Bzcard_text_1">in order to see preview please press preview on top right corner</string>
-    <string name="Cutom_Button">Cutom Button</string>
+    <string name="Cutom_Button">Cutom button</string>
     <string name="other_Cutom_Button">Add other custom button </string>
     <string name="title_button">Title of your button</string>
     <string name="yourtitle_hint">Add your title</string>
@@ -652,5 +652,5 @@ Number</string>
     <string name="plan_39">prod_LAUQKpnUmGVfBN</string>
     <string name="plan_69">prod_LAUJLCbnF7yEZQ</string>
 
-    <string name="broadcatse_delete">Delete Broadcatse</string>
+    <string name="broadcatse_delete">Delete broadcatse</string>
 </resources>

@@ -1549,10 +1549,6 @@ public class Campaign_Contect_Fragment extends Fragment {
                             @Override
                             public void onClick(View v) {
 
-                                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                                    return;
-                                }
-                                mLastClickTime = SystemClock.elapsedRealtime();
                                 if (contacts.get(position).getIs_blocked().equals(1)) {
                                     Global.Messageshow(getActivity(), mMainLayout, getString(R.string.contect_block), false);
                                 } else {

@@ -98,7 +98,6 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:padding="@dimen/_5sdp"
-                android:singleLine="true"
                 android:text="@string/company_add"
                 android:textColor="@color/text_reg"
 

@@ -1157,10 +1157,6 @@ public class Broadcast_Contect_Fragment extends Fragment {
                             @Override
                             public void onClick(View v) {
 
-                                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                                    return;
-                                }
-                                mLastClickTime = SystemClock.elapsedRealtime();
                                 if (contacts.get(position).getIs_blocked().equals(1)) {
                                     Global.Messageshow(getActivity(), mMainLayout, getString(R.string.contect_block), false);
                                 } else {
@@ -1270,10 +1266,7 @@ public class Broadcast_Contect_Fragment extends Fragment {
                         holder1.remove_contect_icon.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                // Log.e("On Click Remove ","Remove");
-                                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                                    return;
-                                }
+
                                 mLastClickTime = SystemClock.elapsedRealtime();
 
                                 holder1.remove_contect_icon.setVisibility(View.GONE);

@@ -94,7 +94,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center|left"
-                android:singleLine="true"
                 android:text="@string/add_new_contect"
                 android:textColor="@color/text_reg"
 
