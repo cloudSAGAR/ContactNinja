@@ -447,11 +447,11 @@ public class Add_Camp_Tab_Select_Activity extends AppCompatActivity implements V
         else {
             if (SessionManager.getCampaign_Day(getApplicationContext()).equals(""))
             {
-                Global.Messageshow(getApplicationContext(),mMainLayout,"Select Campaign Day",false);
+                Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.select_day),false);
             }
             else if (SessionManager.getCampaign_minute(getApplicationContext()).equals(""))
             {
-                Global.Messageshow(getApplicationContext(),mMainLayout,"Select Campaign Minute",false);
+                Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.select_hours),false);
             }
             else {
 
