@@ -84,7 +84,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Response;
 
 @SuppressLint("ClickableViewAccessibility,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
-public class Add_Newcontect_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener, YourFragmentInterface {
+public class Create_New_Contect_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener, YourFragmentInterface {
     S3Uploader s3uploaderObj;
     private long mLastClickTime = 0;
     Integer CAPTURE_IMAGE = 3;
@@ -120,7 +120,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
 
     // ListPhoneContactsActivity use this method to start this activity.
     public static void start(Context context) {
-        Intent intent = new Intent(context, Add_Newcontect_Activity.class);
+        Intent intent = new Intent(context, Create_New_Contect_Activity.class);
         SessionManager.setContect_flag("save");
         context.startActivity(intent);
     }
@@ -159,14 +159,14 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_addnewcontect);
+        setContentView(R.layout.activity_create_new_contect);
         mNetworkReceiver = new ConnectivityReceiver();
         IntentUI();
 
         s3uploaderObj = new S3Uploader(this);
         sessionManager = new SessionManager(this);
         loadingDialog = new LoadingDialog(this);
-        Global.checkConnectivity(Add_Newcontect_Activity.this, mMainLayout);
+        Global.checkConnectivity(Create_New_Contect_Activity.this, mMainLayout);
         sessionManager = new SessionManager(this);
         save_button.setText("Save Contact");
         option_type = "save";
@@ -409,7 +409,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
 
                     } else {
 
-                        if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
+                        if (Global.isNetworkAvailable(Create_New_Contect_Activity.this, mMainLayout)) {
                             //AddContect_Update();
 
 
@@ -455,7 +455,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
                     } else {
 
 
-                        if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
+                        if (Global.isNetworkAvailable(Create_New_Contect_Activity.this, mMainLayout)) {
 
 
                             AddcontectModel save_data = SessionManager.getAdd_Contect_Detail(getApplicationContext());
@@ -497,7 +497,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
                     String flag = sessionManager.getContect_flag(getApplicationContext());
                     if (flag.equals("read")) {
                         SessionManager.setContect_flag("edit");
-                        Intent addnewcontect = new Intent(getApplicationContext(), Add_Newcontect_Activity.class);
+                        Intent addnewcontect = new Intent(getApplicationContext(), Create_New_Contect_Activity.class);
                         startActivity(addnewcontect);
                         finish();
                     } else {
@@ -505,7 +505,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
                         save_button.setText("Save Contact");
                         edt_FirstName.setEnabled(true);
                         edt_lastname.setEnabled(true);
-                        if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
+                        if (Global.isNetworkAvailable(Create_New_Contect_Activity.this, mMainLayout)) {
                             AddcontectModel save_data = SessionManager.getAdd_Contect_Detail(getApplicationContext());
                             List<Contactdetail> contect_list = save_data.getContactdetails();
                             List<Contactdetail> email_list = save_data.getContactdetails_email();
@@ -619,12 +619,12 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
             }
         }
         if (RC == REQUEST_ID_MULTIPLE_PERMISSIONS) {
-            if (ContextCompat.checkSelfPermission(Add_Newcontect_Activity.this,
+            if (ContextCompat.checkSelfPermission(Create_New_Contect_Activity.this,
                     Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(getApplicationContext(),
                         "Requires Access to Camara.", Toast.LENGTH_SHORT)
                         .show();
-            } else if (ContextCompat.checkSelfPermission(Add_Newcontect_Activity.this,
+            } else if (ContextCompat.checkSelfPermission(Create_New_Contect_Activity.this,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(getApplicationContext(),
                         "Requires Access to Your Storage.",
@@ -830,7 +830,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
 
         Log.e("Main Data is ", new Gson().toJson(gsonObject));
-        retrofitCalls.Addcontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(Add_Newcontect_Activity.this), Global.Device, new RetrofitCallback() {
+        retrofitCalls.Addcontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(Create_New_Contect_Activity.this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 
@@ -990,7 +990,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
         Log.e("Final Data ", new Gson().toJson(gsonObject));
 
-        retrofitCalls.Updatecontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(Add_Newcontect_Activity.this), Global.Device, new RetrofitCallback() {
+        retrofitCalls.Updatecontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(Create_New_Contect_Activity.this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 
@@ -1047,7 +1047,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                if (checkAndRequestPermissions(Add_Newcontect_Activity.this)) {
+                if (checkAndRequestPermissions(Create_New_Contect_Activity.this)) {
                     captureimageDialog(false);
                 }
                 break;
@@ -1057,7 +1057,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                if (checkAndRequestPermissions(Add_Newcontect_Activity.this)) {
+                if (checkAndRequestPermissions(Create_New_Contect_Activity.this)) {
                     if (olld_image != null && !olld_image.equals("") || user_image_Url != null && !user_image_Url.equals("")) {
                         captureimageDialog(true);
                     } else {
@@ -1082,7 +1082,7 @@ public class Add_Newcontect_Activity extends AppCompatActivity implements View.O
 
     private void captureimageDialog(boolean remove) {
         final View mView = getLayoutInflater().inflate(R.layout.capture_userpicture_dialog_item, null);
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Add_Newcontect_Activity.this, R.style.CoffeeDialog);
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Create_New_Contect_Activity.this, R.style.CoffeeDialog);
         bottomSheetDialog.setContentView(mView);
 
         TextView cameraId = bottomSheetDialog.findViewById(R.id.cameraId);
@@ -1245,7 +1245,7 @@ e.printStackTrace();
 
     private void uploadImageTos3(String imageUri, String flag) {
         loadingDialog.showLoadingDialog();
-        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Add_Newcontect_Activity.this);
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Create_New_Contect_Activity.this);
 
         if (!imageUri.toString().equals("")) {
             olld_image = user_image_Url;
@@ -1261,7 +1261,7 @@ e.printStackTrace();
                             AmazonUtil.deleteS3Client(getApplicationContext(), olld_image);
                         }
                         if (flag.equals("add")) {
-                            if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
+                            if (Global.isNetworkAvailable(Create_New_Contect_Activity.this, mMainLayout)) {
 
                                 try {
                                     AddContect_Api();
@@ -1271,7 +1271,7 @@ e.printStackTrace();
                             }
                         } else if (flag.equals("update")) {
 
-                            if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
+                            if (Global.isNetworkAvailable(Create_New_Contect_Activity.this, mMainLayout)) {
 
                                 try {
                                     AddContect_Update();
@@ -1289,7 +1289,7 @@ e.printStackTrace();
                 public void onUploadError(String response) {
                     user_image_Url = "";
                     if (flag.equals("add")) {
-                        if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
+                        if (Global.isNetworkAvailable(Create_New_Contect_Activity.this, mMainLayout)) {
 
                             try {
                                 AddContect_Api();
@@ -1299,7 +1299,7 @@ e.printStackTrace();
                         }
                     } else if (flag.equals("update")) {
 
-                        if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
+                        if (Global.isNetworkAvailable(Create_New_Contect_Activity.this, mMainLayout)) {
 
                             try {
                                 AddContect_Update();
@@ -1315,7 +1315,7 @@ e.printStackTrace();
             });
         } else {
             if (flag.equals("add")) {
-                if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
+                if (Global.isNetworkAvailable(Create_New_Contect_Activity.this, mMainLayout)) {
 
                     try {
                         AddContect_Api();
@@ -1325,7 +1325,7 @@ e.printStackTrace();
                 }
             } else if (flag.equals("update")) {
 
-                if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
+                if (Global.isNetworkAvailable(Create_New_Contect_Activity.this, mMainLayout)) {
 
                     try {
                         AddContect_Update();
@@ -1465,7 +1465,7 @@ e.printStackTrace();
 
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
-        Global.checkConnectivity(Add_Newcontect_Activity.this, mMainLayout);
+        Global.checkConnectivity(Create_New_Contect_Activity.this, mMainLayout);
     }
 
     @SuppressLint("ObsoleteSdkInt")
@@ -1537,7 +1537,7 @@ e.printStackTrace();
                 //Block Contect
 
                 try {
-                    if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
+                    if (Global.isNetworkAvailable(Create_New_Contect_Activity.this, mMainLayout)) {
                         Contect_BLock(contact_item, 1, bottomSheetDialog);
                     }
                 } catch (JSONException e) {
@@ -1557,7 +1557,7 @@ e.printStackTrace();
                 //Block Contect
 
                 try {
-                    if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
+                    if (Global.isNetworkAvailable(Create_New_Contect_Activity.this, mMainLayout)) {
                         Contect_BLock(contact_item, 0, bottomSheetDialog);
                     }
                 } catch (JSONException e) {
@@ -1577,7 +1577,7 @@ e.printStackTrace();
                 //Block Contect
 
                 try {
-                    if (Global.isNetworkAvailable(Add_Newcontect_Activity.this, mMainLayout)) {
+                    if (Global.isNetworkAvailable(Create_New_Contect_Activity.this, mMainLayout)) {
                         Contect_Remove(contact_item, bottomSheetDialog);
                     }
                 } catch (JSONException e) {

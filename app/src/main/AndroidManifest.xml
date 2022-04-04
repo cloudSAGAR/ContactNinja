@@ -121,7 +121,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".AddContect.Add_Company_Activity"
+            android:name=".AddContect.Create_New_Company_Activity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -214,7 +214,7 @@
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".AddContect.EmailSend_Activity"
+            android:name=".AddContect.Contact_Click_Email_Send_Activity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -291,7 +291,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".AddContect.Add_Newcontect_Activity"
+            android:name=".AddContect.Create_New_Contect_Activity"
             android:exported="false"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />

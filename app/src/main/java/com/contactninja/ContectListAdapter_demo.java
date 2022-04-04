@@ -14,7 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.contactninja.AddContect.Add_Newcontect_Activity;
+import com.contactninja.AddContect.Create_New_Contect_Activity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.ContectListData;
 import com.contactninja.Utils.SessionManager;
@@ -173,7 +173,7 @@ public class ContectListAdapter_demo extends RecyclerView.Adapter<RecyclerView.V
                               SessionManager.setAdd_Contect_Detail(context, new AddcontectModel());
                               Log.e("List Of Contec is",new Gson().toJson(Contact_data));
                               SessionManager.setOneCotect_deatil(context, Contact_data);
-                              Intent addnewcontect = new Intent(context, Add_Newcontect_Activity.class);
+                              Intent addnewcontect = new Intent(context, Create_New_Contect_Activity.class);
                               SessionManager.setContect_flag("read");
                               context.startActivity(addnewcontect);
                           }

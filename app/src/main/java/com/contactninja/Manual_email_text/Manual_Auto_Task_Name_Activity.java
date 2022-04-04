@@ -20,7 +20,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.contactninja.AddContect.EmailSend_Activity;
+import com.contactninja.AddContect.Contact_Click_Email_Send_Activity;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
@@ -130,7 +130,7 @@ public class Manual_Auto_Task_Name_Activity extends AppCompatActivity implements
                         finish();
 
                     } else if (SessionManager.getEmail_screen_name(getApplicationContext()).equals("only_email")) {
-                        Intent intent = new Intent(getApplicationContext(), EmailSend_Activity.class);
+                        Intent intent = new Intent(getApplicationContext(), Contact_Click_Email_Send_Activity.class);
                         intent.putExtra("email", SessionManager.getMessage_number(getApplicationContext()));
                         intent.putExtra("id", SessionManager.getMessage_id(getApplicationContext()));
                         intent.putExtra("task_name", ev_titale.getText().toString().trim());

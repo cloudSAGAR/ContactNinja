@@ -37,7 +37,7 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.bumptech.glide.Glide;
-import com.contactninja.AddContect.Add_Newcontect_Activity;
+import com.contactninja.AddContect.Create_New_Contect_Activity;
 import com.contactninja.Bzcard.Select_Bzcard_Activity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.Contactdetail;
@@ -135,7 +135,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
     String flag;
     // ListPhoneContactsActivity use this method to start this activity.
     public static void start(Context context) {
-        Intent intent = new Intent(context, Add_Newcontect_Activity.class);
+        Intent intent = new Intent(context, Create_New_Contect_Activity.class);
         SessionManager.setContect_flag("save");
         context.startActivity(intent);
     }
@@ -231,7 +231,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                     String flag = SessionManager.getContect_flag(getActivity());
                     if (flag.equals("read")) {
                         SessionManager.setContect_flag("edit");
-                        Intent addnewcontect = new Intent(getActivity(), Add_Newcontect_Activity.class);
+                        Intent addnewcontect = new Intent(getActivity(), Create_New_Contect_Activity.class);
                         SessionManager.setContect_flag("edit");
                         startActivity(addnewcontect);
                         //finish();

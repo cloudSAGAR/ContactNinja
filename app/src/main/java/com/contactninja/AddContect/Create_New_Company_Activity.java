@@ -50,7 +50,7 @@ import io.michaelrocks.libphonenumber.android.Phonenumber;
 import retrofit2.Response;
 
 @SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
-public class Add_Company_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
+public class Create_New_Company_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     ImageView iv_back, iv_toolbar_manu_vertical, iv_block,iv_edit;
     TextView save_button, no_image, tv_remain_txt, tv_error, iv_invalid, iv_invalid1;
     EditText add_name, add_detail, edit_Mobile, edit_email, edit_address, edit_company_url;
@@ -69,7 +69,7 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_company);
+        setContentView(R.layout.activity_create_new_company);
         mNetworkReceiver = new ConnectivityReceiver();
         IntentUI();
         //  WorkData = SessionManager.getCompnay_detail(getApplicationContext());
@@ -150,7 +150,7 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
-        Global.checkConnectivity(Add_Company_Activity.this, mMainLayout);
+        Global.checkConnectivity(Create_New_Company_Activity.this, mMainLayout);
     }
 
     @SuppressLint("ObsoleteSdkInt")
@@ -182,7 +182,7 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
 
     private void CompanyList() throws JSONException {
         loadingDialog.showLoadingDialog();
-        SignResponseModel user_data = SessionManager.getGetUserdata(Add_Company_Activity.this);
+        SignResponseModel user_data = SessionManager.getGetUserdata(Create_New_Company_Activity.this);
 
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -192,7 +192,7 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
         paramObject.addProperty("id", id);
         obj.add("data", paramObject);
         retrofitCalls.CompanyList(sessionManager, obj, loadingDialog, Global.getToken(sessionManager),
-                Global.getVersionname(Add_Company_Activity.this), Global.Device, new RetrofitCallback() {
+                Global.getVersionname(Create_New_Company_Activity.this), Global.Device, new RetrofitCallback() {
                     @Override
                     public void success(Response<ApiResponse> response) {
                         loadingDialog.cancelLoading();
@@ -255,11 +255,11 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
             edit_address.setEnabled(false);
             add_name.setText(WorkData.getName());
             add_detail.setText(WorkData.getDescription());
-            ccp_id.setDefaultCountryUsingNameCode(String.valueOf(Global.Countrycode(Add_Company_Activity.this,
+            ccp_id.setDefaultCountryUsingNameCode(String.valueOf(Global.Countrycode(Create_New_Company_Activity.this,
                     WorkData.getContact_number())));
-            ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(Add_Company_Activity.this,WorkData.getContact_number()));
+            ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(Create_New_Company_Activity.this,WorkData.getContact_number()));
             ccp_id.resetToDefaultCountry();
-            String main_data = WorkData.getContact_number().replace("+" + String.valueOf(Global.Countrycode(Add_Company_Activity.this,
+            String main_data = WorkData.getContact_number().replace("+" + String.valueOf(Global.Countrycode(Create_New_Company_Activity.this,
                     WorkData.getContact_number())), "");
             edit_Mobile.setText(main_data);
             edit_email.setText(WorkData.getEmail());
@@ -308,11 +308,11 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
                 add_detail.setText(WorkData.getDescription());
 
 
-                ccp_id.setDefaultCountryUsingNameCode(String.valueOf(Global.Countrycode(Add_Company_Activity.this,
+                ccp_id.setDefaultCountryUsingNameCode(String.valueOf(Global.Countrycode(Create_New_Company_Activity.this,
                         WorkData.getContact_number())));
-                ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(Add_Company_Activity.this,WorkData.getContact_number()));
+                ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(Create_New_Company_Activity.this,WorkData.getContact_number()));
                 ccp_id.resetToDefaultCountry();
-                String main_data = WorkData.getContact_number().replace("+" + String.valueOf(Global.Countrycode(Add_Company_Activity.this,
+                String main_data = WorkData.getContact_number().replace("+" + String.valueOf(Global.Countrycode(Create_New_Company_Activity.this,
                         WorkData.getContact_number())), "");
                 edit_Mobile.setText(main_data);
 
@@ -395,7 +395,7 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
 
                 if (Global.isNetworkAvailable(this, mMainLayout)) {
                     if (flag.equals("read")) {
-                        Intent intent = new Intent(getApplicationContext(), Add_Company_Activity.class);
+                        Intent intent = new Intent(getApplicationContext(), Create_New_Company_Activity.class);
                         intent.putExtra("flag", "edit");
                         intent.putExtra("id", WorkData.getId());
                         startActivity(intent);
@@ -468,7 +468,7 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
                 //Block Contect
 
                 try {
-                    if (Global.isNetworkAvailable(Add_Company_Activity.this, mMainLayout)) {
+                    if (Global.isNetworkAvailable(Create_New_Company_Activity.this, mMainLayout)) {
                         Contect_BLock(1, bottomSheetDialog);
                     }
                 } catch (JSONException e) {
@@ -485,7 +485,7 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
                 //Block Contect
 
                 try {
-                    if (Global.isNetworkAvailable(Add_Company_Activity.this, mMainLayout)) {
+                    if (Global.isNetworkAvailable(Create_New_Company_Activity.this, mMainLayout)) {
                         Contect_BLock(0, bottomSheetDialog);
                     }
                 } catch (JSONException e) {
@@ -502,7 +502,7 @@ public class Add_Company_Activity extends AppCompatActivity implements View.OnCl
                 //Block Contect
 
                 try {
-                    if (Global.isNetworkAvailable(Add_Company_Activity.this, mMainLayout)) {
+                    if (Global.isNetworkAvailable(Create_New_Company_Activity.this, mMainLayout)) {
                         Company_Remove(bottomSheetDialog);
                     }
                 } catch (JSONException e) {

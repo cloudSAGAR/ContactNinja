@@ -1,10 +1,7 @@
 package com.contactninja.Group;
 
 import android.annotation.SuppressLint;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
@@ -23,14 +20,11 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+
 import retrofit2.Response;
 
 import com.bumptech.glide.Glide;
-import com.contactninja.AddContect.Add_Company_Activity;
 import com.contactninja.Fragment.GroupFragment.MembersFragment;
-import com.contactninja.Fragment.Home.Task_Fragment;
 import com.contactninja.Model.Grouplist;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.UservalidateModel;

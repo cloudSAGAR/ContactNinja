@@ -44,7 +44,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
-import com.contactninja.AddContect.Add_Newcontect_Activity;
+import com.contactninja.AddContect.Create_New_Contect_Activity;
 import com.contactninja.Contect.Contact;
 import com.contactninja.Contect.ContactFetcher;
 import com.contactninja.Contect.ContactPhone;
@@ -358,7 +358,7 @@ public class ContectFragment extends Fragment {
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
 
-                Intent addnewcontect = new Intent(getActivity(), Add_Newcontect_Activity.class);
+                Intent addnewcontect = new Intent(getActivity(), Create_New_Contect_Activity.class);
                 SessionManager.setContect_flag("save");
                 startActivity(addnewcontect);
             }
@@ -371,7 +371,7 @@ public class ContectFragment extends Fragment {
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
 
-                Intent addnewcontect = new Intent(getActivity(), Add_Newcontect_Activity.class);
+                Intent addnewcontect = new Intent(getActivity(), Create_New_Contect_Activity.class);
                 SessionManager.setContect_flag("save");
                 startActivity(addnewcontect);
             }
@@ -386,7 +386,7 @@ public class ContectFragment extends Fragment {
 
                 SessionManager.setAdd_Contect_Detail(getActivity(), new AddcontectModel());
                 SessionManager.setContect_flag("save");
-                Intent addnewcontect = new Intent(getActivity(), Add_Newcontect_Activity.class);
+                Intent addnewcontect = new Intent(getActivity(), Create_New_Contect_Activity.class);
                 startActivity(addnewcontect);
 
             }
@@ -2389,7 +2389,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
                                 SessionManager.setAdd_Contect_Detail(context, new AddcontectModel());
                                 SessionManager.setOneCotect_deatil(context, Contact_data);
-                                Intent addnewcontect = new Intent(context, Add_Newcontect_Activity.class);
+                                Intent addnewcontect = new Intent(context, Create_New_Contect_Activity.class);
                                 SessionManager.setContect_flag("read");
                                 context.startActivity(addnewcontect);
                             }

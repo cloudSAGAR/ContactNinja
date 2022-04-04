@@ -87,7 +87,7 @@ import java.util.Locale;
 import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables")
-public class EmailSend_Activity extends AppCompatActivity implements View.OnClickListener, TextClick,
+public class Contact_Click_Email_Send_Activity extends AppCompatActivity implements View.OnClickListener, TextClick,
         TemplateClick, ConnectivityReceiver.ConnectivityReceiverListener {
     public static final int PICKFILE_RESULT_CODE = 1;
     SessionManager sessionManager;
@@ -125,12 +125,12 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_email_send);
+        setContentView(R.layout.activity_contact_email_send);
         mNetworkReceiver = new ConnectivityReceiver();
         loadingDialog = new LoadingDialog(this);
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
-        templateClick = EmailSend_Activity.this;
+        templateClick = Contact_Click_Email_Send_Activity.this;
 
         IntentUI();
         initToolbar();
@@ -144,7 +144,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         ev_to.setText(email);
 
         try {
-            if (Global.isNetworkAvailable(EmailSend_Activity.this, mMainLayout)) {
+            if (Global.isNetworkAvailable(Contact_Click_Email_Send_Activity.this, mMainLayout)) {
                 Hastag_list();
             }
 
@@ -153,7 +153,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         }
 
         try {
-            if (Global.isNetworkAvailable(EmailSend_Activity.this, MainActivity.mMainLayout)) {
+            if (Global.isNetworkAvailable(Contact_Click_Email_Send_Activity.this, MainActivity.mMainLayout)) {
                 BZCard_list();
             }
         } catch (JSONException e) {
@@ -229,7 +229,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
     }
 
     private void Hastag_list() throws JSONException {
-        SignResponseModel signResponseModel = SessionManager.getGetUserdata(EmailSend_Activity.this);
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Contact_Click_Email_Send_Activity.this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -237,7 +237,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         paramObject.addProperty("team_id", 1);
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         obj.add("data", paramObject);
-        retrofitCalls.Hastag_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(EmailSend_Activity.this), Global.Device, new RetrofitCallback() {
+        retrofitCalls.Hastag_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(Contact_Click_Email_Send_Activity.this), Global.Device, new RetrofitCallback() {
             @SuppressLint("SyntheticAccessor")
             @Override
             public void success(Response<ApiResponse> response) {
@@ -294,13 +294,13 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
     private void Listset(List<HastagList.TemplateText> templateTextList) {
         rv_direct_list.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
         rv_direct_list.setHasFixedSize(true);
-        picUpTextAdepter = new PicUpTextAdepter(EmailSend_Activity.this, templateTextList, this);
+        picUpTextAdepter = new PicUpTextAdepter(Contact_Click_Email_Send_Activity.this, templateTextList, this);
         rv_direct_list.setAdapter(picUpTextAdepter);
     }
 
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
-        Global.checkConnectivity(EmailSend_Activity.this, mMainLayout);
+        Global.checkConnectivity(Contact_Click_Email_Send_Activity.this, mMainLayout);
     }
 
     @SuppressLint("ObsoleteSdkInt")
@@ -373,7 +373,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
     private void broadcast_manu() {
 
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.mail_bottom_sheet, null);
-        bottomSheetDialog = new BottomSheetDialog(EmailSend_Activity.this, R.style.CoffeeDialog);
+        bottomSheetDialog = new BottomSheetDialog(Contact_Click_Email_Send_Activity.this, R.style.CoffeeDialog);
         bottomSheetDialog.setContentView(mView);
         LinearLayout lay_sendnow = bottomSheetDialog.findViewById(R.id.lay_sendnow);
         LinearLayout lay_schedule = bottomSheetDialog.findViewById(R.id.lay_schedule);
@@ -382,7 +382,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
             public void onClick(View view) {
 
                 try {
-                    if (Global.isNetworkAvailable(EmailSend_Activity.this, mMainLayout)) {
+                    if (Global.isNetworkAvailable(Contact_Click_Email_Send_Activity.this, mMainLayout)) {
                         EmailAPI(ev_subject.getText().toString(), edit_template.getHtml().toString(), Integer.parseInt(id), email);
                     }
                 } catch (JSONException e) {
@@ -415,7 +415,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
 
     private void bouttomSheet() {
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.template_list_dialog_item, null);
-        bottomSheetDialog_templateList = new BottomSheetDialog(EmailSend_Activity.this, R.style.CoffeeDialog);
+        bottomSheetDialog_templateList = new BottomSheetDialog(Contact_Click_Email_Send_Activity.this, R.style.CoffeeDialog);
         bottomSheetDialog_templateList.setContentView(mView);
         LinearLayout layout_list_template = bottomSheetDialog_templateList.findViewById(R.id.layout_list_template);
         layout_list_template.setVisibility(View.VISIBLE);
@@ -425,7 +425,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
 
 
         try {
-            if (Global.isNetworkAvailable(EmailSend_Activity.this, MainActivity.mMainLayout)) {
+            if (Global.isNetworkAvailable(Contact_Click_Email_Send_Activity.this, MainActivity.mMainLayout)) {
                 Template_list(templet_list);
             }
         } catch (JSONException e) {
@@ -439,7 +439,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
     }
 
     private void Template_list(RecyclerView templet_list) throws JSONException {
-        SignResponseModel signResponseModel = SessionManager.getGetUserdata(EmailSend_Activity.this);
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Contact_Click_Email_Send_Activity.this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -450,7 +450,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         paramObject.addProperty("perPage", 10000000);
         paramObject.addProperty("page", 1);
         obj.add("data", paramObject);
-        retrofitCalls.Template_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(EmailSend_Activity.this), Global.Device, new RetrofitCallback() {
+        retrofitCalls.Template_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(Contact_Click_Email_Send_Activity.this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 templateList.clear();
@@ -529,7 +529,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
                     Global.Messageshow(getApplicationContext(), c_layout, getResources().getString(R.string.add_tamplate), false);
                 } else {
                     try {
-                        if (Global.isNetworkAvailable(EmailSend_Activity.this, MainActivity.mMainLayout)) {
+                        if (Global.isNetworkAvailable(Contact_Click_Email_Send_Activity.this, MainActivity.mMainLayout)) {
                             if (isValidation(editText.getText().toString().trim(), dialog)) {
                                 CreateTemplate(editText.getText().toString().trim(), dialog);
                             }
@@ -573,7 +573,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
 
     private void CreateTemplate(String template_name, AlertDialog dialog) throws JSONException {
         loadingDialog.showLoadingDialog();
-        SignResponseModel signResponseModel = SessionManager.getGetUserdata(EmailSend_Activity.this);
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Contact_Click_Email_Send_Activity.this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -588,7 +588,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         paramObject.addProperty("type", "EMAIL");
 
         obj.add("data", paramObject);
-        retrofitCalls.CreateTemplate(sessionManager, obj, loadingDialog, token, Global.getVersionname(EmailSend_Activity.this), Global.Device, new RetrofitCallback() {
+        retrofitCalls.CreateTemplate(sessionManager, obj, loadingDialog, token, Global.getVersionname(Contact_Click_Email_Send_Activity.this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
@@ -624,7 +624,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
 
     private void Email_bouttomSheet() {
         final View mView = getLayoutInflater().inflate(R.layout.email_bottom_sheet, null);
-        bottomSheetDialog_templateList1 = new BottomSheetDialog(EmailSend_Activity.this, R.style.CoffeeDialog);
+        bottomSheetDialog_templateList1 = new BottomSheetDialog(Contact_Click_Email_Send_Activity.this, R.style.CoffeeDialog);
         bottomSheetDialog_templateList1.setContentView(mView);
         TextView tv_done = bottomSheetDialog_templateList1.findViewById(R.id.tv_done);
         RecyclerView email_list = bottomSheetDialog_templateList1.findViewById(R.id.email_list);
@@ -723,7 +723,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         Log.e("Gson Data is", new Gson().toJson(gsonObject));
 
 
-        retrofitCalls.manual_task_store(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(EmailSend_Activity.this), Global.Device, new RetrofitCallback() {
+        retrofitCalls.manual_task_store(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(Contact_Click_Email_Send_Activity.this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 if (response.body().getHttp_status() == 200) {
@@ -769,7 +769,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         paramObject.addProperty("email_recipients", email);
         obj.add("data", paramObject);
 
-        retrofitCalls.Email_execute(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(EmailSend_Activity.this), Global.Device, new RetrofitCallback() {
+        retrofitCalls.Email_execute(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(Contact_Click_Email_Send_Activity.this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 
@@ -1020,7 +1020,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                         final View mView = getLayoutInflater().inflate(R.layout.bzcart_list_dialog_item, null);
-                        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(EmailSend_Activity.this,
+                        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Contact_Click_Email_Send_Activity.this,
                                 R.style.DialogStyle);
                         bottomSheetDialog.setContentView(mView);
                         RecyclerView rv_image_card = bottomSheetDialog.findViewById(R.id.rv_image_card);
@@ -1035,10 +1035,10 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
                         }
 
 
-                        rv_image_card.setLayoutManager(new LinearLayoutManager(EmailSend_Activity.this,
+                        rv_image_card.setLayoutManager(new LinearLayoutManager(Contact_Click_Email_Send_Activity.this,
                                 LinearLayoutManager.HORIZONTAL, false));
                         rv_image_card.setHasFixedSize(true);
-                        cardListAdepter = new CardListAdepter(EmailSend_Activity.this, bizcardList,
+                        cardListAdepter = new CardListAdepter(Contact_Click_Email_Send_Activity.this, bizcardList,
                                  bottomSheetDialog, interfaceClick);
                         rv_image_card.setAdapter(cardListAdepter);
 
@@ -1048,7 +1048,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
                     else if (position==2)
                     {
                         try {
-                            if(Global.isNetworkAvailable(EmailSend_Activity.this, MainActivity.mMainLayout)) {
+                            if(Global.isNetworkAvailable(Contact_Click_Email_Send_Activity.this, MainActivity.mMainLayout)) {
                                 /*Check if user has records in Zoom Oauth table*/
                                 Zoom_Api(mCtx);
                             }
@@ -1110,7 +1110,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
 
       //  loadingDialog.showLoadingDialog();
 
-        SignResponseModel signResponseModel = SessionManager.getGetUserdata(EmailSend_Activity.this);
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Contact_Click_Email_Send_Activity.this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -1118,7 +1118,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         paramObject.addProperty("team_id", 1);
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         obj.add("data", paramObject);
-        retrofitCalls.BZcard_User_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(EmailSend_Activity.this), Global.Device, new RetrofitCallback() {
+        retrofitCalls.BZcard_User_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(Contact_Click_Email_Send_Activity.this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
@@ -1239,7 +1239,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
     }
   void Zoom_Api(Context mCtx) throws JSONException {
 
-        SignResponseModel signResponseModel= SessionManager.getGetUserdata(EmailSend_Activity.this);
+        SignResponseModel signResponseModel= SessionManager.getGetUserdata(Contact_Click_Email_Send_Activity.this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -1248,7 +1248,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         paramObject.addProperty("user_tmz_id",signResponseModel.getUser().getUserTimezone().get(0).getValue());
         obj.add("data", paramObject);
-        retrofitCalls.zoomIntegrationExists(sessionManager,obj, loadingDialog, token,Global.getVersionname(EmailSend_Activity.this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.zoomIntegrationExists(sessionManager,obj, loadingDialog, token,Global.getVersionname(Contact_Click_Email_Send_Activity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
@@ -1279,7 +1279,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
     private void broadcast_manu_zoom(Context mCtx) {
 
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.zoom_layout, null);
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(EmailSend_Activity.this, R.style.CoffeeDialog);
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Contact_Click_Email_Send_Activity.this, R.style.CoffeeDialog);
         bottomSheetDialog.setContentView(mView);
         LinearLayout la_date=bottomSheetDialog.findViewById(R.id.la_date);
         TextView tv_date=bottomSheetDialog.findViewById(R.id.tv_date);
@@ -1350,7 +1350,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         String firstWord = arr[0];
 
         try {
-            if(Global.isNetworkAvailable(EmailSend_Activity.this, MainActivity.mMainLayout)) {
+            if(Global.isNetworkAvailable(Contact_Click_Email_Send_Activity.this, MainActivity.mMainLayout)) {
                 /*Create a Zoom Meeting*/
                 Zoom_create(Starttime,firstWord);
             }
@@ -1360,7 +1360,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
     }
     void Zoom_create(String starttime, String duration) throws JSONException {
         loadingDialog.showLoadingDialog();
-        SignResponseModel signResponseModel= SessionManager.getGetUserdata(EmailSend_Activity.this);
+        SignResponseModel signResponseModel= SessionManager.getGetUserdata(Contact_Click_Email_Send_Activity.this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -1373,7 +1373,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         paramObject.addProperty("description","");
         paramObject.addProperty("timezone",signResponseModel.getUser().getUserTimezone().get(0).getTzname());
         obj.add("data", paramObject);
-        retrofitCalls.ZoomCreate(sessionManager,obj, loadingDialog, token,Global.getVersionname(EmailSend_Activity.this),Global.Device, new RetrofitCallback() {
+        retrofitCalls.ZoomCreate(sessionManager,obj, loadingDialog, token,Global.getVersionname(Contact_Click_Email_Send_Activity.this),Global.Device, new RetrofitCallback() {
             @Override
             public void success (Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
@@ -1403,7 +1403,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
     private void Duration_bouttomSheet(Context mCtx, TextView txt_time ) {
 
        @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.duration_item_update, null);
-       BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(EmailSend_Activity.this, R.style.CoffeeDialog);
+       BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Contact_Click_Email_Send_Activity.this, R.style.CoffeeDialog);
        bottomSheetDialog.setContentView(mView);
        RadioButton red_5 = bottomSheetDialog.findViewById(R.id.red_5);
        RadioButton red_15 = bottomSheetDialog.findViewById(R.id.red_15);
@@ -1485,7 +1485,7 @@ public class EmailSend_Activity extends AppCompatActivity implements View.OnClic
         mDay = c.get(Calendar.DAY_OF_MONTH);
 
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(EmailSend_Activity.this,
+        DatePickerDialog datePickerDialog = new DatePickerDialog(Contact_Click_Email_Send_Activity.this,
                 new DatePickerDialog.OnDateSetListener() {
 
                     @Override

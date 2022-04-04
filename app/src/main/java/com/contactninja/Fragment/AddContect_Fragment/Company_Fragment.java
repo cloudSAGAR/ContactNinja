@@ -21,7 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.contactninja.AddContect.Add_Company_Activity;
+import com.contactninja.AddContect.Create_New_Company_Activity;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.CampaignTask_overview;
 import com.contactninja.Model.CompanyModel;
@@ -206,7 +206,7 @@ public class Company_Fragment extends Fragment {
                 mLastClickTime = SystemClock.elapsedRealtime();
 
                 SessionManager.setCampaign_data(new CampaignTask_overview());
-                Intent intent = new Intent(getActivity(), Add_Company_Activity.class);
+                Intent intent = new Intent(getActivity(), Create_New_Company_Activity.class);
                 intent.putExtra("flag", "add");
                 startActivity(intent);
             }
@@ -219,7 +219,7 @@ public class Company_Fragment extends Fragment {
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
                 SessionManager.setCampaign_data(new CampaignTask_overview());
-                Intent intent = new Intent(getActivity(), Add_Company_Activity.class);
+                Intent intent = new Intent(getActivity(), Create_New_Company_Activity.class);
                 intent.putExtra("flag", "add");
                 startActivity(intent);
             }
@@ -233,7 +233,7 @@ public class Company_Fragment extends Fragment {
                 mLastClickTime = SystemClock.elapsedRealtime();
 
                 SessionManager.setCampaign_data(new CampaignTask_overview());
-                Intent intent = new Intent(getActivity(), Add_Company_Activity.class);
+                Intent intent = new Intent(getActivity(), Create_New_Company_Activity.class);
                 intent.putExtra("flag", "add");
                 startActivity(intent);
             }
@@ -854,7 +854,7 @@ public class Company_Fragment extends Fragment {
                                 }
                                 mLastClickTime = SystemClock.elapsedRealtime();
 
-                                Intent intent = new Intent(getActivity(), Add_Company_Activity.class);
+                                Intent intent = new Intent(getActivity(), Create_New_Company_Activity.class);
                                 intent.putExtra("flag", "read");
                                 intent.putExtra("id", WorkData.getId());
                                 startActivity(intent);
