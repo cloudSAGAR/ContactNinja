@@ -20,8 +20,6 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -32,7 +30,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ShareCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -102,6 +99,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
+
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -112,7 +110,7 @@ import retrofit2.Response;
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
-    List<Contact> update_listContacts=new ArrayList<>();
+    List<Contact> update_listContacts = new ArrayList<>();
     MyAsyncTasks myAsyncTasks;
     //Declare Variabls for fragment
     public static int navItemIndex = 0;
@@ -142,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @RequiresApi(api = Build.VERSION_CODES.N)
     private BroadcastReceiver mNetworkReceiver;
     ArrayList<Contact> listContacts;
-    List<Contact> new_listContacts=new ArrayList<>();
+    List<Contact> new_listContacts = new ArrayList<>();
     Integer user_id = 0;
     String token_api = "", organization_id = "", team_id = "";
     SignResponseModel user_data;
@@ -151,9 +149,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //Csv S3 Bukket
 
     S3Uploader_csv s3uploaderObj;
-    static  String csv_file="";
+    static String csv_file = "";
     public static MainActivity activity;
     String characterFilter = "[^\\p{L}\\p{M}\\p{N}\\p{P}\\p{Z}\\p{Cf}\\p{Cs}\\s]";
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(@SuppressLint("UnknownNullness") Bundle savedInstanceState) {
@@ -166,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         sessionManager.login();
         loadingDialog = new LoadingDialog(this);
         retrofitCalls = new RetrofitCalls(getApplicationContext());
-      //   startActivity(new Intent(getApplicationContext(),Contect_Demo.class));
+        //   startActivity(new Intent(getApplicationContext(),Contect_Demo.class));
         SessionManager.setGroupData(getApplicationContext(), new Grouplist.Group());
         IntentUI();
         Calendar cal = Calendar.getInstance();
@@ -193,9 +192,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-        else {
-           EnableRuntimePermission();
+        } else {
+            EnableRuntimePermission();
         }
         navItemIndex = 0;
         displayView();
@@ -212,25 +210,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         // Get new FCM registration token
                         String token = task.getResult();
 
-                       // Log.e( "fcm token : ",token);
+                        // Log.e( "fcm token : ",token);
 
                     }
                 });
     }
-    public static void upload(RemoteMessage remoteMessage) {
-        activity.runOnUiThread(new Runnable() {
-            public void run() {
-                SessionManager.setCsv_Token("0");
-                try {
-                    ContectEvent();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                Global.Messageshow(activity,mMainLayout,activity.getResources().getString(R.string.upload_complate),true);
 
-            }
-        });
+    public static void upload(RemoteMessage remoteMessage) {
+        try {
+
+            activity.runOnUiThread(new Runnable() {
+                public void run() {
+                    SessionManager.setCsv_Token("0");
+                    try {
+                        ContectEvent();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    Global.Messageshow(activity, mMainLayout, activity.getResources().getString(R.string.upload_complate), true);
+
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void registerNetworkBroadcastForNougat() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -275,7 +281,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
     //Working Hourse Call
     private void Working_hour(Integer value) {
         JsonObject obj = new JsonObject();
@@ -299,6 +304,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
     }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     protected void unregisterNetworkChanges() {
         try {
@@ -350,7 +356,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
 
                 listContacts = new ContactFetcher(MainActivity.this).fetchAll();
-                Log.e("List Contect Is ",new Gson().toJson(listContacts));
+                Log.e("List Contect Is ", new Gson().toJson(listContacts));
                 SignResponseModel user_data = SessionManager.getGetUserdata(MainActivity.this);
                 String Is_contact_exist = String.valueOf(user_data.getUser().getIs_contact_exist());
 
@@ -367,14 +373,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         if (Is_contact_exist.equals("0")) {
                             limit = listContacts.size();
                             try {
-                                if (contectListData.size()==0 || contectListData.equals(null))
-                                {
+                                if (contectListData.size() == 0 || contectListData.equals(null)) {
                                     splitdata(listContacts);
                                 }
 
-                            }
-                            catch (Exception e)
-                            {
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
 
@@ -387,8 +390,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             myAsyncTasks = new MyAsyncTasks();
                             myAsyncTasks.execute();
                         }
-                    }
-                    else {
+                    } else {
                         // splitdata(listContacts);
                         myAsyncTasks = new MyAsyncTasks();
                         myAsyncTasks.execute();
@@ -449,12 +451,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 "Facebook Link" + "," + "Twitter Link" + "," +
                 "Breakout Link" + "," + "Linkedin Link" + "," +
                 "Email" + "," + "Phone" + "," +
-                "Fax"+","+"imei");
+                "Fax" + "," + "imei");
 
         for (int i = 0; i < response.size(); i++) {
 
-            if(Global.IsNotNull(response.get(i).name)&& !response.get(i).name.equals("null") &&
-                    Global.IsNotNull(response.get(i).numbers)&& !response.get(i).numbers.equals("null")) {
+            if (Global.IsNotNull(response.get(i).name) && !response.get(i).name.equals("null") &&
+                    Global.IsNotNull(response.get(i).numbers) && !response.get(i).numbers.equals("null")) {
                 String email = "";
                 String number = "";
                 for (int j = 0; j < response.get(i).emails.size(); j++) {
@@ -473,15 +475,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         if (number.equals("")) {
                             number = response.get(i).numbers.get(j).number;
                         } else {
-                            if (!number.contains(response.get(i).numbers.get(j).number))
-                            {
+                            if (!number.contains(response.get(i).numbers.get(j).number)) {
                                 number = number + "," + response.get(i).numbers.get(j).number;
                             }
 
                         }
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                         number = "";
                     }
 
@@ -515,17 +514,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
 
-    //    Log.e("Data Is", String.valueOf(data));
-       /* CreateCSV(data);*/  //Api Pass Csv
+        //    Log.e("Data Is", String.valueOf(data));
+        /* CreateCSV(data);*/  //Api Pass Csv
 
 
         // Buket Upload Csv
 
-      if (!data.toString().equals(null) &&  !data.toString().equals(""))
-        {
+        if (!data.toString().equals(null) && !data.toString().equals("")) {
             Calendar calendar = Calendar.getInstance();
             long time = calendar.getTimeInMillis();
-            csv_file=SessionManager.getGetUserdata(getApplicationContext()).getUser().getId()+"_CSV_ANDROID_" + time ;
+            csv_file = SessionManager.getGetUserdata(getApplicationContext()).getUser().getId() + "_CSV_ANDROID_" + time;
 
             SignResponseModel user_data = SessionManager.getGetUserdata(activity);
             String user_id = String.valueOf(user_data.getUser().getId());
@@ -537,7 +535,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             paramObject.addProperty("organization_id", 1);
             paramObject.addProperty("team_id", 1);
             paramObject.addProperty("user_id", user_id);
-            paramObject.addProperty("csv_name",csv_file+".csv");
+            paramObject.addProperty("csv_name", csv_file + ".csv");
             obj.add("data", paramObject);
 
             JsonParser jsonParser = new JsonParser();
@@ -558,7 +556,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Type listType = new TypeToken<BuketModel>() {
                         }.getType();
                         BuketModel Data = new Gson().fromJson(headerString, listType);
-                        csv_file=csv_file+"_"+Data.getId();
+                        csv_file = csv_file + "_" + Data.getId();
                         CreateCSV(data);
 
                     }
@@ -581,10 +579,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         long time = calendar.getTimeInMillis();
         try {
             //
-            if(csv_file.equals("")){
-                csv_file="CSV_ANDROID_" + time ;
+            if (csv_file.equals("")) {
+                csv_file = "CSV_ANDROID_" + time;
             }
-            FileOutputStream out = openFileOutput(csv_file+ ".csv", Context.MODE_PRIVATE);//Api Pass Value  csv_file+ ".csv" //CSV_ANDROID_" + time + ".csv
+            FileOutputStream out = openFileOutput(csv_file + ".csv", Context.MODE_PRIVATE);//Api Pass Value  csv_file+ ".csv" //CSV_ANDROID_" + time + ".csv
 
             //store the data in CSV file by passing String Builder data
             out.write(data.toString().getBytes());
@@ -594,7 +592,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (!newFile.exists()) {
                 newFile.mkdir();
             }
-            File file = new File(context.getFilesDir(), csv_file+ ".csv" );//Api Time Pass csv_file+ ".csv" //"CSV_ANDROID_" + time + ".csv"
+            File file = new File(context.getFilesDir(), csv_file + ".csv");//Api Time Pass csv_file+ ".csv" //"CSV_ANDROID_" + time + ".csv"
             Uri path = FileProvider.getUriForFile(context, "com.contactninja", file);
             //once the file is ready a share option will pop up using which you can share
             // the same CSV from via Gmail or store in Google Drive
@@ -607,7 +605,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             startActivity(intent);*/
             if (Global.isNetworkAvailable(MainActivity.this, mMainLayout)) {
-               // Uploadcsv(file);  //Api Time Call
+                // Uploadcsv(file);  //Api Time Call
                 s3uploaderObj = new S3Uploader_csv(MainActivity.this);
 
                 String Bzcard_image = s3uploaderObj.Csv_Upload(file.getPath(),
@@ -619,25 +617,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void UploadS3 () {
+    private void UploadS3() {
         s3uploaderObj.setOns3UploadDone(new S3Uploader_csv.S3UploadInterface() {
             @Override
             public void onUploadSuccess(String response) {
                 Log.e("Reppnse is", new Gson().toJson(response));
                 loadingDialog.cancelLoading();
                 SessionManager.setCsv_Token("1");
-                SessionManager.setnewContect(getApplicationContext(),new ArrayList<>());
+                SessionManager.setnewContect(getApplicationContext(), new ArrayList<>());
 
             }
 
             @Override
             public void onUploadError(String response) {
                 loadingDialog.cancelLoading();
-                Log.e("Error is",new Gson().toJson(response));
+                Log.e("Error is", new Gson().toJson(response));
             }
 
         });
     }
+
     private void Uploadcsv(File path) throws JSONException {
 
 
@@ -662,7 +661,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         RequestBody is_phonebook = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(1));
 
         retrofitCalls.Upload_csv(sessionManager, loadingDialog, Global.getToken(sessionManager),
-                organization_id1, team_id1, user_id1,  body, Global.getVersionname(activity), Global.Device,is_phonebook, imei, new RetrofitCallback() {
+                organization_id1, team_id1, user_id1, body, Global.getVersionname(activity), Global.Device, is_phonebook, imei, new RetrofitCallback() {
                     @Override
                     public void success(Response<ApiResponse> response) {
                         sessionManager.setcontectexits("1");
@@ -676,7 +675,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             try {
                                 limit = csv_inviteListData.size();
                                 ContectEvent();
-                                SessionManager.setnewContect(getApplicationContext(),new ArrayList<>());
+                                SessionManager.setnewContect(getApplicationContext(), new ArrayList<>());
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -684,7 +683,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                             try {
                                 ContectEvent();
-                                SessionManager.setnewContect(getApplicationContext(),new ArrayList<>());
+                                SessionManager.setnewContect(getApplicationContext(), new ArrayList<>());
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -698,7 +697,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void error(Response<ApiResponse> response) {
                         loadingDialog.cancelLoading();
-                        SessionManager.setnewContect(getApplicationContext(),new ArrayList<>());
+                        SessionManager.setnewContect(getApplicationContext(), new ArrayList<>());
 
                     }
 
@@ -786,9 +785,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        SessionManager.setupdateContect(getApplicationContext(),new ArrayList<>());
+        SessionManager.setupdateContect(getApplicationContext(), new ArrayList<>());
         SessionManager.setOneCotect_deatil(getApplicationContext(), new ContectListData.Contact());
-       // SessionManager.setnewContect(getApplicationContext(),new ArrayList<>());
+        // SessionManager.setnewContect(getApplicationContext(),new ArrayList<>());
         Global.getInstance().setConnectivityListener(MainActivity.this);
     }
 
@@ -1014,7 +1013,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                SessionManager.setGroupList(getApplicationContext(),new ArrayList<>() );
+                SessionManager.setGroupList(getApplicationContext(), new ArrayList<>());
 
                 if (Global.IsNotNull(SessionManager.getContectList(getApplicationContext()))) {
                     SessionManager.setCampaign_Day("00");
@@ -1025,7 +1024,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Intent intent1 = new Intent(getApplicationContext(), Text_And_Email_Auto_Manual.class);
                     intent1.putExtra("flag", "add");
                     startActivity(intent1);//  finish();
-                }else {
+                } else {
                     EnableRuntimePermission();
                 }
                 bottomSheetDialog.dismiss();
@@ -1046,9 +1045,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     SessionManager.setCampaign_minute("00");
                     SessionManager.setCampaign_type("");
                     SessionManager.setCampaign_type_name("");
-                    Intent intent = new Intent(getApplicationContext(),List_Broadcast_activity.class);
+                    Intent intent = new Intent(getApplicationContext(), List_Broadcast_activity.class);
                     startActivity(intent);
-                }else {
+                } else {
                     EnableRuntimePermission();
                 }
                 bottomSheetDialog.dismiss();
@@ -1065,7 +1064,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     SessionManager.setcamp_final_flag("");
                     Intent intent = new Intent(getApplicationContext(), Campaign_List_Activity.class);
                     startActivity(intent);
-                }else {
+                } else {
                     EnableRuntimePermission();
                 }
                 bottomSheetDialog.dismiss();
@@ -1128,10 +1127,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         DeleteTask ut = new DeleteTask();
         ut.execute();
     }
+
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         Global.checkConnectivity(MainActivity.this, mMainLayout);
     }
+
     private void getTasks() {
         class GetTasks extends AsyncTask<Void, Void, List<Contect_Db>> {
             @Override
@@ -1157,7 +1158,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         boolean found = contect_list.stream().anyMatch(p -> p.getEmailNumber().equals(num));
                         boolean found1 = contect_list.stream().anyMatch(p -> p.getFirst_name().equals(f_name));
                         if (found == true && found1 == false) {
-                            check_list_for_Update(listContacts.get(i).name, listContacts.get(i).last_name, listContacts.get(i).numbers.get(0).number,listContacts,i);
+                            check_list_for_Update(listContacts.get(i).name, listContacts.get(i).last_name, listContacts.get(i).numbers.get(0).number, listContacts, i);
                         }
                     }
                 } else {
@@ -1176,20 +1177,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         try {
             for (int i = 0; i < csv_inviteListData.size(); i++) {
-                for ( int j=0;j<csv_inviteListData.get(i).numbers.size();j++)
-                {
-                    check_list(csv_inviteListData.get(i).name, "", csv_inviteListData.get(i).numbers.get(j).number,csv_inviteListData,i);
+                for (int j = 0; j < csv_inviteListData.get(i).numbers.size(); j++) {
+                    check_list(csv_inviteListData.get(i).name, "", csv_inviteListData.get(i).numbers.get(j).number, csv_inviteListData, i);
                 }
             }
+        } catch (Exception e) {
         }
-        catch (Exception e)
-        {
-        }
-
-
-
-
-
 
 
     }
@@ -1205,7 +1198,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .getSameValue(userName.replaceAll("[-+.^:,]", ""), last_name.replaceAll("[-+.^:,]", ""), userPhoneNumber);
                 if (taskList.size() == 0) {
                     //Update Call
-                    check_list_for_Update(userName, last_name, userPhoneNumber,csv_inviteListData,i);
+                    check_list_for_Update(userName, last_name, userPhoneNumber, csv_inviteListData, i);
 
                 } else if (taskList.size() != 1) {
                     loadingDialog.cancelLoading();   //Multiple Same Data Then Remove
@@ -1229,7 +1222,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         gt.execute();
     }
 
-    public void check_list_for_Update(String userName, String last_name, String userPhoneNumber,ArrayList<Contact> csv_inviteListData, int i) {
+    public void check_list_for_Update(String userName, String last_name, String userPhoneNumber, ArrayList<Contact> csv_inviteListData, int i) {
         class GetTasks extends AsyncTask<Void, Void, List<Contect_Db>> {
             @Override
             protected List<Contect_Db> doInBackground(Void... voids) {
@@ -1241,22 +1234,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 if (taskList.size() == 0) {
                     //No Data Then Add Contect
-                    new_listContacts=SessionManager.getnewContect(getApplicationContext());
+                    new_listContacts = SessionManager.getnewContect(getApplicationContext());
                     new_listContacts.add(csv_inviteListData.get(i));
-                    SessionManager.setnewContect(getApplicationContext(),new_listContacts);
+                    SessionManager.setnewContect(getApplicationContext(), new_listContacts);
                     //    splitdata(new_listContacts);
 
 
                 } else {
-                    update_listContacts=SessionManager.getupdateContect(getApplicationContext());
+                    update_listContacts = SessionManager.getupdateContect(getApplicationContext());
                     csv_inviteListData.get(i).setId(String.valueOf(taskList.get(0).getId1()));
-                    Contact update_contact=new Contact(taskList.get(0).getContect_id(),userName,last_name);
-                    ContactPhone contactPhone=new ContactPhone(userPhoneNumber,csv_inviteListData.get(i).numbers.get(0).type,csv_inviteListData.get(i).numbers.get(0).contry_code);
-                    ArrayList<ContactPhone> contactPhoneslist=new ArrayList<>();
+                    Contact update_contact = new Contact(taskList.get(0).getContect_id(), userName, last_name);
+                    ContactPhone contactPhone = new ContactPhone(userPhoneNumber, csv_inviteListData.get(i).numbers.get(0).type, csv_inviteListData.get(i).numbers.get(0).contry_code);
+                    ArrayList<ContactPhone> contactPhoneslist = new ArrayList<>();
                     contactPhoneslist.add(contactPhone);
                     update_contact.setNumbers(contactPhoneslist);
                     update_listContacts.add(update_contact);
-                    SessionManager.setupdateContect(getApplicationContext(),update_listContacts);
+                    SessionManager.setupdateContect(getApplicationContext(), update_listContacts);
 
                     //Update Contect Api Call
                    /* try {
@@ -1412,7 +1405,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
-
 
 
 }

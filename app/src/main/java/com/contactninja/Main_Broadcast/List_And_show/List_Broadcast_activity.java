@@ -338,7 +338,6 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
                         isLoading = false;
 
                     } else {
-                        // Global.Messageshow(getApplicationContext(), mMainLayout, headerString, false);
                         demo_layout.setVisibility(View.VISIBLE);
                     }
 

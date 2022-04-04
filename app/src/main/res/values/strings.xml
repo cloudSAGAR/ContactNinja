@@ -23,7 +23,7 @@
     <string name="account_no">Don\'t have an account?</string>
     <string name="remember_password">Remember password?</string>
     <string name="signup">Sign up</string>
-    <string name="signIn">Sign In</string>
+    <string name="signIn">Sign in</string>
     <string name="send">Send</string>
     <string name="enter_phone">Enter your phone</string>
     <string name="enter_email">Enter your email</string>
@@ -374,7 +374,6 @@ Number</string>
     <string name="Run_this_step_on">Run this step on</string>
     <string name="mail_title">Step#2 (Automated Email)</string>
     <string name="mail_subject">Subject:</string>
-    <string name="ComposeEmail">Compose email</string>
     <string name="camp_done">Please add title of \n  your campaign</string>
     <string name="manual_task">Please add title \n for your task</string>
     <string name="camp_remaingn"> Characters remaining</string>
@@ -387,9 +386,6 @@ Number</string>
     <string name="Subject">Subject:</string>
     <string name="Email_Template">Email template</string>
     <string name="Text_Template">Text template</string>
-    <string name="template_name">"Please add template name "</string>
-    <string name="template_dody">"Please add template content "</string>
-    <string name="template_subject">"Please add template subject "</string>
     <string name="from">From:</string>
     <string name="to">To:</string>
     <string name="to_subject">Subejct:</string>
@@ -432,9 +428,7 @@ Number</string>
     <string name="verifition_title_text">Enter the code We just \n texted you</string>
     <string name="enter_campaign_name">Enter campaign name</string>
     <string name="add_contact">Add first contacts</string>
-    <string name="add_message">Add message</string>
     <string name="characters40">40 characters remaining</string>
-    <string name="select_type">Select automated or manual</string>
 
     <string name="select_Home">Home</string>
     <string name="select_Send">Send</string>
@@ -444,7 +438,6 @@ Number</string>
     <string name="selected">Selected</string>
     <string name="contacts">Contacts</string>
     <string name="groups">Groups</string>
-    <string name="select_Contact_group">Contact or group</string>
 
 
     <string name="add_blacklist">Add to blacklist</string>
@@ -552,7 +545,6 @@ Number</string>
         <item>15</item>
     </string-array>
 
-    <string name="contect_block">This contect is block</string>
     <string name="email_contact">Please email in contact</string>
 
 
@@ -591,7 +583,7 @@ Number</string>
     <string name="Bzcard_theme_colour">Bzcard theme colour</string>
     <string name="Bzcard_text_1">in order to see preview please press preview on top right corner</string>
     <string name="Cutom_Button">Cutom Button</string>
-    <string name="other_Cutom_Button">Add onther custom button </string>
+    <string name="other_Cutom_Button">Add other custom button </string>
     <string name="title_button">Title of your button</string>
     <string name="yourtitle_hint">Add your title</string>
     <string name="Add_url">Add url</string>
@@ -670,31 +662,19 @@ Number</string>
 
     <string name="home_bz_card">Bzcard analytics</string>
     <string name="home_email_text">Connected Email</string>
-    <string name="setting_mail">"You havent linked your mailbox. Add from settings > Mailbox."</string>
-    <string name="setting_mail_defoult">"You havent set your mail. Select from settings > Mailbox."</string>
+    <string name="setting_mail">"You haven’t linked your mailbox. Add from settings > Mailbox."</string>
+    <string name="setting_mail_defoult">"You haven’t set your mail. Select from settings > Mailbox."</string>
     <string name="task_title_email">Task title:</string>
     <string name="plan_9">prod_LAUKubaHBxEsPP</string>
     <string name="plan_39">prod_LAUQKpnUmGVfBN</string>
     <string name="plan_69">prod_LAUJLCbnF7yEZQ</string>
 
-    <string name="plan_validation">You don\'t have active plan or quota.</string>
-    <string name="broadcatse_delete">Delete Broadcatse</string>
-    <string name="add_email_contact">Add contect or email</string>
-    <string name="add_subject">Add subject</string>
-    <string name="add_tamplate">Enter template name</string>
-    <string name="reconnect_zoom">Reconnect zoom account</string>
-    <string name="upgrade_plane">Upgrade Your Plan On Web</string>
-    <string name="add_tamplate_txt">Enter template text</string>
+    <string name="broadcatse_delete">Delete Broadcast</string>
+    <string name="add_email_contact">Add contact or email</string>
     <string name="select_day">Select campaign day</string>
     <string name="select_hours">Select campaign hours</string>
     <string name="add_huors">Add validate hours</string>
     <string name="add_valid_day">Add validate day</string>
     <string name="task_add">Please assigned task</string>
     <string name="add_camp_prospact">Pause the campaign before adding new prospects</string>
-    <string name="upload_complate">Upload complate</string>
-    <string name="add_title">Add title</string>
-    <string name="add_time">Add time</string>
-    <string name="add_date">Add date</string>
-    <string name="Select_Recurrence">Select recurrence</string>
-    <string name="push_broadcast">Pause the broadcast before edit</string>
 </resources>
