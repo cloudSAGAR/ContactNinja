@@ -680,7 +680,6 @@ Number</string>
     <string name="plan_validation">You don\'t have active plan or quota.</string>
     <string name="broadcatse_delete">Delete Broadcatse</string>
     <string name="add_email_contact">Add contect or email</string>
-    <string name="add_company_name">Add company name</string>
     <string name="add_subject">Add subject</string>
     <string name="add_tamplate">Enter template name</string>
     <string name="reconnect_zoom">Reconnect zoom account</string>
