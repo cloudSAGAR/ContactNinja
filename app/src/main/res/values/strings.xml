@@ -25,7 +25,6 @@
     <string name="signup">Sign up</string>
     <string name="signIn">Sign in</string>
     <string name="send">Send</string>
-    <string name="enter_phone">Enter your phone</string>
     <string name="enter_email">Enter your email</string>
 
     <string name="enter_code">Enter referral code</string>
@@ -34,16 +33,14 @@
     <string name="or_forgot_password">Forget password?</string>
     <string name="or_phone">or use phone number</string>
     <string name="terms">I have read and agree to <br>\nContact Ninja’s <b><u>Terms &amp; Conditions</u></b></br></string>
-    <string name="invalid_email">Invalid email</string>
     <string name="invalid_email1">This email address is not exist</string>
-    <string name="invalid_phone">Invalid number</string>
     <string name="invalid_jobtitle">Invalid Job Title</string>
     <string name="add_phone_number">Invalid number</string>
     <string name="invalid_password">Invalid password</string>
-    <string name="invalid_first_name">Add first name</string>
-    <string name="invalid_last_name">Add last name</string>
+
+
     <string name="or_code">Have a referral code ?</string>
-    <string name="invalid_code">Add referral code</string>
+
 
     <!--SignUp-->
     <string name="SignUp">Sign Up</string>
@@ -188,8 +185,6 @@ Number</string>
     <string name="add_defult_text">Set as \n default</string>
     <string name="add_bz_text">This contactNinja \n hasn’t shared a BZcardSet</string>
     <string name="add_exposures_text">This contactNinja \n has no exposures</string>
-    <string name="add_group_txt">Add your group name</string>
-    <string name="add_group_description">Add your group description</string>
     <string name="add_group_description_min_txt">100 character remaining</string>
     <string name="add_group_all_member">All members</string>
     <string name="add_group_all_more">Add more members</string>
@@ -396,7 +391,6 @@ Number</string>
     <string name="Comp_I">I</string><!--Inactive-->
     <string name="Comp_C">C</string><!--Complete-->
     <string name="Comp_D">I</string><!--Delete-->
-    <string name="camp_select_contect">Select contect number</string>
     <string name="manu_name1"> Save as draft</string>
     <string name="manu_setting">setting</string>
     <string name="manu_name2"> Edit </string>
@@ -426,8 +420,6 @@ Number</string>
     <string name="broad_recurrence">Recurrence</string>
     <string name="text_txt">Message</string>
     <string name="verifition_title_text">Enter the code We just \n texted you</string>
-    <string name="enter_campaign_name">Enter campaign name</string>
-    <string name="add_contact">Add first contacts</string>
     <string name="characters40">40 characters remaining</string>
 
     <string name="select_Home">Home</string>
@@ -545,6 +537,7 @@ Number</string>
         <item>15</item>
     </string-array>
 
+
     <string name="email_contact">Please email in contact</string>
 
 
@@ -567,7 +560,6 @@ Number</string>
     <string name="zoom_account">Your zoom account</string>
     <string name="dis_account">Disconnect my account</string>
     <string name="meeting">Meeting Duration</string>
-    <string name="select_meeting">Select Meeting Duration</string>
     <string name="m_5">5 mins</string>
     <string name="m_15">15 mins</string>
     <string name="m_30">30 mins</string>
@@ -615,13 +607,6 @@ Number</string>
     <string name="Replace_Video">Replace video</string>
     <string name="Replace_image">Replace image</string>
     <string name="Cancel_Media">Cancel media</string>
-    <string name="video_title_error">Add video title</string>
-    <string name="image_title_error">Add image title</string>
-    <string name="video_description_error">Add video description</string>
-    <string name="image_description_error">Add image description</string>
-    <string name="select_image">Please select image</string>
-    <string name="select_pdf">Please select pdf</string>
-    <string name="max_media">Can add only up to 10 media blocks.</string>
     <string name="add_featured">Add to featured media</string>
     <string name="Remove_featured">Remove featured media</string>
     <string name="title_bzcard">Please add title of \n bzcard</string>
@@ -662,19 +647,10 @@ Number</string>
 
     <string name="home_bz_card">Bzcard analytics</string>
     <string name="home_email_text">Connected Email</string>
-    <string name="setting_mail">"You haven’t linked your mailbox. Add from settings > Mailbox."</string>
-    <string name="setting_mail_defoult">"You haven’t set your mail. Select from settings > Mailbox."</string>
     <string name="task_title_email">Task title:</string>
     <string name="plan_9">prod_LAUKubaHBxEsPP</string>
     <string name="plan_39">prod_LAUQKpnUmGVfBN</string>
     <string name="plan_69">prod_LAUJLCbnF7yEZQ</string>
 
-    <string name="broadcatse_delete">Delete Broadcast</string>
-    <string name="add_email_contact">Add contact or email</string>
-    <string name="select_day">Select campaign day</string>
-    <string name="select_hours">Select campaign hours</string>
-    <string name="add_huors">Add validate hours</string>
-    <string name="add_valid_day">Add validate day</string>
-    <string name="task_add">Please assigned task</string>
-    <string name="add_camp_prospact">Pause the campaign before adding new prospects</string>
+    <string name="broadcatse_delete">Delete Broadcatse</string>
 </resources>

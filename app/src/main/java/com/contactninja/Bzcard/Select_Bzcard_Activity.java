@@ -229,7 +229,7 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
                     SessionManager.setBzcard(this, main_model);
                     startActivity(new Intent(getApplicationContext(), Add_New_Bzcard_Activity.class));
                 }else {
-                    Global.Messageshow(getApplicationContext(),mMainLayout,"only 5 card add",false);
+                    Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.max_card),false);
                 }
 
                 break;

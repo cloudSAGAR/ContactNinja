@@ -767,7 +767,7 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
                     UservalidateModel user_model = new Gson().fromJson(headerString, listType);
                     if (user_model.getTemplate_slug() != null) {
                         Global.Messageshow(getApplicationContext(), mMainLayout,
-                                "The template title has already been taken.", false);
+                                getResources().getString(R.string.template_title_already), false);
                     }
                 }
             }
