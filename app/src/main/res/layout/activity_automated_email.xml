@@ -168,7 +168,7 @@
                 android:background="@color/add_contect_transpernt"
                 android:focusable="true"
                 android:gravity="left"
-                android:inputType="textCapSentences"
+                android:inputType="textCapSentences|textMultiLine"
                 android:hint="@string/ComposeEmail"
                 android:imeOptions="actionDone"
                 android:linksClickable="true"

@@ -86,6 +86,7 @@
         <EditText
             android:id="@+id/add_detail"
             style="@style/tv_regular_12"
+            android:inputType="textCapSentences|textMultiLine"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_70sdp"
             android:layout_gravity="center|left"

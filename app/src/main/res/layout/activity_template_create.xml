@@ -131,9 +131,9 @@
 
 
     <EditText
-        android:inputType="textCapSentences"
         android:id="@+id/edit_template"
         style="@style/tv_regular_12"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/lay_title"
@@ -143,6 +143,7 @@
         android:gravity="left"
         android:hint="@string/Typehere"
         android:imeOptions="actionDone"
+        android:inputType="textCapSentences|textMultiLine"
         android:padding="10dp"
         android:textColor="@color/text_reg"
         tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />

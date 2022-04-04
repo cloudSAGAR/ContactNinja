@@ -43,7 +43,7 @@
             android:visibility="gone" />
 
         <EditText
-
+            android:inputType="textCapSentences|textMultiLine"
             android:id="@+id/editText"
             style="@style/tv_regular_12"
             android:layout_width="match_parent"

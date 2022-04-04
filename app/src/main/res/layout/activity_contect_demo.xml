@@ -4,13 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-        <com.chinalwb.are.AREditText
-            android:id="@+id/arEditText"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="top|left"
-            android:hint="Your EditText goes here"
-            android:textSize="15sp" />
+    <com.chinalwb.are.AREditText
+        android:id="@+id/arEditText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="top|left"
+        android:hint="Your EditText goes here"
+        android:textSize="15sp" />
 
     <LinearLayout
         android:id="@+id/bottombar"

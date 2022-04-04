@@ -56,7 +56,7 @@
                 android:background="@color/add_contect_transpernt"
                 android:focusable="true"
                 android:imeOptions="actionDone"
-                android:inputType="text"
+                android:inputType="text|textCapSentences|textMultiLine"
                 android:maxEms="40"
                 android:maxLength="40"
                 tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />

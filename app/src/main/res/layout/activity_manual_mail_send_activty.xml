@@ -218,7 +218,7 @@
             <com.chinalwb.are.AREditText
                 android:id="@+id/edit_compose"
                 style="@style/tv_normal_12"
-                android:inputType="textCapSentences"
+                android:inputType="textCapSentences|textMultiLine"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
