@@ -552,7 +552,7 @@ class LavelAdapter extends RecyclerView.Adapter<LavelAdapter.viewholder> {
             e.printStackTrace();
         }
 
-        holder.no_image.setText(add_text);
+        holder.no_image.setText(add_text.toUpperCase());
         SignResponseModel signResponseModel = SessionManager.getGetUserdata(mCtx);
       /*  String namebyreferrer = "";
         if (signResponseModel.getUser().getId().equals(item.getReferredBy())) {

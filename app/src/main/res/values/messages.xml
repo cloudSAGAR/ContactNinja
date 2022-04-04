@@ -51,5 +51,6 @@
     <string name="reconnect_zoom">Reconnect zoom account</string>
     <string name="upgrade_plane">Upgrade your plan on web</string>
     <string name="upload_complate">Upload complate</string>
+    <string name="timezone_alert">"Please select your timezon in user profile "</string>
 
 </resources>

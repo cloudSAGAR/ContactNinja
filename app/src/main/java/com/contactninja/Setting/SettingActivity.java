@@ -223,42 +223,50 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
         SignResponseModel signResponseModel= SessionManager.getGetUserdata(SettingActivity.this);
         String token = Global.getToken(sessionManager);
-        JsonObject obj = new JsonObject();
-        JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", 1);
-        paramObject.addProperty("team_id", 1);
-        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
-        paramObject.addProperty("user_tmz_id",signResponseModel.getUser().getUserTimezone().get(0).getValue());
-        obj.add("data", paramObject);
-        retrofitCalls.zoomIntegrationExists(sessionManager,obj, loadingDialog, token,Global.getVersionname(SettingActivity.this),Global.Device, new RetrofitCallback() {
-            @Override
-            public void success(Response<ApiResponse> response) {
-                loadingDialog.cancelLoading();
-                if (response.body().getHttp_status() == 200) {
-                    Gson gson = new Gson();
-                    String headerString = gson.toJson(response.body().getData());
-                    Type listType = new TypeToken<ZoomExists>() {
-                    }.getType();
-                    ZoomExists zoomExists=new Gson().fromJson(headerString, listType);
-                    Intent intent=new Intent(getApplicationContext(),ZoomActivity.class);
-                    if(zoomExists.getUserExists()){
-                        intent.putExtra("Email",zoomExists.getZoomUserEmail());
-                    }else {
-                        intent.putExtra("Email","");
-                    }
-                    startActivity(intent);
-                }else {
-                    Intent intent=new Intent(getApplicationContext(),ZoomActivity.class);
-                    intent.putExtra("Email","");
-                    startActivity(intent);
+        if (Global.IsNotNull(signResponseModel.getUser().getUserTimezone())) {
 
+
+            JsonObject obj = new JsonObject();
+            JsonObject paramObject = new JsonObject();
+            paramObject.addProperty("organization_id", 1);
+            paramObject.addProperty("team_id", 1);
+            paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+            paramObject.addProperty("user_tmz_id", signResponseModel.getUser().getUserTimezone().get(0).getValue());
+            obj.add("data", paramObject);
+            retrofitCalls.zoomIntegrationExists(sessionManager, obj, loadingDialog, token, Global.getVersionname(SettingActivity.this), Global.Device, new RetrofitCallback() {
+                @Override
+                public void success(Response<ApiResponse> response) {
+                    loadingDialog.cancelLoading();
+                    if (response.body().getHttp_status() == 200) {
+                        Gson gson = new Gson();
+                        String headerString = gson.toJson(response.body().getData());
+                        Type listType = new TypeToken<ZoomExists>() {
+                        }.getType();
+                        ZoomExists zoomExists = new Gson().fromJson(headerString, listType);
+                        Intent intent = new Intent(getApplicationContext(), ZoomActivity.class);
+                        if (zoomExists.getUserExists()) {
+                            intent.putExtra("Email", zoomExists.getZoomUserEmail());
+                        } else {
+                            intent.putExtra("Email", "");
+                        }
+                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(getApplicationContext(), ZoomActivity.class);
+                        intent.putExtra("Email", "");
+                        startActivity(intent);
+
+                    }
                 }
-            }
-            @Override
-            public void error(Response<ApiResponse> response) {
-                loadingDialog.cancelLoading();
-            }
-        });
+
+                @Override
+                public void error(Response<ApiResponse> response) {
+                    loadingDialog.cancelLoading();
+                }
+            });
+        }
+        else {
+            Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.timezone_alert),false);
+        }
 
 
     }

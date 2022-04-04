@@ -925,10 +925,11 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                     Log.e("Flag other",contacts.get(position).getFlag());
                     if (contacts.get(position).getIs_blocked().equals(1)) {
                         holder1.iv_block.setVisibility(View.VISIBLE);
-                        holder1.add_new_contect_icon.setVisibility(View.GONE);
-                        holder1.remove_contect_icon.setVisibility(View.GONE);
+                     /*   holder1.add_new_contect_icon.setVisibility(View.GONE);
+                        holder1.remove_contect_icon.setVisibility(View.GONE);*/
                         holder1.userName.setTextColor(context.getResources().getColor(R.color.block_item));
                     } else {
+
                         holder1.iv_block.setVisibility(View.GONE);
                         holder1.userName.setTextColor(context.getResources().getColor(R.color.unblock_item));
                         if (contacts.get(position).getFlag().equals("false")) {
@@ -940,11 +941,8 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                             holder1.remove_contect_icon.setVisibility(View.GONE);
                             holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
                         }
-                    }
 
-                    /*
-                     * set data to design
-                     * */
+                    }
                     holder1.userName.setText(Contact_data.getFirstname() + " " + Contact_data.getLastname());
                     holder1.userNumber.setVisibility(View.GONE);
                     holder1.first_latter.setVisibility(View.VISIBLE);
@@ -1018,7 +1016,8 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                                     holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
                                 }
 
-                            } else {
+                            }
+                            else {
 
                                 if (holder1.remove_contect_icon.getVisibility() == View.GONE) {
                                     holder1.remove_contect_icon.setVisibility(View.GONE);

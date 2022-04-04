@@ -351,10 +351,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }*/
 
 
-                if (SessionManager.getContectList(getApplicationContext()).size() == 0) {
+              /*  if (SessionManager.getContectList(getApplicationContext()).size() == 0) {
                     loadingDialog.showLoadingDialog();
                 }
-
+*/
                 listContacts = new ContactFetcher(MainActivity.this).fetchAll();
                 Log.e("List Contect Is ", new Gson().toJson(listContacts));
                 SignResponseModel user_data = SessionManager.getGetUserdata(MainActivity.this);

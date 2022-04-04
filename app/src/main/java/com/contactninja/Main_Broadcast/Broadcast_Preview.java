@@ -523,11 +523,11 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
 
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
-        Log.e("Gson Data is", new Gson().toJson(gsonObject));
+   //     Log.e("Gson Data is", new Gson().toJson(gsonObject));
         retrofitCalls.Broadcast_store(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(Broadcast_Preview.this), Global.Device, new RetrofitCallback() {
 
             public void success(Response<ApiResponse> response) {
-                Log.e("Response is", new Gson().toJson(response.body()));
+               // Log.e("Response is", new Gson().toJson(response.body()));
                 if (response.body().getHttp_status() == 200) {
                     //  loadingDialog.cancelLoading();
                     loadingDialog.cancelLoading();
