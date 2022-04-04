@@ -124,7 +124,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
     TextView add_new_contect;
 
     LinearLayout mMainLayout,add_new_contect_layout;
-    LinearLayout demo_layout, lay_no_list;
+    LinearLayout  lay_no_list;
     LinearLayout layout_toolbar_logo;
     RelativeLayout lay_mainlayout;
     TextView tv_create;
@@ -198,7 +198,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                 return isLoading;
             }
         });
-        demo_layout.setOnClickListener(new View.OnClickListener() {
+     /*   demo_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
@@ -214,7 +214,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                 intent1.putExtra("flag", "add");
                 startActivity(intent1);//  finish();
             }
-        });
+        });*/
         add_new_contect_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -266,7 +266,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
 
 
         lay_mainlayout = view.findViewById(R.id.lay_mainlayout);
-        demo_layout = view.findViewById(R.id.demo_layout);
+       // demo_layout = view.findViewById(R.id.demo_layout);
         mMainLayout = view.findViewById(R.id.mMainLayout);
         tv_create = view.findViewById(R.id.tv_create);
         tv_create.setText(getString(R.string.txt_task));
@@ -570,15 +570,18 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                         } else {
 
                             if (manualTaskModelList.size() == 0) {
-                                lay_no_list.setVisibility(View.GONE);
-                                lay_mainlayout.setVisibility(View.GONE);
-                                demo_layout.setVisibility(View.VISIBLE);
-                            } else {
+                                rv_Task_list.setVisibility(View.GONE);
+                                lay_no_list.setVisibility(View.VISIBLE);
 
+                                //lay_no_list.setVisibility(View.GONE);
+                               // lay_mainlayout.setVisibility(View.GONE);
+                              //  lay_no_list.setVisibility(View.VISIBLE);
+                            } else {
                                 lay_no_list.setVisibility(View.GONE);
-                                demo_layout.setVisibility(View.GONE);
                                 rv_Task_list.setVisibility(View.VISIBLE);
-                                lay_mainlayout.setVisibility(View.VISIBLE);
+                              //  demo_layout.setVisibility(View.GONE);
+                                //rv_Task_list.setVisibility(View.VISIBLE);
+                              //  lay_mainlayout.setVisibility(View.VISIBLE);
                             }
                         }
 
@@ -594,7 +597,9 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                         isLoading = false;
 
                     } else {
-                        demo_layout.setVisibility(View.VISIBLE);
+                        lay_no_list.setVisibility(View.VISIBLE);
+                        rv_Task_list.setVisibility(View.GONE);
+                        //   demo_layout.setVisibility(View.VISIBLE);
                     }
                 }
                 else if (response.body().getHttp_status()==403)
@@ -604,7 +609,9 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                 }
 
                 else {
-                    demo_layout.setVisibility(View.VISIBLE);
+                    lay_no_list.setVisibility(View.VISIBLE);
+                    rv_Task_list.setVisibility(View.GONE);
+                    //demo_layout.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -612,7 +619,9 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
             public void error(Response<ApiResponse> response) {
                 swipeToRefresh.setRefreshing(false);
                 loadingDialog.cancelLoading();
-                demo_layout.setVisibility(View.VISIBLE);
+                lay_no_list.setVisibility(View.VISIBLE);
+                rv_Task_list.setVisibility(View.GONE);
+                //demo_layout.setVisibility(View.VISIBLE);
             }
         });
     }
