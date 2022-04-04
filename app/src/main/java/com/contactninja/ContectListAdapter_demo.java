@@ -171,7 +171,7 @@ public class ContectListAdapter_demo extends RecyclerView.Adapter<RecyclerView.V
                           }
                           else {
                               SessionManager.setAdd_Contect_Detail(context, new AddcontectModel());
-                              Log.e("List Of Contec is",new Gson().toJson(Contact_data));
+                              //Log.e("List Of Contec is",new Gson().toJson(Contact_data));
                               SessionManager.setOneCotect_deatil(context, Contact_data);
                               Intent addnewcontect = new Intent(context, Create_New_Contect_Activity.class);
                               SessionManager.setContect_flag("read");

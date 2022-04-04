@@ -310,7 +310,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                             }.getType();
                             SignResponseModel user_model = new Gson().fromJson(headerString, listType);
                             SessionManager.setUserdata(getActivity(), user_model);
-                            Log.e("Main Data Is ", new Gson().toJson(user_model));
+                       //     Log.e("Main Data Is ", new Gson().toJson(user_model));
 
                             // setTab();
 
@@ -917,7 +917,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
 
-        Log.e("Final Data is", new Gson().toJson(gsonObject));
+       // Log.e("Final Data is", new Gson().toJson(gsonObject));
 
 
         retrofitCalls.UpdateUser_Profile(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
@@ -1001,7 +1001,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
 
-        Log.e("Final Data is", new Gson().toJson(gsonObject));
+        //Log.e("Final Data is", new Gson().toJson(gsonObject));
 
 
         retrofitCalls.UpdateUser_Profile(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {

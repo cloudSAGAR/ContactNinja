@@ -218,7 +218,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
 
     @Override
     public void onResume() {
-        Log.e("Fragment Call","Yes");
+        //Log.e("Fragment Call","Yes");
       /*  setdata();
         setColor();
         if(bzMediaInformationList.size()!=0){

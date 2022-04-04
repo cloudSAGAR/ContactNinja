@@ -106,7 +106,7 @@ public class Contect_Demo extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        Log.e("Call","Data"+data.getData());
+      //  Log.e("Call","Data"+data.getData());
         mToolbar.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
 

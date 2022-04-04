@@ -321,7 +321,7 @@ public class Campaign_Name_Activity extends AppCompatActivity implements View.On
             Bundle bundle = getintent.getExtras();
             sequence_id = bundle.getInt("sequence_id");
         }
-        Log.e("sequence_id", String.valueOf(sequence_id));
+      //  Log.e("sequence_id", String.valueOf(sequence_id));
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("organization_id", 1);

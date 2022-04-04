@@ -355,7 +355,7 @@ public class User_GrowthFragment extends Fragment implements View.OnClickListene
         obj.put("data", paramObject);
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
-        Log.e("Gson Data is", new Gson().toJson(gsonObject));
+     //   Log.e("Gson Data is", new Gson().toJson(gsonObject));
         retrofitCalls.Dashboard(sessionManager, gsonObject, loadingDialog, token_api, Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
             @SuppressLint("NewApi")
             @Override

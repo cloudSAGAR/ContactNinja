@@ -643,7 +643,7 @@ public class Company_Fragment extends Fragment {
         obj.put("data", paramObject);
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
-        Log.e("Main Data is ", new Gson().toJson(gsonObject));
+       // Log.e("Main Data is ", new Gson().toJson(gsonObject));
         retrofitCalls.Block_Company(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -687,7 +687,7 @@ public class Company_Fragment extends Fragment {
         obj.put("data", paramObject);
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
-        Log.e("Main Data is ", new Gson().toJson(gsonObject));
+      //  Log.e("Main Data is ", new Gson().toJson(gsonObject));
         retrofitCalls.Company_add(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override

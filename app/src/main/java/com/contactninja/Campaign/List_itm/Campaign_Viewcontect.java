@@ -143,7 +143,7 @@ public class Campaign_Viewcontect extends AppCompatActivity implements View.OnCl
             Bundle bundle = getintent.getExtras();
             sequence_id = bundle.getInt("sequence_id");
         }
-        Log.e("sequence_id", String.valueOf(sequence_id));
+     //   Log.e("sequence_id", String.valueOf(sequence_id));
 
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();

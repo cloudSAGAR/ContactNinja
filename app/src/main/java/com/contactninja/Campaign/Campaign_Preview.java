@@ -460,7 +460,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                         Bundle bundle = getintent.getExtras();
                         sequence_id = bundle.getInt("sequence_id");
                     }
-                    Log.e("Sequence is is", String.valueOf(sequence_id));
+                   // Log.e("Sequence is is", String.valueOf(sequence_id));
                     SessionManager.setcamp_final_flag("");
                     Intent intent = new Intent(getApplicationContext(), Add_Camp_Tab_Select_Activity.class);
                     intent.putExtra("flag", "edit");
@@ -488,10 +488,10 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
 
                 } else {
 
-                    Log.e("sequence id", String.valueOf(sequence_id));
+                    //Log.e("sequence id", String.valueOf(sequence_id));
 
 
-                    Log.e("Sequence is is", String.valueOf(sequence_id));
+                   // Log.e("Sequence is is", String.valueOf(sequence_id));
                     if (SessionManager.getTask(getApplicationContext()).size() != 0) {
                         sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId();
                     } else {
@@ -543,7 +543,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
             Bundle bundle = getintent.getExtras();
             sequence_id = bundle.getInt("sequence_id");
         }
-        Log.e("sequence_id", String.valueOf(sequence_id));
+       // Log.e("sequence_id", String.valueOf(sequence_id));
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("organization_id", 1);
@@ -674,7 +674,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
             Bundle bundle = getintent.getExtras();
             sequence_id = bundle.getInt("sequence_id");
         }
-        Log.e("sequence_id", String.valueOf(sequence_id));
+       // Log.e("sequence_id", String.valueOf(sequence_id));
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("organization_id", 1);
@@ -722,7 +722,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
             Bundle bundle = getintent.getExtras();
             sequence_id = bundle.getInt("sequence_id");
         }
-        Log.e("sequence_id", String.valueOf(sequence_id));
+       // Log.e("sequence_id", String.valueOf(sequence_id));
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("organization_id", 1);

@@ -312,7 +312,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
             @Override
             protected void onPostExecute(Void aVoid) {
-                Log.e("Delete Task", "Yes");
+               // Log.e("Delete Task", "Yes");
                 super.onPostExecute(aVoid);
 
             }

@@ -1100,7 +1100,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
         obj.put("data", paramObject);
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
-        Log.e("Gson Data is", new Gson().toJson(gsonObject));
+        //Log.e("Gson Data is", new Gson().toJson(gsonObject));
 
 
         retrofitCalls.active_task_update(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {

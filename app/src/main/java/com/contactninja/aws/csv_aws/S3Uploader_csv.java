@@ -33,7 +33,7 @@ public class S3Uploader_csv {
         // Simply updates the UI list when notified.
         @Override
         public void onError(int id, Exception e) {
-            Log.e(TAG, "Error during upload: " + id, e);
+            //Log.e(TAG, "Error during upload: " + id, e);
             s3UploadInterface.onUploadError(e.toString());
             s3UploadInterface.onUploadError("Error");
         }

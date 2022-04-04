@@ -455,7 +455,7 @@ public class CurrentPlanActivity extends AppCompatActivity implements View.OnCli
                 float r = 1 - Math.abs(position);
                 page.setScaleY(0.85f + r * 0.15f);
 
-                Log.e("Item is ", String.valueOf(viewPager2.getCurrentItem()));
+              //  Log.e("Item is ", String.valueOf(viewPager2.getCurrentItem()));
                 if(viewPager2.getCurrentItem()==select_plan_type){
                         tv_save.setText(getResources().getString(R.string.Current_Plan));
                 }else {
