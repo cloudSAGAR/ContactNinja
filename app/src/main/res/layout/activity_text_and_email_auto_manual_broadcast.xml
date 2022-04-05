@@ -52,7 +52,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:singleLine="true"
-                android:text=" Broadcast"
+                android:text=" broadcast"
                 android:textColor="@color/purple_200" />
         </LinearLayout>
 

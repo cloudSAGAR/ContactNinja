@@ -107,8 +107,16 @@ public class View_Contect_Fragment extends Fragment implements View.OnClickListe
         contect_list_unselect.setAdapter(groupContectAdapter);
         groupContectAdapter.addAll(sequenceProspects);
       //  Log.e("Seqence Data Is",new Gson().toJson(sequenceProspects));
-        num_count.setText(contect_list_data.getSeqProspectCount().getTotal()+" Contacts");
-        s_type=contect_list_data.getSequenceTask().get(0).getType();
+        try {
+            num_count.setText(contect_list_data.getSeqProspectCount().getTotal()+" Contacts");
+            s_type=contect_list_data.getSequenceTask().get(0).getType();
+        }
+        catch (Exception e)
+        {
+
+        }
+
+
         fastscroller_thumb.setupWithFastScroller(fastscroller);
         fastscroller.setUseDefaultScroller(false);
         fastscroller.getItemIndicatorSelectedCallbacks().add(

@@ -140,10 +140,16 @@ public class Broadcast_Contact_Selction_Actvity extends AppCompatActivity implem
                 mLastClickTime = SystemClock.elapsedRealtime();
                 Global.hideKeyboard(Broadcast_Contact_Selction_Actvity.this);
                 if(Activty_Back.equals("Preview")){
-                    Intent intent=new Intent(getApplicationContext(), Broadcast_Preview.class);
-                    intent.putExtra("Activty",Activty_Back);
-                    startActivity(intent);
-                    finish();
+                    if(SessionManager.getgroup_broadcste(this).size() != 0||
+                            SessionManager.getGroupList(this).size()!=0) {
+                        Intent intent = new Intent(getApplicationContext(), Broadcast_Preview.class);
+                        intent.putExtra("Activty", Activty_Back);
+                        startActivity(intent);
+                        finish();
+                    }
+                    else {
+                        Global.Messageshow(getApplicationContext(),main_layout,getResources().getString(R.string.select_Contact_group),false);
+                    }
                 }else {
                     if(SessionManager.getgroup_broadcste(this).size() != 0||
                             SessionManager.getGroupList(this).size()!=0){
