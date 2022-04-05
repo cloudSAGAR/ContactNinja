@@ -631,5 +631,14 @@ public class RetrofitCalls {
 
     }
 
+    public void ExposuresList(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.ExposuresList(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
+
+
 }
 

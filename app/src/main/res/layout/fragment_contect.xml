@@ -155,9 +155,9 @@
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/contact_list"
-                            android:layout_marginBottom="@dimen/_30sdp"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_marginBottom="@dimen/_30sdp"
                             android:clipToPadding="false" />
 
                         <com.reddit.indicatorfastscroll.FastScrollerThumbView

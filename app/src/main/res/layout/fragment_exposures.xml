@@ -10,6 +10,15 @@
     tools:context=".Fragment.AddContect_Fragment.BzcardFragment"
     tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
 
+    <LinearLayout
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:id="@+id/no_data_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <ImageView
         android:layout_width="@dimen/_55sdp"
         android:layout_height="@dimen/_55sdp"
@@ -26,5 +35,16 @@
         android:gravity="center"
         android:text="@string/add_exposures_text"
         android:textColor="@color/text_reg" />
+    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:paddingEnd="@dimen/_15sdp"
+        android:paddingBottom="@dimen/_10sdp"
+        android:paddingStart="@dimen/_15sdp"
+        android:paddingTop="@dimen/_15sdp"
+        android:clipToPadding="false"
+        android:id="@+id/rv_exposure"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+    </androidx.recyclerview.widget.RecyclerView>
 </LinearLayout>

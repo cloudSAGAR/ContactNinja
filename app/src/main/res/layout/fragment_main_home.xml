@@ -52,7 +52,7 @@
 
                     <TextView
                         android:id="@+id/tv_campaign"
-                        style="@style/tv_bold_14"
+                        style="@style/tv_Medium_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -69,7 +69,7 @@
                     </ImageView>
 
                     <TextView
-                        style="@style/tv_regular_12"
+                        style="@style/tv_regular_10"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -91,7 +91,7 @@
 
                     <TextView
                         android:id="@+id/tv_text"
-                        style="@style/tv_bold_14"
+                        style="@style/tv_Medium_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -108,7 +108,7 @@
                     </ImageView>
 
                     <TextView
-                        style="@style/tv_regular_12"
+                        style="@style/tv_regular_10"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -130,7 +130,7 @@
 
                     <TextView
                         android:id="@+id/tv_email"
-                        style="@style/tv_bold_14"
+                        style="@style/tv_Medium_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -147,7 +147,7 @@
                     </ImageView>
 
                     <TextView
-                        style="@style/tv_regular_12"
+                        style="@style/tv_regular_10"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -169,7 +169,7 @@
 
                     <TextView
                         android:id="@+id/tv_broadcast"
-                        style="@style/tv_bold_14"
+                        style="@style/tv_Medium_12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -186,7 +186,7 @@
                     </ImageView>
 
                     <TextView
-                        style="@style/tv_regular_12"
+                        style="@style/tv_regular_10"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
