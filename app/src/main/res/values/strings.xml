@@ -455,6 +455,8 @@ Number</string>
     <string name="no_email">👍 You\'re all good ! \n You don\'t have any Mail here</string>
     <string name="no_affiliate">👍 You\'re all good ! \n You don\'t have any affiliate here</string>
     <string name="no_bzcard">👍 You\'re all good ! \n You don\'t have any your bzcard here</string>
+    <string name="no_exposures">👍 You\'re all good ! \n You don\'t have any your Exposures here</string>
+
 
     <string name="manual_Today">Today</string>
     <string name="manual_Upcoming">Upcoming</string>

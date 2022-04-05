@@ -11,30 +11,31 @@
     tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
 
     <LinearLayout
-        android:visibility="gone"
+        android:id="@+id/lay_no_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/lay_bouttom"
+        android:layout_below="@+id/line"
+        android:layout_gravity="center"
+        android:layout_marginTop="-2dp"
+        android:layout_marginBottom="3dp"
+        android:gravity="center"
         android:orientation="vertical"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:id="@+id/no_data_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:visibility="gone">
 
-    <ImageView
-        android:layout_width="@dimen/_55sdp"
-        android:layout_height="@dimen/_55sdp"
-        android:layout_gravity="center"
-        android:src="@drawable/ic_group_otp_logo" />
+        <ImageView
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_small_logo" />
 
-    <TextView
-        style="@style/tv_regular_12"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginBottom="@dimen/_40sdp"
-        android:gravity="center"
-        android:text="@string/add_exposures_text"
-        android:textColor="@color/text_reg" />
+        <TextView
+            style="@style/tv_Medium_12"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/no_exposures"
+            android:textColor="@color/text_reg" />
     </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:paddingEnd="@dimen/_15sdp"

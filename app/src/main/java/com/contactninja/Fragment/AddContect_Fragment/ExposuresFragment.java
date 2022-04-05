@@ -92,7 +92,7 @@ public class ExposuresFragment extends Fragment {
         sessionManager = new SessionManager(getActivity());
         loadingDialog = new LoadingDialog(getActivity());
         retrofitCalls = new RetrofitCalls(getActivity());
-        no_data_view=view.findViewById(R.id.no_data_view);
+        no_data_view=view.findViewById(R.id.lay_no_list);
         rv_exposure=view.findViewById(R.id.rv_exposure);
         layoutManager=new LinearLayoutManager(getActivity());
         rv_exposure.setLayoutManager(layoutManager);
