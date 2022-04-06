@@ -573,22 +573,16 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                                 rv_Task_list.setVisibility(View.GONE);
                                 lay_no_list.setVisibility(View.VISIBLE);
 
-                                //lay_no_list.setVisibility(View.GONE);
-                               // lay_mainlayout.setVisibility(View.GONE);
-                              //  lay_no_list.setVisibility(View.VISIBLE);
                             } else {
                                 lay_no_list.setVisibility(View.GONE);
                                 rv_Task_list.setVisibility(View.VISIBLE);
-                              //  demo_layout.setVisibility(View.GONE);
-                                //rv_Task_list.setVisibility(View.VISIBLE);
-                              //  lay_mainlayout.setVisibility(View.VISIBLE);
+
                             }
                         }
 
 
                         if (currentPage != PAGE_START) emailAdepter.removeLoading();
                         emailAdepter.addItems(manualTaskModelList);
-                        // check weather is last page or not
                         if (emailActivityListModel.getTotal() > emailAdepter.getItemCount()) {
                             emailAdepter.addLoading();
                         } else {
@@ -599,7 +593,6 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                     } else {
                         lay_no_list.setVisibility(View.VISIBLE);
                         rv_Task_list.setVisibility(View.GONE);
-                        //   demo_layout.setVisibility(View.VISIBLE);
                     }
                 }
                 else if (response.body().getHttp_status()==403)
@@ -611,7 +604,6 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                 else {
                     lay_no_list.setVisibility(View.VISIBLE);
                     rv_Task_list.setVisibility(View.GONE);
-                    //demo_layout.setVisibility(View.VISIBLE);
                 }
             }
 

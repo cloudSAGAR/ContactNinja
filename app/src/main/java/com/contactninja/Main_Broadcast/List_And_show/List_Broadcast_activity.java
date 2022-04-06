@@ -556,14 +556,13 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
                 holder.tv_username.setText(conactname);
                 switch (item.getRecurringType()) {
                     case "D":
-                        holder.tv_task_time.setText("Daily - " + item.getStartTime());
+                        holder.tv_task_time.setText("Daily - " + Global.TimeFormateAMPM(item.getStartTime()));
                         break;
                     case "W":
-                        holder.tv_task_time.setText("Weekly - " + item.getStartTime());
-
+                        holder.tv_task_time.setText("Weekly - " + Global.TimeFormateAMPM(item.getStartTime()));
                         break;
                     case "M":
-                        holder.tv_task_time.setText("Monthly - " + item.getStartTime());
+                        holder.tv_task_time.setText("Monthly - " + Global.TimeFormateAMPM(item.getStartTime()));
 
                         break;
                 }
