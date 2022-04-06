@@ -451,7 +451,8 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
                             broadcasteda = emailActivityListModel.get0();
                             try {
                                 setData();
-                                tv_contect.setText(String.valueOf(emailActivityListModel.getBroadcastProspect().size()));
+                                int totale=Integer.parseInt(emailActivityListModel.getBroadcast_success())+Integer.parseInt(emailActivityListModel.getBroadcast_fail());
+                                tv_contect.setText(String.valueOf(totale));
                                 int sms_count = 0;
                                 int email_count = 0;
 
@@ -460,8 +461,8 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
                                 } else {
                                     email_count = email_count + 1;
                                 }
-                                tv_sms.setText(String.valueOf(sms_count));
-                                tv_email.setText(String.valueOf(email_count));
+                                tv_sms.setText(emailActivityListModel.getBroadcast_success());
+                                tv_email.setText(emailActivityListModel.getBroadcast_fail());
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }

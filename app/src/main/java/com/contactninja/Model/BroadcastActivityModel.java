@@ -31,7 +31,28 @@ public class BroadcastActivityModel {
         public void setBroadcastProspect(List<BroadcastProspect> broadcastProspect) {
             this.broadcastProspect = broadcastProspect;
         }
+    @SerializedName("broadcast_fail")
+    @Expose
+    private String broadcast_fail;
+    @SerializedName("broadcast_success")
+    @Expose
+    private String broadcast_success;
 
+    public String getBroadcast_fail() {
+        return broadcast_fail;
+    }
+
+    public void setBroadcast_fail(String broadcast_fail) {
+        this.broadcast_fail = broadcast_fail;
+    }
+
+    public String getBroadcast_success() {
+        return broadcast_success;
+    }
+
+    public void setBroadcast_success(String broadcast_success) {
+        this.broadcast_success = broadcast_success;
+    }
 
     public static class _0 {
 
@@ -98,6 +119,7 @@ public class BroadcastActivityModel {
         @SerializedName("updated_at")
         @Expose
         private String updatedAt;
+
 
         public Integer getId() {
             return id;
