@@ -191,7 +191,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             ev_company.setText("" + Contect_data.getCompanyName().toString().trim());
             ev_state.setText("" + Contect_data.getState().toString().trim());
             ev_city.setText("" + Contect_data.getCity().toString().trim());
-            if (String.valueOf(Contect_data.getTimezoneId()).equals("null")) {
+            if (String.valueOf(Contect_data.getTimezoneId()).equals("null") || String.valueOf(Contect_data.getTimezoneId()).equals("0")) {
                 String time_zone = TimeZone.getDefault().getID();
                 zone_txt.setText("" + time_zone.toString().trim());
             } else {
@@ -437,7 +437,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             }
 
 
-            if (String.valueOf(Contect_data.getTimezoneId()).equals("null")) {
+            if (String.valueOf(Contect_data.getTimezoneId()).equals("null") || String.valueOf(Contect_data.getTimezoneId()).equals("0")) {
                 String time_zone = TimeZone.getDefault().getID();
                 zone_txt.setText("" + time_zone.toString().trim());
             } else {
@@ -2341,7 +2341,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                                     holder.iv_invalid1.setText(getResources().getString(R.string.invalid_phone));
                                     holder.iv_invalid1.setVisibility(View.VISIBLE);
                                 }
-                            } else {
+                            }
+                            else {
                                 holder.iv_invalid1.setText(getResources().getString(R.string.invalid_phone));
                                 holder.iv_invalid1.setVisibility(View.VISIBLE);
                                 item.setEmail_number("");

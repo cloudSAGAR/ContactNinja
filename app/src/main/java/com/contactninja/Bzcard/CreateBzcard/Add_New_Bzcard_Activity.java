@@ -120,7 +120,10 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
         loadingDialog = new LoadingDialog(this);
         retrofitCalls=new RetrofitCalls(this);
         bzcard_model=SessionManager.getBzcard(getApplicationContext());
-
+        if (bzcard_model.getCard_id()==1){
+             iv_dummy_cover_img.setImageDrawable(getDrawable(R.drawable.bzcard_free_cover));
+            iv_dummy_cover_img.setEnabled(false);
+        }
         if(bzcard_model.isEdit()){
             if (!bzcard_model.getBzcardFieldsModel().getProfile_image().equals("")) {
                 Glide.with(getApplicationContext()).
@@ -240,6 +243,7 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         Fragment fragment = new Information_Bzcard_Fragment();
         FragmentManager fragmentManager = getFragmentManager();
+
 
         if (fragmentManager != null) {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
