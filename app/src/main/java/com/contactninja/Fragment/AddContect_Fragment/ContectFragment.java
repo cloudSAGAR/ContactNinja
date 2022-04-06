@@ -1467,7 +1467,7 @@ public class ContectFragment extends Fragment {
                     paramObject.put("dynamic_fields_value", "");
                     paramObject.put("facebook_link", "" + Sesion_contect.get(i).getFacebook_link().trim());
                     paramObject.put("firstname", "" + list_Data.get(count).getName().trim());
-                    paramObject.put("lastname", "" + list_Data.get(count).getLast_name().trim());
+                    paramObject.put("lastname", "" + Sesion_contect.get(i).getLastname().trim());
                     paramObject.put("job_title", "" + Sesion_contect.get(i).getJobTitle().toString().trim());
                     paramObject.put("linkedin_link", "" + Sesion_contect.get(i).getLinkedin_link().toString().trim());
                     paramObject.put("organization_id", 1);
@@ -1483,31 +1483,6 @@ public class ContectFragment extends Fragment {
                     paramObject.put("contact_image", "" + Sesion_contect.get(i).getContactImage().toString().trim());
                     paramObject.put("notes", "");
                     JSONArray jsonArray = new JSONArray();
-
-                /*    for (int p = 0; p < Sesion_contect.get(i).getContactDetails().size(); p++) {
-                        JSONObject paramObject1 = new JSONObject();
-                        if (Sesion_contect.get(i).getContactDetails().get(p).getEmailNumber().equals("")) {
-
-                        } else {
-                            if (Sesion_contect.get(i).getContactDetails().get(p).getType().equals("NUMBER")) {
-                                phone = Sesion_contect.get(i).getContactDetails().get(p).getEmailNumber();
-                            }
-                            phone_type = Sesion_contect.get(i).getContactDetails().get(p).getLabel();
-                            paramObject1.put("email_number", Sesion_contect.get(i).getContactDetails().get(p).getEmailNumber());
-
-                            if (Sesion_contect.get(i).getContactDetails().get(p).getContactId() != 0) {
-                                paramObject1.put("id", Sesion_contect.get(i).getContactDetails().get(p).getId());
-                            }
-                            paramObject1.put("is_default", Sesion_contect.get(i).getContactDetails().get(p).getIsDefault());
-                            paramObject1.put("label", Sesion_contect.get(i).getContactDetails().get(p).getLabel());
-                            paramObject1.put("type", Sesion_contect.get(i).getContactDetails().get(p).getType());
-                            paramObject1.put("contact_id", Sesion_contect.get(i).getContactDetails().get(p).getContactId());
-                            param_data.put("team_id", 1);
-                        }
-                        jsonArray.put(paramObject1);
-                    }
-                    paramObject.put("contact_details", jsonArray);
-                   */
                     jsonArray_contect.put(paramObject);
                     Log.e("Object is", new Gson().toJson(jsonArray_contect));
 
