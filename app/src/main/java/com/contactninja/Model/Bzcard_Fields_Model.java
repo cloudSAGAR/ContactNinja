@@ -22,8 +22,8 @@ public class Bzcard_Fields_Model {
     String company_id="";
     String company_logo="";
     String company_url="";
-    String jobtitle="";
-    String addrees="";
+    String job_title="";
+    String address="";
     String zipcode="";
     String country_code="";
 
@@ -189,19 +189,19 @@ public class Bzcard_Fields_Model {
     }
 
     public String getJobtitle() {
-        return jobtitle;
+        return job_title;
     }
 
     public void setJobtitle(String jobtitle) {
-        this.jobtitle = jobtitle;
+        this.job_title = jobtitle;
     }
 
     public String getAddrees() {
-        return addrees;
+        return address;
     }
 
     public void setAddrees(String addrees) {
-        this.addrees = addrees;
+        this.address = addrees;
     }
 
     public String getZipcode() {
