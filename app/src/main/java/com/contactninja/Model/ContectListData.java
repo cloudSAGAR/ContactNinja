@@ -18,6 +18,18 @@ public class ContectListData {
     private List<Contact> contacts = null;
 
 
+    @SerializedName("contact")
+    @Expose
+    private List<Contact> contact = null;
+
+    public List<Contact> getContact() {
+        return contact;
+    }
+
+    public void setContact(List<Contact> contact) {
+        this.contact = contact;
+    }
+
     public Integer getTotal() {
         return total;
     }
@@ -126,10 +138,20 @@ public class ContectListData {
         @SerializedName("dob")
         @Expose
         private String dob="";
-
+        @SerializedName("notes")
+        @Expose
+        private String notes="";
         @SerializedName("is_blocked")
         @Expose
         private Integer is_blocked=0;
+
+        public String getNotes() {
+            return notes;
+        }
+
+        public void setNotes(String notes) {
+            this.notes = notes;
+        }
 
         public Integer getIs_blocked() {
             return is_blocked;

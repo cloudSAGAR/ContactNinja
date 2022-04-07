@@ -129,7 +129,7 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                Log.e("Test Clcik ", String.valueOf(charSequence));
+               // Log.e("Test Clcik ", String.valueOf(charSequence));
                 if (charSequence.toString().length() <= 100) {
                     int num = 100 - charSequence.toString().length();
                     topic_remainingCharacter.setText(num + " " + getResources().getString(R.string.camp_remaingn));

@@ -185,6 +185,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             addcontectModel.setFacebook(String.valueOf(Contect_data.getFacebook_link()));
             addcontectModel.setBirthday(String.valueOf(Contect_data.getDob()));
             addcontectModel.setTwitter(String.valueOf(Contect_data.getTwitter_link()));
+            addcontectModel.setNote(String.valueOf(Contect_data.getNotes()));
+            ev_note.setText(String.valueOf(Contect_data.getNotes()));
             ev_zip.setText("" + Contect_data.getZipcode().toString().trim());
             ev_address.setText("" + Contect_data.getAddress().toString().trim());
             ev_zoom.setText("" + Contect_data.getZoomId().toString().trim());
@@ -271,7 +273,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             EmailistSwipe();
 
 
-        } else if (flag.equals("read")) {
+        }
+        else if (flag.equals("read")) {
             iv_down.setVisibility(View.GONE);
 
             company_layout.setEnabled(false);
@@ -327,6 +330,15 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             addcontectModel.setFacebook(String.valueOf(Contect_data.getFacebook_link()));
             addcontectModel.setBirthday(String.valueOf(Contect_data.getDob()));
             addcontectModel.setTwitter(String.valueOf(Contect_data.getTwitter_link()));
+            addcontectModel.setNote(String.valueOf(Contect_data.getNotes()));
+            if (Contect_data.getNotes().toString().trim().equals("") || Contect_data.getNotes().toString().trim().equals(null)) {
+                note_layout.setVisibility(View.GONE);
+            } else {
+                note_layout.setVisibility(View.VISIBLE);
+                ev_note.setText(String.valueOf(Contect_data.getNotes()));
+
+            }
+
 
             if (Contect_data.getCompanyName().toString().trim().equals("") || Contect_data.getCompanyName().toString().trim().equals(null)) {
                 company_layout.setVisibility(View.GONE);
@@ -412,7 +424,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             }
 
 
-            note_layout.setVisibility(View.GONE);
+
             if (Contect_data.getFacebook_link().toString().trim().equals("") || Contect_data.getFacebook_link().toString().trim().equals(null)) {
                 fb_layout.setVisibility(View.GONE);
             } else {

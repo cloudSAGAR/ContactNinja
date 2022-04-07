@@ -43,6 +43,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
+import com.contactninja.Fragment.AddContect_Fragment.ContectFragment;
 import com.contactninja.Fragment.AddContect_Fragment.ExposuresFragment;
 import com.contactninja.Fragment.AddContect_Fragment.InformationFragment;
 import com.contactninja.Model.AddcontectModel;
@@ -59,6 +60,8 @@ import com.contactninja.Utils.YourFragmentInterface;
 import com.contactninja.aws.image_aws.AmazonUtil;
 import com.contactninja.aws.image_aws.S3Uploader;
 import com.contactninja.retrofit.ApiResponse;
+import com.contactninja.retrofit.RetrofitApiClient;
+import com.contactninja.retrofit.RetrofitApiInterface;
 import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -78,9 +81,12 @@ import java.io.File;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 @SuppressLint("ClickableViewAccessibility,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
@@ -116,6 +122,7 @@ public class Create_New_Contect_Activity extends AppCompatActivity implements Vi
     private BroadcastReceiver mNetworkReceiver;
     ImageView iv_toolbar_manu_vertical, iv_block;
     String filePath1 = "";
+    ContectListData.Contact Contect_data;
 
 
     // ListPhoneContactsActivity use this method to start this activity.
@@ -155,6 +162,7 @@ public class Create_New_Contect_Activity extends AppCompatActivity implements Vi
             return "";
         }
     }
+    String flag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,114 +178,20 @@ public class Create_New_Contect_Activity extends AppCompatActivity implements Vi
         sessionManager = new SessionManager(this);
         save_button.setText("Save Contact");
         option_type = "save";
-        String flag = sessionManager.getContect_flag(this);
+        flag = sessionManager.getContect_flag(this);
+        Contect_data = SessionManager.getOneCotect_deatil(this);
 
-
-        if (flag.equals("edit")) {
-            ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(this);
-            edt_FirstName.setText(Contect_data.getFirstname().toString().trim());
-            edt_lastname.setText(Contect_data.getLastname().toString().trim());
-            f_name = Contect_data.getFirstname().toString().trim();
-            l_name = Contect_data.getLastname().toString().trim();
-            iv_user.setOnClickListener(this);
-            if (Contect_data.getIs_blocked().equals(1)) {
-                iv_block.setVisibility(View.VISIBLE);
-            } else {
-                iv_block.setVisibility(View.GONE);
+        if (!flag.equals("save"))
+        {
+            try {
+                ContectEvent(Contect_data.getId());
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-            if (Contect_data.getContactImage() == null || Contect_data.getContactImage().equals("")) {
-                iv_user.setVisibility(View.GONE);
-
-                layout_pulse.setVisibility(View.VISIBLE);
-                pulse_icon.setVisibility(View.GONE);
-                tv_nameLetter.setVisibility(View.VISIBLE);
-                tv_nameLetter.setOnClickListener(this);
-
-                String name = Contect_data.getFirstname();
-                String add_text = "";
-                String[] split_data = name.split(" ");
-                try {
-                    for (int i = 0; i < split_data.length; i++) {
-                        if (i == 0) {
-                            add_text = split_data[i].substring(0, 1);
-                        } else {
-                            add_text = add_text + split_data[i].charAt(0);
-                            break;
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                tv_nameLetter.setText(add_text);
-
-            } else {
-                iv_user.setVisibility(View.VISIBLE);
-                layout_pulse.setVisibility(View.GONE);
-                Log.e("Image is", Contect_data.getContactImage());
-                Glide.with(getApplicationContext()).
-                        load(Contect_data.getContactImage())
-                        .placeholder(R.drawable.shape_primary_back)
-                        .error(R.drawable.shape_primary_back).
-                        into(iv_user);
-            }
-            user_image_Url = Contect_data.getContactImage();
-            save_button.setText("Save Contact");
-
-
-        } else if (flag.equals("read")) {
-            edt_FirstName.setEnabled(false);
-            edt_lastname.setEnabled(false);
-            iv_user.setOnClickListener(null);
-
-            ContectListData.Contact Contect_data = SessionManager.getOneCotect_deatil(this);
-            edt_FirstName.setText(Contect_data.getFirstname().toString().trim());
-            edt_lastname.setText(Contect_data.getLastname().toString().trim());
-            f_name = Contect_data.getFirstname().toString().trim();
-            l_name = Contect_data.getLastname().toString().trim();
-            if (Contect_data.getIs_blocked().equals(1)) {
-                iv_block.setVisibility(View.VISIBLE);
-            } else {
-                iv_block.setVisibility(View.GONE);
-            }
-            if (Contect_data.getContactImage() == null || Contect_data.getContactImage().equals("")) {
-                iv_user.setVisibility(View.GONE);
-                layout_pulse.setVisibility(View.VISIBLE);
-                pulse_icon.setVisibility(View.GONE);
-                tv_nameLetter.setVisibility(View.VISIBLE);
-                String name = Contect_data.getFirstname();
-                String add_text = "";
-                String[] split_data = name.split(" ");
-                try {
-                    for (int i = 0; i < split_data.length; i++) {
-                        if (i == 0) {
-                            add_text = split_data[i].substring(0, 1);
-                        } else {
-                            add_text = add_text + split_data[i].charAt(0);
-                            break;
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                tv_nameLetter.setText(add_text);
-
-            } else {
-                iv_user.setVisibility(View.VISIBLE);
-                layout_pulse.setVisibility(View.GONE);
-                Log.e("Image is", Contect_data.getContactImage());
-                Glide.with(getApplicationContext()).
-                        load(Contect_data.getContactImage())
-                        .placeholder(R.drawable.shape_primary_back)
-                        .error(R.drawable.shape_primary_back).
-                        into(iv_user);
-            }
-            user_image_Url = Contect_data.getContactImage();
-
-            save_button.setText("Edit Contact");
-        } else {
-            iv_toolbar_manu_vertical.setVisibility(View.GONE);
-            Log.e("Null", "No Call");
         }
+
+
+
         retrofitCalls = new RetrofitCalls(this);
         // loadingDialog = new LoadingDialog(this);
         //Set Viewpagger
@@ -308,7 +222,8 @@ public class Create_New_Contect_Activity extends AppCompatActivity implements Vi
                 });
             }
 
-        } else if (flag.equals("save")) {
+        }
+        else if (flag.equals("save")) {
 
             LinearLayout tabStrip = ((LinearLayout) tabLayout.getChildAt(0));
             for (int i = 0; i < tabStrip.getChildCount(); i++) {
@@ -792,6 +707,8 @@ public class Create_New_Contect_Activity extends AppCompatActivity implements Vi
         paramObject.put("organization_id", 1);
         paramObject.put("state", state.toString().trim());
         paramObject.put("team_id", 1);
+        paramObject.put("notes", addcontectModel.getNote().toString().trim());
+
         // addcontectModel.getTime()
         paramObject.put("timezone_id", addcontectModel.getTime().toString().trim());
         paramObject.put("twitter_link", addcontectModel.getTwitter().toString().trim());
@@ -1679,6 +1596,173 @@ e.printStackTrace();
             }
         });
 
+    }
+
+
+    private void ContectEvent(int id) throws JSONException {
+
+        SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", user_data.getUser().getId());
+        paramObject.addProperty("page", 0);
+        paramObject.addProperty("perPage", 0);
+        paramObject.addProperty("status", "A");
+        paramObject.addProperty("q", "");
+        paramObject.addProperty("orderBy", "firstname");
+        paramObject.addProperty("order", "asc");
+        paramObject.addProperty("phone_book", 1);
+        paramObject.addProperty("id",id);
+        obj.add("data", paramObject);
+
+        JsonParser jsonParser = new JsonParser();
+        JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
+        RetrofitApiInterface registerinfo = RetrofitApiClient.getClient().create(RetrofitApiInterface.class);
+        Call<ApiResponse> call = registerinfo.Contect_List(RetrofitApiClient.API_Header, token, obj, Global.getVersionname(this), Global.Device);
+        call.enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+
+                if (response.body().getHttp_status() == 200) {
+
+                    SessionManager.setOneCotect_deatil(getApplicationContext(), new ContectListData.Contact());
+
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<ContectListData>() {
+                    }.getType();
+                    ContectListData contectListData1 = new Gson().fromJson(headerString, listType);
+                    SessionManager.setAdd_Contect_Detail(getApplicationContext(), new AddcontectModel());
+                    SessionManager.setOneCotect_deatil(getApplicationContext(), contectListData1.getContact().get(0));
+                    Log.e("Contect List is",new Gson().toJson(contectListData1));
+                    setdata();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable throwable) {
+                loadingDialog.cancelLoading();
+
+            }
+        });
+
+
+    }
+    public void setdata(){
+        Contect_data = SessionManager.getOneCotect_deatil(this);
+
+        if (flag.equals("edit")) {
+            Contect_data = SessionManager.getOneCotect_deatil(this);
+
+            edt_FirstName.setText(Contect_data.getFirstname().toString().trim());
+            edt_lastname.setText(Contect_data.getLastname().toString().trim());
+            f_name = Contect_data.getFirstname().toString().trim();
+            l_name = Contect_data.getLastname().toString().trim();
+            iv_user.setOnClickListener(this);
+            if (Contect_data.getIs_blocked().equals(1)) {
+                iv_block.setVisibility(View.VISIBLE);
+            } else {
+                iv_block.setVisibility(View.GONE);
+            }
+            if (Contect_data.getContactImage() == null || Contect_data.getContactImage().equals("")) {
+                iv_user.setVisibility(View.GONE);
+
+                layout_pulse.setVisibility(View.VISIBLE);
+                pulse_icon.setVisibility(View.GONE);
+                tv_nameLetter.setVisibility(View.VISIBLE);
+                tv_nameLetter.setOnClickListener(this);
+
+                String name = Contect_data.getFirstname();
+                String add_text = "";
+                String[] split_data = name.split(" ");
+                try {
+                    for (int i = 0; i < split_data.length; i++) {
+                        if (i == 0) {
+                            add_text = split_data[i].substring(0, 1);
+                        } else {
+                            add_text = add_text + split_data[i].charAt(0);
+                            break;
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                tv_nameLetter.setText(add_text);
+
+            } else {
+                iv_user.setVisibility(View.VISIBLE);
+                layout_pulse.setVisibility(View.GONE);
+                Log.e("Image is", Contect_data.getContactImage());
+                Glide.with(getApplicationContext()).
+                        load(Contect_data.getContactImage())
+                        .placeholder(R.drawable.shape_primary_back)
+                        .error(R.drawable.shape_primary_back).
+                        into(iv_user);
+            }
+            user_image_Url = Contect_data.getContactImage();
+            save_button.setText("Save Contact");
+
+
+        }
+        else if (flag.equals("read")) {
+            edt_FirstName.setEnabled(false);
+            edt_lastname.setEnabled(false);
+            iv_user.setOnClickListener(null);
+
+            Contect_data = SessionManager.getOneCotect_deatil(this);
+            edt_FirstName.setText(Contect_data.getFirstname().toString().trim());
+            edt_lastname.setText(Contect_data.getLastname().toString().trim());
+            f_name = Contect_data.getFirstname().toString().trim();
+            l_name = Contect_data.getLastname().toString().trim();
+            if (Contect_data.getIs_blocked().equals(1)) {
+                iv_block.setVisibility(View.VISIBLE);
+            } else {
+                iv_block.setVisibility(View.GONE);
+            }
+            if (Contect_data.getContactImage() == null || Contect_data.getContactImage().equals("")) {
+                iv_user.setVisibility(View.GONE);
+                layout_pulse.setVisibility(View.VISIBLE);
+                pulse_icon.setVisibility(View.GONE);
+                tv_nameLetter.setVisibility(View.VISIBLE);
+                String name = Contect_data.getFirstname();
+                String add_text = "";
+                String[] split_data = name.split(" ");
+                try {
+                    for (int i = 0; i < split_data.length; i++) {
+                        if (i == 0) {
+                            add_text = split_data[i].substring(0, 1);
+                        } else {
+                            add_text = add_text + split_data[i].charAt(0);
+                            break;
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                tv_nameLetter.setText(add_text);
+
+            } else {
+                iv_user.setVisibility(View.VISIBLE);
+                layout_pulse.setVisibility(View.GONE);
+                Log.e("Image is", Contect_data.getContactImage());
+                Glide.with(getApplicationContext()).
+                        load(Contect_data.getContactImage())
+                        .placeholder(R.drawable.shape_primary_back)
+                        .error(R.drawable.shape_primary_back).
+                        into(iv_user);
+            }
+            user_image_Url = Contect_data.getContactImage();
+
+            save_button.setText("Edit Contact");
+        }
+        else {
+            iv_toolbar_manu_vertical.setVisibility(View.GONE);
+            Log.e("Null", "No Call");
+        }
     }
 
 }
