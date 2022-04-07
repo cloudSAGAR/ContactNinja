@@ -184,7 +184,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             addcontectModel.setLinkedin(String.valueOf(Contect_data.getLinkedin_link()));
             addcontectModel.setFacebook(String.valueOf(Contect_data.getFacebook_link()));
             addcontectModel.setBirthday(String.valueOf(Contect_data.getDob()));
-
+            addcontectModel.setTwitter(String.valueOf(Contect_data.getTwitter_link()));
             ev_zip.setText("" + Contect_data.getZipcode().toString().trim());
             ev_address.setText("" + Contect_data.getAddress().toString().trim());
             ev_zoom.setText("" + Contect_data.getZoomId().toString().trim());
@@ -326,6 +326,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             addcontectModel.setLinkedin(String.valueOf(Contect_data.getLinkedin_link()));
             addcontectModel.setFacebook(String.valueOf(Contect_data.getFacebook_link()));
             addcontectModel.setBirthday(String.valueOf(Contect_data.getDob()));
+            addcontectModel.setTwitter(String.valueOf(Contect_data.getTwitter_link()));
 
             if (Contect_data.getCompanyName().toString().trim().equals("") || Contect_data.getCompanyName().toString().trim().equals(null)) {
                 company_layout.setVisibility(View.GONE);
@@ -486,6 +487,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
             ev_fb.setText("" + Contect_data.getFacebook_link().toString().trim());
             ev_linkedin.setText("" + Contect_data.getLinkedin_link().toString().trim());
             ev_breakout.setText("" + Contect_data.getBreakout_link().toString().trim());
+            ev_twitter.setText("" + Contect_data.getTwitter_link().toString().trim());
+
             img_twitter.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
