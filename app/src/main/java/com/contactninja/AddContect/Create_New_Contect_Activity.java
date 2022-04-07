@@ -926,7 +926,7 @@ public class Create_New_Contect_Activity extends AppCompatActivity implements Vi
         paramObject.put("city", city);
 
 
-        paramObject.put("company_url", "");
+        paramObject.put("company_url", addcontectModel.getCompany_url());
         if (addcontectModel.getBirthday().equals("0000-00-00")) {
             paramObject.put("dob", "");
         } else {

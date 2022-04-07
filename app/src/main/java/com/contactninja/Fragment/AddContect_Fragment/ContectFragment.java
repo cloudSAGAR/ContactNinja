@@ -1467,7 +1467,7 @@ public class ContectFragment extends Fragment {
                     paramObject.put("dynamic_fields_value", "");
                     paramObject.put("facebook_link", "" + Sesion_contect.get(i).getFacebook_link().trim());
                     paramObject.put("firstname", "" + list_Data.get(count).getName().trim());
-                    paramObject.put("lastname", "" + Sesion_contect.get(i).getLastname().trim());
+                    paramObject.put("lastname", "" + Sesion_contect.get(i).getLastname().toString().trim());
                     paramObject.put("job_title", "" + Sesion_contect.get(i).getJobTitle().toString().trim());
                     paramObject.put("linkedin_link", "" + Sesion_contect.get(i).getLinkedin_link().toString().trim());
                     paramObject.put("organization_id", 1);

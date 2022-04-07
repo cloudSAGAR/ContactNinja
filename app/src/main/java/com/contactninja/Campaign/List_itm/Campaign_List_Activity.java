@@ -562,12 +562,15 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                     holder.iv_puse_icon.setVisibility(View.GONE);
                     break;
                 case "I":
-                    if (campaign.getStarted_on() != null && !campaign.getStarted_on().equals("") && campaign.getProspect() != 0) {
+                    if (campaign.getStarted_on() != null && !campaign.getStarted_on().equals("")) {
                         holder.iv_puse_icon.setVisibility(View.VISIBLE);
                         holder.iv_hold.setVisibility(View.GONE);
                     } else {
-                        holder.iv_hold.setVisibility(View.VISIBLE);
-                        holder.iv_puse_icon.setVisibility(View.GONE);
+
+                            holder.iv_hold.setVisibility(View.VISIBLE);
+                            holder.iv_puse_icon.setVisibility(View.GONE);
+
+
                     }
                     holder.iv_play_icon.setVisibility(View.GONE);
                     break;

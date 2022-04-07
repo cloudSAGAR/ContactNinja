@@ -219,53 +219,59 @@ public class Create_New_Company_Activity extends AppCompatActivity implements Vi
 
     private void setdata(CompanyModel.Company WorkData) {
         if (flag.equals("read")) {
-            iv_edit.setVisibility(View.GONE);
-            save_button.setText("Edit");
-            iv_toolbar_manu_vertical.setVisibility(View.VISIBLE);
-
-            String name = WorkData.getName();
-            String add_text = "";
-            String[] split_data = name.split(" ");
             try {
-                for (int i = 0; i < split_data.length; i++) {
-                    if (i == 0) {
-                        add_text = split_data[i].substring(0, 1);
-                    } else {
-                        add_text = add_text + split_data[i].charAt(0);
-                        break;
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            no_image.setText(add_text);
-            iv_block.setVisibility(View.VISIBLE);
+                iv_edit.setVisibility(View.GONE);
+                save_button.setText("Edit");
+                iv_toolbar_manu_vertical.setVisibility(View.VISIBLE);
 
-            if (WorkData.getIs_blocked().equals(1)) {
+                String name = WorkData.getName();
+                String add_text = "";
+                String[] split_data = name.split(" ");
+                try {
+                    for (int i = 0; i < split_data.length; i++) {
+                        if (i == 0) {
+                            add_text = split_data[i].substring(0, 1);
+                        } else {
+                            add_text = add_text + split_data[i].charAt(0);
+                            break;
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                no_image.setText(add_text);
                 iv_block.setVisibility(View.VISIBLE);
-            } else {
-                iv_block.setVisibility(View.GONE);
+                Log.e("Location is",WorkData.getAddress().toString().trim());
+                edit_address.setText(WorkData.getAddress().toString().trim());
+                if (WorkData.getIs_blocked().equals(1)) {
+                    iv_block.setVisibility(View.VISIBLE);
+                } else {
+                    iv_block.setVisibility(View.GONE);
+                }
+                no_image.setVisibility(View.VISIBLE);
+                add_name.setEnabled(false);
+                add_detail.setEnabled(false);
+                edit_Mobile.setEnabled(false);
+                edit_email.setEnabled(false);
+                edit_company_url.setEnabled(false);
+                edit_address.setEnabled(false);
+                add_name.setText(WorkData.getName());
+                add_detail.setText(WorkData.getDescription());
+                ccp_id.setDefaultCountryUsingNameCode(String.valueOf(Global.Countrycode(Create_New_Company_Activity.this,
+                        WorkData.getContact_number())));
+                ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(Create_New_Company_Activity.this,WorkData.getContact_number()));
+                ccp_id.resetToDefaultCountry();
+                String main_data = WorkData.getContact_number().replace("+" + String.valueOf(Global.Countrycode(Create_New_Company_Activity.this,
+                        WorkData.getContact_number())), "");
+                edit_Mobile.setText(main_data);
+                edit_email.setText(WorkData.getEmail());
+                edit_company_url.setText(WorkData.getCompany_url().toString().trim());
+                ccp_id.registerCarrierNumberEditText(edit_Mobile);
+            }catch (Exception e)
+            {
+
             }
-            no_image.setVisibility(View.VISIBLE);
-            add_name.setEnabled(false);
-            add_detail.setEnabled(false);
-            edit_Mobile.setEnabled(false);
-            edit_email.setEnabled(false);
-            edit_company_url.setEnabled(false);
-            edit_address.setEnabled(false);
-            add_name.setText(WorkData.getName());
-            add_detail.setText(WorkData.getDescription());
-            ccp_id.setDefaultCountryUsingNameCode(String.valueOf(Global.Countrycode(Create_New_Company_Activity.this,
-                    WorkData.getContact_number())));
-            ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(Create_New_Company_Activity.this,WorkData.getContact_number()));
-            ccp_id.resetToDefaultCountry();
-            String main_data = WorkData.getContact_number().replace("+" + String.valueOf(Global.Countrycode(Create_New_Company_Activity.this,
-                    WorkData.getContact_number())), "");
-            edit_Mobile.setText(main_data);
-            edit_email.setText(WorkData.getEmail());
-            edit_company_url.setText("");
-            edit_address.setText(WorkData.getAddress());
-            ccp_id.registerCarrierNumberEditText(edit_address);
+
 
         }else if (flag.equals("edit")) {
             try {
@@ -317,7 +323,7 @@ public class Create_New_Company_Activity extends AppCompatActivity implements Vi
                 edit_Mobile.setText(main_data);
 
                 edit_email.setText(WorkData.getEmail());
-                edit_company_url.setText("");
+                edit_company_url.setText(WorkData.getCompany_url().toString().trim());
                 edit_address.setText(WorkData.getAddress());
 
                 ccp_id.registerCarrierNumberEditText(edit_Mobile);
