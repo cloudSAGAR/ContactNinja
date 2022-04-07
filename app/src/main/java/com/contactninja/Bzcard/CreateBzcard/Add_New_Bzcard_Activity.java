@@ -121,7 +121,7 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
         retrofitCalls=new RetrofitCalls(this);
         bzcard_model=SessionManager.getBzcard(getApplicationContext());
         if (bzcard_model.getCard_id()==1){
-             iv_dummy_cover_img.setImageDrawable(getDrawable(R.drawable.bzcard_free_cover));
+            Glide.with(getApplicationContext()).load(Global.card_s3_link + "card_1_banner.png").into(iv_dummy_cover_img);
             iv_dummy_cover_img.setEnabled(false);
         }
         if(bzcard_model.isEdit()){

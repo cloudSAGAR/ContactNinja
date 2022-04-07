@@ -28,7 +28,6 @@ import com.bumptech.glide.Glide;
 import com.contactninja.Bzcard.CreateBzcard.Add_New_Bzcard_Activity;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.BZcardListModel;
-import com.contactninja.Model.Bzcard_Fields_Model;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Setting.WebActivity;
@@ -57,20 +56,21 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
     private BroadcastReceiver mNetworkReceiver;
     RelativeLayout mMainLayout;
     ViewPager2 viewPager2;
-    TextView txt_footer, txt_Use,tv_Preview;
+    TextView txt_footer, txt_Use, tv_Preview;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     List<BZcardListModel.Bizcard> bizcardList = new ArrayList<>();
-    int Card_id=1;
-    private long mLastClickTime=0;
+    int Card_id = 1;
+    private long mLastClickTime = 0;
     BZcardListModel bZcardListModel = new BZcardListModel();
-    public static  Select_Bzcard_Activity activity;
+    public static Select_Bzcard_Activity activity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_bzcard);
-        activity=Select_Bzcard_Activity.this;
+        activity = Select_Bzcard_Activity.this;
         mNetworkReceiver = new ConnectivityReceiver();
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(Select_Bzcard_Activity.this);
@@ -114,8 +114,8 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<BZcardListModel>() {
                     }.getType();
-                     bZcardListModel = new Gson().fromJson(headerString, listType);
-                     bizcardList = bZcardListModel.getBizcard();
+                    bZcardListModel = new Gson().fromJson(headerString, listType);
+                    bizcardList = bZcardListModel.getBizcard();
                     setImage();
                 }
             }
@@ -130,7 +130,7 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
     }
 
     private void setImage() {
-        viewPager2.setAdapter(new ViewPageAdepter(getApplicationContext(),  bizcardList));
+        viewPager2.setAdapter(new ViewPageAdepter(getApplicationContext(), bizcardList));
         viewPager2.setClipToPadding(false);
         viewPager2.setClipChildren(false);
         viewPager2.setOffscreenPageLimit(3);
@@ -215,44 +215,44 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
                 onBackPressed();
                 break;
             case R.id.txt_Use:
-                if(bZcardListModel.getUser_total()<5){
+                if (bZcardListModel.getUser_total() < 5) {
                     SessionManager.setBzcard(getApplicationContext(), new BZcardListModel.Bizcard());
                     BZcardListModel.Bizcard main_model;
                     main_model = SessionManager.getBzcard(this);
-                    for(int i=0;i<bizcardList.size();i++){
-                        if(viewPager2.getCurrentItem()==i){
-                            Card_id=bizcardList.get(i).getId();
+                    for (int i = 0; i < bizcardList.size(); i++) {
+                        if (viewPager2.getCurrentItem() == i) {
+                            Card_id = bizcardList.get(i).getId();
                             break;
                         }
                     }
                     main_model.setCard_id(Card_id);
                     SessionManager.setBzcard(this, main_model);
                     startActivity(new Intent(getApplicationContext(), Add_New_Bzcard_Activity.class));
-                }else {
-                    Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.max_card),false);
+                } else {
+                    Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.max_card), false);
                 }
 
                 break;
-                case R.id.tv_Preview:
-                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                        return;
-                    }
-                    mLastClickTime = SystemClock.elapsedRealtime();
-                    Intent intent = new Intent(getApplicationContext(), WebActivity.class);
-                    if (viewPager2.getCurrentItem() == 0) {
-                        intent.putExtra("WebUrl", Global.bzcard_master +1);
-                    } else if (viewPager2.getCurrentItem() == 1) {
-                        intent.putExtra("WebUrl", Global.bzcard_master+2);
-                    } else if (viewPager2.getCurrentItem() == 2) {
-                        intent.putExtra("WebUrl",Global.bzcard_master+3);
-                    } else if (viewPager2.getCurrentItem() == 3) {
-                        intent.putExtra("WebUrl", Global.bzcard_master+4);
-                    } else if (viewPager2.getCurrentItem() == 4) {
-                        intent.putExtra("WebUrl", Global.bzcard_master+5);
-                    } else if (viewPager2.getCurrentItem() == 5) {
-                        intent.putExtra("WebUrl",Global.bzcard_master +6);
-                    }
-                    startActivity(intent);
+            case R.id.tv_Preview:
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+                Intent intent = new Intent(getApplicationContext(), WebActivity.class);
+                if (viewPager2.getCurrentItem() == 0) {
+                    intent.putExtra("WebUrl", Global.bzcard_master + 1);
+                } else if (viewPager2.getCurrentItem() == 1) {
+                    intent.putExtra("WebUrl", Global.bzcard_master + 2);
+                } else if (viewPager2.getCurrentItem() == 2) {
+                    intent.putExtra("WebUrl", Global.bzcard_master + 3);
+                } else if (viewPager2.getCurrentItem() == 3) {
+                    intent.putExtra("WebUrl", Global.bzcard_master + 4);
+                } else if (viewPager2.getCurrentItem() == 4) {
+                    intent.putExtra("WebUrl", Global.bzcard_master + 5);
+                } else if (viewPager2.getCurrentItem() == 5) {
+                    intent.putExtra("WebUrl", Global.bzcard_master + 6);
+                }
+                startActivity(intent);
                 break;
         }
     }
@@ -285,11 +285,32 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
         public void onBindViewHolder(@NonNull ViewPageAdepter.viewholder holder, int position) {
             BZcardListModel.Bizcard bizcard = bizcardList.get(position);
 
-            int resID = mCtx.getResources().getIdentifier(bizcard.getCardName()
+
+            switch (bizcard.getCardName()) {
+                case "bz_card_1":
+                    Glide.with(mCtx.getApplicationContext()).load(Global.card_s3_link + "bzstore1.png").into(holder.iv_card);
+                    break;
+                case "bz_card_2":
+                    Glide.with(mCtx.getApplicationContext()).load(Global.card_s3_link + "bzstore2.png").into(holder.iv_card);
+                    break;
+                case "bz_card_3":
+                    Glide.with(mCtx.getApplicationContext()).load(Global.card_s3_link + "bzstore3.png").into(holder.iv_card);
+                    break;
+                case "bz_card_4":
+                    Glide.with(mCtx.getApplicationContext()).load(Global.card_s3_link + "bzstore4.png").into(holder.iv_card);
+                    break;
+                case "bz_card_5":
+                    Glide.with(mCtx.getApplicationContext()).load(Global.card_s3_link + "bzstore5.png").into(holder.iv_card);
+                    break;
+                case "bz_card_6":
+                    Glide.with(mCtx.getApplicationContext()).load(Global.card_s3_link + "bzstore6.png").into(holder.iv_card);
+                    break;
+            }
+            /*int resID = mCtx.getResources().getIdentifier(bizcard.getCardName()
                     .replace(" ", "_").toLowerCase(), "drawable", mCtx.getPackageName());
             if (resID != 0) {
                 Glide.with(mCtx.getApplicationContext()).load(resID).into(holder.iv_card);
-            }
+            }*/
 
         }
 

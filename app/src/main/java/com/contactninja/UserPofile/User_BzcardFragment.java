@@ -597,11 +597,33 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
             BZcardListModel.Bizcard bizcard = bizcardList.get(position);
             ImageView imageView = itemView.findViewById(R.id.iv_card);
             ImageView iv_edit = itemView.findViewById(R.id.iv_edit);
-            int resID = mContext.getResources().getIdentifier("my_" + bizcard.getCardName()
+
+            switch (bizcard.getCardName()) {
+                case "bz_card_1":
+                    Glide.with(mContext.getApplicationContext()).load(Global.card_s3_link + "bzstore1.png").into(imageView);
+                    break;
+                case "bz_card_2":
+                    Glide.with(mContext.getApplicationContext()).load(Global.card_s3_link + "bzstore2.png").into(imageView);
+                    break;
+                case "bz_card_3":
+                    Glide.with(mContext.getApplicationContext()).load(Global.card_s3_link + "bzstore3.png").into(imageView);
+                    break;
+                case "bz_card_4":
+                    Glide.with(mContext.getApplicationContext()).load(Global.card_s3_link + "bzstore4.png").into(imageView);
+                    break;
+                case "bz_card_5":
+                    Glide.with(mContext.getApplicationContext()).load(Global.card_s3_link + "bzstore5.png").into(imageView);
+                    break;
+                case "bz_card_6":
+                    Glide.with(mContext.getApplicationContext()).load(Global.card_s3_link + "bzstore5.png").into(imageView);
+                    break;
+            }
+
+          /*  int resID = mContext.getResources().getIdentifier("my_" + bizcard.getCardName()
                     .replace(" ", "_").toLowerCase(), "drawable", mContext.getPackageName());
             if (resID != 0) {
                 Glide.with(mContext.getApplicationContext()).load(resID).into(imageView);
-            }
+            }*/
             container.addView(itemView);
 
 

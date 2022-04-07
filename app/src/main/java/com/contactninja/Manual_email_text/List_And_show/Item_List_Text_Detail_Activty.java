@@ -1025,12 +1025,31 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
         @Override
         public void onBindViewHolder(@NonNull CardListAdepter.cardListData holder, int position) {
             BZcardListModel.Bizcard bizcard = this.bizcardList.get(position);
-
-            int resID = mContext.getResources().getIdentifier("my_" + bizcard.getCardName()
+            switch (bizcard.getCardName()) {
+                case "bz_card_1":
+                    Glide.with(mContext.getApplicationContext()).load(Global.card_s3_link + "bzstore1.png").into(holder.iv_card);
+                    break;
+                case "bz_card_2":
+                    Glide.with(mContext.getApplicationContext()).load(Global.card_s3_link + "bzstore2.png").into(holder.iv_card);
+                    break;
+                case "bz_card_3":
+                    Glide.with(mContext.getApplicationContext()).load(Global.card_s3_link + "bzstore3.png").into(holder.iv_card);
+                    break;
+                case "bz_card_4":
+                    Glide.with(mContext.getApplicationContext()).load(Global.card_s3_link + "bzstore4.png").into(holder.iv_card);
+                    break;
+                case "bz_card_5":
+                    Glide.with(mContext.getApplicationContext()).load(Global.card_s3_link + "bzstore5.png").into(holder.iv_card);
+                    break;
+                case "bz_card_6":
+                    Glide.with(mContext.getApplicationContext()).load(Global.card_s3_link + "bzstore5.png").into(holder.iv_card);
+                    break;
+            }
+            /*int resID = mContext.getResources().getIdentifier("my_" + bizcard.getCardName()
                     .replace(" ", "_").toLowerCase(), "drawable", mContext.getPackageName());
             if (resID != 0) {
                 Glide.with(mContext.getApplicationContext()).load(resID).into(holder.iv_card);
-            }
+            }*/
 
             holder.layout_select_image.setOnClickListener(v -> {
                 String newUrl="",oldUrl="",Newtext="";
