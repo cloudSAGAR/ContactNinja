@@ -262,6 +262,7 @@ public class MembersFragment extends Fragment {
 
                 }*/
 
+            holder.add_new_contect_icon.setVisibility(View.GONE);
             holder.first_latter.setVisibility(View.GONE);
             holder.top_layout.setVisibility(View.GONE);
             if (!first_latter.equals(second_latter))
@@ -326,6 +327,8 @@ public class MembersFragment extends Fragment {
             TextView userName, userNumber,first_latter;
             CircleImageView profile_image;
             LinearLayout top_layout;
+            ImageView add_new_contect_icon;
+
 
 
             public InviteListDataclass(@NonNull View itemView) {
@@ -336,6 +339,7 @@ public class MembersFragment extends Fragment {
                 profile_image=itemView.findViewById(R.id.profile_image);
                 no_image=itemView.findViewById(R.id.no_image);
                 top_layout=itemView.findViewById(R.id.top_layout);
+                add_new_contect_icon=itemView.findViewById(R.id.add_new_contect_icon);
             }
 
         }
