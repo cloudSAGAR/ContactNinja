@@ -617,7 +617,11 @@ public class Title_bzcardActivity extends AppCompatActivity implements View.OnCl
                 if (response.body().getHttp_status() == 200) {
                     UploadCount = 0;
                     TotalFileUpload=0;
-                    Select_Bzcard_Activity.activity.finish();
+                    if (bzcard_model.isEdit()){
+                    }
+                    else {
+                        Select_Bzcard_Activity.activity.finish();
+                    }
                     finish();
                 }
             }
