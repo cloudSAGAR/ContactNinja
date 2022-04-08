@@ -1,5 +1,7 @@
 package com.contactninja.Setting;
 
+import static com.contactninja.Utils.PaginationListener.PAGE_START;
+
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -68,7 +70,7 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
     SessionManager sessionManager;
     TemplateList.Template template;
     boolean isEdit = false;
-    String template_type = "";
+    String template_type = "",template_id="";
     private long mLastClickTime=0;
 
     @Override
@@ -80,21 +82,18 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
         loadingDialog = new LoadingDialog(TemplateCreateActivity.this);
         sessionManager = new SessionManager(TemplateCreateActivity.this);
         IntentUI();
-
-        template = (TemplateList.Template) getIntent().getSerializableExtra("template");
+    
+        template_id =  getIntent().getStringExtra("template_id");
         template_type = getIntent().getStringExtra("template_type");
-        if (template != null) {
-            template_type = template.getType();
-            if (template_type.equals("EMAIL")) {
-                layout_email_subject.setVisibility(View.VISIBLE);
-            } else {
-                layout_email_subject.setVisibility(View.GONE);
+        try {
+            if (Global.isNetworkAvailable(TemplateCreateActivity.this, MainActivity.mMainLayout)) {
+                Template_list(template_id);
             }
-            setdata(template);
-            save_button.setText(getResources().getText(R.string.update));
-            layout_title.setOnClickListener(this);
-            isEdit = true;
-        } else {
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        
+         if (template_type != null)  {
             if (template_type.equals("EMAIL")) {
                 layout_email_subject.setVisibility(View.VISIBLE);
             } else {
@@ -112,7 +111,56 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
             e.printStackTrace();
         }
     }
-
+    private void Template_list(String template_id) throws JSONException {
+        loadingDialog.showLoadingDialog();
+        
+        SignResponseModel signResponseModel= SessionManager.getGetUserdata(TemplateCreateActivity.this);
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        paramObject.addProperty("id", template_id);
+        obj.add("data", paramObject);
+        retrofitCalls.Template_list(sessionManager,obj, loadingDialog, token,Global.getVersionname(TemplateCreateActivity .this),Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                if (response.body().getHttp_status() == 200) {
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<TemplateList>() {
+                    }.getType();
+                    TemplateList templateList = new Gson().fromJson(headerString, listType);
+                    template = templateList.getTemplate1();
+    
+    
+                    if (template != null) {
+                        template_type = template.getType();
+                        if (template_type.equals("EMAIL")) {
+                            layout_email_subject.setVisibility(View.VISIBLE);
+                        } else {
+                            layout_email_subject.setVisibility(View.GONE);
+                        }
+                        setdata(template);
+                        save_button.setText(getResources().getText(R.string.update));
+                        isEdit = true;
+                    }
+                }
+            }
+            
+            @Override
+            public void error(Response<ApiResponse> response) {
+               
+                loadingDialog.cancelLoading();
+            }
+            
+            
+        });
+        
+        
+    }
     private void setdata(TemplateList.Template template) {
         edit_template_name.setText(template.getTemplateName());
         edit_template.setText(template.getContentBody());
@@ -191,6 +239,9 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
         iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
         iv_back.setOnClickListener(this);
+        
+        layout_title.setOnClickListener(this);
+    
         edit_template.requestFocus();
     }
 

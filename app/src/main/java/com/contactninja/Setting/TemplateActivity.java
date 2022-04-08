@@ -299,7 +299,7 @@ public class TemplateActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void OnClick(TemplateList.Template template) {
         Intent i=new Intent(new Intent(getApplicationContext(), TemplateCreateActivity.class));
-        i.putExtra("template",template);
+        i.putExtra("template_id",String.valueOf(template.getId()));
         startActivity(i);
 
     }

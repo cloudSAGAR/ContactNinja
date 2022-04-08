@@ -16,7 +16,18 @@ public class TemplateList implements Serializable {
     @SerializedName("Template")
     @Expose
     private List<Template> template = null;
-
+    @SerializedName("0")
+    @Expose
+    private Template template1 = new Template();
+    
+    public Template getTemplate1() {
+        return template1;
+    }
+    
+    public void setTemplate1(Template template1) {
+        this.template1 = template1;
+    }
+    
     public Integer getTotal() {
         return total;
     }
