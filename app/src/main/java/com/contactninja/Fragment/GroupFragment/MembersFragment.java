@@ -349,9 +349,10 @@ public class MembersFragment extends Fragment {
 
 
 
-    private void Single_group() throws JSONException {
+    private void
+    Single_group() throws JSONException {
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
-       Grouplist.Group group_data = SessionManager.getGroupData(getActivity());
+        Grouplist.Group group_data = SessionManager.getGroupData(getActivity());
         String token = Global.getToken(sessionManager);
         JSONObject obj = new JSONObject();
         JSONObject paramObject = new JSONObject();

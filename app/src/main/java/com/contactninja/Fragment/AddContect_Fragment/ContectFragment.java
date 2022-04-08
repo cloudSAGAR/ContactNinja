@@ -43,6 +43,7 @@ import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+
 import com.bumptech.glide.Glide;
 import com.contactninja.AddContect.Create_New_Contect_Activity;
 import com.contactninja.Contect.Contact;
@@ -299,6 +300,7 @@ public class ContectFragment extends Fragment {
                             int indicatorCenterY,
                             int itemPosition
                     ) {
+
                     }
                 }
         );

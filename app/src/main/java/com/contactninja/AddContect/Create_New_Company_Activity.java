@@ -276,7 +276,7 @@ public class Create_New_Company_Activity extends AppCompatActivity implements Vi
         }else if (flag.equals("edit")) {
             try {
 
-                iv_edit.setVisibility(View.VISIBLE);
+                iv_edit.setVisibility(View.GONE);
                 save_button.setText("Save");
                 iv_toolbar_manu_vertical.setVisibility(View.VISIBLE);
                 String name = WorkData.getName();
