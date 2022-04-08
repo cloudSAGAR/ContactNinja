@@ -12,10 +12,11 @@
         layout="@layout/toolbar" />
 
     <androidx.core.widget.NestedScrollView
+        android:layout_above="@+id/bottom_layout"
+        android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_50sdp"
-        android:layout_marginBottom="@dimen/_120sdp">
+        >
 
 
         <LinearLayout
@@ -351,54 +352,6 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/layout_a"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_15sdp"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-            <TextView
-                android:id="@+id/tv_bold"
-                style="@style/tv_regular_12"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:padding="@dimen/_10sdp"
-                android:text="B"
-                android:textColor="@color/text_gray"
-                tools:ignore="HardcodedText">
-
-            </TextView>
-
-            <TextView
-                android:id="@+id/tv_ital"
-                style="@style/tv_regular_12"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:layout_marginStart="@dimen/_10sdp"
-                android:padding="@dimen/_10sdp"
-                android:text="I"
-                android:textColor="@color/text_gray"
-                tools:ignore="HardcodedText">
-
-            </TextView>
-
-            <TextView
-                android:id="@+id/tv_uline"
-                style="@style/tv_regular_12"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:padding="@dimen/_10sdp"
-                android:text="U"
-                android:textColor="@color/text_gray"
-                tools:ignore="HardcodedText">
-
-            </TextView>
-        </LinearLayout>
-        <LinearLayout
             android:layout_marginStart="@dimen/_15sdp"
             android:id="@+id/bottombar"
             android:visibility="gone"
@@ -419,6 +372,7 @@
 
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/layout_use_tamplet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"

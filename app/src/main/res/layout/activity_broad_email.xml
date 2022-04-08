@@ -10,7 +10,7 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_above="@+id/lay_bouttom"
+            android:layout_above="@+id/bottombar"
             android:id="@+id/lay_top"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -177,13 +177,12 @@
 
         </LinearLayout>
         <LinearLayout
+            android:layout_above="@+id/lay_bouttom"
             android:layout_marginStart="@dimen/_15sdp"
-            android:layout_marginBottom="@dimen/_50sdp"
             android:id="@+id/bottombar"
             android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
             android:orientation="horizontal">
 
             <com.chinalwb.are.styles.toolbar.ARE_ToolbarDefault

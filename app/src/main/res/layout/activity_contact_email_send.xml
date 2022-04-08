@@ -6,10 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".AddContect.Contact_Click_Email_Send_Activity"
     tools:ignore="UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
 
     <LinearLayout
+        android:layout_above="@+id/bottombar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         tools:ignore="MissingConstraints">
 
@@ -222,14 +227,13 @@
 
     </LinearLayout>
     <LinearLayout
-        android:layout_gravity="bottom"
         android:layout_marginStart="@dimen/_15sdp"
-        android:layout_marginBottom="@dimen/_50sdp"
+        android:layout_above="@+id/user_template"
+        android:layout_gravity="bottom"
         android:id="@+id/bottombar"
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
         <com.chinalwb.are.styles.toolbar.ARE_ToolbarDefault
@@ -242,7 +246,7 @@
 
     </LinearLayout>
     <LinearLayout
-
+        android:id="@+id/user_template"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -276,4 +280,6 @@
 
         </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
+</RelativeLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

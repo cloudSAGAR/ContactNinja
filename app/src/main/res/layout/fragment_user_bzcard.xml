@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:background="@color/white"
     android:gravity="center"
@@ -12,9 +12,10 @@
     <include layout="@layout/common_dialog" />
 
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/layout_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <LinearLayout
@@ -63,6 +64,7 @@
             tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
         <LinearLayout
+            android:layout_marginBottom="@dimen/_60sdp"
             android:id="@+id/layout_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -101,7 +103,6 @@
                 android:text="@string/edit_template"
                 android:textColor="@color/white" />
         </LinearLayout>
-
 
     </LinearLayout>
 

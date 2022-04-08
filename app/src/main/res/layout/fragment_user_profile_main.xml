@@ -11,143 +11,209 @@
     tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
 
     <include layout="@layout/toolbar" />
-
-    <LinearLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp">
+        android:layout_height="match_parent"
+        tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields"
+        tools:context=".Bzcard.CreateBzcard.Add_New_Bzcard_Activity">
 
-        <LinearLayout
-            android:id="@+id/layout_pulse"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="@dimen/_50sdp"
-            android:layout_gravity="center"
-            android:layout_marginStart="@dimen/_15sdp"
-            android:background="@drawable/shape_oval_border_10_blue"
-            android:gravity="center"
-            tools:ignore="Orientation">
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:stateListAnimator="@null"
+            app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
 
-            <androidx.coordinatorlayout.widget.CoordinatorLayout
-                android:id="@+id/user_image"
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/collapsing_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                app:expandedTitleMarginEnd="64dp"
+                app:expandedTitleMarginStart="48dp"
+                app:layout_scrollFlags="scroll|enterAlways">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                    <ImageView
-                        android:id="@+id/pulse_icon"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:padding="@dimen/_18sdp"
-                        android:src="@drawable/ic_plus"
-                        tools:ignore="UseAppTint" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp">
+
+                        <LinearLayout
+                            android:id="@+id/layout_pulse"
+                            android:layout_width="@dimen/_50sdp"
+                            android:layout_height="@dimen/_50sdp"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="@dimen/_15sdp"
+                            android:background="@drawable/shape_oval_border_10_blue"
+                            android:gravity="center"
+                            tools:ignore="Orientation">
+
+                            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                                android:id="@+id/user_image"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <ImageView
+                                        android:id="@+id/pulse_icon"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:padding="@dimen/_18sdp"
+                                        android:src="@drawable/ic_plus"
+                                        tools:ignore="UseAppTint" />
+
+                                </LinearLayout>
+
+
+                            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+                            <TextView
+                                android:id="@+id/tv_nameLetter"
+                                style="@style/tv_regular_12"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/shape_primary_circle"
+                                android:gravity="center"
+                                android:inputType="textCapSentences"
+                                android:textColor="@color/text_White"
+                                android:textSize="@dimen/_20sdp"
+                                android:visibility="gone"
+                                tools:ignore="TextViewEdits" />
+
+                        </LinearLayout>
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/iv_user"
+                            android:layout_width="@dimen/_50sdp"
+                            android:layout_height="@dimen/_50sdp"
+                            android:layout_gravity="right"
+                            android:layout_marginStart="@dimen/_15sdp"
+                            android:padding="1dp"
+                            android:visibility="gone"
+                            app:riv_border_color="@color/purple_200"
+                            app:riv_border_width="0dp"
+                            app:riv_corner_radius="@dimen/_50sdp"
+                            app:riv_oval="false" />
+
+                        <ImageView
+                            android:id="@+id/iv_edit"
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"
+                            android:layout_gravity="bottom|end"
+                            android:layout_marginStart="-25dp"
+                            android:src="@drawable/ic_edit_profile"
+                            android:visibility="gone">
+
+                        </ImageView>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center|left"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:gravity="center|left"
+                            android:orientation="vertical">
+
+                            <EditText
+                                android:id="@+id/edt_FirstName"
+                                style="@style/tv_Medium_12"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/add_contect_transpernt"
+                                android:hint="@string/f_name"
+                                android:inputType="text|textCapSentences"
+                                android:padding="@dimen/_2sdp"
+                                android:textColor="@color/text_reg"
+                                android:textColorHint="@color/home_list_sub_data"
+                                tools:ignore="TouchTargetSizeCheck,TextContrastCheck">
+
+                            </EditText>
+
+                            <View
+                                android:id="@+id/view_single"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/home_list_search_border" />
+
+                            <EditText
+                                android:id="@+id/edt_lastname"
+                                style="@style/tv_regular_12"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/add_contect_transpernt"
+                                android:hint="Last Name"
+                                android:inputType="text|textCapSentences"
+                                android:textColor="@color/otp_header_text_color"
+                                android:textColorHint="@color/home_list_sub_data"
+                                android:visibility="gone">
+
+                            </EditText>
+
+                            <TextView
+                                android:id="@+id/edit_profile"
+                                style="@style/tv_Medium_12"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="@dimen/_2sdp"
+                                android:text="Edit Profile"
+                                android:textColor="@color/purple_200">
+
+                            </TextView>
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
 
                 </LinearLayout>
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
 
-
-            </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-            <TextView
-                android:id="@+id/tv_nameLetter"
-                style="@style/tv_regular_12"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/shape_primary_circle"
-                android:gravity="center"
-                android:inputType="textCapSentences"
-                android:textColor="@color/text_White"
-                android:textSize="@dimen/_20sdp"
-                android:visibility="gone"
-                tools:ignore="TextViewEdits" />
-
-        </LinearLayout>
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/iv_user"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="@dimen/_50sdp"
-            android:layout_gravity="right"
-            android:layout_marginStart="@dimen/_15sdp"
-            android:padding="1dp"
-            android:visibility="gone"
-            app:riv_border_color="@color/purple_200"
-            app:riv_border_width="0dp"
-            app:riv_corner_radius="@dimen/_50sdp"
-            app:riv_oval="false" />
-
-        <ImageView
-            android:id="@+id/iv_edit"
-            android:layout_width="@dimen/_25sdp"
-            android:layout_height="@dimen/_25sdp"
-            android:layout_gravity="bottom|end"
-            android:layout_marginStart="-25dp"
-            android:src="@drawable/ic_edit_profile"
-            android:visibility="gone">
-
-        </ImageView>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|left"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:gravity="center|left"
-            android:orientation="vertical">
-
-            <EditText
-                android:id="@+id/edt_FirstName"
-                style="@style/tv_Medium_12"
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
+                style="@style/tv_bold_16"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/add_contect_transpernt"
-                android:hint="@string/f_name"
-                android:inputType="text|textCapSentences"
-                android:padding="@dimen/_2sdp"
-                android:textColor="@color/text_reg"
-                android:textColorHint="@color/home_list_sub_data"
-                tools:ignore="TouchTargetSizeCheck,TextContrastCheck">
-
-            </EditText>
+                android:background="@color/white"
+                app:tabIndicatorColor="@color/home_list_tab_bg"
+                app:tabIndicatorHeight="2dp"
+                app:tabSelectedTextColor="@color/text_reg"
+                app:tabTextAppearance="@style/CustomTextAppearanceTab_bzcars"
+                app:tabTextColor="@color/text_gray"
+                tools:ignore="SpeakableTextPresentCheck" />
 
             <View
-                android:id="@+id/view_single"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/home_list_search_border" />
+                android:background="@color/home_list_back_line" />
+        </com.google.android.material.appbar.AppBarLayout>
 
-            <EditText
-                android:id="@+id/edt_lastname"
-                style="@style/tv_regular_12"
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:ignore="SpeakableTextPresentCheck">
+
+            <FrameLayout
+                android:id="@+id/frameContainer123"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/add_contect_transpernt"
-                android:hint="Last Name"
-                android:inputType="text|textCapSentences"
-                android:textColor="@color/otp_header_text_color"
-                android:textColorHint="@color/home_list_sub_data"
-                android:visibility="gone">
+                android:layout_height="match_parent"
+                android:layout_above="@id/llFooter" />
+        </androidx.core.widget.NestedScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-            </EditText>
-
-            <TextView
-                android:id="@+id/edit_profile"
-                style="@style/tv_Medium_12"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/_2sdp"
-                android:text="Edit Profile"
-                android:textColor="@color/purple_200">
-
-            </TextView>
-        </LinearLayout>
-
-
-    </LinearLayout>
-
-    <com.google.android.material.tabs.TabLayout
+   <!-- <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         style="@style/tv_bold_16"
         android:layout_width="match_parent"
@@ -170,6 +236,6 @@
         android:id="@+id/frameContainer123"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/llFooter" />
+        android:layout_above="@id/llFooter" />-->
 
 </LinearLayout>

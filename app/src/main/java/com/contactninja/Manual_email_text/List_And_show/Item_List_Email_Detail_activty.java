@@ -127,7 +127,6 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
     List<UserLinkedList.UserLinkedGmail> select_userLinkedGmailList = new ArrayList<>();
     List<UserLinkedList.UserLinkedGmail> userLinkedGmailList = new ArrayList<>();
     TextView tv_status, tv_date, tv_use_tamplet;
-    TextView tv_bold, tv_ital, tv_uline;
     LinearLayout layout_a, lay_seq_stap, lay_taskname;
     List<BZcardListModel.Bizcard> bizcardList = new ArrayList<>();
     CardListAdepter cardListAdepter;
@@ -172,58 +171,7 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
         templateClick = this;
 
 
-        tv_bold.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-                Spannable spannableString = new SpannableStringBuilder(edit_compose.getText());
-                spannableString.setSpan(new StyleSpan(Typeface.BOLD),
-                        edit_compose.getSelectionStart(),
-                        edit_compose.getSelectionEnd(),
-                        0);
 
-                edit_compose.setText(spannableString);
-                Log.e("Text is a", Html.toHtml(edit_compose.getText()));
-            }
-        });
-
-
-        tv_ital.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-                Spannable spannableString = new SpannableStringBuilder(edit_compose.getText());
-                spannableString.setSpan(new StyleSpan(Typeface.ITALIC),
-                        edit_compose.getSelectionStart(),
-                        edit_compose.getSelectionEnd(),
-                        0);
-
-                edit_compose.setText(spannableString);
-            }
-        });
-
-        tv_uline.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                    return;
-                }
-                mLastClickTime = SystemClock.elapsedRealtime();
-                Spannable spannableString = new SpannableStringBuilder(edit_compose.getText());
-                spannableString.setSpan(new UnderlineSpan(),
-                        edit_compose.getSelectionStart(),
-                        edit_compose.getSelectionEnd(),
-                        0);
-
-                edit_compose.setText(spannableString.toString());
-            }
-        });
 
     }
 
@@ -388,10 +336,7 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
         tv_taskname = findViewById(R.id.tv_taskname);
         lay_seq_stap = findViewById(R.id.lay_seq_stap);
         lay_taskname = findViewById(R.id.lay_taskname);
-        layout_a = findViewById(R.id.layout_a);
-        tv_uline = findViewById(R.id.tv_uline);
-        tv_bold = findViewById(R.id.tv_bold);
-        tv_ital = findViewById(R.id.tv_ital);
+
         iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
         iv_back.setOnClickListener(this);
