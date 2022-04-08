@@ -296,7 +296,7 @@ public class Affiliate_Report_LavelActivity extends AppCompatActivity implements
                 e.printStackTrace();
             }
 
-            if(Global.IsNotNull(level1List)&&level1List.size()>1){
+            if(Global.IsNotNull(level1List)&&level1List.size()>=1){
                 layout_list.setVisibility(View.VISIBLE);
                 lay_no_list.setVisibility(View.GONE);
             }else {
