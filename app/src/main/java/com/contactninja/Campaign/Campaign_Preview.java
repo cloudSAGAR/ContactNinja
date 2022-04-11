@@ -960,7 +960,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
                     if (movieList.get(position).getType().equals("SMS")) {
                         movieViewHolder.iv_email.setVisibility(View.GONE);
                         movieViewHolder.iv_message.setVisibility(View.VISIBLE);
-                        movieViewHolder.tv_detail.setTypeface(null, Typeface.BOLD);
+                      //  movieViewHolder.tv_detail.setTypeface(null, Typeface.BOLD);
                     } else {
                         movieViewHolder.iv_email.setVisibility(View.VISIBLE);
                         movieViewHolder.iv_message.setVisibility(View.GONE);

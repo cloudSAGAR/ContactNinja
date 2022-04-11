@@ -175,7 +175,8 @@ public class Campaign_Step_Fragment extends Fragment implements View.OnClickList
                     if (movieList.get(position).getType().equals("SMS")) {
                         movieViewHolder.iv_email.setVisibility(View.GONE);
                         movieViewHolder.iv_message.setVisibility(View.VISIBLE);
-                        movieViewHolder.tv_detail.setTypeface(null, Typeface.BOLD);
+
+                      //  movieViewHolder.tv_detail.setTypeface(null, Typeface.BOLD);
 
                     }
                     else {

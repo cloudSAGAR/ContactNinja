@@ -93,7 +93,7 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
             tv_status.setText(broadcasteda.getBroadcastName());
             image_step.setImageDrawable(getResources().getDrawable(R.drawable.ic_sms_mini));
             layout_email_subject.setVisibility(View.GONE);
-            tv_detail.setTypeface(null, Typeface.BOLD);
+           // tv_detail.setTypeface(null, Typeface.BOLD);
         } else {
             layout_email_subject.setVisibility(View.VISIBLE);
             image_icon.setImageDrawable(getResources().getDrawable(R.drawable.ic_email));
