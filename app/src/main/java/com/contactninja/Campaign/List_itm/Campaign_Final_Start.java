@@ -249,6 +249,7 @@ public class Campaign_Final_Start extends AppCompatActivity implements View.OnCl
         public ViewpaggerAdapter(Context c, FragmentManager fm, int totalTabs, String strtext1) {
             super(fm);
             context = c;
+            context = c;
             this.totalTabs = totalTabs;
             this.strtext1 = strtext1;
         }

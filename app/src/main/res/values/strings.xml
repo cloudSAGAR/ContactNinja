@@ -396,6 +396,7 @@
     <string name="txt_campaign">Start campaign</string>
     <string name="view_contect">View contacts</string>
     <string name="tv_contect">Contacts</string>
+    <string name="tv_prospect">Prospects</string>
     <string name="tv_text">Text</string>
     <string name="tv_email">Emails</string>
     <string name="cam_tv_titel">Conatc ninja campaign for new mebers</string>

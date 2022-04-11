@@ -71,10 +71,12 @@ public class Campaign_Step_Fragment extends Fragment implements View.OnClickList
         loadingDialog = new LoadingDialog(getActivity());
         sessionManager = new SessionManager(getActivity());
         retrofitCalls = new RetrofitCalls(getActivity());
+        Global.count=1;
         campaign_overviewAdapter = new Campaign_OverviewAdapter(getContext());
         item_list.setAdapter(campaign_overviewAdapter);
+        item_list.setItemViewCacheSize(50000);
 
-        Global.count=1;
+
         //   StepData();
         return view;
     }
@@ -154,6 +156,7 @@ public class Campaign_Step_Fragment extends Fragment implements View.OnClickList
             CampaignTask_overview.SequenceTask movieList_data = movieList.get(position);
             switch (getItemViewType(position)) {
                 case ITEM:
+
                     Campaign_OverviewAdapter.MovieViewHolder movieViewHolder = (Campaign_OverviewAdapter.MovieViewHolder) holder;
                     movieViewHolder.add_new_step_layout.setVisibility(View.GONE);
                     movieViewHolder.tv_item_num.setText(String.valueOf(Global.count));
