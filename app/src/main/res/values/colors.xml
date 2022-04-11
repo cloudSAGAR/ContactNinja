@@ -38,7 +38,6 @@
     <color name="shape_red">#F64F50</color>
 
 
-
     <color name="home_list_add_contect__bottom_text">#007AFF</color>
     <color name="contect_bottom_sheet_color">#4848484D</color>
     <color name="line_camp">#1A4A4A4A</color>
@@ -92,8 +91,6 @@
     <color name="home_per_text">#27AE60</color>
     <color name="home_bar_orange">#F07676</color>
     <color name="home_bar_yalow">#FAAD64</color>
-
-    
 
 
 </resources>

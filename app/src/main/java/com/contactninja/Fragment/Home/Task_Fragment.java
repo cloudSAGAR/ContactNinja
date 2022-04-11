@@ -177,6 +177,7 @@ public class Task_Fragment extends Fragment  {
                 if(Global.IsNotNull(des_tasks)&&des_tasks.size()!=0){
                     taslListAdepter.clear();
                     taslListAdepter.add(des_tasks);
+                    rv_Task_list.setVisibility(View.VISIBLE);
                     iv_demo.setVisibility(View.GONE);
                 }else {
                     rv_Task_list.setVisibility(View.GONE);

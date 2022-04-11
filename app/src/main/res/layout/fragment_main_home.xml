@@ -221,7 +221,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:text="@string/hoome_affiliategroth"
+                        android:text="@string/hoome_affiliategrowth"
                         android:textColor="@color/text_reg" />
 
                     <View
