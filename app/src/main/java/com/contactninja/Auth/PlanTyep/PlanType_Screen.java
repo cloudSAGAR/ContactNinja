@@ -122,7 +122,7 @@ public class PlanType_Screen extends AppCompatActivity implements View.OnClickLi
                 intent.putExtra("flag", i);
                 intent.putExtra("plan_product_id", value);
                 startActivity(intent);
-                finish();
+              //  finish();
             }
 
             @Override
@@ -172,7 +172,7 @@ public class PlanType_Screen extends AppCompatActivity implements View.OnClickLi
                     intent.putExtra("flag", 1);
                     intent.putExtra("plan_product_id", "0");
                     startActivity(intent);
-                    finish();
+                   // finish();
                 }
 
                 break;
@@ -193,7 +193,7 @@ public class PlanType_Screen extends AppCompatActivity implements View.OnClickLi
                     intent.putExtra("flag", 2);
                     intent.putExtra("plan_product_id",  getResources().getString(R.string.plan_9));
                     startActivity(intent);
-                    finish();
+                  //  finish();
                 }
 
                 break;
@@ -213,7 +213,7 @@ public class PlanType_Screen extends AppCompatActivity implements View.OnClickLi
                     intent.putExtra("flag", 3);
                     intent.putExtra("plan_product_id",  getResources().getString(R.string.plan_39));
                     startActivity(intent);
-                    finish();
+                //    finish();
                 }
 
                 break;
@@ -233,7 +233,7 @@ public class PlanType_Screen extends AppCompatActivity implements View.OnClickLi
                     intent.putExtra("flag", 4);
                     intent.putExtra("plan_product_id",  getResources().getString(R.string.plan_69));
                     startActivity(intent);
-                    finish();
+                   // finish();
                 }
 
                 break;

@@ -175,7 +175,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
             String manual = Integer.toString((int) MM);
 
             tv_autometed_task.setText(String.valueOf(Auto + "%" + " Automated tasks"));
-            tv_manual_task.setText(String.valueOf(manual + "%" + " Manaul tasks"));
+            tv_manual_task.setText(String.valueOf(manual + "%" + " Manual tasks"));
 
 
         }

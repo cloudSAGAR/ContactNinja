@@ -188,7 +188,7 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
                 intent.putExtra("countrycode", countryCode);
                 intent.putExtra("f_name", "");
                 intent.putExtra("l_name", "");
-                intent.putExtra("email", edit_email.getText().toString());
+                intent.putExtra("email", edit_email.getText().toString().trim());
                 intent.putExtra("login_type", "PHONE");
                 intent.putExtra("activity_flag", "login");
                 intent.putExtra("referred_by","");
@@ -205,14 +205,14 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
         try {
             String type = bundle.getString("login_type");
             if (type.equals("PHONE")) {
-                tv_welcome.setText(getResources().getString(R.string.welcome_phone));
+                tv_welcome.setText(getResources().getString(R.string.welcome_Email));
                 layout_email.setVisibility(View.VISIBLE);
                 layout_phonenumber.setVisibility(View.GONE);
-                u_email = edit_email.getText().toString();
+                u_email = edit_email.getText().toString().trim();
 
 
             } else {
-                tv_welcome.setText(getResources().getString(R.string.welcome_Email));
+                tv_welcome.setText(getResources().getString(R.string.welcome_phone));
                 layout_email.setVisibility(View.GONE);
                 layout_phonenumber.setVisibility(View.VISIBLE);
                 u_mobile = edit_Mobile.getText().toString();
@@ -229,7 +229,7 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
         Bundle bundle = intent.getExtras();
         String login_type = bundle.getString("login_type");
         if (login_type.equals("PHONE")) {
-            u_email = edit_email.getText().toString();
+            u_email = edit_email.getText().toString().trim();
             if (u_email.equals("")) {
                 iv_invalid.setText(getResources().getString(R.string.invalid_email));
             } else if (!u_email.matches(emailPattern)) {
@@ -314,7 +314,7 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
         }
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("email", edit_email.getText().toString());
+        paramObject.addProperty("email", edit_email.getText().toString().trim());
         paramObject.addProperty("organization_id", "1");
         paramObject.addProperty("team_id", team_id);
         paramObject.addProperty("update_type", type);
@@ -399,7 +399,7 @@ public class Phone_email_verificationActivity extends AppCompatActivity implemen
 
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("contact_number", ccp_id.getSelectedCountryCodeWithPlus()+edit_Mobile.getText().toString());
+        paramObject.addProperty("contact_number", ccp_id.getSelectedCountryCodeWithPlus()+edit_Mobile.getText().toString().trim());
         paramObject.addProperty("organization_id", "1");
         paramObject.addProperty("team_id", team_id);
         paramObject.addProperty("update_type", type);

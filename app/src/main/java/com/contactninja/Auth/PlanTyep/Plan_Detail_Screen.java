@@ -113,6 +113,12 @@ public class Plan_Detail_Screen extends AppCompatActivity implements Connectivit
 
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
+    }
+
     private void Add_trial_subscription(String plan_product_id) {
         loadingDialog.showLoadingDialog();
         JsonObject obj = new JsonObject();
