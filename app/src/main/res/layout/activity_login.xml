@@ -226,7 +226,6 @@
                                     android:padding="10dp"
                                     android:textColor="@color/otp_header_text_color"
                                     android:textColorHint="@color/otp_header_text_color"
-                                    android:textStyle="bold"
                                     tools:ignore="Autofill,RtlHardcoded" />
 
                                 <ImageView

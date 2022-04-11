@@ -68,7 +68,10 @@
     <color name="text_White">#FFFFFF</color>
     <color name="text_green">#08910D</color>
     <color name="text_gray">#ABABAB</color>
+    <color name="text_reg">#000000</color>
+<!--
     <color name="text_reg">#4A4A4A</color>
+-->
     <color name="text_reg_75">#BF4A4A4A</color>
 
 

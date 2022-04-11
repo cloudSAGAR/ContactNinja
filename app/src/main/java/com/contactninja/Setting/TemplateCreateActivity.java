@@ -85,12 +85,14 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
     
         template_id =  getIntent().getStringExtra("template_id");
         template_type = getIntent().getStringExtra("template_type");
-        try {
-            if (Global.isNetworkAvailable(TemplateCreateActivity.this, MainActivity.mMainLayout)) {
-                Template_list(template_id);
+        if (template_id != null) {
+            try {
+                if (Global.isNetworkAvailable(TemplateCreateActivity.this, MainActivity.mMainLayout)) {
+                    Template_list(template_id);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
         
          if (template_type != null)  {

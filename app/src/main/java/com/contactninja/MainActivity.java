@@ -227,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    Global.Messageshow(activity, mMainLayout, activity.getResources().getString(R.string.upload_complate), true);
+                    Global.Messageshow(activity, mMainLayout, activity.getResources().getString(R.string.Synced), true);
 
                 }
             });

@@ -115,7 +115,7 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:gravity="center"
                 android:padding="@dimen/_2sdp"
-                android:textColor="@color/text_reg"
+                android:textColor="@color/text_gray"
                 android:textSize="@dimen/_10sdp"/>
 
         </LinearLayout>
