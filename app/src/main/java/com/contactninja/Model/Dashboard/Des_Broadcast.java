@@ -39,6 +39,9 @@ public class Des_Broadcast {
     @SerializedName("content_body")
     @Expose
     private String contentBody;
+    @SerializedName("first_activated")
+    @Expose
+    private String firstActivated;
 
     public String getBroadcastName() {
         return broadcastName;
@@ -126,5 +129,13 @@ public class Des_Broadcast {
 
     public void setContentBody(String contentBody) {
         this.contentBody = contentBody;
+    }
+    
+    public String getFirstActivated() {
+        return firstActivated;
+    }
+    
+    public void setFirstActivated(String firstActivated) {
+        this.firstActivated = firstActivated;
     }
 }

@@ -61,7 +61,7 @@ public class BroadcastActivityListModel
         private String recurringType;
         @SerializedName("first_activated")
         @Expose
-        private Object firstActivated;
+        private String firstActivated;
         @SerializedName("status")
         @Expose
         private String status;
@@ -153,11 +153,11 @@ public class BroadcastActivityListModel
 
 
 
-        public Object getFirstActivated() {
+        public String getFirstActivated() {
             return firstActivated;
         }
 
-        public void setFirstActivated(Object firstActivated) {
+        public void setFirstActivated(String firstActivated) {
             this.firstActivated = firstActivated;
         }
 
