@@ -237,8 +237,8 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
         // loadingDialog = new LoadingDialog(this);
         //Set Viewpagger
         tabLayout.addTab(tabLayout.newTab().setText("Information"));
-        tabLayout.addTab(tabLayout.newTab().setText("Media Block"));
-        tabLayout.addTab(tabLayout.newTab().setText("social media"));
+        tabLayout.addTab(tabLayout.newTab().setText("Media block"));
+        tabLayout.addTab(tabLayout.newTab().setText("Social media"));
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         Fragment fragment = new Information_Bzcard_Fragment();

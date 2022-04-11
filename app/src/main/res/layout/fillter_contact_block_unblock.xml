@@ -37,7 +37,7 @@
 
             <CheckBox
                 android:id="@+id/ch_block"
-                style="@style/tv_Medium_16"
+                style="@style/tv_regular_12"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -68,7 +68,7 @@
 
             <CheckBox
                 android:id="@+id/ch_all"
-                style="@style/tv_Medium_16"
+                style="@style/tv_regular_12"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

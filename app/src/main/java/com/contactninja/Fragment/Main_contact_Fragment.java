@@ -44,7 +44,7 @@ public class Main_contact_Fragment extends Fragment {
         IntentUI(view);
         tabLayout.addTab(tabLayout.newTab().setText("Contacts"));
         tabLayout.addTab(tabLayout.newTab().setText("Groups"));
-        tabLayout.addTab(tabLayout.newTab().setText("Company"));
+        tabLayout.addTab(tabLayout.newTab().setText("Companies"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         Fragment fragment = new ContectFragment(getView(), getActivity());
         FragmentManager fragmentManager = getFragmentManager();

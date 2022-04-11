@@ -21,16 +21,16 @@
     <string name="welcome">Welcome to \n Contact Ninja!</string>
     <string name="welcome_dis">Helping you keep your contacts informed in the easiest and fastest way possible.</string>
     <string name="account_no">Don\'t have an account?</string>
-    <string name="remember_password">Remember password?</string>
-    <string name="signup">Sign up</string>
-    <string name="signIn">Sign in</string>
+    <string name="remember_password">Remember Password?</string>
+    <string name="signup">Sign Up</string>
+    <string name="signIn">Sign In</string>
     <string name="send">Send</string>
     <string name="enter_email">Enter your email</string>
 
     <string name="enter_code">Enter referral code</string>
     <string name="enter_password">Enter your password</string>
     <string name="or_email">or use email-id</string>
-    <string name="or_forgot_password">Forget password?</string>
+    <string name="or_forgot_password">Forget Password?</string>
     <string name="or_phone">or use phone number</string>
     <string name="terms">I have read and agree to <br>\nContact Ninja’s <b><u>Terms &amp; Conditions</u></b></br></string>
     <string name="invalid_email1">This email address is not exist</string>
@@ -85,8 +85,7 @@
 
     <!---phone_email-->
     <string name="get_started">Get Started !</string>
-    <string name="welcome_phone">Connect your Phone
-Number</string>
+    <string name="welcome_phone">Connect your Phone Number</string>
     <string name="welcome_Email">Connect your Email Address</string>
     <string name="phone_dis">Adding phone number gives an additional
  security layer for your contact ninja account.</string>
@@ -98,14 +97,14 @@ Number</string>
     <string name="remove_new_contect1">Remove all contacts</string>
     <string name="add_new">Add new</string>
     //Add Contect
-    <string name="f_name">First name </string>
+    <string name="f_name">First name</string>
     <string name="add_phone">Phone</string>
     <string name="add_number">Add number</string>
     <string name="add_home">Home</string>
     <string name="add_email">Email</string>
     <string name="add_email_a">Add email</string>
     <string name="add_address">Address</string>
-    <string name="add_company_address">Company  Address</string>
+    <string name="add_company_address">Company Address</string>
     <string name="add_address_a">Add address</string>
     <string name="add_company">Company</string>
     <string name="other_company">Other company</string>
@@ -119,7 +118,7 @@ Number</string>
     <string name="ev_first">Add first name</string>
 
 
-    <string name="tv_last_name">Last Name</string>
+    <string name="tv_last_name">Last name</string>
     <string name="ev_last_name">Add last name</string>
 
     <string name="tv_bzemail">Email</string>
@@ -149,7 +148,7 @@ Number</string>
     <string name="add_skypay">Skypay</string>
     <string name="add_tiktok">Tiktok</string>
     <string name="add_snapchat">Snapchat</string>
-    <string name="add_other_filed">other filed</string>
+    <string name="add_other_filed">Other filed</string>
 
 
     <string name="add_city">City</string>
@@ -306,29 +305,29 @@ Number</string>
 
 
     <string name="forgot_password">Fogot your password?</string>
-    <string name="forgot_password_txt">Enter your registerd email blow \n to receive password </string>
-    <string name="forgot_remember">Remember password?</string>
-    <string name="current_Plan">Current plan</string>
-    <string name="Messaging_Template">Messaging template</string>
-    <string name="About_Contact_Ninja">About contact ninja</string>
-    <string name="Reset_Password">Reset password</string>
+    <string name="forgot_password_txt">Enter your registerd email blow \n to receive password</string>
+    <string name="forgot_remember">Remember Password?</string>
+    <string name="current_Plan">Current Plan</string>
+    <string name="Messaging_Template">Messaging Template</string>
+    <string name="About_Contact_Ninja">About Contact Ninja</string>
+    <string name="Reset_Password">Reset Password</string>
     <string name="Logout">Logout</string>
     <string name="ok">Okay</string>
-    <string name="reset_password">Reset password</string>
+    <string name="reset_password">Reset Password</string>
     <string name="reset_password_txt">Secure your account with a strong password.</string>
-    <string name="Current_Password">Current password</string>
-    <string name="New_Password">New password</string>
-    <string name="Confirm_Password">Confirm new password</string>
-    <string name="Create_password">Create password</string>
-    <string name="AddCurrentPassword">Add current password</string>
-    <string name="AddNewPassword">Add new password</string>
-    <string name="AddConfirmPassword">Add confirm password</string>
+    <string name="Current_Password">Current Password</string>
+    <string name="New_Password">New Password</string>
+    <string name="Confirm_Password">Confirm New Password</string>
+    <string name="Create_password">Create Password</string>
+    <string name="AddCurrentPassword">Add Current Password</string>
+    <string name="AddNewPassword">Add New Password</string>
+    <string name="AddConfirmPassword">Add Confirm Password</string>
     <string name="characters8">Must be at least 8 characters</string>
     <string name="passwordCheck">Password must contain one special character, digit and capital letter</string>
     <string name="passwordNotMetch">New password and confirm not match.</string>
     <string name="addTemplate">Add messaging template</string>
     <string name="cratetemplate">Create new messaging template</string>
-    <string name="Use_template">Use template</string>
+    <string name="Use_template">Use Template</string>
     <string name="Please_select_template">Please select template</string>
     <string name="Please_select_email">Please select mail box</string>
     <string name="template_error">Seems like you don\'t have any templates! you can create that in your profile section</string>
@@ -357,7 +356,7 @@ Number</string>
     <string name="campaign_step_one_text_txt">Automated Text are sent using automation \n  and Manual Text create a task on your \n  dashboard for you to approve it before sending.</string>
 
     <string name="campaign_step_one_one">Step#1 (Automated Text)</string>
-    <string name="temp_txt">Use template</string>
+    <string name="temp_txt">Use Template</string>
     <string name="campaign_step_title">Campaign Overview</string>
     <string name="campaign_sub_txt">Lorem ipsum dolor sit amet, consectetuer \n adipiscing elit. Aenean commodo ligulaeget dolor. Aenean massa. Cum sociisnatoque penatibus et magnis dis \n parturient.</string>
     <string name="campaign_button_txt">Add New Step</string>
