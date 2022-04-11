@@ -154,7 +154,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 last_name = edit_Last.getText().toString().trim();
                 mobile_number = edit_Mobile.getText().toString().trim();
                 email_address = edit_email.getText().toString();
-                referred_by = "";
+                referred_by = edit_code.getText().toString();
                 Otp = getRandomNumberString();
                 if (first_name.equals("")) {
                     iv_invalid.setText(getResources().getString(R.string.invalid_first_name));
@@ -442,7 +442,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     }
     private void SignAPI() throws JSONException {
         Global.getInstance().setConnectivityListener(this);
-
+        referred_by = edit_code.getText().toString();
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("firebase_fcm_token", SessionManager.getFcm_Token(getApplicationContext()));

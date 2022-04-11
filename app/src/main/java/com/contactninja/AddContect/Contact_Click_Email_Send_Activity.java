@@ -136,6 +136,7 @@ public class Contact_Click_Email_Send_Activity extends AppCompatActivity impleme
         initToolbar();
         ev_subject.requestFocus();
         Intent intent = getIntent();
+
         Bundle bundle = intent.getExtras();
         email = bundle.getString("email");
         id = bundle.getString("id");

@@ -9,13 +9,13 @@
 
     <TextView
         android:id="@+id/tabContent"
-        style="@style/tv_regular_12"
+        style="@style/CustomTextAppearanceTab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/_5sdp"
         android:gravity="center"
         android:textAlignment="center"
-        android:textSize="@dimen/_14sdp" />
+        />
 
     <ImageView
         android:id="@+id/image_view"

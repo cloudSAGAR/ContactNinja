@@ -55,11 +55,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_5sdp"
         android:background="@color/white"
+        android:visibility="visible"
         app:tabIndicatorColor="@color/home_list_tab_bg"
         app:tabIndicatorHeight="2dp"
+        app:tabMode="fixed"
         app:tabSelectedTextColor="@color/text_reg"
         app:tabTextAppearance="@style/CustomTextAppearanceTab"
-        app:tabTextColor="@color/text_reg"
+        app:tabTextColor="@color/text_gray"
         tools:ignore="SpeakableTextPresentCheck"/>
 
     <View
