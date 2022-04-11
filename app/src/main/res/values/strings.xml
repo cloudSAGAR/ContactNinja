@@ -184,7 +184,7 @@
     <string name="add_defult_text">Set as \n default</string>
     <string name="add_bz_text">This contactNinja \n hasn’t shared a BZcardSet</string>
     <string name="add_exposures_text">This contactNinja \n has no exposures</string>
-    <string name="add_group_description_min_txt">100 character remaining</string>
+    <string name="add_group_description_min_txt">100 Characters remaining</string>
     <string name="add_group_all_member">All members</string>
     <string name="add_group_all_more">Add more members</string>
 

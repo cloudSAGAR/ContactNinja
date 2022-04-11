@@ -622,7 +622,11 @@ public class Create_New_Company_Activity extends AppCompatActivity implements Vi
         paramObject.put("description", add_detail.getText().toString().trim());
         paramObject.put("email", edit_email.getText().toString().trim());
         paramObject.put("company_url", edit_company_url.getText().toString().trim());
-        paramObject.put("contact_number", ccp_id.getSelectedCountryCodeWithPlus()+edit_Mobile.getText().toString().trim());
+        if (!edit_Mobile.getText().toString().trim().equals(""))
+        {
+            paramObject.put("contact_number", ccp_id.getSelectedCountryCodeWithPlus()+edit_Mobile.getText().toString().trim());
+
+        }
         //paramObject.put("status", "A");
         if (id!=0) {
             paramObject.put("id", id);
@@ -631,7 +635,7 @@ public class Create_New_Company_Activity extends AppCompatActivity implements Vi
         obj.put("data", paramObject);
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
-        Log.e("Main Data is ", new Gson().toJson(gsonObject));
+    //    Log.e("Main Data is ", new Gson().toJson(gsonObject));
         retrofitCalls.Company_add(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(this), Global.Device, new RetrofitCallback() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
