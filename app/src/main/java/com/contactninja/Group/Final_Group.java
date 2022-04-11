@@ -208,7 +208,8 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                 Glide.with(getApplicationContext()).
                         load(group_data.getGroupImage()).
                         placeholder(R.drawable.shape_primary_back).
-                        error(R.drawable.shape_primary_back).into(iv_user);
+                        error(R.drawable.shape_primary_back).
+                        into(iv_user);
                 iv_dummy.setVisibility(View.GONE);
             } else {
                 iv_user.setVisibility(View.GONE);
@@ -515,7 +516,10 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                 CropImage.ActivityResult result = CropImage.getActivityResult(data);
                 if (resultCode == RESULT_OK) {
                     Uri resultUri = result.getUri();
-                    Glide.with(getApplicationContext()).load(resultUri).into(iv_user);
+                    Glide.with(getApplicationContext()).load(resultUri)
+                            .placeholder(R.drawable.shape_primary_circle)
+                            .error(R.drawable.shape_primary_circle)
+                            .into(iv_user);
                     iv_user.setVisibility(View.VISIBLE);
                     iv_dummy.setVisibility(View.GONE);
                     File_name = "Image";
@@ -540,7 +544,10 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                     Uri resultUri = result.getUri();
                     File file = new File(result.getUri().getPath());
                     Uri uri = Uri.fromFile(file);
-                    Glide.with(getApplicationContext()).load(resultUri).into(iv_user);
+                    Glide.with(getApplicationContext()).load(resultUri)
+                            .placeholder(R.drawable.shape_primary_circle)
+                            .error(R.drawable.shape_primary_circle)
+                            .into(iv_user);
                     iv_user.setVisibility(View.VISIBLE);
                     iv_dummy.setVisibility(View.GONE);
                     filePath1 = uri.getPath();
@@ -653,7 +660,10 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
                 if(Global.IsNotNull(user_image_Url)){
                     AmazonUtil.deleteS3Client(getApplicationContext(),user_image_Url);
                     user_image_Url="";
-                    Glide.with(getApplicationContext()).load(user_image_Url).into(iv_user);
+                    Glide.with(getApplicationContext()).load(user_image_Url)
+                            .placeholder(R.drawable.shape_primary_circle)
+                            .error(R.drawable.shape_primary_circle)
+                            .into(iv_user);
                 }
                 bottomSheetDialog.dismiss();
 

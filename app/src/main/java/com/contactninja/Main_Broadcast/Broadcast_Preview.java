@@ -116,7 +116,7 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
         if (SessionManager.getCampaign_type(getApplicationContext()).equals("SMS")) {
 
             tv_item_num.setBackground(getResources().getDrawable(R.drawable.ic_message_select));
-            tv_detail.setTypeface(null, Typeface.BOLD);
+          //  tv_detail.setTypeface(null, Typeface.BOLD);
             layout_email_subject.setVisibility(View.GONE);
         } else if (SessionManager.getCampaign_type(getApplicationContext()).equals("EMAIL")) {
             layout_email_subject.setVisibility(View.VISIBLE);

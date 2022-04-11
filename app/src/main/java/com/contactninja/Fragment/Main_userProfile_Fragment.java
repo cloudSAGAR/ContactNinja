@@ -1171,7 +1171,11 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 if(Global.IsNotNull(user_image_Url)){
                     AmazonUtil.deleteS3Client(getActivity(),user_image_Url);
                     user_image_Url="";
-                    Glide.with(getActivity()).load(user_image_Url).into(iv_user);
+                    Glide.with(getActivity()).
+                            load(user_image_Url).
+                             placeholder(R.drawable.shape_primary_circle)
+                            .error(R.drawable.shape_primary_circle).
+                            into(iv_user);
                 }
                 bottomSheetDialog.dismiss();
 
@@ -1256,7 +1260,11 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                     File file=new File(result.getUri().getPath());
                     Uri uri = Uri.fromFile(file);
                     filePath1 = uri.getPath();
-                    Glide.with(getActivity()).load(resultUri).into(iv_user);
+                    Glide.with(getActivity())
+                            .load(resultUri)
+                            .placeholder(R.drawable.shape_primary_circle)
+                            .error(R.drawable.shape_primary_circle)
+                            .into(iv_user);
 
                     //  uploadImageTos3(profilePath);
 
@@ -1280,7 +1288,11 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                     File file=new File(result1.getUri().getPath());
                     Uri uri = Uri.fromFile(file);
                     filePath1 = uri.getPath();
-                    Glide.with(getActivity()).load(resultUri).into(iv_user);
+                    Glide.with(getActivity())
+                            .load(resultUri)
+                            .placeholder(R.drawable.shape_primary_circle)
+                            .error(R.drawable.shape_primary_circle)
+                            .into(iv_user);
                     //uploadImageTos3(filePath1);
                 }
                 else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {

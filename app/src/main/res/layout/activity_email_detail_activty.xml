@@ -309,7 +309,7 @@
                 <com.chinalwb.are.AREditText
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
-                    style="@style/tv_normal_12"
+                    style="@style/tv_regular_12"
                     android:inputType="textCapSentences|textMultiLine"
                     android:id="@+id/edit_compose"
                     android:layout_width="match_parent"

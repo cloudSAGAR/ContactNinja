@@ -1022,7 +1022,7 @@ public class Create_New_Contect_Activity extends AppCompatActivity implements Vi
                 if (Global.IsNotNull(user_image_Url)) {
                     AmazonUtil.deleteS3Client(getApplicationContext(), user_image_Url);
                     user_image_Url = "";
-                    Glide.with(getApplicationContext()).load(user_image_Url).into(iv_user);
+                    Glide.with(getApplicationContext()).load(user_image_Url).placeholder(R.drawable.shape_primary_circle).error(R.drawable.shape_primary_circle).into(iv_user);
                 }
                 bottomSheetDialog.dismiss();
 
@@ -1099,7 +1099,7 @@ public class Create_New_Contect_Activity extends AppCompatActivity implements Vi
                     String profilePath = Global.getPathFromUri(getApplicationContext(), uri);
                     iv_user.setVisibility(View.VISIBLE);
                     layout_pulse.setVisibility(View.GONE);
-                    Glide.with(getApplicationContext()).load(resultUri).into(iv_user);
+                    Glide.with(getApplicationContext()).load(resultUri).placeholder(R.drawable.shape_primary_circle).error(R.drawable.shape_primary_circle).into(iv_user);
 
                     //    uploadImageTos3(filePath1);
 
@@ -1120,7 +1120,7 @@ public class Create_New_Contect_Activity extends AppCompatActivity implements Vi
                     filePath1 = uri.getPath();
                     iv_user.setVisibility(View.VISIBLE);
                     layout_pulse.setVisibility(View.GONE);
-                    Glide.with(getApplicationContext()).load(resultUri).into(iv_user);
+                    Glide.with(getApplicationContext()).load(resultUri).placeholder(R.drawable.shape_primary_circle).error(R.drawable.shape_primary_circle).into(iv_user);
                     // uploadImageTos3(filePath1);
 
 
@@ -1699,8 +1699,8 @@ e.printStackTrace();
                 Log.e("Image is", Contect_data.getContactImage());
                 Glide.with(getApplicationContext()).
                         load(Contect_data.getContactImage())
-                        .placeholder(R.drawable.shape_primary_back)
-                        .error(R.drawable.shape_primary_back).
+                        .placeholder(R.drawable.shape_primary_circle)
+                        .error(R.drawable.shape_primary_circle).
                         into(iv_user);
             }
             user_image_Url = Contect_data.getContactImage();
@@ -1751,8 +1751,8 @@ e.printStackTrace();
                 Log.e("Image is", Contect_data.getContactImage());
                 Glide.with(getApplicationContext()).
                         load(Contect_data.getContactImage())
-                        .placeholder(R.drawable.shape_primary_back)
-                        .error(R.drawable.shape_primary_back).
+                        .placeholder(R.drawable.shape_primary_circle)
+                        .error(R.drawable.shape_primary_circle).
                         into(iv_user);
             }
             user_image_Url = Contect_data.getContactImage();
