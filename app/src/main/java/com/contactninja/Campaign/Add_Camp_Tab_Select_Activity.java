@@ -97,7 +97,7 @@ public class Add_Camp_Tab_Select_Activity extends AppCompatActivity implements V
 
 
         tabLayout.setupWithViewPager(viewPager);
-        tabLayout.setTabTextColors(Color.parseColor("#000000"), Color.parseColor("#4A4A4A"));
+    //    tabLayout.setTabTextColors(Color.parseColor("#000000"), Color.parseColor("#4A4A4A"));
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(final int i, final float v, final int i2) {

@@ -226,7 +226,7 @@ public class Broadcast_Fragment extends Fragment {
             try {
                 if (item.getType().equals("SMS")) {
                     holder.image_icon.setImageResource(R.drawable.ic_message_tab);
-                    holder.tv_task_description.setTypeface(null, Typeface.BOLD);
+                    //holder.tv_task_description.setTypeface(null, Typeface.BOLD);
                 } else {
                     holder.image_icon.setImageResource(R.drawable.ic_email);
                 }

@@ -54,6 +54,7 @@
         android:layout_marginBottom="@dimen/_50sdp"
         android:background="@color/purple_200"
         app:tabBackground="@drawable/tab_selector"
+        app:tabTextAppearance="@style/CustomTextAppearanceTab"
         app:tabGravity="center"
         app:tabIndicatorHeight="0dp"
         tools:ignore="MissingConstraints,SpeakableTextPresentCheck" />

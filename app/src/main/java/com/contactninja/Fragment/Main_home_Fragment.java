@@ -123,7 +123,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         }
 
 
-        tabLayout.addTab(tabLayout.newTab().setText("Task"));
+        tabLayout.addTab(tabLayout.newTab().setText("Tasks"));
         tabLayout.addTab(tabLayout.newTab().setText("Broadcast"));
         tabLayout.addTab(tabLayout.newTab().setText("Campaign"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);

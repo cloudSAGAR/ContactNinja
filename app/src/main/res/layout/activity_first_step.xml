@@ -34,7 +34,6 @@
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
-            style="@style/tv_bold_16"
             app:tabRippleColor="@null"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -45,7 +44,8 @@
             app:tabIndicatorHeight="2dp"
             app:tabMode="fixed"
             app:tabSelectedTextColor="@color/text_reg"
-            app:tabTextColor="@color/text_reg"
+            app:tabTextAppearance="@style/CustomTextAppearanceTab"
+            app:tabTextColor="@color/text_gray"
             tools:ignore="SpeakableTextPresentCheck" />
 
         <View

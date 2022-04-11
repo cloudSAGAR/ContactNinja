@@ -87,21 +87,21 @@
 
                 <ImageView
                     android:id="@+id/image_icon"
-                    android:layout_width="@dimen/_15sdp"
-                    android:layout_height="@dimen/_15sdp"
+                    android:layout_width="@dimen/_12sdp"
+                    android:layout_height="@dimen/_12sdp"
                     android:layout_gravity="center" />
 
                 <TextView
                     android:id="@+id/tv_status"
-                    style="@style/tv_Medium_12"
+                    style="@style/tv_Medium_10"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginStart="@dimen/_2sdp"
                     android:gravity="center|left"
                     android:padding="@dimen/_2sdp"
                     android:singleLine="true"
-                    android:textSize="@dimen/_12sdp" />
+                    />
             </LinearLayout>
 
             <TextView
@@ -110,9 +110,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_5sdp"
                 android:gravity="center|left"
-                android:padding="@dimen/_2sdp"
+                android:padding="@dimen/_1sdp"
                 android:singleLine="true"
                 android:textColor="@color/text_reg" />
 
@@ -123,10 +122,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:gravity="center|start"
-                android:padding="@dimen/_2sdp"
+                android:padding="@dimen/_1sdp"
                 android:singleLine="true"
                 android:textColor="@color/purple_200"
-                android:textStyle="bold" />
+                />
 
             <TextView
                 android:id="@+id/tv_task_description"
@@ -135,11 +134,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:gravity="center|start"
-                android:padding="@dimen/_2sdp"
+                android:padding="@dimen/_1sdp"
                 android:singleLine="true"
                 android:textColor="@color/text_gray"
-                android:textSize="@dimen/_12sdp"
-                android:textStyle="bold" />
+               />
 
         </LinearLayout>
 

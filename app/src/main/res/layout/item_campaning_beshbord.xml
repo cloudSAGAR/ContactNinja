@@ -41,7 +41,7 @@
                 tools:ignore="SelectableText" />
 
             <TextView
-                style="@style/tv_Medium_12"
+                style="@style/tv_Medium_10"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

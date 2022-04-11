@@ -469,7 +469,7 @@
     <string name="manual_mark">Mark as complete</string>
     <string name="manual_Snooze">Snooze</string>
     <string name="manual_Delete">Delete</string>
-    <string name="manual_All_tasks">All tasks</string>
+    <string name="manual_All_tasks">All manual tasks</string>
     <string name="manual_auto_complate_tasks">Automated completed</string>
     <string name="manual_auto_upcoming_tasks">Automated upcoming</string>
     <string name="Filters">Filters</string>
@@ -641,7 +641,7 @@
     <string name="hoome_affiliategrowth">Affiliate Growth</string>
     <string name="home_lastday">Last 7 days</string>
     <string name="home_affiliate_text">View Detailed Affiliate Report</string>
-    <string name="home_today_activity">Activity</string>
+    <string name="home_today_activity">Activities</string>
     <string name="Edit">Edit</string>
     <string name="Delete">Delete</string>
     <string name="Share">Share</string>

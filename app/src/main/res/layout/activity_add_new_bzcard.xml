@@ -118,7 +118,6 @@
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
-            style="@style/tv_bold_16"
             app:tabRippleColor="@null"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

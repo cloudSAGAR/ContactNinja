@@ -17,7 +17,7 @@
         android:orientation="vertical">
 
         <TextView
-            style="@style/tv_bold_14"
+            style="@style/tv_bold_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center|top"
