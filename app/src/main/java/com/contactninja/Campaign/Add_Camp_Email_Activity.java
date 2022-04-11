@@ -139,7 +139,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
             e.printStackTrace();
         }
 
-        edit_template.requestFocus();
+        ev_subject.requestFocus();
         edit_template.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

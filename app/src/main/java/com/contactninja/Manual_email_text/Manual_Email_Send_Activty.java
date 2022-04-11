@@ -135,6 +135,7 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
 
         IntentUI();
         initToolbar();
+        ev_subject.requestFocus();
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         task_name = bundle.getString("task_name");

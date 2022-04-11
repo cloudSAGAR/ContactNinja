@@ -148,6 +148,7 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
 
         IntentUI();
         initToolbar();
+        ev_subject.requestFocus();
         try {
             Intent intent = getIntent();
             Bundle bundle = intent.getExtras();
