@@ -8,14 +8,15 @@
     tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
 
 
-    <include layout="@layout/under_development" />
+    <include layout="@layout/under_development"
+        android:visibility="gone"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_10sdp"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
 
         <LinearLayout
@@ -38,11 +39,12 @@
                 android:layout_height="@dimen/_17sdp"
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/_10sdp"
-                android:src="@drawable/ic_message">
+                android:src="@drawable/ic_message_tab">
 
             </ImageView>
 
             <ImageView
+                android:visibility="gone"
                 android:id="@+id/iv_email"
                 android:layout_width="@dimen/_17sdp"
                 android:layout_height="@dimen/_17sdp"
@@ -77,7 +79,7 @@
                     style="@style/tv_Medium_12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4"
+                    android:text="0"
                     android:textColor="@color/text_reg" />
 
                 <TextView
@@ -102,7 +104,7 @@
                     style="@style/tv_Medium_12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4"
+                    android:text="0"
                     android:textColor="@color/text_reg" />
 
                 <TextView
@@ -127,7 +129,7 @@
                     style="@style/tv_Medium_12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4"
+                    android:text="0"
                     android:textColor="@color/text_reg" />
 
                 <TextView
@@ -152,7 +154,7 @@
                     style="@style/tv_Medium_12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4"
+                    android:text="0"
                     android:textColor="@color/text_reg" />
 
                 <TextView
@@ -189,7 +191,7 @@
                     style="@style/tv_Medium_12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4"
+                    android:text="0"
                     android:textColor="@color/text_reg" />
 
                 <TextView
@@ -214,7 +216,7 @@
                     style="@style/tv_regular_12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4"
+                    android:text="0"
                     android:textColor="@color/text_reg" />
 
                 <TextView
@@ -239,7 +241,7 @@
                     style="@style/tv_Medium_12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4"
+                    android:text="0"
                     android:textColor="@color/text_reg" />
 
                 <TextView

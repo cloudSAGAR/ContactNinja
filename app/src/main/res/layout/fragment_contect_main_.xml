@@ -71,7 +71,14 @@
 
     <FrameLayout
         android:id="@+id/frame"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/llFooter" />
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_above="@id/llFooter"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="SpeakableTextPresentCheck" />
 </LinearLayout>

@@ -115,7 +115,7 @@
         android:layout_marginBottom="3dp"
         android:gravity="center"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <ImageView
             android:layout_width="@dimen/_30sdp"
@@ -134,7 +134,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_15sdp"
@@ -172,6 +172,7 @@
                 android:id="@+id/iv_email"
                 android:layout_width="@dimen/_17sdp"
                 android:layout_height="@dimen/_17sdp"
+                android:visibility="gone"
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:src="@drawable/ic_email">
@@ -203,7 +204,7 @@
                     style="@style/tv_Medium_12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4"
+                    android:text="0"
                     android:textColor="@color/text_reg" />
 
                 <TextView
@@ -228,7 +229,7 @@
                     style="@style/tv_Medium_12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4"
+                    android:text="0"
                     android:textColor="@color/text_reg" />
 
                 <TextView
@@ -253,7 +254,7 @@
                     style="@style/tv_Medium_12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4"
+                    android:text="0"
                     android:textColor="@color/text_reg" />
 
                 <TextView
@@ -278,7 +279,7 @@
                     style="@style/tv_Medium_12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4"
+                    android:text="0"
                     android:textColor="@color/text_reg" />
 
                 <TextView
@@ -315,7 +316,7 @@
                     style="@style/tv_Medium_12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4"
+                    android:text="0"
                     android:textColor="@color/text_reg" />
 
                 <TextView
@@ -340,7 +341,7 @@
                     style="@style/tv_Medium_12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4"
+                    android:text="0"
                     android:textColor="@color/text_reg" />
 
                 <TextView
@@ -365,7 +366,7 @@
                     style="@style/tv_Medium_12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4"
+                    android:text="0"
                     android:textColor="@color/text_reg" />
 
                 <TextView

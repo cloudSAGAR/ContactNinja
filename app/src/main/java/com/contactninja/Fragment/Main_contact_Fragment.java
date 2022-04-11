@@ -16,7 +16,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
 
+import com.contactninja.Campaign.List_itm.Campaign_Final_Start;
 import com.contactninja.Fragment.AddContect_Fragment.Company_Fragment;
 import com.contactninja.Fragment.AddContect_Fragment.ContectFragment;
 import com.contactninja.Fragment.AddContect_Fragment.GroupFragment;
@@ -28,10 +30,10 @@ import com.google.android.material.tabs.TabLayout;
 public class Main_contact_Fragment extends Fragment {
 
     TabLayout tabLayout;
-   // ViewPager viewPager;
+    ViewPager viewPager;
     EditText contect_search;
     String strtext = "";
-   // ViewpaggerAdapter adapter;
+    ViewpaggerAdapter adapter;
     ImageView search_icon;
     LinearLayout layout_toolbar_logo;
     public Main_contact_Fragment() {
@@ -46,17 +48,41 @@ public class Main_contact_Fragment extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setText("Groups"));
         tabLayout.addTab(tabLayout.newTab().setText("Companies"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        Fragment fragment = new ContectFragment(getView(), getActivity());
+       /* Fragment fragment = new ContectFragment(getView(), getActivity());
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame, fragment, "Fragment");
-        fragmentTransaction.commitAllowingStateLoss();
+        fragmentTransaction.commitAllowingStateLoss();*/
+
+        adapter = new ViewpaggerAdapter(getActivity(), getChildFragmentManager(),
+                tabLayout.getTabCount(), strtext);
+
+        viewPager.setAdapter(adapter);
+
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
         return view;
     }
 
     @Override
     public void onResume() {
-        TabSet();
+       // TabSet();
         super.onResume();
     }
 
@@ -107,7 +133,7 @@ public class Main_contact_Fragment extends Fragment {
 
     private void IntentUI(View view) {
         tabLayout = view.findViewById(R.id.tabLayout);
-     //   viewPager = view.findViewById(R.id.viewPager);
+        viewPager = view.findViewById(R.id.viewPager);
         contect_search = view.findViewById(R.id.contect_search);
         search_icon = view.findViewById(R.id.search_icon);
         layout_toolbar_logo = view.findViewById(R.id.layout_toolbar_logo);
