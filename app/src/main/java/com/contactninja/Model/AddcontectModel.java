@@ -26,6 +26,7 @@ public class AddcontectModel {
     String company_id="";
     String other_company="";
     String referenceCode="";
+    String cpuntry_code="";
 
     List<Contactdetail> contactdetails =new ArrayList<>();
     List<Contactdetail> contactdetails_email =new ArrayList<>();
@@ -33,6 +34,14 @@ public class AddcontectModel {
     public AddcontectModel()
     {
 
+    }
+
+    public String getCpuntry_code() {
+        return cpuntry_code;
+    }
+
+    public void setCpuntry_code(String cpuntry_code) {
+        this.cpuntry_code = cpuntry_code;
     }
 
     public String getReferenceCode() {

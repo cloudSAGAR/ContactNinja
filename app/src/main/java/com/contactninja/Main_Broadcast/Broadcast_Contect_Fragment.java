@@ -268,6 +268,7 @@ public class Broadcast_Contect_Fragment extends Fragment {
 
             /*
              * set select contact count */
+            group_flag = "true";
             onScrolledToBottom();
             select_Contact(0);
         }
@@ -993,6 +994,7 @@ public class Broadcast_Contect_Fragment extends Fragment {
 
                     /*     try {*/
                     //contacts.get(position).setFlag("true");
+                    Log.e("Flag is",group_flag);
                     if (SessionManager.getContect_flag(getActivity()).equals("read")) {
                         contacts.get(position).setFlag(group_flag);
                         holder1.remove_contect_icon.setVisibility(View.VISIBLE);

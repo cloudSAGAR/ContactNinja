@@ -762,7 +762,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
          * Chek affilate code change or not and api call only code date
          *
          * */
-        if(!addcontectModel.getReferenceCode().equals("")){
+        if(!addcontectModel.getReferenceCode().toString().trim().equals("")){
             if(!user_data.getUser().getReferenceCode().equals(addcontectModel.getReferenceCode())){
                 try {
                     if (Global.isNetworkAvailable(getActivity(), mMainLayout)) {
@@ -865,7 +865,14 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         param_data.put("zipcode", addcontectModel.getZip_code().toString().trim());
         param_data.put("zoom_id", addcontectModel.getZoom_id().toString().trim());
 
-        param_data.put("profile_pic", user_image_Url.toString().trim());
+        try {
+            param_data.put("profile_pic", user_image_Url.toString());
+        }
+        catch (Exception e)
+        {
+
+        }
+
 
         param_data.put("notes", addcontectModel.getNote().toString().trim());
 
@@ -996,7 +1003,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         param_data.put("organization_id", 1);
         param_data.put("team_id", 1);
         param_data.put("user_id", user_data.getUser().getId());
-        param_data.put("reference_code",addcontectModel.getReferenceCode());
+        param_data.put("reference_code",addcontectModel.getReferenceCode().toString().trim());
         obj.put("data", param_data);
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());

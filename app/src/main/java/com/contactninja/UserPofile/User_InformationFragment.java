@@ -988,6 +988,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 contactdetails.add(contactdetail1);
                 Log.e("Add View is", new Gson().toJson(phonedetails_list));
                 phoneAdapter = new PhoneAdapter(getActivity(), phonedetails_list, layout_Add_phone);
+                rv_phone.setItemViewCacheSize(50000);
                 rv_phone.setLayoutManager(new LinearLayoutManager(getActivity()));
                 rv_phone.setAdapter(phoneAdapter);
                 layout_Add_phone.setVisibility(View.GONE);
@@ -1014,6 +1015,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             rv_phone.setAdapter(phoneAdapter);
 
             layout_Add_phone.setOnClickListener(v -> {
+                Log.e("Add View is", new Gson().toJson(phonedetails_list));
                 Contactdetail contactdetail1 = new Contactdetail();
                 contactdetail1.setId(contactdetails.size());
                 contactdetail1.setEmail_number("");
@@ -1024,6 +1026,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 contactdetails.add(contactdetail1);
                 phoneAdapter = new PhoneAdapter(getActivity(), phonedetails_list, layout_Add_phone);
                 rv_phone.setLayoutManager(new LinearLayoutManager(getActivity()));
+                rv_phone.setItemViewCacheSize(50000);
                 rv_phone.setAdapter(phoneAdapter);
                 layout_Add_phone.setVisibility(View.GONE);
             });
@@ -2088,7 +2091,8 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 });
 
 
-            } else {
+            }
+            else {
 
 
                 if (item.getIs_default() == 1) {
