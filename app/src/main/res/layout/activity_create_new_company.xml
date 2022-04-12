@@ -161,7 +161,7 @@
                 android:layout_marginStart="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_15sdp"
-                android:text="Add company description"
+                android:text="@string/Add_company_description"
                 android:textColor="@color/red"
                 android:visibility="gone">
 

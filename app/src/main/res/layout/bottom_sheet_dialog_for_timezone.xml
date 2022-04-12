@@ -29,7 +29,7 @@
                 android:gravity="center"
                 android:paddingTop="@dimen/_12sdp"
                 android:paddingBottom="@dimen/_12sdp"
-                android:text="Please select label"
+                android:text="@string/Please_select_label"
                 android:textColor="@color/text_reg"
                 android:visibility="gone">
 

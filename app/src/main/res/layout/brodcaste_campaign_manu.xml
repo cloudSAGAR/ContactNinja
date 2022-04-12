@@ -35,7 +35,7 @@
                 android:layout_height="@dimen/_30sdp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Delete"
+                android:text="@string/Delete"
                 android:textColor="@color/camp_delete"
                 tools:ignore="TextContrastCheck" />
 
@@ -74,7 +74,7 @@
                 android:layout_height="@dimen/_30sdp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Edit"
+                android:text="@string/Edit"
                 android:textColor="@color/purple_200" />
 
             <ImageView

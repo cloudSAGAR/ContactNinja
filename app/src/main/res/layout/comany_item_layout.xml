@@ -122,7 +122,6 @@
                             android:gravity="center|left"
                             android:padding="@dimen/_5sdp"
                             android:singleLine="true"
-                            android:text="GC Gregory Christakis"
                             android:textColor="@color/text_reg" />
 
                         <TextView

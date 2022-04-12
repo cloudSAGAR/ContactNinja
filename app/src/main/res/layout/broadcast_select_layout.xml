@@ -22,7 +22,7 @@
             android:layout_weight="1"
             android:gravity="center|start"
             android:padding="@dimen/_10sdp"
-            android:text="Phone"
+            android:text="@string/Phone"
             android:textColor="@color/text_reg" />
 
         <LinearLayout

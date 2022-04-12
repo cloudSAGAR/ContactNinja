@@ -274,13 +274,14 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
 
                 }
             });
-            mBarChart.setOutlineAmbientShadowColor(Color.GREEN);
-            mBarChart.startAnimation();
-            loadData(map);
-
-
+            try {
+                mBarChart.setOutlineAmbientShadowColor(Color.GREEN);
+                mBarChart.startAnimation();
+                loadData(map);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
-
 
         /**
          *

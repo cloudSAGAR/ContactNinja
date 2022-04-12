@@ -128,7 +128,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:layout_gravity="center"
-            android:text="Contact ninja loren"
+            android:text=""
             android:textColor="@color/home_list_sub_data"
             tools:ignore="TextContrastCheck" />
 
@@ -204,8 +204,7 @@
         android:gravity="left"
         android:imeOptions="actionDone"
         android:padding="15dp"
-        android:text="Lorem ipsum dolor sit amet, consectetueradipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis
-parturient."
+        android:text=""
         android:textColor="@color/text_reg"
         tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields" />
 

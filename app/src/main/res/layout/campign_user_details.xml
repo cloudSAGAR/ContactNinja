@@ -85,7 +85,6 @@
                             android:layout_marginStart="@dimen/_12sdp"
                             android:gravity="center"
                             android:singleLine="true"
-                            android:text="GC Gregory Christakis"
                             android:textColor="@color/text_reg" />
 
                         <TextView
@@ -115,7 +114,6 @@
                             android:layout_marginStart="@dimen/_12sdp"
                             android:gravity="center"
                             android:singleLine="true"
-                            android:text="GC Gregory Christakis"
                             android:textColor="@color/black" />
 
                         <ImageView

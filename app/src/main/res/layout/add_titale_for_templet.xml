@@ -24,7 +24,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/_20sdp"
             android:gravity="center"
-            android:text="Please add title of \n your Template"
+            android:text="@string/Please_add_title_of_Template"
             android:textColor="@color/text_reg">
 
         </TextView>
@@ -72,7 +72,7 @@
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:gravity="center|end"
                 android:padding="@dimen/_10sdp"
-                android:text="Cancel"
+                android:text="@string/Cancel"
                 android:textColor="@color/text_gray"
                 android:visibility="gone">
 
@@ -88,7 +88,7 @@
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:gravity="center|end"
                 android:padding="@dimen/_10sdp"
-                android:text="Okay"
+                android:text="@string/Okay"
                 android:textColor="@color/purple_200">
 
             </TextView>

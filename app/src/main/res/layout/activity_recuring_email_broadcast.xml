@@ -337,7 +337,7 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_20sdp"
                     android:layout_weight="1"
-                    android:text="Occurs monthly"
+                    android:text="@string/Occurs_monthly"
                     android:textColor="@color/text_reg">
 
                 </TextView>

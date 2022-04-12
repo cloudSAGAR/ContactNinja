@@ -27,7 +27,7 @@
             android:layout_marginEnd="@dimen/_15sdp"
             android:gravity="center"
 
-            android:text="Number"
+            android:text="@string/Number"
             android:textColor="@color/text_gray"
             android:visibility="gone" />
 
@@ -88,7 +88,7 @@
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:gravity="center|end"
                 android:padding="@dimen/_10sdp"
-                android:text="Cancel"
+                android:text="@string/cancel"
                 android:textColor="@color/shape_red">
 
             </TextView>
@@ -103,7 +103,7 @@
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:gravity="center|end"
                 android:padding="@dimen/_10sdp"
-                android:text="Send"
+                android:text="@string/Send"
                 android:textColor="@color/purple_200">
 
             </TextView>

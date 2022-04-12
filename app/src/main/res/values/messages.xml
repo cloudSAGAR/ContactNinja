@@ -53,5 +53,7 @@
     <string name="timezone_alert">"Please select your timezon in user profile "</string>
     <string name="snk_contect">Synced your contacts</string>
     <string name="Synced">"Synced"</string>
+    <string name="Add_company_description">Add company description</string>
+    <string name="Show_your_campaign_manual_task">Show your campaign’s manual task</string>
 
 </resources>

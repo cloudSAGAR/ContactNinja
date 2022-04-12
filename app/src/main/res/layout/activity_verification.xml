@@ -17,7 +17,7 @@
         android:orientation="vertical">
 
         <TextView
-            style="@style/tv_bold_12"
+            style="@style/tv_Medium_16"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center|top"
@@ -42,7 +42,7 @@
                 android:layout_marginStart="@dimen/_25sdp"
                 android:layout_marginEnd="@dimen/_25sdp"
                 android:cursorVisible="true"
-                android:hint="******"
+                android:hint="------"
                 android:inputType="number"
                 android:itemBackground="@color/white"
                 android:textColor="@color/otp_header_text_color"

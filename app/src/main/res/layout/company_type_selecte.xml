@@ -17,7 +17,7 @@
         android:paddingStart="@dimen/_15sdp"
         android:paddingTop="@dimen/_12sdp"
         android:paddingBottom="@dimen/_12sdp"
-        android:text="Phone"
+        android:text="@string/Phone"
         android:textColor="@color/text_reg">
 
     </TextView>

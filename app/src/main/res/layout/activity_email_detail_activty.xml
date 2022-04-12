@@ -87,7 +87,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/_5sdp"
-                        android:text="Task title: "
+                        android:text="@string/Task_title"
                         android:textColor="@color/text_gray"
                         tools:ignore="HardcodedText,TextContrastCheck">
 
@@ -281,7 +281,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/_5sdp"
-                        android:text="Date: "
+                        android:text="@string/Date"
                         android:textColor="@color/text_gray"
                         tools:ignore="HardcodedText,TextContrastCheck" />
 

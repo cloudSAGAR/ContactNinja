@@ -41,7 +41,7 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:gravity="center"
-                android:text="Please add title of \n your Broadcast"
+                android:text="@string/Please_add_title_Broadcast"
                 android:textColor="@color/text_reg"
                 android:textSize="@dimen/_17sdp"
                 tools:ignore="HardcodedText" />

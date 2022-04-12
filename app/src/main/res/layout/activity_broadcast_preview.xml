@@ -52,7 +52,7 @@
                         android:layout_marginBottom="@dimen/_10sdp"
                         android:gravity="center"
                         android:singleLine="true"
-                        android:text="Broadcast Preview"
+                        android:text="@string/Broadcast_Preview"
                         android:textColor="@color/text_reg"
                         tools:ignore="HardcodedText" />
 
@@ -347,7 +347,7 @@
                                                 android:layout_gravity="center"
                                                 android:gravity="center"
                                                 android:singleLine="true"
-                                                android:text="Automated Email"
+                                                android:text="@string/Automated_Email"
                                                 android:textColor="@color/text_reg" />
 
                                             <ImageView
@@ -702,7 +702,7 @@
                             android:layout_marginEnd="@dimen/_15sdp"
                             android:background="@drawable/shape_15_blue"
                             android:gravity="center"
-                            android:text="Create Broadcast"
+                            android:text="@string/Create_Broadcast"
                             android:textColor="@color/white" />
 
                     </LinearLayout>

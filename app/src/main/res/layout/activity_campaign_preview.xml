@@ -47,7 +47,7 @@
                     android:layout_marginBottom="@dimen/_10sdp"
                     android:gravity="center"
                     android:singleLine="true"
-                    android:text="Campaign Preview"
+                    android:text="@string/Campaign_Preview"
                     android:textColor="@color/text_reg"
                     tools:ignore="HardcodedText" />
 

@@ -45,7 +45,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:singleLine="true"
-                android:text="Impressions :"
+                android:text="@string/Impressions"
                 android:textColor="@color/purple_200"
                 tools:ignore="HardcodedText" />
 

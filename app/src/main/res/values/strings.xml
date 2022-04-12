@@ -32,7 +32,7 @@
     <string name="or_email">or use email-id</string>
     <string name="or_forgot_password">Forget Password?</string>
     <string name="or_phone">or use phone number</string>
-    <string name="terms">I have read and agree to <br>\nContact Ninja’s <b><u>Terms &amp; Conditions</u></b></br></string>
+    <string name="terms">I have read and agree to <br> \n Contact Ninja’s <b><u>Terms &amp; Conditions</u></b></br></string>
     <string name="invalid_email1">This email address is not exist</string>
     <string name="invalid_jobtitle">Invalid Job Title</string>
     <string name="add_phone_number">Invalid number</string>
@@ -656,5 +656,42 @@
     <string name="plan_69">prod_LAUJLCbnF7yEZQ</string>
 
     <string name="broadcatse_delete">Delete broadcatse</string>
+    <string name="Delivered">Delivered</string>
+    <string name="Bounced">Bounced</string>
+    <string name="Total">Total</string>
+    <string name="Starts">Starts</string>
+    <string name="Repeats">Repeats</string>
+    <string name="characters_max">(100 characters max.)</string>
+    <string name="Upload_an_image">Upload an image</string>
+    <string name="Upload_a_pdf">Upload a pdf</string>
+    <string name="Please_add_title_Broadcast">Please add title of \n your Broadcast</string>
+    <string name="Broadcast_Preview">Broadcast Preview</string>
+    <string name="Automated_Email">Automated Email</string>
+    <string name="Create_Broadcast">Create Broadcast</string>
+    <string name="Impressions">Impressions :</string>
+    <string name="max_message">Max prospects that can be enrolled in this  campaign in a day</string>
+    <string name="Max_prospects_add">Max prospects add</string>
+    <string name="Schedule_Timezone">Schedule Timezone</string>
+    <string name="Campaign_Preview">Campaign Preview</string>
+    <string name="Task_title">Task title:</string>
+    <string name="Date">"Date: "</string>
+    <string name="Occurs_monthly">Occurs monthly</string>
+    <string name="Create_your">"Create your "</string>
+    <string name="task">task</string>
+    <string name="broadcast"> broadcast</string>
+    <string name="Please_add_title_of_Template">Please add title of \n your Template</string>
+    <string name="Cancel">Cancel</string>
+    <string name="Okay">Okay</string>
+    <string name="Please_select_label">Please select label</string>
+    <string name="Done">Done</string>
+    <string name="Phone">Phone</string>
+    <string name="User_Photo">User Photo</string>
+    <string name="How_your_picture">How do you want to set your picture?</string>
+    <string name="Remove">Remove</string>
+    <string name="Camera">Camera</string>
+    <string name="Gallery">Gallery</string>
+    <string name="Add">Add</string>
+    <string name="Number">Number</string>
+    <string name="Send">Send</string>
 
 </resources>

@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:padding="@dimen/_5sdp"
-                android:text="Task title:"
+                android:text="@string/Task_title"
                 android:textColor="@color/text_gray"
                 android:textSize="@dimen/_14sdp"
                 tools:ignore="HardcodedText,TextContrastCheck">

@@ -87,8 +87,7 @@
                 android:layout_marginEnd="@dimen/_15sdp"
                 android:gravity="center|left"
                 android:padding="@dimen/_10sdp"
-                android:text="Max prospects that can be enrolled in this  campaign
-in a day"
+                android:text="@string/max_message"
                 android:textColor="@color/home_list_sub_data"
                 tools:ignore="HardcodedText,TextContrastCheck" />
 
@@ -118,7 +117,7 @@ in a day"
                 android:layout_marginStart="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:singleLine="true"
-                android:text="Max prospects add"
+                android:text="@string/Max_prospects_add"
                 android:textColor="@color/shape_red"
                 android:visibility="gone"
                 tools:ignore="HardcodedText" />
@@ -134,7 +133,7 @@ in a day"
                 android:gravity="center|left"
                 android:padding="@dimen/_10sdp"
                 android:singleLine="true"
-                android:text="Schedule Timezone"
+                android:text="@string/Schedule_Timezone"
                 android:textColor="@color/text_reg_75"
                 tools:ignore="HardcodedText" />
 

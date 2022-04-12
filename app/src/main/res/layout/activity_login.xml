@@ -98,7 +98,7 @@
 
                             <EditText
                                 android:id="@+id/edit_Mobile"
-                                style="@style/tv_regular_12"
+                                style="@style/tv_Medium_12"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -140,7 +140,7 @@
 
                             <EditText
                                 android:id="@+id/edit_email"
-                                style="@style/tv_regular_12"
+                                style="@style/tv_Medium_12"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -213,7 +213,7 @@
 
                                 <EditText
                                     android:id="@+id/edit_password"
-                                    style="@style/tv_regular_12"
+                                    style="@style/tv_Medium_12"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
@@ -339,15 +339,15 @@
 
                 <TextView
                     android:id="@+id/tv_terms"
-                    style="@style/tv_regular_12"
+                    style="@style/tv_regular_10"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/lay_signup"
                     android:layout_alignParentBottom="true"
                     android:layout_gravity="center|bottom"
-                    android:layout_marginStart="@dimen/_50sdp"
+                    android:layout_marginStart="@dimen/_80sdp"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_50sdp"
+                    android:layout_marginEnd="@dimen/_80sdp"
                     android:gravity="center|top"
                     android:text="@string/terms"
                     android:textColor="@color/text_welcome"

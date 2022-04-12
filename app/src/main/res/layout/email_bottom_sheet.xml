@@ -71,7 +71,7 @@
             android:layout_marginEnd="@dimen/_10sdp"
             android:background="@drawable/shape_primary_back"
             android:gravity="center"
-            android:text="Done"
+            android:text="@string/Done"
             android:textColor="@color/text_White"
             tools:ignore="HardcodedText,NegativeMargin" />
     </LinearLayout>

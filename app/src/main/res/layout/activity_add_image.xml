@@ -73,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/_5sdp"
-            android:text="(100 characters max.)"
+            android:text="@string/characters_max"
             android:textColor="@color/text_gray"
             tools:ignore="TextContrastCheck" />
 
@@ -139,7 +139,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
-                        android:text="Upload an image"
+                        android:text="@string/Upload_an_image"
                         android:textColor="@color/text_gray"
                         tools:ignore="TextContrastCheck" />
                 </LinearLayout>

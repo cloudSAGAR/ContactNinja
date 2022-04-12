@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="User Photo"
+            android:text="@string/User_Photo"
             android:textColor="@color/text_reg" />
 
         <TextView
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="How do you want to set your picture?"
+            android:text="@string/How_your_picture"
             android:textColor="@color/text_reg" />
 
         <LinearLayout
@@ -53,7 +53,7 @@
                 android:background="@drawable/btn_bg_new"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="Remove"
+                android:text="@string/Remove"
                 android:textColor="@color/text_White"
                 android:visibility="gone" />
 
@@ -68,7 +68,7 @@
                 android:background="@drawable/btn_bg_new"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="Camera"
+                android:text="@string/Camera"
                 android:textColor="@color/text_White" />
 
             <TextView
@@ -81,7 +81,7 @@
                 android:background="@drawable/btn_bg_new"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="Gallery"
+                android:text="@string/Gallery"
                 android:textColor="@color/text_White" />
         </LinearLayout>
     </LinearLayout>

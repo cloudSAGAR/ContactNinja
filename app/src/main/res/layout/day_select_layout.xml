@@ -22,7 +22,7 @@
             android:paddingTop="@dimen/_5sdp"
             android:paddingEnd="@dimen/_10sdp"
             android:paddingBottom="@dimen/_5sdp"
-            android:text="Phone"
+            android:text="@string/Phone"
             android:textColor="@color/text_reg" />
 
         <LinearLayout

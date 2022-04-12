@@ -92,7 +92,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="Total"
+                    android:text="@string/Total"
                     android:textColor="@color/white">
 
                 </TextView>
@@ -124,7 +124,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="Deliverd"
+                    android:text="@string/Delivered"
                     android:textColor="@color/white">
 
                 </TextView>
@@ -155,7 +155,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="Bounced"
+                    android:text="@string/Bounced"
                     android:textColor="@color/white">
 
                 </TextView>
@@ -422,7 +422,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/_5sdp"
-                    android:hint="Starts"
+                    android:hint="@string/Starts"
                     android:textColor="@color/purple_200"
                     tools:ignore="TextContrastCheck" />
 
@@ -460,7 +460,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/_5sdp"
-                    android:hint="Repeats"
+                    android:hint="@string/Repeats"
                     android:textColor="@color/purple_200"
                     tools:ignore="TextContrastCheck" />
 

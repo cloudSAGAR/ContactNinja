@@ -42,7 +42,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:singleLine="true"
-                android:text="Create your "
+                android:text="@string/Create_your"
                 android:textColor="@color/text_reg" />
 
             <TextView
@@ -52,7 +52,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:singleLine="true"
-                android:text=" broadcast"
+                android:text="@string/broadcast"
                 android:textColor="@color/purple_200" />
         </LinearLayout>
 
