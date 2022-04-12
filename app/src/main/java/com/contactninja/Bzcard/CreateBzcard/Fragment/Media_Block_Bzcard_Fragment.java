@@ -120,11 +120,11 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
         deleteList= bzcard_model.getBzcardFieldsModel().getMedia_deletes();
 
         IntentView(view);
-        setdata();
+      /*  setdata();
         setColor();
         if(bzMediaInformationList.size()!=0){
             setCreatedVideoandImage();
-        }
+        }*/
 
         return view;
     }
@@ -219,12 +219,20 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
     @Override
     public void onResume() {
         //Log.e("Fragment Call","Yes");
-      /*  setdata();
+        super.onResume();
+        bzcard_model = SessionManager.getBzcard(getActivity());
+        bzMediaInformationList= bzcard_model.getBzcardFieldsModel().getBzMediaInformationList();
+        deleteList= bzcard_model.getBzcardFieldsModel().getMedia_deletes();
+        setdata();
         setColor();
         if(bzMediaInformationList.size()!=0){
             setCreatedVideoandImage();
-        }*/
-        super.onResume();
+        }
+        rv_media_list.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        medialistAdepter=new MedialistAdepter(getActivity(),bzMediaInformationList,this);
+        rv_media_list.setAdapter(medialistAdepter);
+        medialistAdepter.notifyDataSetChanged();
+
     }
 
     private void setCreatedVideoandImage() {
@@ -932,8 +940,11 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
                                     .into(holder.iv_video);
                         }else {
                             if (!information.getMedia_thumbnail().equals("")) {
-                                Glide.with(mCtx)
+                              /*  Glide.with(mCtx)
                                         .load(information.getMedia_thumbnail())
+                                        .into(holder.iv_video);*/
+                                Glide.with(mCtx)
+                                        .load(Global.getYoutubeThumbnailUrlFromVideoUrl(information.getMedia_url()))
                                         .into(holder.iv_video);
                             } else {
                                 Glide.with(mCtx)

@@ -207,7 +207,7 @@ public class Add_Video_Activity extends AppCompatActivity implements Connectivit
         if(bzcard_model.isEdit()&&Global.IsNotNull(information)){
             if(!information.getMedia_thumbnail().equals("")){
                 Glide.with(getApplicationContext())
-                        .load(information.getMedia_thumbnail())
+                        .load(Global.getYoutubeThumbnailUrlFromVideoUrl(Link))
                         .into(iv_video);
             }
         }else {
