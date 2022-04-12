@@ -168,17 +168,20 @@ public class Add_Video_Activity extends AppCompatActivity implements Connectivit
         edt_video_title.setText(information.getMedia_title());
         edt_Add_description.setText(information.getMedia_description());
         if(!Global.IsNotNull(Link)){
-            Link = information.getMedia_filePath();
+            Link = information.getMedia_url();
         }
         if(bzcard_model.isEdit()){
-            if(Global.IsNotNull(information.getMedia_url())){
+            Glide.with(getApplicationContext())
+                    .load(Global.getYoutubeThumbnailUrlFromVideoUrl(Link))
+                    .into(iv_video);
+          /*  if(Global.IsNotNull(information.getMedia_url())){
                 Glide.with(getApplicationContext())
                         .load(Global.getYoutubeThumbnailUrlFromVideoUrl(Link))
                         .into(iv_video);
             }
             Glide.with(getApplicationContext())
                     .load(information.getMedia_thumbnail())
-                    .into(iv_video);
+                    .into(iv_video);*/
         }else {
             Glide.with(getApplicationContext())
                     .load(Global.getYoutubeThumbnailUrlFromVideoUrl(Link))
