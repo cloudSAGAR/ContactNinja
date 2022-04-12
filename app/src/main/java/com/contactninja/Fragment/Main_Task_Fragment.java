@@ -221,15 +221,26 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
                 }
+
                 mLastClickTime = SystemClock.elapsedRealtime();
-                SessionManager.setCampaign_Day("00");
-                SessionManager.setCampaign_minute("00");
-                SessionManager.setCampaign_type("");
-                SessionManager.setCampaign_type_name("");
-                SessionManager.setEmail_screen_name("");
-                Intent intent1 = new Intent(getActivity(), Text_And_Email_Auto_Manual.class);
-                intent1.putExtra("flag", "add");
-                startActivity(intent1);//  finish();
+                if (Global.IsNotNull(SessionManager.getContectList(getActivity())) &&  SessionManager.getContectList(getActivity()).size()!=0) {
+
+
+                    SessionManager.setCampaign_Day("00");
+                    SessionManager.setCampaign_minute("00");
+                    SessionManager.setCampaign_type("");
+                    SessionManager.setCampaign_type_name("");
+                    SessionManager.setEmail_screen_name("");
+                    Intent intent1 = new Intent(getActivity(), Text_And_Email_Auto_Manual.class);
+                    intent1.putExtra("flag", "add");
+                    startActivity(intent1);//  finish();
+
+                }
+
+                else {
+                    Global.Messageshow(getActivity(),mMainLayout,getString(R.string.snk_contect),false);
+
+                }
             }
         });
 

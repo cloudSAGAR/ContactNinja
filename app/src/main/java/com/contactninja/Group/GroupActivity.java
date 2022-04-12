@@ -230,38 +230,48 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                 }
 
                 mLastClickTime = SystemClock.elapsedRealtime();
-                contect_list_unselect.setItemViewCacheSize(50000);
-                add_contect_list.setItemViewCacheSize(50000);
 
-                if (add_new_contect_icon1.getVisibility() == View.GONE) {
-                    Global.Please_wait(GroupActivity.this,mMainLayout,"Please Wait...",false);
-                    Handler handler = new Handler();
-                    Runnable r = new Runnable() {
-                        @SuppressLint("NotifyDataSetChanged")
-                        public void run() {
-                            select_contectListData.clear();
-                            add_new_contect_icon1.setVisibility(View.VISIBLE);
-                            add_new_contect_icon.setVisibility(View.GONE);
-                            groupContectAdapter.addAll_item(contectListData);
-                            loadingDialog.cancelLoading();
-                            add_new_contect.setText(getString(R.string.remove_new_contect1));
-                            select_Contact(contectListData.size());
-                        }
-                    };
-                    handler.postDelayed(r, 1000);
-                } else {
-                    add_new_contect_icon1.setVisibility(View.GONE);
-                    add_new_contect_icon.setVisibility(View.VISIBLE);
-                    select_contectListData.clear();
-                    group_flag = "true";
-                    groupContectAdapter.addAll(contectListData);
-                    groupContectAdapter.notifyDataSetChanged();
-                    add_new_contect.setText(getString(R.string.add_new_contect1));
-                    SessionManager.setGroupList(GroupActivity.this, new ArrayList<>());
-                    onResume();
-                    select_Contact(0);
+
+                if (SessionManager.getContectList(getApplicationContext()).size() != 0) {
+                    contect_list_unselect.setItemViewCacheSize(50000);
+                    add_contect_list.setItemViewCacheSize(50000);
+
+                    if (add_new_contect_icon1.getVisibility() == View.GONE) {
+                        Global.Please_wait(GroupActivity.this,mMainLayout,"Please Wait...",false);
+                        Handler handler = new Handler();
+                        Runnable r = new Runnable() {
+                            @SuppressLint("NotifyDataSetChanged")
+                            public void run() {
+                                select_contectListData.clear();
+                                add_new_contect_icon1.setVisibility(View.VISIBLE);
+                                add_new_contect_icon.setVisibility(View.GONE);
+                                groupContectAdapter.addAll_item(contectListData);
+                                loadingDialog.cancelLoading();
+                                add_new_contect.setText(getString(R.string.remove_new_contect1));
+                                select_Contact(contectListData.size());
+                            }
+                        };
+                        handler.postDelayed(r, 1000);
+                    } else {
+                        add_new_contect_icon1.setVisibility(View.GONE);
+                        add_new_contect_icon.setVisibility(View.VISIBLE);
+                        select_contectListData.clear();
+                        group_flag = "true";
+                        groupContectAdapter.addAll(contectListData);
+                        groupContectAdapter.notifyDataSetChanged();
+                        add_new_contect.setText(getString(R.string.add_new_contect1));
+                        SessionManager.setGroupList(GroupActivity.this, new ArrayList<>());
+                        onResume();
+                        select_Contact(0);
+
+                    }
+                }
+                else {
+
+                    Global.Messageshow(getApplicationContext(),mMainLayout,getString(R.string.snk_contect),false);
 
                 }
+
             }
         });
 

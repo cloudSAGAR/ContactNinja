@@ -153,31 +153,38 @@ public class Broadcast_Contect_Fragment extends Fragment {
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                if (add_new_contect_icon1.getVisibility() == View.GONE) {
+                if (Global.IsNotNull(SessionManager.getContectList(getActivity())) &&  SessionManager.getContectList(getActivity()).size()!=0) {
 
-                    Global.Please_wait(getActivity(),mMainLayout,"Please Wait...",false);
-                    Handler handler = new Handler();
-                    Runnable r = new Runnable() {
-                        @SuppressLint("NotifyDataSetChanged")
-                        public void run() {
-                            add_new_contect_icon1.setVisibility(View.VISIBLE);
-                            add_new_contect_icon.setVisibility(View.GONE);
-                            groupContectAdapter.addAll_item(contectListData);
-                            add_new_contect.setText(getString(R.string.remove_new_contect1));
-                        }
-                    };
-                    handler.postDelayed(r, 1000);
 
-                } else {
-                    add_new_contect_icon1.setVisibility(View.GONE);
-                    add_new_contect_icon.setVisibility(View.VISIBLE);
-                    select_contectListData.clear();
-                    topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
-                    add_contect_list.setAdapter(topUserListDataAdapter);
-                    topUserListDataAdapter.notifyDataSetChanged();
-                    group_flag = "false";
-                    groupContectAdapter.notifyDataSetChanged();
-                    add_new_contect.setText(getString(R.string.add_new_contect1));
+                    if (add_new_contect_icon1.getVisibility() == View.GONE) {
+
+                        Global.Please_wait(getActivity(), mMainLayout, "Please Wait...", false);
+                        Handler handler = new Handler();
+                        Runnable r = new Runnable() {
+                            @SuppressLint("NotifyDataSetChanged")
+                            public void run() {
+                                add_new_contect_icon1.setVisibility(View.VISIBLE);
+                                add_new_contect_icon.setVisibility(View.GONE);
+                                groupContectAdapter.addAll_item(contectListData);
+                                add_new_contect.setText(getString(R.string.remove_new_contect1));
+                            }
+                        };
+                        handler.postDelayed(r, 1000);
+
+                    } else {
+                        add_new_contect_icon1.setVisibility(View.GONE);
+                        add_new_contect_icon.setVisibility(View.VISIBLE);
+                        select_contectListData.clear();
+                        topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
+                        add_contect_list.setAdapter(topUserListDataAdapter);
+                        topUserListDataAdapter.notifyDataSetChanged();
+                        group_flag = "false";
+                        groupContectAdapter.notifyDataSetChanged();
+                        add_new_contect.setText(getString(R.string.add_new_contect1));
+                    }
+                }
+                else {
+                    Global.Messageshow(getActivity(),mMainLayout,getString(R.string.snk_contect),false);
                 }
 
                     /*Intent addnewcontect = new Intent(getActivity(), Addnewcontect_Activity.class);
@@ -192,31 +199,38 @@ public class Broadcast_Contect_Fragment extends Fragment {
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                if (add_new_contect_icon1.getVisibility() == View.GONE) {
-                    Global.Please_wait(getActivity(),mMainLayout,"Please Wait...",false);
-                    Handler handler = new Handler();
-                    Runnable r = new Runnable() {
-                        @SuppressLint("NotifyDataSetChanged")
-                        public void run() {
-                            add_new_contect_icon1.setVisibility(View.VISIBLE);
-                            add_new_contect_icon.setVisibility(View.GONE);
-                            groupContectAdapter.addAll_item(contectListData);
-                            add_new_contect.setText(getString(R.string.remove_new_contect1));
-                        }
-                    };
-                    handler.postDelayed(r, 1000);
+                if (Global.IsNotNull(SessionManager.getContectList(getActivity())) &&  SessionManager.getContectList(getActivity()).size()!=0) {
 
 
-                } else {
-                    add_new_contect_icon1.setVisibility(View.GONE);
-                    add_new_contect_icon.setVisibility(View.VISIBLE);
-                    select_contectListData.clear();
-                    topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
-                    add_contect_list.setAdapter(topUserListDataAdapter);
-                    topUserListDataAdapter.notifyDataSetChanged();
-                    group_flag = "false";
-                    groupContectAdapter.notifyDataSetChanged();
-                    add_new_contect.setText(getString(R.string.add_new_contect1));
+                    if (add_new_contect_icon1.getVisibility() == View.GONE) {
+                        Global.Please_wait(getActivity(), mMainLayout, "Please Wait...", false);
+                        Handler handler = new Handler();
+                        Runnable r = new Runnable() {
+                            @SuppressLint("NotifyDataSetChanged")
+                            public void run() {
+                                add_new_contect_icon1.setVisibility(View.VISIBLE);
+                                add_new_contect_icon.setVisibility(View.GONE);
+                                groupContectAdapter.addAll_item(contectListData);
+                                add_new_contect.setText(getString(R.string.remove_new_contect1));
+                            }
+                        };
+                        handler.postDelayed(r, 1000);
+
+
+                    } else {
+                        add_new_contect_icon1.setVisibility(View.GONE);
+                        add_new_contect_icon.setVisibility(View.VISIBLE);
+                        select_contectListData.clear();
+                        topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
+                        add_contect_list.setAdapter(topUserListDataAdapter);
+                        topUserListDataAdapter.notifyDataSetChanged();
+                        group_flag = "false";
+                        groupContectAdapter.notifyDataSetChanged();
+                        add_new_contect.setText(getString(R.string.add_new_contect1));
+                    }
+                }
+                else {
+                    Global.Messageshow(getActivity(),mMainLayout,getString(R.string.snk_contect),false);
                 }
             }
         });

@@ -231,37 +231,38 @@ public class Campaign_Group_Fragment extends Fragment implements View.OnClickLis
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                if (add_new_contect_icon1.getVisibility()==View.GONE)
+
+                if (grouplists.size()!=0)
                 {
-                    add_new_contect_icon1.setVisibility(View.VISIBLE);
-                    add_new_contect_icon.setVisibility(View.GONE);
-                    paginationAdapter.addAll_item(grouplists);
-                    add_new_contect.setText(getString(R.string.remove_new_group_all));
+                    if (add_new_contect_icon1.getVisibility()==View.GONE)
+                    {
+                        add_new_contect_icon1.setVisibility(View.VISIBLE);
+                        add_new_contect_icon.setVisibility(View.GONE);
+                        paginationAdapter.addAll_item(grouplists);
+                        add_new_contect.setText(getString(R.string.remove_new_group_all));
 
-
-                }
-                else {
-                    add_new_contect_icon1.setVisibility(View.GONE);
-                    add_new_contect_icon.setVisibility(View.VISIBLE);
-                    select_contectListData.clear();
-                    topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
-                    add_contect_list.setAdapter(topUserListDataAdapter);
-                    topUserListDataAdapter.notifyDataSetChanged();
-                    group_flag="false";
-                    paginationAdapter.notifyDataSetChanged();
-                    add_new_contect.setText(getString(R.string.add_new_group_all));
-                    /*
-                     * selected number list show
-                     * */
-                    if (select_contectListData.size() != 0) {
-                        layout_select_list.setVisibility(View.VISIBLE);
-                    } else {
-                        layout_select_list.setVisibility(View.GONE);
                     }
-                    /*
-                     * set select contact count */
-                    select_Contact(0);
+                    else {
+                        add_new_contect_icon1.setVisibility(View.GONE);
+                        add_new_contect_icon.setVisibility(View.VISIBLE);
+                        select_contectListData.clear();
+                        topUserListDataAdapter = new TopUserListDataAdapter(getActivity(), getActivity(), select_contectListData);
+                        add_contect_list.setAdapter(topUserListDataAdapter);
+                        topUserListDataAdapter.notifyDataSetChanged();
+                        group_flag="false";
+                        paginationAdapter.notifyDataSetChanged();
+                        add_new_contect.setText(getString(R.string.add_new_group_all));
+                        if (select_contectListData.size() != 0) {
+                            layout_select_list.setVisibility(View.VISIBLE);
+                        } else {
+                            layout_select_list.setVisibility(View.GONE);
+                        }
+                        /*
+                         * set select contact count */
+                        select_Contact(0);
+                    }
                 }
+
 
                 break;
             case R.id.group_name:

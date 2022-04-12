@@ -1019,8 +1019,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
                 SessionManager.setGroupList(getApplicationContext(), new ArrayList<>());
-
-                if (Global.IsNotNull(SessionManager.getContectList(getApplicationContext()))) {
+                if (Global.IsNotNull(SessionManager.getContectList(getApplicationContext())) &&  SessionManager.getContectList(getApplicationContext()).size()!=0) {
                     SessionManager.setCampaign_Day("00");
                     SessionManager.setCampaign_minute("00");
                     SessionManager.setCampaign_type("");
@@ -1030,6 +1029,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     intent1.putExtra("flag", "add");
                     startActivity(intent1);//  finish();
                 } else {
+                    Global.Messageshow(getApplicationContext(),mMainLayout,getString(R.string.snk_contect),false);
                     EnableRuntimePermission();
                 }
                 bottomSheetDialog.dismiss();
@@ -1043,7 +1043,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                if (Global.IsNotNull(SessionManager.getContectList(getApplicationContext()))) {
+                if (Global.IsNotNull(SessionManager.getContectList(getApplicationContext())) &&  SessionManager.getContectList(getApplicationContext()).size()!=0) {
                     SessionManager.setGroupList(getApplicationContext(), new ArrayList<>());
                     SessionManager.setgroup_broadcste(getApplicationContext(), new ArrayList<>());
                     SessionManager.setCampaign_Day("00");
@@ -1053,6 +1053,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Intent intent = new Intent(getApplicationContext(), List_Broadcast_activity.class);
                     startActivity(intent);
                 } else {
+                    Global.Messageshow(getApplicationContext(),mMainLayout,getString(R.string.snk_contect),false);
                     EnableRuntimePermission();
                 }
                 bottomSheetDialog.dismiss();
@@ -1065,11 +1066,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                if (Global.IsNotNull(SessionManager.getContectList(getApplicationContext()))) {
+                if (Global.IsNotNull(SessionManager.getContectList(getApplicationContext())) &&  SessionManager.getContectList(getApplicationContext()).size()!=0) {
                     SessionManager.setcamp_final_flag("");
                     Intent intent = new Intent(getApplicationContext(), Campaign_List_Activity.class);
                     startActivity(intent);
                 } else {
+                    Global.Messageshow(getApplicationContext(),mMainLayout,getString(R.string.snk_contect),false);
                     EnableRuntimePermission();
                 }
                 bottomSheetDialog.dismiss();
