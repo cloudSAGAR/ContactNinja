@@ -349,11 +349,11 @@
 
     <string name="campaign_step_one_email">Automated Email</string>
     <string name="campaign_step_one_email_manual">Manual Email</string>
-    <string name="campaign_step_one_email_txt">Automated emails are sent using automation and Manual emails create a task on your /n dashboard for you to approve it before sending.</string>
+    <string name="campaign_step_one_email_txt">Automated emails are sent using automation and Manual emails create a task on your dashboard for you to approve it before sending.</string>
 
     <string name="campaign_step_one_text">Automated Text</string>
     <string name="campaign_step_one_text_manual">Manual Text</string>
-    <string name="campaign_step_one_text_txt">Automated Text are sent using automation \n  and Manual Text create a task on your \n  dashboard for you to approve it before sending.</string>
+    <string name="campaign_step_one_text_txt">Automated Text are sent using automation \n  and Manual Text create a task on your dashboard for you to approve it before sending.</string>
 
     <string name="campaign_step_one_one">Step#1 (Automated Text)</string>
     <string name="temp_txt">Use Template</string>
