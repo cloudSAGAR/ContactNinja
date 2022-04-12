@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
@@ -51,20 +52,21 @@ import retrofit2.Response;
 
 @SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Create_New_Company_Activity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
-    ImageView iv_back, iv_toolbar_manu_vertical, iv_block,iv_edit;
-    TextView save_button, no_image, tv_remain_txt, tv_error, iv_invalid, iv_invalid1;
+    ImageView iv_back, iv_toolbar_manu_vertical, iv_block, iv_edit;
+    TextView save_button, no_image, tv_remain_txt, tv_error, iv_invalid, iv_invalid1, tv_phone,
+            tv_email, tv_company_url, tv_company_address;
     EditText add_name, add_detail, edit_Mobile, edit_email, edit_address, edit_company_url;
     CountryCodePicker ccp_id;
     ConstraintLayout mMainLayout;
-    String flag="";
+    String flag = "";
     LoadingDialog loadingDialog;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     CompanyModel.Company WorkData;
     Integer id = 0;
+    LinearLayout layout_phonenumber, tab_informnation, layout_email, layout_comapny, layout_comapny_address;
     private BroadcastReceiver mNetworkReceiver;
     private long mLastClickTime = 0;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,24 +108,38 @@ public class Create_New_Company_Activity extends AppCompatActivity implements Vi
         flag = bundle.getString("flag");
         id = bundle.getInt("id");
         if (!flag.equals("add")) {
+            if (flag.equals("read")) {
+                tab_informnation.setVisibility(View.GONE);
+
+            } else {
+                tab_informnation.setVisibility(View.VISIBLE);
+            }
             try {
                 CompanyList();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
+        } else {
+            tab_informnation.setVisibility(View.VISIBLE);
+
         }
-            add_name.setEnabled(true);
-            add_detail.setEnabled(true);
-            edit_Mobile.setEnabled(true);
-            edit_email.setEnabled(true);
-            edit_company_url.setEnabled(true);
-            edit_address.setEnabled(true);
-            save_button.setText("Save");
-            iv_toolbar_manu_vertical.setVisibility(View.GONE);
+
+
+        add_name.setEnabled(true);
+        add_detail.setEnabled(true);
+        edit_Mobile.setEnabled(true);
+        edit_email.setEnabled(true);
+        edit_company_url.setEnabled(true);
+        edit_address.setEnabled(true);
+        save_button.setText("Save");
+        iv_toolbar_manu_vertical.setVisibility(View.GONE);
 
     }
+
     private void IntentUI() {
-        iv_edit=findViewById(R.id.iv_edit);
+        tab_informnation = findViewById(R.id.tab_informnation);
+        iv_edit = findViewById(R.id.iv_edit);
         mMainLayout = findViewById(R.id.mMainLayout);
         iv_invalid1 = findViewById(R.id.iv_invalid1);
         edit_email = findViewById(R.id.edit_email);
@@ -146,6 +162,14 @@ public class Create_New_Company_Activity extends AppCompatActivity implements Vi
         iv_back.setOnClickListener(this);
         iv_block = findViewById(R.id.iv_block);
         iv_toolbar_manu_vertical.setOnClickListener(this);
+        tv_phone = findViewById(R.id.tv_phone);
+        layout_phonenumber = findViewById(R.id.layout_phonenumber);
+        tv_email = findViewById(R.id.tv_email);
+        tv_company_url = findViewById(R.id.tv_company_url);
+        tv_company_address = findViewById(R.id.tv_company_address);
+        layout_email = findViewById(R.id.layout_email);
+        layout_comapny = findViewById(R.id.layout_comapny);
+        layout_comapny_address = findViewById(R.id.layout_comapny_address);
     }
 
     @Override
@@ -241,7 +265,7 @@ public class Create_New_Company_Activity extends AppCompatActivity implements Vi
                 }
                 no_image.setText(add_text);
                 iv_block.setVisibility(View.VISIBLE);
-                Log.e("Location is",WorkData.getAddress().toString().trim());
+                Log.e("Location is", WorkData.getAddress().toString().trim());
                 edit_address.setText(WorkData.getAddress().toString().trim());
                 if (WorkData.getIs_blocked().equals(1)) {
                     iv_block.setVisibility(View.VISIBLE);
@@ -259,7 +283,7 @@ public class Create_New_Company_Activity extends AppCompatActivity implements Vi
                 add_detail.setText(WorkData.getDescription());
                 ccp_id.setDefaultCountryUsingNameCode(String.valueOf(Global.Countrycode(Create_New_Company_Activity.this,
                         WorkData.getContact_number())));
-                ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(Create_New_Company_Activity.this,WorkData.getContact_number()));
+                ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(Create_New_Company_Activity.this, WorkData.getContact_number()));
                 ccp_id.resetToDefaultCountry();
                 String main_data = WorkData.getContact_number().replace("+" + String.valueOf(Global.Countrycode(Create_New_Company_Activity.this,
                         WorkData.getContact_number())), "");
@@ -267,14 +291,69 @@ public class Create_New_Company_Activity extends AppCompatActivity implements Vi
                 edit_email.setText(WorkData.getEmail());
                 edit_company_url.setText(WorkData.getCompany_url().toString().trim());
                 ccp_id.registerCarrierNumberEditText(edit_Mobile);
-            }catch (Exception e)
-            {
 
+
+                if (Global.IsNotNull(WorkData.getEmail().toString().trim())) {
+                    tv_email.setVisibility(View.VISIBLE);
+                    layout_email.setVisibility(View.VISIBLE);
+                    tab_informnation.setVisibility(View.VISIBLE);
+                } else {
+                    layout_email.setVisibility(View.GONE);
+                    tv_email.setVisibility(View.GONE);
+
+                }
+                Log.e("url is", WorkData.getCompany_url().toString().trim());
+                Log.e("Email is", WorkData.getEmail().toString().trim());
+                if (Global.IsNotNull(WorkData.getCompany_url().toString().trim())) {
+                    layout_comapny.setVisibility(View.VISIBLE);
+                    tab_informnation.setVisibility(View.VISIBLE);
+
+                } else {
+                    layout_comapny.setVisibility(View.GONE);
+                }
+                if (Global.IsNotNull(WorkData.getAddress())) {
+                    layout_comapny_address.setVisibility(View.VISIBLE);
+                    tab_informnation.setVisibility(View.VISIBLE);
+
+
+                } else {
+                    layout_comapny_address.setVisibility(View.GONE);
+                }
+                if (Global.IsNotNull(WorkData.getName().toString())) {
+                    add_name.setVisibility(View.VISIBLE);
+
+
+                } else {
+                    add_name.setVisibility(View.GONE);
+                }
+
+                if (Global.IsNotNull(WorkData.getDescription())) {
+                    add_detail.setVisibility(View.VISIBLE);
+                    tv_remain_txt.setVisibility(View.VISIBLE);
+
+                } else {
+                    add_detail.setVisibility(View.GONE);
+                    tv_remain_txt.setVisibility(View.GONE);
+                }
+                if (Global.IsNotNull(WorkData.getContact_number())) {
+                    tv_phone.setVisibility(View.VISIBLE);
+                    layout_phonenumber.setVisibility(View.VISIBLE);
+                    tab_informnation.setVisibility(View.VISIBLE);
+
+                } else {
+                    tv_phone.setVisibility(View.GONE);
+                    layout_phonenumber.setVisibility(View.GONE);
+                }
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
 
-        }else if (flag.equals("edit")) {
+        } else if (flag.equals("edit")) {
             try {
+                tab_informnation.setVisibility(View.VISIBLE);
 
                 iv_edit.setVisibility(View.GONE);
                 save_button.setText("Save");
@@ -316,7 +395,7 @@ public class Create_New_Company_Activity extends AppCompatActivity implements Vi
 
                 ccp_id.setDefaultCountryUsingNameCode(String.valueOf(Global.Countrycode(Create_New_Company_Activity.this,
                         WorkData.getContact_number())));
-                ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(Create_New_Company_Activity.this,WorkData.getContact_number()));
+                ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(Create_New_Company_Activity.this, WorkData.getContact_number()));
                 ccp_id.resetToDefaultCountry();
                 String main_data = WorkData.getContact_number().replace("+" + String.valueOf(Global.Countrycode(Create_New_Company_Activity.this,
                         WorkData.getContact_number())), "");
@@ -327,7 +406,7 @@ public class Create_New_Company_Activity extends AppCompatActivity implements Vi
                 edit_address.setText(WorkData.getAddress());
 
                 ccp_id.registerCarrierNumberEditText(edit_Mobile);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -622,20 +701,19 @@ public class Create_New_Company_Activity extends AppCompatActivity implements Vi
         paramObject.put("description", add_detail.getText().toString().trim());
         paramObject.put("email", edit_email.getText().toString().trim());
         paramObject.put("company_url", edit_company_url.getText().toString().trim());
-        if (!edit_Mobile.getText().toString().trim().equals(""))
-        {
-            paramObject.put("contact_number", ccp_id.getSelectedCountryCodeWithPlus()+edit_Mobile.getText().toString().trim());
+        if (!edit_Mobile.getText().toString().trim().equals("")) {
+            paramObject.put("contact_number", ccp_id.getSelectedCountryCodeWithPlus() + edit_Mobile.getText().toString().trim());
 
         }
         //paramObject.put("status", "A");
-        if (id!=0) {
+        if (id != 0) {
             paramObject.put("id", id);
         }
 
         obj.put("data", paramObject);
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
-    //    Log.e("Main Data is ", new Gson().toJson(gsonObject));
+        //    Log.e("Main Data is ", new Gson().toJson(gsonObject));
         retrofitCalls.Company_add(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(this), Global.Device, new RetrofitCallback() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override

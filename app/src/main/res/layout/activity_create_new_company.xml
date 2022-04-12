@@ -167,6 +167,14 @@
 
             </TextView>
 
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/tab_informnation"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
             <TextView
                 style="@style/tv_Medium_12"
                 android:layout_width="match_parent"
@@ -191,8 +199,9 @@
                 android:layout_marginStart="@dimen/_20sdp"
                 android:layout_marginTop="-1dp"
                 android:background="@color/home_list_tab_bg" />
-
+            </LinearLayout>
             <TextView
+                android:id="@+id/tv_phone"
                 style="@style/tv_Medium_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -278,6 +287,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/tv_email"
                 style="@style/tv_Medium_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -333,16 +343,24 @@
                     android:visibility="gone" />
             </LinearLayout>
 
-            <TextView
-                style="@style/tv_Medium_12"
+
+
+            <LinearLayout
+                android:id="@+id/layout_comapny"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_17sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginEnd="@dimen/_15sdp"
-                android:text="@string/add_company_url"
-                android:textColor="@color/text_reg"
-                android:textStyle="bold" />
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/tv_company_url"
+                    style="@style/tv_Medium_12"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_17sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:text="@string/add_company_url"
+                    android:textColor="@color/text_reg"
+                    android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/edit_company_url"
@@ -361,13 +379,22 @@
                 tools:ignore="Autofill,RtlHardcoded,TouchTargetSizeCheck,TextContrastCheck" />
 
             <View
+
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:background="@color/line_separator" />
+            </LinearLayout>
 
+
+        <LinearLayout
+            android:id="@+id/layout_comapny_address"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
             <TextView
+                android:id="@+id/tv_company_address"
                 style="@style/tv_Medium_12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -400,6 +427,7 @@
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:background="@color/line_separator" />
+        </LinearLayout>
 
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
