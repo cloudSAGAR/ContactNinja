@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".UserPofile.Affiliate_Report_LavelActivity"
+    tools:context=".UserPofile.Affiliate_Report_LevelActivity"
     tools:ignore="UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
 
 
@@ -16,7 +16,6 @@
     android:id="@+id/layout_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"

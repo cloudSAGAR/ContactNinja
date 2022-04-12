@@ -81,6 +81,11 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
         loadingDialog=new LoadingDialog(this);
         add_new_contect.setText(group_data.getGroupName());
         add_detail.setText(group_data.getDescription());
+        if (add_detail.getText().toString().length() <= 100) {
+            int num = 100 - add_detail.getText().toString().length();
+            topic_remainingCharacter.setText(num + " " + getResources().getString(R.string.camp_remaingn));
+        
+        }
         group_id=group_data.getId();
         group_name=group_data.getGroupName();
 
@@ -164,6 +169,8 @@ public class SendBroadcast extends AppCompatActivity implements View.OnClickList
         mMainLayout = findViewById(R.id.mMainLayout);
         no_image = findViewById(R.id.no_image);
         topic_remainingCharacter = findViewById(R.id.topic_remainingCharacter);
+    
+     
     }
 
     @Override

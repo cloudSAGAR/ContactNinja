@@ -157,15 +157,12 @@ public class User_GrowthFragment extends Fragment implements View.OnClickListene
             int Total_rat = 0;
             if (Global.IsNotNull(des_affiliateInfo.getCountOfLevel1()) && des_affiliateInfo.getCountOfLevel1() != 0) {
                 try {
-                    tv_lavel_count_1.setText(String.valueOf(des_affiliateInfo.getCountOfLevel1()));
-                    tv_rat_1.setText(String.valueOf(des_affiliateInfo.getRatiooflevel1()) + "%");
+    
+                    setLavel(tv_lavel_count_1,tv_rat_1,des_affiliateInfo.getCountOfLevel1(),
+                            des_affiliateInfo.getRatiooflevel1(),iv_1_up);
                     Total_rat = des_affiliateInfo.getRatiooflevel1();
                     Total_Affiliate = des_affiliateInfo.getCountOfLevel1();
-                    if (des_affiliateInfo.getRatiooflevel1() > 0) {
-                        iv_1_up.setImageResource(R.drawable.ic_home_grow_up);
-                    } else if (des_affiliateInfo.getRatiooflevel1() < 0) {
-                        iv_1_up.setImageResource(R.drawable.ic_home_grow_down);
-                    }
+                    
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -173,56 +170,42 @@ public class User_GrowthFragment extends Fragment implements View.OnClickListene
                 
             }
             if (Global.IsNotNull(des_affiliateInfo.getCountOfLevel2()) && des_affiliateInfo.getCountOfLevel2() != 0) {
-                tv_lavel_count_2.setText(String.valueOf(des_affiliateInfo.getCountOfLevel2()));
-                tv_rat_2.setText(String.valueOf(des_affiliateInfo.getRatiooflevel2()) + "%");
                 Total_rat = Total_rat + des_affiliateInfo.getRatiooflevel2();
                 Total_Affiliate = Total_Affiliate + des_affiliateInfo.getCountOfLevel2();
-                if (des_affiliateInfo.getRatiooflevel2() > 0) {
-                    iv_2_up.setImageResource(R.drawable.ic_home_grow_up);
-                } else if (des_affiliateInfo.getRatiooflevel2() < 0) {
-                    iv_2_up.setImageResource(R.drawable.ic_home_grow_down);
-                }
+                setLavel(tv_lavel_count_2,tv_rat_2,des_affiliateInfo.getCountOfLevel2(),
+                        des_affiliateInfo.getRatiooflevel2(),iv_2_up);
             }
             if (Global.IsNotNull(des_affiliateInfo.getCountOfLevel3()) && des_affiliateInfo.getCountOfLevel3() != 0) {
-                tv_lavel_count_3.setText(String.valueOf(des_affiliateInfo.getCountOfLevel3()));
-                tv_rat_3.setText(String.valueOf(des_affiliateInfo.getRatiooflevel3()) + "%");
                 Total_rat = Total_rat + des_affiliateInfo.getRatiooflevel3();
                 Total_Affiliate = Total_Affiliate + des_affiliateInfo.getCountOfLevel3();
-                if (des_affiliateInfo.getRatiooflevel3() > 0) {
-                    iv_3_up.setImageResource(R.drawable.ic_home_grow_up);
-                } else if (des_affiliateInfo.getRatiooflevel3() < 0) {
-                    iv_3_up.setImageResource(R.drawable.ic_home_grow_down);
-                }
+    
+                setLavel(tv_lavel_count_3,tv_rat_3,des_affiliateInfo.getCountOfLevel3(),
+                        des_affiliateInfo.getRatiooflevel3(),iv_3_up);
             }
             if (Global.IsNotNull(des_affiliateInfo.getCountOfLevel4()) && des_affiliateInfo.getCountOfLevel4() != 0) {
-                tv_lavel_count_4.setText(String.valueOf(des_affiliateInfo.getCountOfLevel4()));
-                tv_rat_4.setText(String.valueOf(des_affiliateInfo.getRatiooflevel4()) + "%");
                 Total_rat = Total_rat + des_affiliateInfo.getRatiooflevel4();
                 Total_Affiliate = Total_Affiliate + des_affiliateInfo.getCountOfLevel4();
-                if (des_affiliateInfo.getRatiooflevel4() > 0) {
-                    iv_4_up.setImageResource(R.drawable.ic_home_grow_up);
-                } else if (des_affiliateInfo.getRatiooflevel4() < 0) {
-                    iv_4_up.setImageResource(R.drawable.ic_home_grow_down);
-                }
+    
+                setLavel(tv_lavel_count_4,tv_rat_4,des_affiliateInfo.getCountOfLevel4(),
+                        des_affiliateInfo.getRatiooflevel4(),iv_4_up);
             }
             if (Global.IsNotNull(des_affiliateInfo.getCountOfLevel5()) && des_affiliateInfo.getCountOfLevel5() != 0) {
-                tv_lavel_count_5.setText(String.valueOf(des_affiliateInfo.getCountOfLevel5()));
-                tv_rat_5.setText(String.valueOf(des_affiliateInfo.getRatiooflevel5()) + "%");
+                setLavel(tv_lavel_count_5,tv_rat_5,des_affiliateInfo.getCountOfLevel5(),
+                        des_affiliateInfo.getRatiooflevel5(),iv_5_up);
+    
+    
                 Total_rat = Total_rat + des_affiliateInfo.getRatiooflevel5();
                 Total_Affiliate = Total_Affiliate + des_affiliateInfo.getCountOfLevel5();
-                if (des_affiliateInfo.getRatiooflevel5() > 0) {
-                    iv_5_up.setImageResource(R.drawable.ic_home_grow_up);
-                } else if (des_affiliateInfo.getRatiooflevel5() < 0) {
-                    iv_5_up.setImageResource(R.drawable.ic_home_grow_down);
-                }
             }
-            tv_total_lavel.setText(String.valueOf(Total_Affiliate));
-            tv_rat_total.setText(String.valueOf(Total_rat) + "%");
             
             if (Total_rat > 0) {
                 iv_all_up.setImageResource(R.drawable.ic_home_grow_up);
-            } else if (Total_rat < 0) {
+                tv_rat_total.setTextColor(getActivity().getResources().getColor(R.color.green_rate));
+                tv_rat_total.setText("+"+String.valueOf(Total_rat)+"%");
+            } else if (Total_rat < 0 ) {
                 iv_all_up.setImageResource(R.drawable.ic_home_grow_down);
+                tv_rat_total.setTextColor(getActivity().getResources().getColor(R.color.red));
+                tv_rat_total.setText("-"+String.valueOf(Total_rat)+"%");
             }
             
             button_Affiliate_Report.setOnClickListener(new View.OnClickListener() {
@@ -233,7 +216,7 @@ public class User_GrowthFragment extends Fragment implements View.OnClickListene
                             return;
                         }
                         mLastClickTime = SystemClock.elapsedRealtime();
-                        Intent intent = new Intent(getActivity(), Affiliate_Report_LavelActivity.class);
+                        Intent intent = new Intent(getActivity(), Affiliate_Report_LevelActivity.class);
                         getActivity().startActivity(intent);
                     }
                     
@@ -249,7 +232,23 @@ public class User_GrowthFragment extends Fragment implements View.OnClickListene
         
         
     }
-    
+    private void setLavel(TextView text_lavelNumber, TextView text_lavelRate, Integer countOfLevel,
+                          Integer Ratiooflevel, ImageView image_up_down) {
+        
+        text_lavelNumber.setText(String.valueOf(countOfLevel));
+        
+        if (Ratiooflevel > 0) {
+            image_up_down.setImageResource(R.drawable.ic_home_grow_up);
+            text_lavelRate.setTextColor(getActivity().getResources().getColor(R.color.green_rate));
+            text_lavelRate.setText("+"+String.valueOf(Ratiooflevel)+"%");
+            
+        } else if (Ratiooflevel < 0 || Ratiooflevel == 0) {
+            image_up_down.setImageResource(R.drawable.ic_home_grow_down);
+            text_lavelRate.setTextColor(getActivity().getResources().getColor(R.color.red));
+            text_lavelRate.setText("-"+String.valueOf(Ratiooflevel)+"%");
+        }
+        
+    }
     @RequiresApi(api = Build.VERSION_CODES.P)
     private void IntentUI(View view) {
         mBarChart = view.findViewById(R.id.cubiclinechart);
@@ -423,7 +422,7 @@ public class User_GrowthFragment extends Fragment implements View.OnClickListene
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-                startActivity(new Intent(getActivity(), Affiliate_Report_LavelActivity.class));
+                startActivity(new Intent(getActivity(), Affiliate_Report_LevelActivity.class));
                 break;
             case R.id.prevMonth:
                 prevMonth.setColorFilter(Color.parseColor("#5495EC"));

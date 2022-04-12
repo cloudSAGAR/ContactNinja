@@ -190,7 +190,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".UserPofile.Affiliate_Report_LavelActivity"
+            android:name=".UserPofile.Affiliate_Report_LevelActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity

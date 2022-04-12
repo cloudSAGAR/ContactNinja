@@ -9,8 +9,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -57,7 +55,8 @@ import java.util.List;
 import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
-public class Affiliate_Report_LavelActivity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
+public
+class Affiliate_Report_LevelActivity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     private long mLastClickTime = 0;
     LinearLayout mMainLayout;
     ImageView iv_back;
@@ -83,18 +82,18 @@ public class Affiliate_Report_LavelActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_affiliate_report_lavel);
-        sessionManager = new SessionManager(Affiliate_Report_LavelActivity.this);
-        retrofitCalls = new RetrofitCalls(Affiliate_Report_LavelActivity.this);
-        loadingDialog = new LoadingDialog(Affiliate_Report_LavelActivity.this);
+        setContentView(R.layout.activity_affiliate_report_level);
+        sessionManager = new SessionManager(Affiliate_Report_LevelActivity.this);
+        retrofitCalls = new RetrofitCalls(Affiliate_Report_LevelActivity.this);
+        loadingDialog = new LoadingDialog(Affiliate_Report_LevelActivity.this);
         token_api = Global.getToken(sessionManager);
-        user_data = SessionManager.getGetUserdata(Affiliate_Report_LavelActivity.this);
+        user_data = SessionManager.getGetUserdata(Affiliate_Report_LevelActivity.this);
 
         user_id = user_data.getUser().getId();
 
         IntentView();
         try {
-            if (Global.isNetworkAvailable(Affiliate_Report_LavelActivity.this, MainActivity.mMainLayout)) {
+            if (Global.isNetworkAvailable(Affiliate_Report_LevelActivity.this, MainActivity.mMainLayout)) {
                 Api_List();
             }
         } catch (Exception e) {
@@ -121,7 +120,7 @@ public class Affiliate_Report_LavelActivity extends AppCompatActivity implements
             // implement API in background and store the response in current variable
             String current = "";
             try {
-                if (Global.isNetworkAvailable(Affiliate_Report_LavelActivity.this, MainActivity.mMainLayout)) {
+                if (Global.isNetworkAvailable(Affiliate_Report_LevelActivity.this, MainActivity.mMainLayout)) {
                     Api_List();
                 }
             } catch (Exception e) {
@@ -149,7 +148,7 @@ public class Affiliate_Report_LavelActivity extends AppCompatActivity implements
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
         Log.e("Gson Data is", new Gson().toJson(gsonObject));
-        retrofitCalls.affiliate_list(sessionManager, gsonObject, loadingDialog, token_api, Global.getVersionname(Affiliate_Report_LavelActivity.this), Global.Device, new RetrofitCallback() {
+        retrofitCalls.affiliate_list(sessionManager, gsonObject, loadingDialog, token_api, Global.getVersionname(Affiliate_Report_LevelActivity.this), Global.Device, new RetrofitCallback() {
             @SuppressLint("NewApi")
             @Override
             public void success(Response<ApiResponse> response) {
@@ -304,14 +303,14 @@ public class Affiliate_Report_LavelActivity extends AppCompatActivity implements
                 layout_list.setVisibility(View.GONE);
             }
 
-            lavelAdapter = new LavelAdapter(Affiliate_Report_LavelActivity.this, level1List);
+            lavelAdapter = new LavelAdapter(Affiliate_Report_LevelActivity.this, level1List);
             rv_lavel_list.setAdapter(lavelAdapter);
             List<LevelModel> finalLevel1List = level1List;
             ev_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                        Global.hideKeyboard(Affiliate_Report_LavelActivity.this);
+                        Global.hideKeyboard(Affiliate_Report_LevelActivity.this);
                         List<LevelModel> temp = new ArrayList<>();
                         for (LevelModel d : finalLevel1List) {
                             if (d.getFirstName().toLowerCase().contains(ev_search.getText().toString().toLowerCase())) {
@@ -331,15 +330,15 @@ public class Affiliate_Report_LavelActivity extends AppCompatActivity implements
     }
 
     void showBottomSheetDialog(List<String> lavelName, TextView tv_lavel_name) {
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Affiliate_Report_LavelActivity.this,
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Affiliate_Report_LevelActivity.this,
                 R.style.BottomSheetDialog);
         bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_for_home);
         RecyclerView home_type_list = bottomSheetDialog.findViewById(R.id.home_type_list);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Affiliate_Report_LavelActivity.this);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(Affiliate_Report_LevelActivity.this);
         home_type_list.setLayoutManager(layoutManager);
 
 
-        LavelSelectAdapter workAdapter = new LavelSelectAdapter(Affiliate_Report_LavelActivity.this,
+        LavelSelectAdapter workAdapter = new LavelSelectAdapter(Affiliate_Report_LevelActivity.this,
                 lavelName, desAffiliateInfo, rv_lavel_list, bottomSheetDialog, tv_lavel_name);
         home_type_list.setAdapter(workAdapter);
 
@@ -354,7 +353,7 @@ public class Affiliate_Report_LavelActivity extends AppCompatActivity implements
         tv_lavel_name = findViewById(R.id.tv_lavel_name);
         select_label_zone = findViewById(R.id.select_label_zone);
         select_label_zone.setOnClickListener(this);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(Affiliate_Report_LavelActivity.this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(Affiliate_Report_LevelActivity.this);
         rv_lavel_list.setLayoutManager(layoutManager);
         mMainLayout = findViewById(R.id.mMainLayout);
         iv_back = findViewById(R.id.iv_back);
@@ -364,7 +363,7 @@ public class Affiliate_Report_LavelActivity extends AppCompatActivity implements
 
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
-        Global.checkConnectivity(Affiliate_Report_LavelActivity.this, mMainLayout);
+        Global.checkConnectivity(Affiliate_Report_LevelActivity.this, mMainLayout);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

@@ -27,7 +27,7 @@
             android:layout_marginEnd="@dimen/_15sdp"
             android:background="@color/add_contect_transpernt"
             android:gravity="center"
-            android:hint="Add custom lable name"
+            android:hint="@string/Custom_lable_name"
             android:textColor="@color/text_reg"
             android:textColorHint="@color/text_gray"
             tools:ignore="TouchTargetSizeCheck,TextContrastCheck">

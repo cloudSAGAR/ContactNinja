@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -165,7 +166,8 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
     }
     private void setdata(TemplateList.Template template) {
         edit_template_name.setText(template.getTemplateName());
-        edit_template.setText(template.getContentBody());
+        String text=Html.toHtml(template.getContentBody());
+        edit_template.setText(text);
         edit_template.setSelection(edit_template.getText().length());
         try {
             edit_template_subject.setText(template.getContentHeader());

@@ -1,6 +1,7 @@
 package com.contactninja.Model;
 
 import android.annotation.SuppressLint;
+import android.text.Spanned;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -145,7 +146,7 @@ public class TemplateList implements Serializable {
             this.type = type;
         }
 
-        public String getContentBody() {
+        public Spanned getContentBody() {
             return contentBody;
         }
 

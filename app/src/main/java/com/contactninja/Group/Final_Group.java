@@ -203,6 +203,11 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
             Grouplist.Group group_data = SessionManager.getGroupData(this);
             add_new_contect.setText(group_data.getGroupName());
             add_detail.setText(group_data.getDescription());
+            if (add_detail.getText().toString().length() <= 100) {
+                int num = 100 - add_detail.getText().toString().length();
+                topic_remainingCharacter.setText(num + " " + getResources().getString(R.string.camp_remaingn));
+        
+            }
             if (group_data.getGroupImage() != null) {
                 iv_user.setVisibility(View.VISIBLE);
                 Glide.with(getApplicationContext()).
@@ -357,6 +362,8 @@ public class Final_Group extends AppCompatActivity implements View.OnClickListen
         iv_dummy = findViewById(R.id.iv_dummy);
         iv_dummy.setOnClickListener(this);
         mMainLayout = findViewById(R.id.mMainLayout);
+    
+       
     }
 
     @SuppressLint("NonConstantResourceId")

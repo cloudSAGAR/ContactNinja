@@ -32,8 +32,8 @@
         <ImageView
 
             android:id="@+id/image_icon"
-            android:layout_width="@dimen/_15sdp"
-            android:layout_height="@dimen/_15sdp"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
             android:layout_gravity="center" />
 
     </LinearLayout>
@@ -44,6 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:gravity="center"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_5sdp"
         android:layout_marginEnd="@dimen/_10sdp"

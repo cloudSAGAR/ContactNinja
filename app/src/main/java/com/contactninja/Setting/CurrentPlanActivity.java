@@ -4,12 +4,10 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +25,6 @@ import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.contactninja.Auth.PlanTyep.Plan_Detail_Screen;
-import com.contactninja.Auth.Thankyou_Screen;
 import com.contactninja.Model.Plandetail;
 import com.contactninja.Model.Subscription;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -148,7 +144,7 @@ public class CurrentPlanActivity extends AppCompatActivity implements View.OnCli
         for (int k = 0; k <= 4; k++) {
 
 
-            if (k == 0) {
+            if (k == 2) {
                 List<Plandetail.Plansublist> plansublists123 = new ArrayList<>();
                 Plandetail plan = new Plandetail();
                 plan.setPlan_product_id(getResources().getString(R.string.plan_39));
@@ -207,7 +203,7 @@ public class CurrentPlanActivity extends AppCompatActivity implements View.OnCli
                 }
                 plandetailslist.add(plan);
 
-            } else if (k == 1) {
+            } else if (k == 3) {
                 List<Plandetail.Plansublist> plansublists123 = new ArrayList<>();
                 Plandetail plan = new Plandetail();
                 plan.setPlan_product_id(getResources().getString(R.string.plan_69));
@@ -271,7 +267,7 @@ public class CurrentPlanActivity extends AppCompatActivity implements View.OnCli
                 }
                 plandetailslist.add(plan);
 
-            } else if (k == 2) {
+            } else if (k == 1) {
                 List<Plandetail.Plansublist> plansublists123 = new ArrayList<>();
                 Plandetail plan = new Plandetail();
                 plan.setPlan_product_id(getResources().getString(R.string.plan_39));
@@ -327,7 +323,7 @@ public class CurrentPlanActivity extends AppCompatActivity implements View.OnCli
 
                 }
                 plandetailslist.add(plan);
-            } else if (k == 3) {
+            } else if (k == 0) {
                 List<Plandetail.Plansublist> plansublists123 = new ArrayList<>();
 
                 Plandetail plan = new Plandetail();
@@ -394,7 +390,7 @@ public class CurrentPlanActivity extends AppCompatActivity implements View.OnCli
                 }
                 catch (Exception e)
                 {
-
+                    e.printStackTrace();
                 }
 
             }
@@ -415,9 +411,7 @@ public class CurrentPlanActivity extends AppCompatActivity implements View.OnCli
                 tv_save.setText(getResources().getString(R.string.Current_Plan));
 
             }
-            else {
-                // plandetailslist_new.add(plandetailslist.size(),plandetailslist.get(i));
-            }
+           
         }
 
 
@@ -461,42 +455,6 @@ public class CurrentPlanActivity extends AppCompatActivity implements View.OnCli
                 }else {
                     tv_save.setText(getResources().getString(R.string.Upgrade_Plan));
                 }
-          /*      if(viewPager2.getCurrentItem()==0){
-                    for(int i=0;i<plandetailslist.size();i++){
-                        if(CurentPlan.equals(plandetailslist.get(0).getPlan_product_id())){
-                            tv_save.setText(getResources().getString(R.string.Current_Plan));
-                        }else {
-                            tv_save.setText(getResources().getString(R.string.Upgrade_Plan));
-                        }
-                    }
-                }else if (viewPager2.getCurrentItem() == 1) {
-
-                    for(int i=0;i<plandetailslist.size();i++){
-                        if(CurentPlan.equals(plandetailslist.get(0).getPlan_product_id())){
-                            tv_save.setText(getResources().getString(R.string.Current_Plan));
-                        }else {
-                            tv_save.setText(getResources().getString(R.string.Upgrade_Plan));
-                        }
-                    }
-                }else if (viewPager2.getCurrentItem() == 2) {
-                    for(int i=0;i<plandetailslist.size();i++){
-                        if(CurentPlan.equals(plandetailslist.get(0).getPlan_product_id())){
-                            tv_save.setText(getResources().getString(R.string.Current_Plan));
-                        }else {
-                            tv_save.setText(getResources().getString(R.string.Upgrade_Plan));
-                        }
-                    }
-                }else if (viewPager2.getCurrentItem() == 3) {
-
-                    for(int i=0;i<plandetailslist.size();i++){
-                        if(CurentPlan.equals(plandetailslist.get(0).getPlan_product_id())){
-                            tv_save.setText(getResources().getString(R.string.Current_Plan));
-                        }else {
-                            tv_save.setText(getResources().getString(R.string.Upgrade_Plan));
-                        }
-                    }
-                }
-           */
             }
         });
         viewPager2.setPageTransformer(compositePagerTransformer);
@@ -532,6 +490,7 @@ public class CurrentPlanActivity extends AppCompatActivity implements View.OnCli
         Global.checkConnectivity(CurrentPlanActivity.this, mMainLayout);
     }
 
+    @SuppressLint("ObsoleteSdkInt")
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void registerNetworkBroadcastForNougat() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

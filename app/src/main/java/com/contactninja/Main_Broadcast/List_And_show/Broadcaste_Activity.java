@@ -89,9 +89,9 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
     public void setData() {
 
         if (broadcasteda.getType().equals("SMS")) {
-            image_icon.setImageDrawable(getResources().getDrawable(R.drawable.ic_sms_mini));
+            image_icon.setImageDrawable(getResources().getDrawable(R.drawable.ic_message_tab));
             tv_status.setText(broadcasteda.getBroadcastName());
-            image_step.setImageDrawable(getResources().getDrawable(R.drawable.ic_sms_mini));
+            image_step.setImageDrawable(getResources().getDrawable(R.drawable.ic_message_tab));
             layout_email_subject.setVisibility(View.GONE);
            // tv_detail.setTypeface(null, Typeface.BOLD);
         } else {

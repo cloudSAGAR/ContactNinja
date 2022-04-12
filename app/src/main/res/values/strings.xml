@@ -403,11 +403,11 @@
     <string name="con_reach">Completed Out reach</string>
     <string name="con_pending">Pending Out reach</string>
     <string name="Please_select_your_level">Please select your level</string>
-    <string name="lavel1">Lavel 1</string>
-    <string name="lavel2">Lavel 2</string>
-    <string name="lavel3">Lavel 3</string>
-    <string name="lavel4">Lavel 4</string>
-    <string name="lavel5">Lavel 5</string>
+    <string name="lavel1">Level 1</string>
+    <string name="lavel2">Level 2</string>
+    <string name="lavel3">Level 3</string>
+    <string name="lavel4">Level 4</string>
+    <string name="lavel5">Level 5</string>
     <string name="composse_email">Compose email</string>
     <string name="email_txt">Click here to send \n an email </string>
     <string name="txt_task">Click here to create \n a task </string>
@@ -693,5 +693,6 @@
     <string name="Add">Add</string>
     <string name="Number">Number</string>
     <string name="Send">Send</string>
+    <string name="Custom_lable_name">Custom lable name</string>
 
 </resources>

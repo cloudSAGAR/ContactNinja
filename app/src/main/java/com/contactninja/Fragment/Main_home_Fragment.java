@@ -35,7 +35,7 @@ import com.contactninja.Model.Dashboard.Des_TaskCounter;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Notification.NotificationListActivity;
 import com.contactninja.R;
-import com.contactninja.UserPofile.Affiliate_Report_LavelActivity;
+import com.contactninja.UserPofile.Affiliate_Report_LevelActivity;
 import com.contactninja.Utils.Global;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
@@ -267,7 +267,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
                             return;
                         }
                         mLastClickTime = SystemClock.elapsedRealtime();
-                        Intent intent = new Intent(getActivity(), Affiliate_Report_LavelActivity.class);
+                        Intent intent = new Intent(getActivity(), Affiliate_Report_LevelActivity.class);
                         getActivity().startActivity(intent);
                     }
 
