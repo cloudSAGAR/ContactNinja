@@ -1942,6 +1942,9 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 } else {
                     holder.iv_set_default.setVisibility(View.GONE);
                 }
+
+                Log.e("Countr code",String.valueOf(Global.Countrycode(mCtx, item.getEmail_number())));
+                Log.e("Using Phone Code", String.valueOf(Global.Countrycode(mCtx, item.getEmail_number())));
                 holder.ccp_id.setDefaultCountryUsingNameCode(String.valueOf(Global.Countrycode(mCtx, item.getEmail_number())));
                 holder.ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(mCtx, item.getEmail_number()));
                 holder.ccp_id.resetToDefaultCountry();

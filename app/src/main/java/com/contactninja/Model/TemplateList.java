@@ -146,7 +146,7 @@ public class TemplateList implements Serializable {
             this.type = type;
         }
 
-        public Spanned getContentBody() {
+        public String getContentBody() {
             return contentBody;
         }
 

@@ -166,7 +166,7 @@ public class TemplateCreateActivity extends AppCompatActivity implements View.On
     }
     private void setdata(TemplateList.Template template) {
         edit_template_name.setText(template.getTemplateName());
-        String text=Html.toHtml(template.getContentBody());
+        String text= String.valueOf(Html.fromHtml(template.getContentBody().toString()));
         edit_template.setText(text);
         edit_template.setSelection(edit_template.getText().length());
         try {
