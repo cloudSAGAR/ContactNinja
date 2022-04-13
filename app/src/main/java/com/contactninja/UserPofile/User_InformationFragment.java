@@ -1927,7 +1927,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         @Override
         public void onBindViewHolder(@NonNull InviteListDataclass holder, int position) {
             Contactdetail item = contactdetails.get(position);
-            Log.e("All Mobile Data ", new Gson().toJson(contactdetails));
+           // Log.e("All Mobile Data ", new Gson().toJson(contactdetails));
             String flag = SessionManager.getContect_flag(getActivity());
 
             holder.select_label.setVisibility(View.VISIBLE);
@@ -1936,7 +1936,9 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             holder.edt_mobile_no.setEnabled(true);
             if (edit) {
 
+
                 holder.ccp_id.setCountryForNameCode(item.getCountry_code());
+
                 if (contactdetails.get(position).getIs_default() == 1) {
                     holder.iv_set_default.setVisibility(View.VISIBLE);
                 } else {
@@ -1945,12 +1947,21 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
 
                 Log.e("Countr code",String.valueOf(Global.Countrycode(mCtx, item.getEmail_number())));
                 Log.e("Using Phone Code", String.valueOf(Global.Countrycode(mCtx, item.getEmail_number())));
-                holder.ccp_id.setDefaultCountryUsingNameCode(String.valueOf(Global.Countrycode(mCtx, item.getEmail_number())));
+                Log.e("Countr Code is ","Postion "+position+ "  "+item.getCountry_code());
+                if (Global.IsNotNull(item.getCountry_code()))
+                {
+                    holder.ccp_id.setDefaultCountryUsingNameCode(item.getCountry_code());
+                    holder.ccp_id.resetToDefaultCountry();
+                }
+
+        /*        holder.ccp_id.setDefaultCountryUsingNameCode(String.valueOf(Global.Countrycode(mCtx, item.getEmail_number())));
                 holder.ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(mCtx, item.getEmail_number()));
-                holder.ccp_id.resetToDefaultCountry();
+                holder.ccp_id.resetToDefaultCountry();*/
+
                 String main_data = item.getEmail_number().replace("+" + String.valueOf(Global.Countrycode(mCtx, item.getEmail_number())), "");
                 holder.edt_mobile_no.setText(main_data);
                 holder.phone_txt.setText(item.getLabel());
+
                 holder.edt_mobile_no.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1958,20 +1969,51 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
 
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        String countryCode = holder.ccp_id.getSelectedCountryCodeWithPlus();
+                        String phoneNumber = holder.edt_mobile_no.getText().toString().trim();
 
-                        if (edt_mobile_no.getText().toString().equals("")) {
+                        if (countryCode.length() > 0 && phoneNumber.length() > 0) {
+                            if (Global.isValidPhoneNumber(phoneNumber)) {
+                                boolean status = validateUsing_libphonenumber(countryCode, phoneNumber);
+                                Log.e("Contect Status", String.valueOf(status));
+                                if (status) {
+                                    holder.iv_invalid1.setText("");
+                                    holder.iv_invalid1.setVisibility(View.GONE);
+                                    item.setEmail_number(holder.ccp_id.getSelectedCountryCodeWithPlus() + s.toString());
+                                    item.setCountry_code(holder.ccp_id.getSelectedCountryNameCode());
 
-                        } else {
-                            item.setEmail_number(holder.ccp_id.getSelectedCountryCodeWithPlus() + s.toString());
-                            item.setCountry_code(holder.ccp_id.getSelectedCountryNameCode());
-                            String countryCode = holder.ccp_id.getSelectedCountryCodeWithPlus();
-                            String phoneNumber = holder.edt_mobile_no.getText().toString().trim();
-                            if (contactdetails.size() <= 12) {
-                                layout_Add_phone.setVisibility(View.VISIBLE);
+                                    addcontectModel.setContactdetails(contactdetails);
+                                    SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
+
+                                    if (contactdetails.size() <= 4) {
+                                        layout_Add_phone.setVisibility(View.VISIBLE);
+                                        addcontectModel.setContactdetails(contactdetails);
+                                        SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
+
+                                    }
+
+                                } else {
+                                    holder.iv_invalid1.setText(getResources().getString(R.string.invalid_phone));
+                                    holder.iv_invalid1.setVisibility(View.VISIBLE);
+                                    layout_Add_phone.setVisibility(View.GONE);
+                                    item.setEmail_number("");
+                                    item.setCountry_code("");
+                                    addcontectModel.setContactdetails(contactdetails);
+                                    SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
+                                }
+                            } else {
+                                holder.iv_invalid1.setText(getResources().getString(R.string.invalid_phone));
+                                holder.iv_invalid1.setVisibility(View.VISIBLE);
+                                layout_Add_phone.setVisibility(View.GONE);
+                                item.setEmail_number("");
+                                item.setCountry_code("");
                                 addcontectModel.setContactdetails(contactdetails);
                                 SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
                             }
+                        } else {
+                            //Toast.makeText(getApplicationContext(), "Country Code and Phone Number is required", Toast.LENGTH_SHORT).show();
                         }
+
 
                     }
 
@@ -1980,6 +2022,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
 
                     }
                 });
+
               /*  holder.edt_mobile_no.setOnKeyListener(new View.OnKeyListener() {
                     public boolean onKey(View v, int keyCode, KeyEvent event) {
                         if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
@@ -2027,7 +2070,8 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 } catch (Exception e) {
 
                 }
-            } else if (flag.equals("read")) {
+            }
+            else if (flag.equals("read")) {
                 // EnableRuntimePermission();
                 holder.layout_icon_call.setVisibility(View.GONE);
                 holder.layout_icon_message.setVisibility(View.GONE);
@@ -2205,13 +2249,14 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.createInstance(mCtx);
             String isoCode = phoneNumberUtil.getRegionCodeForCountryCode(Integer.parseInt(countryCode));
             Phonenumber.PhoneNumber phoneNumber = null;
+            boolean isValid = false;
             try {
                 phoneNumber = phoneNumberUtil.parse(phNumber, isoCode);
+                isValid = phoneNumberUtil.isValidNumber(phoneNumber);
             } catch (NumberParseException e) {
                 System.err.println(e);
             }
 
-            boolean isValid = phoneNumberUtil.isValidNumber(phoneNumber);
             if (isValid) {
                 String internationalFormat = phoneNumberUtil.format(phoneNumber, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
                 return true;
@@ -2219,7 +2264,6 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 return false;
             }
         }
-
         public void removeItem(int pos, Contactdetail item) {
             contactdetails.remove(pos);
             notifyDataSetChanged();
@@ -2257,7 +2301,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                     layout_icon_message, layout_country_piker;
             TextView phone_txt;
             CountryCodePicker ccp_id;
-            TextView tv_phone;
+            TextView tv_phone,iv_invalid1;
 
 
             public InviteListDataclass(@NonNull View itemView) {
@@ -2274,6 +2318,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 layout_icon_call = itemView.findViewById(R.id.layout_icon_call);
                 layout_icon_message = itemView.findViewById(R.id.layout_icon_message);
                 tv_phone = itemView.findViewById(R.id.tv_phone);
+                iv_invalid1 = itemView.findViewById(R.id.iv_invalid1);
 
 
             }

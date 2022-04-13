@@ -2310,11 +2310,15 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 } catch (Exception e) {
 
                 }
+                if (Global.IsNotNull(item.getCountry_code()))
+                {
+                    holder.ccp_id.setDefaultCountryUsingNameCode(item.getCountry_code());
+                    holder.ccp_id.resetToDefaultCountry();
+                }
 
-
-                holder.ccp_id.setDefaultCountryUsingNameCode(String.valueOf(Global.Countrycode(mCtx, item.getEmail_number())));
+                /*holder.ccp_id.setDefaultCountryUsingNameCode(String.valueOf(Global.Countrycode(mCtx, item.getEmail_number())));
                 holder.ccp_id.setDefaultCountryUsingPhoneCode(Global.Countrycode(mCtx, item.getEmail_number()));
-                holder.ccp_id.resetToDefaultCountry();
+                holder.ccp_id.resetToDefaultCountry();*/
                 String main_data = item.getEmail_number().replace("+" + String.valueOf(Global.Countrycode(mCtx, item.getEmail_number())), "");
                 holder.edt_mobile_no.setText(main_data);
                 holder.phone_txt.setText(item.getLabel());
@@ -2337,11 +2341,12 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                                 if (status) {
                                     item.setEmail_number(holder.ccp_id.getSelectedCountryCodeWithPlus() + s.toString());
                                     item.setCountry_code(holder.ccp_id.getSelectedCountryNameCode());
+                                    item.setCountry_code(holder.ccp_id.getSelectedCountryCodeWithPlus());
                                     holder.iv_invalid1.setText("");
                                     holder.iv_invalid1.setVisibility(View.GONE);
                                     addcontectModel.setContactdetails(contactdetails);
                                     SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
-
+                                    layout_Add_phone.setVisibility(View.VISIBLE);
                                     if (PhoneFieldNumber < 5) {
                                         layout_Add_phone.setVisibility(View.VISIBLE);
                                     } else {
@@ -2355,6 +2360,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                                     SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
                                     holder.iv_invalid1.setText(getResources().getString(R.string.invalid_phone));
                                     holder.iv_invalid1.setVisibility(View.VISIBLE);
+                                    layout_Add_phone.setVisibility(View.GONE);
                                 }
                             }
                             else {
@@ -2362,6 +2368,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                                 holder.iv_invalid1.setVisibility(View.VISIBLE);
                                 item.setEmail_number("");
                                 item.setCountry_code("");
+                                layout_Add_phone.setVisibility(View.GONE);
                                 addcontectModel.setContactdetails(contactdetails);
                                 SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
                             }
@@ -2405,7 +2412,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 holder.ccp_id.registerCarrierNumberEditText(holder.edt_mobile_no);
 
 
-            } else if (flag.equals("read")) {
+            }
+            else if (flag.equals("read")) {
 
                 holder.select_label.setVisibility(View.GONE);
                 holder.contect_msg.setVisibility(View.VISIBLE);
@@ -2468,7 +2476,8 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                 });
 
 
-            } else {
+            }
+            else {
 
 
                 if (item.getIs_default() == 1) {
@@ -2477,11 +2486,15 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                     holder.iv_set_default.setVisibility(View.GONE);
                 }
 
+                if (Global.IsNotNull(item.getCountry_code()))
+                {
+                    holder.ccp_id.setDefaultCountryUsingNameCode(item.getCountry_code());
+                    holder.ccp_id.resetToDefaultCountry();
+                }
                 String main_data = item.getEmail_number().replace("+" + Global.Countrycode_Country(mCtx, item.getEmail_number()), "");
 
                 holder.edt_mobile_no.setText(main_data);
                 holder.phone_txt.setText(item.getLabel());
-
 
                 holder.edt_mobile_no.addTextChangedListener(new TextWatcher() {
                     @Override
@@ -2498,35 +2511,38 @@ public class InformationFragment extends Fragment implements View.OnClickListene
                                 boolean status = validateUsing_libphonenumber(countryCode, phoneNumber);
                                 Log.e("Contect Status", String.valueOf(status));
                                 if (status) {
-                                    holder.iv_invalid1.setText("");
-                                    holder.iv_invalid1.setVisibility(View.GONE);
                                     item.setEmail_number(holder.ccp_id.getSelectedCountryCodeWithPlus() + s.toString());
                                     item.setCountry_code(holder.ccp_id.getSelectedCountryNameCode());
+                                    item.setCountry_code(holder.ccp_id.getSelectedCountryCodeWithPlus());
+                                    holder.iv_invalid1.setText("");
+                                    holder.iv_invalid1.setVisibility(View.GONE);
                                     addcontectModel.setContactdetails(contactdetails);
                                     SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
-
-                                    if (contactdetails.size() <= 4) {
+                                    layout_Add_phone.setVisibility(View.VISIBLE);
+                                    if (PhoneFieldNumber < 5) {
                                         layout_Add_phone.setVisibility(View.VISIBLE);
-                                        addcontectModel.setContactdetails(contactdetails);
-                                        SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
-
+                                    } else {
+                                        layout_Add_phone.setVisibility(View.GONE);
                                     }
 
                                 } else {
-                                    holder.iv_invalid1.setText(getResources().getString(R.string.invalid_phone));
-                                    holder.iv_invalid1.setVisibility(View.VISIBLE);
                                     item.setEmail_number("");
                                     item.setCountry_code("");
                                     addcontectModel.setContactdetails(contactdetails);
                                     SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
+                                    holder.iv_invalid1.setText(getResources().getString(R.string.invalid_phone));
+                                    holder.iv_invalid1.setVisibility(View.VISIBLE);
+                                    layout_Add_phone.setVisibility(View.GONE);
                                 }
-                            } else {
+                            }
+                            else {
                                 holder.iv_invalid1.setText(getResources().getString(R.string.invalid_phone));
                                 holder.iv_invalid1.setVisibility(View.VISIBLE);
                                 item.setEmail_number("");
                                 item.setCountry_code("");
                                 addcontectModel.setContactdetails(contactdetails);
                                 SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
+                                layout_Add_phone.setVisibility(View.GONE);
                             }
                         } else {
                             //Toast.makeText(getApplicationContext(), "Country Code and Phone Number is required", Toast.LENGTH_SHORT).show();
@@ -2540,6 +2556,7 @@ public class InformationFragment extends Fragment implements View.OnClickListene
 
                     }
                 });
+
 
                 holder.select_label.setOnClickListener(new View.OnClickListener() {
                     @Override
