@@ -50,6 +50,7 @@ import com.contactninja.R;
 import com.contactninja.Setting.Verification_web;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
+import com.contactninja.Utils.Global_Time;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.ApiResponse;
@@ -361,7 +362,7 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
         save_button.setVisibility(View.VISIBLE);
         save_button.setOnClickListener(this);
         iv_back.setOnClickListener(this);
-        save_button.setText("Next");
+        save_button.setText(getResources().getString(R.string.Next));
         ev_subject = findViewById(R.id.ev_subject);
         edit_template = findViewById(R.id.edit_template);
         top_layout = findViewById(R.id.top_layout);
@@ -515,7 +516,7 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
                     templateList = list.getTemplate();
                 }
                 TemplateList.Template template1 = new TemplateList.Template();
-                template1.setTemplateName("Save current as template");
+                template1.setTemplateName(getResources().getString(R.string.Save_current_as_template));
                 template1.setSelect(true);
                 templateList.add(templateList.size(), template1);
 
@@ -653,7 +654,11 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
             paramObject.addProperty("step_no", step_no);
             paramObject.addProperty("team_id", 1);
             paramObject.addProperty("type", SessionManager.getCampaign_type(getApplicationContext()));
-            paramObject.addProperty("time", Global.getCurrentTime());
+            try {
+                paramObject.addProperty("time", Global_Time.time_12_to_24(Global_Time.getCurrentTime()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             paramObject.addProperty("user_id", user_data.getUser().getId());
             paramObject.addProperty("from_ac", from_ac);
             paramObject.addProperty("from_ac_id", from_ac_id);
@@ -679,7 +684,11 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
             paramObject.addProperty("content_header", ev_subject.getText().toString());
             paramObject.addProperty("team_id", "1");
             paramObject.addProperty("type", SessionManager.getCampaign_type(getApplicationContext()));
-            paramObject.addProperty("time", Global.getCurrentTime());
+            try {
+                paramObject.addProperty("time", Global_Time.time_12_to_24(Global_Time.getCurrentTime()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             paramObject.addProperty("user_id", user_id);
             paramObject.addProperty("step_no", step_no);
             paramObject.addProperty("from_ac", from_ac);
@@ -1056,7 +1065,7 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
             holder.tv_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (holder.tv_item.getText().toString().equals("Save current as template")) {
+                    if (holder.tv_item.getText().toString().equals(getResources().getString(R.string.Save_current_as_template))) {
                         showAlertDialogButtonClicked(view, edit_template);
                     } else {
                         interfaceClick.OnClick(item);

@@ -17,7 +17,6 @@ import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.LinkMovementMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.text.style.ClickableSpan;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -74,10 +73,11 @@ import retrofit2.Response;
 @SuppressLint("UnknownNullness,SyntheticAccessor")
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     private static final String TAG = "LoginActivity";
+    private static final int CREDENTIAL_PICKER_REQUEST = 1;
     public String fcmToken = "";
-    TextView btn_chnage_phone_email, btn_login, iv_invalid, tv_signUP,tv_terms;
+    TextView btn_chnage_phone_email, btn_login, iv_invalid, tv_signUP, tv_terms;
     boolean is_PhoneShow = true;
-    LinearLayout layout_email, layout_phonenumber,email_password;
+    LinearLayout layout_email, layout_phonenumber, email_password;
     CountryCodePicker ccp_id;
     EditText edit_email, edit_Mobile, edit_password;
     CoordinatorLayout mMainLayout;
@@ -85,14 +85,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     RetrofitCalls retrofitCalls;
     String Login_type = "PHONE", password = "";
     SessionManager sessionManager;
-    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
-    private FirebaseAuth mAuth;
-    TextView btn_chnage_forgot,iv_password_invalid;
+    TextView btn_chnage_forgot, iv_password_invalid;
     RelativeLayout forgot_password;
     ImageView iv_showPassword;
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
+    private FirebaseAuth mAuth;
     private BroadcastReceiver mNetworkReceiver;
-    private static final int CREDENTIAL_PICKER_REQUEST = 1;
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,44 +106,39 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Global.checkConnectivity(LoginActivity.this, mMainLayout);
         btn_chnage_forgot.setOnClickListener(this);
         enterPhoneNumber();
-
+        
         HintRequest hintRequest = new HintRequest.Builder()
-                .setPhoneNumberIdentifierSupported(true)
-                .build();
-
-
+                                          .setPhoneNumberIdentifierSupported(true)
+                                          .build();
+        
+        
         PendingIntent intent = Credentials.getClient(this).getHintPickerIntent(hintRequest);
-        try
-        {
-            startIntentSenderForResult(intent.getIntentSender(), CREDENTIAL_PICKER_REQUEST, null, 0, 0, 0,new Bundle());
-        }
-        catch (IntentSender.SendIntentException e)
-        {
+        try {
+            startIntentSenderForResult(intent.getIntentSender(), CREDENTIAL_PICKER_REQUEST, null, 0, 0, 0, new Bundle());
+        } catch (IntentSender.SendIntentException e) {
             e.printStackTrace();
         }
-
+        
     }
-
-
+    
+    
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CREDENTIAL_PICKER_REQUEST && resultCode == RESULT_OK)
-        {
+        if (requestCode == CREDENTIAL_PICKER_REQUEST && resultCode == RESULT_OK) {
             // Obtain the phone number from the result
             Credential credentials = data.getParcelableExtra(Credential.EXTRA_KEY);
             edit_Mobile.setText(credentials.getId().substring(3));
         }
-
+        
     }
-
+    
     private void enterPhoneNumber() {
         edit_Mobile.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
-
+            
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String countryCode = ccp_id.getSelectedCountryCodeWithPlus();
@@ -163,24 +157,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 } else {
                     //Toast.makeText(getApplicationContext(), "Country Code and Phone Number is required", Toast.LENGTH_SHORT).show();
                 }
-
+                
             }
-
+            
             @Override
             public void afterTextChanged(Editable s) {
-
+            
             }
         });
     }
-
+    
     @Override
     protected void onResume() {
         super.onResume();
         Global.getInstance().setConnectivityListener(this);
-
+        
     }
-
-
+    
+    
     private void firebase() {
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
@@ -190,28 +184,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             //Log.i("FCM registration failed", task.getException() + "");
                             return;
                         }
-
+                        
                         fcmToken = task.getResult();
                         sessionManager.setFcm_Token(fcmToken);
                     }
                 });
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-
+            
             @Override
             public void onVerificationCompleted(PhoneAuthCredential credential) {
-            //    Log.e(TAG, "onVerificationCompleted:" + credential);
+                //    Log.e(TAG, "onVerificationCompleted:" + credential);
                 loadingDialog.cancelLoading();
             }
-
+            
             @Override
             public void onVerificationFailed(FirebaseException e) {
-               // Log.e(TAG, "onVerificationFailed", e);
+                // Log.e(TAG, "onVerificationFailed", e);
                 loadingDialog.cancelLoading();
-
-                Toast.makeText(getApplicationContext(), "VERIFY FAILED", Toast.LENGTH_LONG).show();
-
+                
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.please_try_again_later), Toast.LENGTH_LONG).show();
+                
             }
-
+            
             @Override
             public void onCodeSent(@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken token) {
                 loadingDialog.cancelLoading();
@@ -225,36 +219,36 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 intent.putExtra("email", edit_email.getText().toString());
                 intent.putExtra("login_type", Login_type);
                 intent.putExtra("activity_flag", "login");
-                intent.putExtra("referred_by","");
+                intent.putExtra("referred_by", "");
                 startActivity(intent);
-
-
+                
+                
             }
         };
     }
-
-
+    
+    
     private boolean validateUsing_libphonenumber(String countryCode, String phNumber) {
         PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.createInstance(getApplicationContext());
         String isoCode = phoneNumberUtil.getRegionCodeForCountryCode(Integer.parseInt(countryCode));
         Phonenumber.PhoneNumber phoneNumber = null;
         try {
             phoneNumber = phoneNumberUtil.parse(phNumber, isoCode);
-
-
-        boolean isValid = phoneNumberUtil.isValidNumber(phoneNumber);
-        if (isValid) {
-            String internationalFormat = phoneNumberUtil.format(phoneNumber, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
-            return true;
-        } else {
-            return false;
-        }
+            
+            
+            boolean isValid = phoneNumberUtil.isValidNumber(phoneNumber);
+            if (isValid) {
+                String internationalFormat = phoneNumberUtil.format(phoneNumber, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
+                return true;
+            } else {
+                return false;
+            }
         } catch (NumberParseException e) {
             System.err.println(e);
         }
         return false;
     }
-
+    
     private void initUI() {
         sessionManager = new SessionManager(this);
         ccp_id = findViewById(R.id.ccp_id);
@@ -272,22 +266,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btn_chnage_phone_email.setOnClickListener(this);
         btn_login.setOnClickListener(this);
         tv_signUP.setOnClickListener(this);
-        btn_chnage_forgot=findViewById(R.id.btn_chnage_forgot);
-        iv_password_invalid=findViewById(R.id.iv_password_invalid);
-        forgot_password=findViewById(R.id.forgot_password);
-        email_password=findViewById(R.id.email_password);
-        tv_terms=findViewById(R.id.tv_terms);
-
+        btn_chnage_forgot = findViewById(R.id.btn_chnage_forgot);
+        iv_password_invalid = findViewById(R.id.iv_password_invalid);
+        forgot_password = findViewById(R.id.forgot_password);
+        email_password = findViewById(R.id.email_password);
+        tv_terms = findViewById(R.id.tv_terms);
+        
         iv_showPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(v.isSelected()){
+                if (v.isSelected()) {
                     iv_showPassword.setSelected(false);
                     //hide password
                     iv_showPassword.setImageResource(R.drawable.ic_visibility_off);
                     edit_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
-
-                }else {
+                    
+                } else {
                     iv_showPassword.setSelected(true);
                     //show password
                     iv_showPassword.setImageResource(R.drawable.ic_visibility);
@@ -296,12 +290,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 edit_password.setSelection(edit_password.getText().length());
             }
         });
-
-
-
+        
+        
         /**
          * set URL in terms and condition */
-
+        
         String text = "I have read and agree to Contact Ninja’s Terms & Conditions";
         SpannableString spannableString = new SpannableString(text);
         ClickableSpan clickableSpan1 = new ClickableSpan() {
@@ -312,18 +305,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 startActivity(intent);
             }
         };
-        spannableString.setSpan(clickableSpan1, 41,59, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(clickableSpan1, 41, 59, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         tv_terms.setText(spannableString);
         try {
             tv_terms.setMovementMethod(LinkMovementMethod.getInstance());
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
+        
     }
-
+    
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View v) {
@@ -350,68 +341,68 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.btn_login:
                 if (checkVelidaction()) {
                     sessionManager.setlogin_type(Login_type);
-
+                    
                     if (Login_type.equals("EMAIL")) {
                         /**
                          * if login with email */
                         try {
                             iv_password_invalid.setVisibility(View.GONE);
                             iv_invalid.setVisibility(View.GONE);
-                            if(Global.isNetworkAvailable(LoginActivity.this,mMainLayout)) {
+                            if (Global.isNetworkAvailable(LoginActivity.this, mMainLayout)) {
                                 Uservalidate();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     } else {
-
+                        
                         try {
                             iv_invalid.setVisibility(View.GONE);
-                            if(Global.isNetworkAvailable(LoginActivity.this,mMainLayout)) {
+                            if (Global.isNetworkAvailable(LoginActivity.this, mMainLayout)) {
                                 Uservalidate();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
-
+                        
+                        
                     }
-
+                    
                 }
-
-
+                
+                
                 break;
             case R.id.tv_signUP:
-
+                
                 startActivity(new Intent(getApplicationContext(), SignupActivity.class));
-               // finish();
-
+                // finish();
+                
                 break;
             case R.id.btn_chnage_forgot:
-                startActivity(new Intent(getApplicationContext(),ForgotPasswordActivity.class));
-
+                startActivity(new Intent(getApplicationContext(), ForgotPasswordActivity.class));
+                
                 break;
         }
     }
-
+    
     public void VerifyPhone(String phoneNumber) {
         String countryCode = ccp_id.getSelectedCountryCodeWithPlus();
         PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
-                .setPhoneNumber(countryCode + phoneNumber)       // Phone number to verify
-                .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-                .setActivity(this)                 // Activity (for callback binding)
-                .setCallbacks(mCallbacks)          // OnVerificationStateChangedCallbacks
-                .build();
+                                           .setPhoneNumber(countryCode + phoneNumber)       // Phone number to verify
+                                           .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+                                           .setActivity(this)                 // Activity (for callback binding)
+                                           .setCallbacks(mCallbacks)          // OnVerificationStateChangedCallbacks
+                                           .build();
         PhoneAuthProvider.verifyPhoneNumber(options);
-
+        
     }
-
+    
     private boolean checkVelidaction() {
         if (is_PhoneShow) {
             Login_type = "PHONE";
             if (edit_Mobile.getText().toString().trim().equals("")) {
                 iv_invalid.setText(getResources().getString(R.string.invalid_phone));
-            }else {
+            } else {
                 String countryCode = ccp_id.getSelectedCountryCodeWithPlus();
                 String phoneNumber = edit_Mobile.getText().toString().trim();
                 if (countryCode.length() > 0 && phoneNumber.length() > 0) {
@@ -436,7 +427,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             if (edit_email.getText().toString().trim().equals("")) {
                 iv_invalid.setText(getResources().getString(R.string.invalid_email));
                 iv_invalid.setVisibility(View.VISIBLE);
-            }  else if (Global.emailValidator(edit_email.getText().toString().trim())) {
+            } else if (Global.emailValidator(edit_email.getText().toString().trim())) {
                 iv_invalid.setVisibility(View.GONE);
                 if (edit_password.getText().toString().trim().equals("")) {
                     iv_password_invalid.setText(getResources().getString(R.string.invalid_password));
@@ -448,32 +439,32 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 iv_invalid.setText(getResources().getString(R.string.invalid_email));
                 iv_invalid.setVisibility(View.VISIBLE);
             }
-
+            
         }
         return false;
     }
-
-
+    
+    
     public void LoginData() {
         password = edit_password.getText().toString();
-
+        
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("firebase_fcm_token", SessionManager.getFcm_Token(getApplicationContext()));
         paramObject.addProperty("email", edit_email.getText().toString());
         paramObject.addProperty("login_type", Login_type);
         paramObject.addProperty("password", password);
-
+        
         obj.add("data", paramObject);
-        retrofitCalls.LoginUser(sessionManager,obj, loadingDialog, Global.getVersionname(LoginActivity.this),Global.Device,new RetrofitCallback() {
+        retrofitCalls.LoginUser(sessionManager, obj, loadingDialog, Global.getVersionname(LoginActivity.this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 //Log.e("Response is",new Gson().toJson(response));
-
+                
                 loadingDialog.cancelLoading();
-
+                
                 if (response.body().getHttp_status() == 200) {
-
+                    
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<SignResponseModel>() {
@@ -481,76 +472,69 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     SignResponseModel user_model = new Gson().fromJson(headerString, listType);
                     SessionManager.setUserdata(getApplicationContext(), user_model);
                     sessionManager.setRefresh_token(user_model.getRefreshToken());
-                    sessionManager.setAccess_token(user_model.getTokenType()+" "+user_model.getAccessToken());
+                    sessionManager.setAccess_token(user_model.getTokenType() + " " + user_model.getAccessToken());
                     try {
-                        if (user_model.getUser().getContactNumber().equals(""))
-                        {
+                        if (user_model.getUser().getContactNumber().equals("")) {
                             Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
                             intent.putExtra("login_type", Login_type);
                             startActivity(intent);
-                        } else if (user_model.getUser().getUserprofile().getPurchased_planid().equals("")||
-                            user_model.getUser().getUserprofile().getPurchased_planid().equals("null")){
+                        } else if (user_model.getUser().getUserprofile().getPurchased_planid().equals("") ||
+                                           user_model.getUser().getUserprofile().getPurchased_planid().equals("null")) {
                             startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
                         } else {
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         }
                         finish();
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                         Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
                         intent.putExtra("login_type", Login_type);
                         startActivity(intent);
                         finish();
                     }
-
-
-
-                } else if (response.body().getHttp_status()==404){
+                    
+                    
+                } else if (response.body().getHttp_status() == 404) {
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
-                   // Log.e("String is",response.body().getMessage());
+                    // Log.e("String is",response.body().getMessage());
                     Type listType = new TypeToken<UservalidateModel>() {
                     }.getType();
-                    try{
-                    //Log.e("Login_type",Login_type);
-                    if (Login_type.equals("EMAIL"))
-                    {
-                        if (response.body().getMessage().toString().equals("Invalid Password."))
-                        {
-                            iv_password_invalid.setText(getResources().getString(R.string.invalid_password));
-                            iv_password_invalid.setVisibility(View.VISIBLE);
-                           //Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
-
+                    try {
+                        //Log.e("Login_type",Login_type);
+                        if (Login_type.equals("EMAIL")) {
+                            if (response.body().getMessage().toString().equals("Invalid Password.")) {
+                                iv_password_invalid.setText(getResources().getString(R.string.invalid_password));
+                                iv_password_invalid.setVisibility(View.VISIBLE);
+                                //Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
+                                
+                            } else {
+                                iv_invalid.setVisibility(View.VISIBLE);
+                            }
                         }
-                        else {
-                            iv_invalid.setVisibility(View.VISIBLE);
-                        }
-                    }
-
-                    }catch (Exception e){
+                        
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }
-                else {
+                } else {
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                     Global.Messageshow(getApplicationContext(), mMainLayout, headerString, false);
-
+                    
                 }
             }
-
+            
             @Override
             public void error(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
             }
         });
     }
-
+    
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         Global.checkConnectivity(LoginActivity.this, mMainLayout);
     }
+    
     @SuppressLint("ObsoleteSdkInt")
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void registerNetworkBroadcastForNougat() {
@@ -561,7 +545,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         }
     }
-
+    
     @RequiresApi(api = Build.VERSION_CODES.N)
     protected void unregisterNetworkChanges() {
         try {
@@ -570,61 +554,58 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             e.printStackTrace();
         }
     }
-
+    
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onDestroy() {
         super.onDestroy();
         unregisterNetworkChanges();
     }
-
-
-
-
+    
+    
     private void Uservalidate() throws JSONException {
-
-            String txt_email=edit_email.getText().toString();
-            String txt_contect=edit_Mobile.getText().toString();
-            loadingDialog.showLoadingDialog();
-            JsonObject obj = new JsonObject();
-            JsonObject paramObject = new JsonObject();
-             if (Login_type.equals("EMAIL")) {
-                 paramObject.addProperty("email", txt_email);
-             }
-             else {
-                 paramObject.addProperty("contact_number", ccp_id.getSelectedCountryCodeWithPlus()+txt_contect);
-             }
-             paramObject.addProperty("first_name", "");
-            paramObject.addProperty("last_name", "");
-            paramObject.addProperty("login_type", Login_type);
-            obj.add("data", paramObject);
-            retrofitCalls.Userexistcheck(sessionManager,obj, loadingDialog,Global.getVersionname(LoginActivity.this),Global.Device, new RetrofitCallback() {
-                @Override
-                public void success(Response<ApiResponse> response) {
-
-                    if (response.body().getHttp_status() == 200) {
-
-                        if(!Login_type.equals("EMAIL")){
-                            /**
-                             * verification phone */
-                            VerifyPhone(edit_Mobile.getText().toString());
-                        }else {
-                            if(Global.isNetworkAvailable(LoginActivity.this,mMainLayout)) {
-                                /**
-                                 * login with email and password */
-                                LoginData();
-                            }
-                        }
-                    } else {
-                        loadingDialog.cancelLoading();
-                        Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
-                    }
-                }
-
-                @Override
-                public void error(Response<ApiResponse> response) {
-                    loadingDialog.cancelLoading();
-                }
-            });
+        
+        String txt_email = edit_email.getText().toString();
+        String txt_contect = edit_Mobile.getText().toString();
+        loadingDialog.showLoadingDialog();
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        if (Login_type.equals("EMAIL")) {
+            paramObject.addProperty("email", txt_email);
+        } else {
+            paramObject.addProperty("contact_number", ccp_id.getSelectedCountryCodeWithPlus() + txt_contect);
         }
+        paramObject.addProperty("first_name", "");
+        paramObject.addProperty("last_name", "");
+        paramObject.addProperty("login_type", Login_type);
+        obj.add("data", paramObject);
+        retrofitCalls.Userexistcheck(sessionManager, obj, loadingDialog, Global.getVersionname(LoginActivity.this), Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                
+                if (response.body().getHttp_status() == 200) {
+                    
+                    if (!Login_type.equals("EMAIL")) {
+                        /**
+                         * verification phone */
+                        VerifyPhone(edit_Mobile.getText().toString());
+                    } else {
+                        if (Global.isNetworkAvailable(LoginActivity.this, mMainLayout)) {
+                            /**
+                             * login with email and password */
+                            LoginData();
+                        }
+                    }
+                } else {
+                    loadingDialog.cancelLoading();
+                    Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
+                }
+            }
+            
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
     }
+}

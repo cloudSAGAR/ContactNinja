@@ -24,9 +24,7 @@ import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,10 +38,8 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -54,10 +50,6 @@ import io.michaelrocks.libphonenumber.android.Phonenumber;
 
 @SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Global extends Application {
-    public  static SimpleDateFormat defoult_date_time_formate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-    public  static SimpleDateFormat defoult_date_formate = new SimpleDateFormat("yyyy-MM-dd");
-    public  static SimpleDateFormat defoult_month_formate = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss");
-
     public static final String Device = "APP_ANDR";
     private static final long MIN_CLICK_INTERVAL = 2000; //in millis
     public static String AppVersion = "";
@@ -82,22 +74,7 @@ public class Global extends Application {
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         activity.startActivity(intent);
     }
-
-    public static String getCurrentTime() {
-        String currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
-        return currentTime;
-    }
-
-    public static String getCurrentDate() {
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        String date = df.format(Calendar.getInstance().getTime());
-        return date;
-    }
-    public static String getCurrentTimeandDate() {
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String date = df.format(Calendar.getInstance().getTime());
-        return date;
-    }
+    
     public static String getVersionname(Activity activity) {
         String version = "";
         try {
@@ -304,48 +281,6 @@ public class Global extends Application {
         return token;
     }
 
-    public static String formateChange(String dateTime) {
-       Date oneWayTripDate=null;
-       String tripDate="";
-        SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        SimpleDateFormat output = new SimpleDateFormat("dd-MMM-yyyy hh:mmaaa");
-        try {
-            oneWayTripDate = input.parse(dateTime);                 // parse input
-            tripDate= output.format(oneWayTripDate);    // format output
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return tripDate;
-    }
-
-
-    public static String DateFormateMonth(String dateTime) {
-        Date oneWayTripDate=null;
-        String tripDate="";
-        SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat output = new SimpleDateFormat("dd-MMM-yyyy");
-        try {
-            oneWayTripDate = input.parse(dateTime);                 // parse input
-            tripDate= output.format(oneWayTripDate);    // format output
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return tripDate;
-    }
-    public static String TimeFormateAMPM(String Time) {
-        Date oneWayTripDate=null;
-        String tripDate="";
-        SimpleDateFormat input = new SimpleDateFormat("HH:mm:ss");
-        SimpleDateFormat output = new SimpleDateFormat("hh:mm aaa");
-        try {
-            oneWayTripDate = input.parse(Time);                 // parse input
-            tripDate= output.format(oneWayTripDate);    // format output
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return tripDate;
-    }
-
     public static int Countrycode_Country(Activity activity, String email_number) {
         TelephonyManager tm = (TelephonyManager) activity.getSystemService(activity.TELEPHONY_SERVICE);
         String country = tm.getNetworkCountryIso();
@@ -375,24 +310,7 @@ public class Global extends Application {
     }
 
 
-
-    /*
-        public static String getcontectexits(SessionManager sessionManager){
-
-            String token=sessionManager.getcontectexits();
-            return token;
-        }
-    */
-   /* public static String getDate(Integer time) throws ParseException {
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeZone(TimeZone.getTimeZone("GMT"));
-        cal.setTimeInMillis(Long.valueOf(time) * 1000);
-        Date date = cal.getTime();
-        SimpleDateFormat format1 = new SimpleDateFormat("dd-MMM-yyyy, hh:mm");
-        String date1 = format1.format(date);
-
-        return String.valueOf(date1);
-    }*/
+    
 
     @Override
     public void onCreate() {
@@ -563,43 +481,11 @@ public class Global extends Application {
         }
         return main_url;
     }
-    public static String parseDateToddMMyyyy(String time) {
-        String inputPattern = "yyyy-MM-dd HH:mm:ss";
-        String outputPattern = "dd-MMM-yyyy";
-        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
-        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
-
-        Date date = null;
-        String str = "";
-
-        try {
-            date = inputFormat.parse(time);
-            str = outputFormat.format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return str;
-    }
-    public static String parsetime(String time) {
-        String inputPattern = "yyyy-MM-dd HH:mm:ss";
-        String outputPattern = "h:mm a";
-        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
-        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
-
-        Date date = null;
-        String str = "";
-
-        try {
-            date = inputFormat.parse(time);
-            str = outputFormat.format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return str;
-    }
+   
     public static String parseSpaceFirst(String currentString) {
         String[] separated = currentString.split(" ");
         return   separated[0];
     }
+   
 }
 

@@ -135,7 +135,7 @@ public class Campaign_Name_Activity extends AppCompatActivity implements View.On
         save_button.setOnClickListener(this);
         iv_back.setOnClickListener(this);
         layout_time_zone.setOnClickListener(this);
-        save_button.setText("Done");
+        save_button.setText(getResources().getString(R.string.Done));
         edt_titale = findViewById(R.id.edt_titale);
         topic_remainingCharacter = findViewById(R.id.topic_remainingCharacter);
         tv_error_title = findViewById(R.id.tv_error_title);

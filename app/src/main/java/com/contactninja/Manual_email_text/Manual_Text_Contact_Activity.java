@@ -269,7 +269,7 @@ public class Manual_Text_Contact_Activity extends AppCompatActivity implements V
         save_button.setVisibility(View.VISIBLE);
         save_button.setOnClickListener(this);
         iv_back.setOnClickListener(this);
-        save_button.setText("Next");
+        save_button.setText(getResources().getString(R.string.Next));
         save_button.setVisibility(View.GONE);
 
         layoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);

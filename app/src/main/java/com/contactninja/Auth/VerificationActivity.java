@@ -63,6 +63,7 @@ import retrofit2.Response;
 public class VerificationActivity extends AppCompatActivity implements ConnectivityReceiver.ConnectivityReceiverListener {
     private static final String TAG = "VerificationActivity";
     public static CountDownTimer countDownTimer;
+    private final long mLastClickTime = 0;
     public String fcmToken = "";
     PinView otp_pinview;
     TextView verfiy_button, resend_txt, tc_wrong, tvTimer;
@@ -74,13 +75,12 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
     RetrofitCalls retrofitCalls;
     String first_name = "", last_name = "", email_address = "", login_type = "", activity_flag = "";
     CoordinatorLayout mMainLayout;
+    String referred_by = "";
     private FirebaseAuth mAuth;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
-    private final long mLastClickTime = 0;
-    String referred_by = "";
     private BroadcastReceiver mNetworkReceiver;
-
-
+    
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,7 +105,7 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        
         retrofitCalls = new RetrofitCalls();
         EnableRuntimePermission();
         firebase();
@@ -114,7 +114,7 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
         verfiy_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                
                 String pin_text = otp_pinview.getText().toString();
                 if (pin_text.equals("")) {
                     tc_wrong.setVisibility(View.VISIBLE);
@@ -123,7 +123,7 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                     Global.hideKeyboard(VerificationActivity.this);
                     tc_wrong.setVisibility(View.GONE);
                     loadingDialog.showLoadingDialog();
-
+                    
                     tc_wrong.setVisibility(View.GONE);
                     loadingDialog.showLoadingDialog();
                     try {
@@ -133,7 +133,7 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                         e.printStackTrace();
                     }
                 }
-
+                
             }
         });
         resend_txt.setOnClickListener(new View.OnClickListener() {
@@ -152,12 +152,12 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
         otp_pinview.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+            
             }
-
+            
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                
                 if (charSequence.toString().length() == 6) {
                     countDownTimer.cancel();
                     Global.hideKeyboard(VerificationActivity.this);
@@ -170,37 +170,37 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                         e.printStackTrace();
                     }
                     verfiy_button.setEnabled(false);
-
+                    
                 } else {
                     verfiy_button.setEnabled(true);
-
+                    
                 }
-
-
+                
+                
             }
-
+            
             @Override
             public void afterTextChanged(Editable editable) {
-
+            
             }
         });
-
+        
     }
-
-
+    
+    
     public void VerifyPhone(String phoneNumber) {
-
+        
         PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
-                .setPhoneNumber(countrycode + phoneNumber)       // Phone number to verify
-                .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-                .setActivity(this)                 // Activity (for callback binding)
-                .setCallbacks(mCallbacks)          // OnVerificationStateChangedCallbacks
-                .build();
+                                           .setPhoneNumber(countrycode + phoneNumber)       // Phone number to verify
+                                           .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+                                           .setActivity(this)                 // Activity (for callback binding)
+                                           .setCallbacks(mCallbacks)          // OnVerificationStateChangedCallbacks
+                                           .build();
         PhoneAuthProvider.verifyPhoneNumber(options);
-
+        
     }
-
-
+    
+    
     private void signInWithCredential(PhoneAuthCredential credential) {
         // inside this method we are checking if
         // the code entered is correct or not.
@@ -229,8 +229,8 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                                     e.printStackTrace();
                                 }
                             }
-
-
+                            
+                            
                         } else {
                             tc_wrong.setVisibility(View.VISIBLE);
                             Toast.makeText(VerificationActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
@@ -243,17 +243,17 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
             }
         });
     }
-
+    
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-
+                        
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.i(TAG, "signInWithCredential:success");
-
+                            
                             FirebaseUser user = task.getResult().getUser();
                             SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
                             if (!sessionManager.isEmail_Update()) {
@@ -261,16 +261,16 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                                 intent.putExtra("login_type", login_type);
                                 startActivity(intent);
                                 finish();
-                            } else if (user_data.getUser().getUserprofile().getPurchased_planid().equals("")||
-                                    user_data.getUser().getUserprofile().getPurchased_planid().equals("null")) {
+                            } else if (user_data.getUser().getUserprofile().getPurchased_planid().equals("") ||
+                                               user_data.getUser().getUserprofile().getPurchased_planid().equals("null")) {
                                 startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
                                 finish();
                             } else {
                                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                                 finish();
                             }
-
-
+                            
+                            
                         }
                     }
                 })
@@ -281,7 +281,7 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                     }
                 });
     }
-
+    
     private void IntentUI() {
         otp_pinview = findViewById(R.id.otp_pinview);
         verfiy_button = findViewById(R.id.verfiy_button);
@@ -290,77 +290,77 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
         tvTimer = findViewById(R.id.tvTimer);
         mMainLayout = findViewById(R.id.mMainLayout);
     }
-
+    
     public void EnableRuntimePermission() {
-
+        
         PermissionListener permissionlistener = new PermissionListener() {
             @Override
             public void onPermissionGranted() {
-
+            
             }
-
+            
             @Override
             public void onPermissionDenied(ArrayList<String> deniedPermissions) {
                 //Toast.makeText(MainActivity.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
             }
-
-
+            
+            
         };
         TedPermission.with(this)
                 .setPermissionListener(permissionlistener)
                 .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
                 .setPermissions(Manifest.permission.RECEIVE_SMS)
                 .check();
-
+        
         //startActivity(new Intent(getApplicationContext(), VerificationActivity.class));
-
+        
     }
-
-
+    
+    
     private void firebase() {
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
                     @Override
                     public void onComplete(@NonNull Task<String> task) {
                         if (!task.isSuccessful()) {
-                          //  Log.e("FCM registration failed", task.getException() + "");
+                            //  Log.e("FCM registration failed", task.getException() + "");
                             return;
                         }
-
+                        
                         fcmToken = task.getResult();
                     }
                 });
         // Initialize phone auth callbacks  [START phone_auth_callbacks]
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-
+            
             @Override
             public void onVerificationCompleted(PhoneAuthCredential credential) {
-              //  Log.e("FCM registration failed", credential + "");
-
+                //  Log.e("FCM registration failed", credential + "");
+                
             }
-
+            
             @Override
             public void onVerificationFailed(FirebaseException e) {
-             //   Log.e(TAG, "onVerificationFailed", e);
-                Toast.makeText(getApplicationContext(), "VERIFY FAILED", Toast.LENGTH_LONG).show();
-
+                //   Log.e(TAG, "onVerificationFailed", e);
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.please_try_again_later), Toast.LENGTH_LONG).show();
+                
             }
-
+            
             @Override
             public void onCodeSent(@NonNull String verificationId, @NonNull PhoneAuthProvider.ForceResendingToken token) {
-
-           //     Log.e("Code is Send", "Yes");
-
+                
+                //     Log.e("Code is Send", "Yes");
+                
                 v_id = verificationId;
                 second = -1;
                 showTimer();
             }
-
+            
         };
     }
-
+    
     public void showTimer() {
-       // Log.e("Show TImmer", "Yes");
+        // Log.e("Show TImmer", "Yes");
         countDownTimer = new CountDownTimer(60 * 1000, 1000) {
             @SuppressLint({"NewApi", "DefaultLocale"})
             @Override
@@ -373,7 +373,7 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                         TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
                                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
             }
-
+            
             public void onFinish() {
                 countDownTimer.cancel();
                 tvTimer.setText("00:00");
@@ -383,12 +383,12 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
         };
         countDownTimer.start();
     }
-
+    
     private void SignAPI() throws JSONException {
         Global.getInstance().setConnectivityListener(this);
         loadingDialog.showLoadingDialog();
         String otp = otp_pinview.getText().toString();
-
+        
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("firebase_fcm_token", SessionManager.getFcm_Token(getApplicationContext()));
@@ -404,9 +404,9 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
             @Override
             public void success(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
-           //     Log.e("Response is", new Gson().toJson(response.body()));
+                //     Log.e("Response is", new Gson().toJson(response.body()));
                 if (response.body().getHttp_status() == 200) {
-
+                    
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<SignResponseModel>() {
@@ -416,15 +416,15 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                     sessionManager.setRefresh_token(user_model.getRefreshToken());
                     sessionManager.setAccess_token(user_model.getTokenType() + " " + user_model.getAccessToken());
                     if (login_type.equals("EMAIL")) {
-
+                        
                         try {
                             if (user_model.getUser().getContactNumber().equals("")) {
                                 Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
                                 intent.putExtra("login_type", login_type);
                                 startActivity(intent);
                             } else {
-                                if (user_model.getUser().getUserprofile().getPurchased_planid().equals("")||
-                                        user_model.getUser().getUserprofile().getPurchased_planid().equals("null")) {
+                                if (user_model.getUser().getUserprofile().getPurchased_planid().equals("") ||
+                                            user_model.getUser().getUserprofile().getPurchased_planid().equals("null")) {
                                     startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
                                 } else {
                                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
@@ -437,17 +437,17 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                             startActivity(intent);
                             finish();
                         }
-
+                        
                     } else if (login_type.equals("PHONE")) {
-
+                        
                         try {
                             if (user_model.getUser().getEmail().equals("")) {
                                 Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
                                 intent.putExtra("login_type", login_type);
                                 startActivity(intent);
                             } else {
-                                if (user_model.getUser().getUserprofile().getPurchased_planid().equals("")||
-                                        user_model.getUser().getUserprofile().getPurchased_planid().equals("null")) {
+                                if (user_model.getUser().getUserprofile().getPurchased_planid().equals("") ||
+                                            user_model.getUser().getUserprofile().getPurchased_planid().equals("null")) {
                                     startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
                                 } else {
                                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
@@ -460,35 +460,35 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                             startActivity(intent);
                             finish();
                         }
-
+                        
                     } else if (user_model.getUser().getEmail().equals("") || user_model.getUser().getContactNumber().equals("")) {
                         Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
                         intent.putExtra("login_type", login_type);
                         startActivity(intent);
                         finish();
-                    } else if (user_model.getUser().getUserprofile().getPurchased_planid().equals("")||
-                            user_model.getUser().getUserprofile().getPurchased_planid().equals("null")) {
+                    } else if (user_model.getUser().getUserprofile().getPurchased_planid().equals("") ||
+                                       user_model.getUser().getUserprofile().getPurchased_planid().equals("null")) {
                         startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
                         finish();
                     } else {
                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         finish();
                     }
-
+                    
                 }
             }
-
+            
             @Override
             public void error(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
-
+                
             }
         });
-
+        
     }
-
+    
     public void LoginData() throws JSONException {
-       // Log.e("Code is", countrycode);
+        // Log.e("Code is", countrycode);
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("firebase_fcm_token", SessionManager.getFcm_Token(getApplicationContext()));
@@ -502,30 +502,30 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
             public void success(Response<ApiResponse> response) {
                 // Log.e("Response is",new Gson().toJson(response));
                 loadingDialog.cancelLoading();
-
-
+                
+                
                 if (response.body().getHttp_status() == 200) {
-
+                    
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<SignResponseModel>() {
                     }.getType();
-
-
+                    
+                    
                     // Log.e("Reponse is",gson.toJson(response.body().getData()));
                     SignResponseModel user_model = new Gson().fromJson(headerString, listType);
                     SessionManager.setUserdata(getApplicationContext(), user_model);
                     sessionManager.setRefresh_token(user_model.getRefreshToken());
                     sessionManager.setAccess_token(user_model.getTokenType() + " " + user_model.getAccessToken());
                     try {
-
+                        
                         if (user_model.getUser().getEmail().equals("") || user_model.getUser().getContactNumber().equals("")) {
                             Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
                             intent.putExtra("login_type", login_type);
                             startActivity(intent);
                             finish();
-                        } else if (user_model.getUser().getUserprofile().getPurchased_planid().equals("")||
-                                user_model.getUser().getUserprofile().getPurchased_planid().equals("null")) {
+                        } else if (user_model.getUser().getUserprofile().getPurchased_planid().equals("") ||
+                                           user_model.getUser().getUserprofile().getPurchased_planid().equals("null")) {
                             startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
                             finish();
                         } else {
@@ -538,31 +538,31 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                         startActivity(intent);
                         finish();
                     }
-
-
+                    
+                    
                     //  Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), true);
-
-
+                    
+                    
                 } else {
                     verfiy_button.setEnabled(false);
                     Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
                 }
             }
-
+            
             @Override
             public void error(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
             }
         });
     }
-
+    
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         Global.checkConnectivity(VerificationActivity.this, mMainLayout);
-
+        
     }
-
-
+    
+    
     @SuppressLint("ObsoleteSdkInt")
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void registerNetworkBroadcastForNougat() {
@@ -573,7 +573,7 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
             registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         }
     }
-
+    
     @RequiresApi(api = Build.VERSION_CODES.N)
     protected void unregisterNetworkChanges() {
         try {
@@ -582,12 +582,12 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
             e.printStackTrace();
         }
     }
-
+    
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onDestroy() {
         super.onDestroy();
         unregisterNetworkChanges();
     }
-
+    
 }

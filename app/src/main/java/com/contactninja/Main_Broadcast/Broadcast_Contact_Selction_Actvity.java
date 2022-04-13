@@ -123,7 +123,7 @@ public class Broadcast_Contact_Selction_Actvity extends AppCompatActivity implem
         iv_back.setOnClickListener(this);
         save_button.setOnClickListener(this);
         save_button.setVisibility(View.VISIBLE);
-        save_button.setText("Next");
+        save_button.setText(getResources().getString(R.string.Next));
     }
 
     @Override

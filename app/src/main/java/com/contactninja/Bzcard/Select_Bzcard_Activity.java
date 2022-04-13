@@ -52,8 +52,8 @@ import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Select_Bzcard_Activity extends AppCompatActivity implements ConnectivityReceiver.ConnectivityReceiverListener, View.OnClickListener {
+    public static Select_Bzcard_Activity activity;
     ImageView iv_back;
-    private BroadcastReceiver mNetworkReceiver;
     RelativeLayout mMainLayout;
     ViewPager2 viewPager2;
     TextView txt_footer, txt_Use, tv_Preview;
@@ -62,10 +62,10 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
     LoadingDialog loadingDialog;
     List<BZcardListModel.Bizcard> bizcardList = new ArrayList<>();
     int Card_id = 1;
-    private long mLastClickTime = 0;
     BZcardListModel bZcardListModel = new BZcardListModel();
-    public static Select_Bzcard_Activity activity;
-
+    private BroadcastReceiver mNetworkReceiver;
+    private long mLastClickTime = 0;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,10 +76,10 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
         retrofitCalls = new RetrofitCalls(Select_Bzcard_Activity.this);
         loadingDialog = new LoadingDialog(Select_Bzcard_Activity.this);
         initUI();
-
-
+        
+        
     }
-
+    
     @Override
     protected void onResume() {
         super.onResume();
@@ -91,11 +91,11 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
             e.printStackTrace();
         }
     }
-
+    
     void Data_list() throws JSONException {
-
+        
         loadingDialog.showLoadingDialog();
-
+        
         SignResponseModel signResponseModel = SessionManager.getGetUserdata(Select_Bzcard_Activity.this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
@@ -119,16 +119,16 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
                     setImage();
                 }
             }
-
+            
             @Override
             public void error(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
             }
         });
-
-
+        
+        
     }
-
+    
     private void setImage() {
         viewPager2.setAdapter(new ViewPageAdepter(getApplicationContext(), bizcardList));
         viewPager2.setClipToPadding(false);
@@ -142,7 +142,7 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
             public void transformPage(@NonNull View page, float position) {
                 float r = 1 - Math.abs(position);
                 page.setScaleY(0.85f + r * 0.15f);
-
+                
                 txt_footer.setText(getResources().getString(R.string.bz_footer));
   /*              if (viewPager2.getCurrentItem() == 0) {
                 } else if (viewPager2.getCurrentItem() == 1) {
@@ -157,12 +157,12 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
                     txt_footer.setText(getResources().getString(R.string.bz_footer2));
                 }
 */
-
+            
             }
         });
         viewPager2.setPageTransformer(compositePagerTransformer);
     }
-
+    
     @SuppressLint("SetJavaScriptEnabled")
     private void initUI() {
         mMainLayout = findViewById(R.id.mMainLayout);
@@ -176,12 +176,12 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
         txt_Use.setOnClickListener(this);
         tv_Preview.setOnClickListener(this);
     }
-
+    
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         Global.checkConnectivity(Select_Bzcard_Activity.this, mMainLayout);
     }
-
+    
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void registerNetworkBroadcastForNougat() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -191,7 +191,7 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
             registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         }
     }
-
+    
     @RequiresApi(api = Build.VERSION_CODES.N)
     protected void unregisterNetworkChanges() {
         try {
@@ -200,14 +200,14 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
             e.printStackTrace();
         }
     }
-
+    
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onDestroy() {
         super.onDestroy();
         unregisterNetworkChanges();
     }
-
+    
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -231,7 +231,7 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
                 } else {
                     Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.max_card), false);
                 }
-
+                
                 break;
             case R.id.tv_Preview:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
@@ -256,23 +256,23 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
                 break;
         }
     }
-
+    
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         finish();
     }
-
+    
     public static class ViewPageAdepter extends RecyclerView.Adapter<ViewPageAdepter.viewholder> {
-
+        
         public Context mCtx;
         List<BZcardListModel.Bizcard> bizcardList = new ArrayList<>();
-
+        
         public ViewPageAdepter(Context applicationContext, List<BZcardListModel.Bizcard> bizcardList) {
             this.mCtx = applicationContext;
             this.bizcardList = bizcardList;
         }
-
+        
         @NonNull
         @Override
         public ViewPageAdepter.viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -280,12 +280,12 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
             View view = inflater.inflate(R.layout.bzcard_fix_item_select, parent, false);
             return new ViewPageAdepter.viewholder(view);
         }
-
+        
         @Override
         public void onBindViewHolder(@NonNull ViewPageAdepter.viewholder holder, int position) {
             BZcardListModel.Bizcard bizcard = bizcardList.get(position);
-
-
+            
+            
             switch (bizcard.getCardName()) {
                 case "bz_card_1":
                     Glide.with(mCtx.getApplicationContext()).load(Global.card_s3_link + "bzstore1.png").into(holder.iv_card);
@@ -311,21 +311,21 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
             if (resID != 0) {
                 Glide.with(mCtx.getApplicationContext()).load(resID).into(holder.iv_card);
             }*/
-
+            
         }
-
+        
         @Override
         public int getItemCount() {
             return bizcardList.size();
         }
-
+        
         public static class viewholder extends RecyclerView.ViewHolder {
             ImageView iv_card;
-
+            
             public viewholder(View view) {
                 super(view);
                 iv_card = view.findViewById(R.id.iv_card);
-
+                
             }
         }
     }

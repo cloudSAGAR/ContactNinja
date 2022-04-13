@@ -9,14 +9,12 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -25,7 +23,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.contactninja.Campaign.Fragment.Campaign_Stats_Fragment;
 import com.contactninja.Campaign.Fragment.Campaign_Step_Fragment;
-import com.contactninja.Manual_email_text.List_And_show.Item_List_Email_Detail_activty;
 import com.contactninja.Model.Broadcast_image_list;
 import com.contactninja.Model.CampaignTask_overview;
 import com.contactninja.Model.UserData.SignResponseModel;
@@ -59,16 +56,15 @@ public class Campaign_Final_Start extends AppCompatActivity implements View.OnCl
     ImageView iv_back, iv_Setting, iv_toolbar_manu_vertical;
     TextView save_button;
     List<Broadcast_image_list> broadcast_image_list = new ArrayList<>();
-    private BroadcastReceiver mNetworkReceiver;
-
     LinearLayout main_layout;
     SessionManager sessionManager;
     int sequence_id, seq_task_id;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     TextView tv_email, tv_sms, tv_contect, tv_pending, tv_contec_reach, tv_camp_name;
+    private BroadcastReceiver mNetworkReceiver;
     private long mLastClickTime = 0;
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,35 +79,35 @@ public class Campaign_Final_Start extends AppCompatActivity implements View.OnCl
         Bundle bundle = getintent.getExtras();
         sequence_id = bundle.getInt("sequence_id");
         StepData();
-
+        
         tabLayout.addTab(tabLayout.newTab().setText("Steps"));
         tabLayout.addTab(tabLayout.newTab().setText("Stats"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         adapter = new ViewpaggerAdapter(getApplicationContext(), getSupportFragmentManager(),
                 tabLayout.getTabCount(), strtext);
-
+        
         viewPager.setAdapter(adapter);
-
+        
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
             }
-
+            
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
+            
             }
-
+            
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
+            
             }
         });
-
+        
     }
-
+    
     private void IntentUI() {
         main_layout = findViewById(R.id.main_layout);
         tv_camp_name = findViewById(R.id.tv_camp_name);
@@ -135,18 +131,18 @@ public class Campaign_Final_Start extends AppCompatActivity implements View.OnCl
         tv_pending = findViewById(R.id.tv_pending);
         tv_contec_reach = findViewById(R.id.tv_contec_reach);
     }
-
+    
     @Override
     public void onClick(View view) {
-
+        
         switch (view.getId()) {
             case R.id.iv_back:
                 finish();
                 break;
             case R.id.iv_toolbar_manu_vertical:
-
+                
                 Select_to_update();
-
+                
                 break;
             case R.id.save_button:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
@@ -162,47 +158,47 @@ public class Campaign_Final_Start extends AppCompatActivity implements View.OnCl
                 break;
         }
     }
-
+    
     private void Select_to_update() {
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.campaning_item_update, null);
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Campaign_Final_Start.this, R.style.CoffeeDialog);
         bottomSheetDialog.setContentView(mView);
         LinearLayout layout_Play = bottomSheetDialog.findViewById(R.id.layout_Play);
         LinearLayout layout_delete = bottomSheetDialog.findViewById(R.id.layout_delete);
-
-
-
+        
+        
         layout_Play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 bottomSheetDialog.dismiss();
-
+                
                 StartCampignApi(sequence_id, 0);
-
+                
             }
         });
-
-
+        
+        
         layout_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 bottomSheetDialog.dismiss();
                 StartCampignApi(sequence_id, 1);
-
+                
             }
         });
-
-
+        
+        
         bottomSheetDialog.show();
     }
+    
     public void StartCampignApi(int sequence_id, int status) {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
         String user_id = String.valueOf(user_data.getUser().getId());
         String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
         String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-
-
+        
+        
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("organization_id", "1");
@@ -222,65 +218,27 @@ public class Campaign_Final_Start extends AppCompatActivity implements View.OnCl
                     @Override
                     public void success(Response<ApiResponse> response) {
                         loadingDialog.cancelLoading();
-
-                        if (response.body().getHttp_status()==200)
-                        {
+                        
+                        if (response.body().getHttp_status() == 200) {
                             onBackPressed();
+                        } else if (response.body().getHttp_status() == 403) {
+                            Global.Messageshow(getApplicationContext(), main_layout, getResources().getString(R.string.plan_validation), false);
                         }
-                        else if (response.body().getHttp_status()==403)
-                        {
-                            Global.Messageshow(getApplicationContext(),main_layout,getResources().getString(R.string.plan_validation),false);
-                        }
-
+                        
                     }
-
+                    
                     @Override
                     public void error(Response<ApiResponse> response) {
                         loadingDialog.cancelLoading();
                     }
                 });
     }
-    class ViewpaggerAdapter extends FragmentPagerAdapter {
-
-        Context context;
-        int totalTabs;
-        String strtext1;
-
-        public ViewpaggerAdapter(Context c, FragmentManager fm, int totalTabs, String strtext1) {
-            super(fm);
-            context = c;
-            context = c;
-            this.totalTabs = totalTabs;
-            this.strtext1 = strtext1;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-
-            switch (position) {
-                case 0:
-                    campaign_step_fragment = new Campaign_Step_Fragment();
-                    return campaign_step_fragment;
-                case 1:
-                    Campaign_Stats_Fragment c_Fragment = new Campaign_Stats_Fragment();
-                    return c_Fragment;
-                default:
-                    return null;
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return totalTabs;
-        }
-    }
-
+    
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         Global.checkConnectivity(Campaign_Final_Start.this, main_layout);
     }
-
-
+    
     @RequiresApi(api = Build.VERSION_CODES.N)
     protected void unregisterNetworkChanges() {
         try {
@@ -289,19 +247,18 @@ public class Campaign_Final_Start extends AppCompatActivity implements View.OnCl
             e.printStackTrace();
         }
     }
-
+    
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onDestroy() {
         super.onDestroy();
         unregisterNetworkChanges();
     }
-
-
+    
     public void StepData() {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
-
+        
         if (SessionManager.getTask(getApplicationContext()).size() != 0) {
             sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId();
         } else {
@@ -309,8 +266,8 @@ public class Campaign_Final_Start extends AppCompatActivity implements View.OnCl
             Bundle bundle = getintent.getExtras();
             sequence_id = bundle.getInt("sequence_id");
         }
-        Log.e("sequence_id", String.valueOf(sequence_id));
-
+        //  Log.e("sequence_id", String.valueOf(sequence_id));
+        
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("organization_id", 1);
@@ -331,14 +288,14 @@ public class Campaign_Final_Start extends AppCompatActivity implements View.OnCl
                     @Override
                     public void success(Response<ApiResponse> response) {
                         loadingDialog.cancelLoading();
-
+                        
                         Gson gson = new Gson();
                         String headerString = gson.toJson(response.body().getData());
                         if (response.body().getHttp_status() == 200) {
-
+                            
                             Type listType = new TypeToken<CampaignTask_overview>() {
                             }.getType();
-
+                            
                             CampaignTask_overview campData = new Gson().fromJson(headerString, listType);
                             SessionManager.setCampaign_data(campData);
                             try {
@@ -356,29 +313,64 @@ public class Campaign_Final_Start extends AppCompatActivity implements View.OnCl
                                 }
                                 tv_sms.setText(String.valueOf(sms_count));
                                 tv_email.setText(String.valueOf(email_count));
-
-
-                                if(campData.get0().getStatus().equals("I")){
+                                
+                                
+                                if (campData.get0().getStatus().equals("I")) {
                                     iv_toolbar_manu_vertical.setVisibility(View.VISIBLE);
-                                }else {
+                                } else {
                                     iv_toolbar_manu_vertical.setVisibility(View.GONE);
                                 }
-
-
+                                
+                                
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-
-
+                            
+                            
                         }
                     }
-
+                    
                     @Override
                     public void error(Response<ApiResponse> response) {
                         loadingDialog.cancelLoading();
                     }
                 });
     }
-
-
+    
+    class ViewpaggerAdapter extends FragmentPagerAdapter {
+        
+        Context context;
+        int totalTabs;
+        String strtext1;
+        
+        public ViewpaggerAdapter(Context c, FragmentManager fm, int totalTabs, String strtext1) {
+            super(fm);
+            context = c;
+            context = c;
+            this.totalTabs = totalTabs;
+            this.strtext1 = strtext1;
+        }
+        
+        @Override
+        public Fragment getItem(int position) {
+            
+            switch (position) {
+                case 0:
+                    campaign_step_fragment = new Campaign_Step_Fragment();
+                    return campaign_step_fragment;
+                case 1:
+                    Campaign_Stats_Fragment c_Fragment = new Campaign_Stats_Fragment();
+                    return c_Fragment;
+                default:
+                    return null;
+            }
+        }
+        
+        @Override
+        public int getCount() {
+            return totalTabs;
+        }
+    }
+    
+    
 }

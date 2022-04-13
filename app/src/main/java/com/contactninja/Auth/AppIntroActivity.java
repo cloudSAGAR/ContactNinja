@@ -55,7 +55,7 @@ public class AppIntroActivity extends AppCompatActivity implements View.OnClickL
                     tv_skip.setText(getResources().getString(R.string.skip));
                  //   slider_Text.setText(getResources().getString(R.string.in_1));
                 } else {
-                    tv_skip.setText(getResources().getString(R.string.next));
+                    tv_skip.setText(getResources().getString(R.string.Next));
                     //slider_Text.setText(getResources().getString(R.string.in_3));
                 }
             }

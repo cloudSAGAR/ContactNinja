@@ -353,7 +353,7 @@ public class Add_Broad_Text_Activity extends AppCompatActivity implements View.O
 
                 }
                 TemplateList.Template template1 = new TemplateList.Template();
-                template1.setTemplateName("Save current as template");
+                template1.setTemplateName(getResources().getString(R.string.Save_current_as_template));
                 template1.setSelect(true);
                 templateList.add(templateList.size(), template1);
 
@@ -454,7 +454,7 @@ public class Add_Broad_Text_Activity extends AppCompatActivity implements View.O
         save_button.setVisibility(View.VISIBLE);
         save_button.setOnClickListener(this);
         iv_back.setOnClickListener(this);
-        save_button.setText("Next");
+        save_button.setText(getResources().getString(R.string.Next));
 
         edit_template_name = findViewById(R.id.edit_template_name);
         rv_direct_list = findViewById(R.id.rv_direct_list);
@@ -1084,7 +1084,7 @@ public class Add_Broad_Text_Activity extends AppCompatActivity implements View.O
             holder.tv_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (holder.tv_item.getText().toString().equals("Save current as template")) {
+                    if (holder.tv_item.getText().toString().equals(getResources().getString(R.string.Save_current_as_template))) {
                         showAlertDialogButtonClicked(view, edit_template.getText().toString());
                         bottomSheetDialog_templateList.cancel();
                     } else {

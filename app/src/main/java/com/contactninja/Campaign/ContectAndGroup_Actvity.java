@@ -16,6 +16,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
+
 import com.contactninja.Campaign.Fragment.Campaign_Contect_Fragment;
 import com.contactninja.Campaign.Fragment.Campaign_Group_Fragment;
 import com.contactninja.Campaign.List_itm.Campaign_Final_Start;
@@ -43,13 +51,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager.widget.ViewPager;
 import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables")
@@ -70,8 +71,8 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     private BroadcastReceiver mNetworkReceiver;
-    private long mLastClickTime=0;
-
+    private long mLastClickTime = 0;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,71 +87,79 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
         sequence_id = bundle.getInt("sequence_id");
         seq_task_id = bundle.getInt("seq_task_id");
         sequence_Name = bundle.getString("sequence_Name");
-
-        if (SessionManager.getContect_flag(getApplicationContext()).equals("edit")) {
-            tabLayout.setVisibility(View.GONE);
-            viewPager.setVisibility(View.GONE);
-            Fragment fragment = new Campaign_Contect_Fragment(this);
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.frameContainer, fragment, "Fragment");
-            fragmentTransaction.commitAllowingStateLoss();
-
-        } else if (SessionManager.getContect_flag(getApplicationContext()).equals("read")) {
-            tabLayout.setVisibility(View.GONE);
-            viewPager.setVisibility(View.GONE);
-            Fragment fragment = new Campaign_Contect_Fragment(this);
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.frameContainer, fragment, "Fragment");
-            fragmentTransaction.commitAllowingStateLoss();
-        } else if (SessionManager.getContect_flag(getApplicationContext()).equals("check")) {
-            tabLayout.setVisibility(View.GONE);
-            viewPager.setVisibility(View.GONE);
-            Fragment fragment = new Campaign_Contect_Fragment(this);
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.frameContainer, fragment, "Fragment");
-            fragmentTransaction.commitAllowingStateLoss();
-        } else {
-
-            tabLayout.addTab(tabLayout.newTab().setText("Contacts"));
-            tabLayout.addTab(tabLayout.newTab().setText("Groups"));
-            tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-            adapter = new ViewpaggerAdapter(getApplicationContext(), getSupportFragmentManager(),
-                    tabLayout.getTabCount(), strtext);
-
-            viewPager.setAdapter(adapter);
-
-            viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-            tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-                @Override
-                public void onTabSelected(TabLayout.Tab tab) {
-                    viewPager.setCurrentItem(tab.getPosition());
-                }
-
-                @Override
-                public void onTabUnselected(TabLayout.Tab tab) {
-
-                }
-
-                @Override
-                public void onTabReselected(TabLayout.Tab tab) {
-
-                }
-            });
-
+        
+        switch (SessionManager.getContect_flag(getApplicationContext())) {
+            case "edit": {
+                tabLayout.setVisibility(View.GONE);
+                viewPager.setVisibility(View.GONE);
+                Fragment fragment = new Campaign_Contect_Fragment(this);
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frameContainer, fragment, "Fragment");
+                fragmentTransaction.commitAllowingStateLoss();
+                
+                break;
+            }
+            case "read": {
+                tabLayout.setVisibility(View.GONE);
+                viewPager.setVisibility(View.GONE);
+                Fragment fragment = new Campaign_Contect_Fragment(this);
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frameContainer, fragment, "Fragment");
+                fragmentTransaction.commitAllowingStateLoss();
+                break;
+            }
+            case "check": {
+                tabLayout.setVisibility(View.GONE);
+                viewPager.setVisibility(View.GONE);
+                Fragment fragment = new Campaign_Contect_Fragment(this);
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frameContainer, fragment, "Fragment");
+                fragmentTransaction.commitAllowingStateLoss();
+                break;
+            }
+            default:
+                
+                tabLayout.addTab(tabLayout.newTab().setText("Contacts"));
+                tabLayout.addTab(tabLayout.newTab().setText("Groups"));
+                tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+                adapter = new ViewpaggerAdapter(getApplicationContext(), getSupportFragmentManager(),
+                        tabLayout.getTabCount(), strtext);
+                
+                viewPager.setAdapter(adapter);
+                
+                viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+                tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                    @Override
+                    public void onTabSelected(TabLayout.Tab tab) {
+                        viewPager.setCurrentItem(tab.getPosition());
+                    }
+                    
+                    @Override
+                    public void onTabUnselected(TabLayout.Tab tab) {
+                    
+                    }
+                    
+                    @Override
+                    public void onTabReselected(TabLayout.Tab tab) {
+                    
+                    }
+                });
+                
+                break;
         }
-
+        
         search_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 contect_search.requestFocus();
             }
         });
-
+        
     }
-
+    
     private void IntentUI() {
         main_layout = findViewById(R.id.main_layout);
         tabLayout = findViewById(R.id.tabLayout);
@@ -165,13 +174,13 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
         iv_back.setOnClickListener(this);
         save_button.setOnClickListener(this);
         save_button.setVisibility(View.VISIBLE);
-        save_button.setText("Next");
+        save_button.setText(getResources().getString(R.string.Next));
         save_button.setTextColor(getResources().getColor(R.color.purple_200));
     }
-
+    
     @Override
     public void onClick(View view) {
-
+        
         switch (view.getId()) {
             case R.id.iv_back:
                 finish();
@@ -193,18 +202,18 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
                 break;
         }
     }
-
+    
     @Override
     public void onBackPressed() {
         finish();
         super.onBackPressed();
     }
-
+    
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         Global.checkConnectivity(ContectAndGroup_Actvity.this, main_layout);
     }
-
+    
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void registerNetworkBroadcastForNougat() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -214,7 +223,7 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
             registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         }
     }
-
+    
     @RequiresApi(api = Build.VERSION_CODES.N)
     protected void unregisterNetworkChanges() {
         try {
@@ -223,18 +232,18 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
             e.printStackTrace();
         }
     }
-
+    
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onDestroy() {
         super.onDestroy();
         unregisterNetworkChanges();
     }
-
+    
     public void AddContectAndGroup(int seq_task_id, int sequence_id) throws JSONException {
-
+        
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
-
+        
         JSONObject paramObject = new JSONObject();
         paramObject.put("organization_id", 1);
         paramObject.put("seq_task_id", seq_task_id);
@@ -251,19 +260,18 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
             for (int j = 0; j < contactdetails.get(i).getContactDetails().size(); j++) {
                 if (contactdetails.get(i).getContactDetails().get(j).getType().equals("NUMBER")) {
                     paramObject1.put("mobile", contactdetails.get(i).getContactDetails().get(j).getEmailNumber());
-                    paramObject1.put("prospect_id", contactdetails.get(i).getContactDetails().get(j).getContactId());
-
+                    
                 } else {
                     paramObject1.put("email", contactdetails.get(i).getContactDetails().get(j).getEmailNumber());
-                    paramObject1.put("prospect_id", contactdetails.get(i).getContactDetails().get(j).getContactId());
-
+                    
                 }
+                paramObject1.put("prospect_id", contactdetails.get(i).getContactDetails().get(j).getContactId());
                 //break;
             }
-
+            
             jsonArray.put(paramObject1);
         }
-
+        
         List<Grouplist.Group> group_list = SessionManager.getgroup_broadcste(getApplicationContext());
         JSONArray contect_array = new JSONArray();
         for (int i = 0; i < group_list.size(); i++) {
@@ -274,10 +282,10 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
             Global.Messageshow(getApplicationContext(), main_layout, getString(R.string.camp_select_contect), false);
         } else {
             loadingDialog.showLoadingDialog();
-
+            
             Log.e("Contect List is", new Gson().toJson(SessionManager.getGroupList(this)));
             Log.e("Group List is", new Gson().toJson(SessionManager.getgroup_broadcste(getApplicationContext())));
-
+            
             if (SessionManager.getTask(getApplicationContext()).size() != 0) {
                 this.sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId();
             } else {
@@ -287,7 +295,7 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
             }
             Log.e("sequence_id", String.valueOf(this.sequence_id));
             JSONObject obj = new JSONObject();
-
+            
             paramObject.put("contact_group_ids", contect_array);
             obj.put("data", paramObject);
             JsonParser jsonParser = new JsonParser();
@@ -298,9 +306,9 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
                         @Override
                         public void success(Response<ApiResponse> response) {
                             loadingDialog.cancelLoading();
-
+                            
                             if (response.body().getHttp_status() == 200) {
-
+                                
                                 if (SessionManager.getContect_flag(getApplicationContext()).equals("check")) {
                                     Intent intent = new Intent(getApplicationContext(), Campaign_Final_Start.class);
                                     intent.putExtra("sequence_id", sequence_id);
@@ -311,54 +319,54 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
                                     Intent intent = new Intent(getApplicationContext(), Campaign_Preview.class);
                                     intent.putExtra("sequence_id", sequence_id);
                                     startActivity(intent);
-                                      finish();
-
+                                    finish();
+                                    
                                 } else {
                                     Intent intent = new Intent(getApplicationContext(), Campaign_Name_Activity.class);
                                     intent.putExtra("sequence_id", sequence_id);
                                     intent.putExtra("seq_task_id", seq_task_id);
                                     intent.putExtra("sequence_Name", sequence_Name);
-                                    intent.putExtra("flag","add");
+                                    intent.putExtra("flag", "add");
                                     startActivity(intent);
                                     finish();
                                 }
-
+                                
                             } else {
                                 Global.Messageshow(getApplicationContext(), main_layout, response.body().getMessage(), false);
-
+                                
                             }
                         }
-
+                        
                         @Override
                         public void error(Response<ApiResponse> response) {
                             loadingDialog.cancelLoading();
                         }
                     });
         }
-
+        
     }
-
+    
     class ViewpaggerAdapter extends FragmentPagerAdapter {
-
+        
         Context context;
         int totalTabs;
         String strtext1;
-
+        
         public ViewpaggerAdapter(Context c, FragmentManager fm, int totalTabs, String strtext1) {
             super(fm);
             context = c;
             this.totalTabs = totalTabs;
             this.strtext1 = strtext1;
         }
-
+        
         @Override
         public Fragment getItem(int position) {
-
+            
             switch (position) {
                 case 0:
                     Campaign_Contect_Fragment contectFragment = new Campaign_Contect_Fragment(ContectAndGroup_Actvity.this);
                     return contectFragment;
-
+                
                 case 1:
                     Campaign_Group_Fragment c_Fragment = new Campaign_Group_Fragment();
                     return c_Fragment;
@@ -366,14 +374,14 @@ public class ContectAndGroup_Actvity extends AppCompatActivity implements View.O
                     return null;
             }
         }
-
+        
         @Override
         public int getCount() {
             return totalTabs;
         }
     }
-
-
+    
+    
 }
 
 

@@ -20,6 +20,7 @@ import com.contactninja.Model.ManualTaskModel;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.Global;
+import com.contactninja.Utils.Global_Time;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.ApiResponse;
@@ -329,8 +330,8 @@ public class Task_Fragment extends Fragment  {
         try {
 
 
-            Date date1 = Global.defoult_date_formate.parse(Global.getCurrentDate());
-            Date date2 = Global.defoult_date_formate.parse(onlyDate);
+            Date date1 = Global_Time.defoult_date_formate.parse(Global_Time.getCurrentDate());
+            Date date2 = Global_Time.defoult_date_formate.parse(onlyDate);
 
 
             if (date1.after(date2)) {

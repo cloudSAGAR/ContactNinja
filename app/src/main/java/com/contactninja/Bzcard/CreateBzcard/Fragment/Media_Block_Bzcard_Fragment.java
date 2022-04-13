@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -48,16 +46,31 @@ import java.util.List;
  */
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClickListener, Bz_MediaClick {
-
+    
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    public static List<Bzcard_Fields_Model.BZ_media_delete> deleteList = new ArrayList<>();
+    public static BZcardListModel.Bizcard bzcard_model;
+    RecyclerView rv_color_list, rv_media_list;
+    ColorAdepter colorAdepter;
+    List<Bzcard_Fields_Model.Bz_color_Model> color_modelList = new ArrayList<>();
+    ImageView iv_Cutom_Button, iv_Cutom_Button_other, iv_Add_call, iv_Schedule_a_meeting_radio, iv_Know_more,
+            iv_Visit_now, iv_Inquire_now, iv_Learn_more, iv_Custom_HTML, iv_media_title;
+    LinearLayout layout_Cutom_Button, layout_Custom_other, layout_Add_call, layout_Schedule_a_meeting, layout_Know_more, layout_Visit_now,
+            layout_Inquire_now, layout_Learn_more, layout_Custom_HTML, layout_media, layout_Schedule_a_meeting_edit,
+            layout_Know_more_edit, layout_Visit_now_edit, layout_Inquire_now_edit, layout_Learn_more_edit,
+            layout_media_list, layout_item_add_new, layout_Cutom_Button_other;
+    EditText edt_title_1, edt_add_url_1, edt_title_2, edt_add_url_2, edt_Bio, edt_Add_description, edt_Schedule_a_meeting_url1, edt_Know_more_url, edt_Visit_now_url,
+            edt_Inquire_now_url, edt_Learn_more_url, edt_add_Custom_HTML;
+    TextView txt_invalid_Schedule_a_meeting, txt_invalid_txt_Know_more, txt_invalid_Visit_now, txt_invalid_Inquire_now, txt_invalid_Learn_more;
+    List<Bzcard_Fields_Model.BZ_media_information> bzMediaInformationList = new ArrayList<>();
+    MedialistAdepter medialistAdepter;
+    boolean media_show = true;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
     public Media_Block_Bzcard_Fragment() {
         // Required empty public constructor
     }
@@ -88,91 +101,69 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
-
-    RecyclerView rv_color_list,rv_media_list;
-    ColorAdepter colorAdepter;
-    List<Bzcard_Fields_Model.Bz_color_Model> color_modelList = new ArrayList<>();
-    ImageView iv_Cutom_Button, iv_Cutom_Button_other, iv_Add_call, iv_Schedule_a_meeting_radio, iv_Know_more,
-            iv_Visit_now, iv_Inquire_now, iv_Learn_more, iv_Custom_HTML, iv_media_title;
-    LinearLayout layout_Cutom_Button,layout_Custom_other, layout_Add_call, layout_Schedule_a_meeting, layout_Know_more, layout_Visit_now,
-            layout_Inquire_now, layout_Learn_more, layout_Custom_HTML, layout_media, layout_Schedule_a_meeting_edit,
-            layout_Know_more_edit, layout_Visit_now_edit, layout_Inquire_now_edit, layout_Learn_more_edit,
-            layout_media_list,layout_item_add_new,layout_Cutom_Button_other;
-    EditText edt_title_1, edt_add_url_1,edt_title_2, edt_add_url_2, edt_Bio, edt_Add_description, edt_Schedule_a_meeting_url1, edt_Know_more_url, edt_Visit_now_url,
-            edt_Inquire_now_url, edt_Learn_more_url, edt_add_Custom_HTML;
-    TextView txt_invalid_Schedule_a_meeting, txt_invalid_txt_Know_more, txt_invalid_Visit_now, txt_invalid_Inquire_now, txt_invalid_Learn_more;
-
-
-    List<Bzcard_Fields_Model.BZ_media_information> bzMediaInformationList = new ArrayList<>();
-    public static List<Bzcard_Fields_Model.BZ_media_delete> deleteList = new ArrayList<>();
-    public static BZcardListModel.Bizcard bzcard_model;
-    MedialistAdepter medialistAdepter;
-    boolean media_show=true;
-
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_media__block__bzcard_, container, false);
-         bzcard_model = SessionManager.getBzcard(getActivity());
-         bzMediaInformationList= bzcard_model.getBzcardFieldsModel().getBzMediaInformationList();
-        deleteList= bzcard_model.getBzcardFieldsModel().getMedia_deletes();
-
+        bzcard_model = SessionManager.getBzcard(getActivity());
+        bzMediaInformationList = bzcard_model.getBzcardFieldsModel().getBzMediaInformationList();
+        deleteList = bzcard_model.getBzcardFieldsModel().getMedia_deletes();
+        
         IntentView(view);
       /*  setdata();
         setColor();
         if(bzMediaInformationList.size()!=0){
             setCreatedVideoandImage();
         }*/
-
+        
         return view;
     }
-
+    
     private void setdata() {
-        if(bzcard_model.getCard_id()==1){
-
+        if (bzcard_model.getCard_id() == 1) {
+            
             iv_Cutom_Button.setEnabled(false);
             iv_Add_call.setEnabled(false);
             iv_Custom_HTML.setEnabled(false);
             layout_media.setEnabled(false);
-
-        }else {
+            
+        } else {
             iv_Cutom_Button.setEnabled(true);
             iv_Add_call.setEnabled(true);
             iv_Custom_HTML.setEnabled(true);
             layout_media.setEnabled(true);
-
+            
         }
-
-
-
-        if(bzcard_model.getBzcardFieldsModel1().getCustom_btn_limit()==1){
+        
+        
+        if (bzcard_model.getBzcardFieldsModel1().getCustom_btn_limit() == 1) {
             layout_Custom_other.setVisibility(View.GONE);
-        }else {
+        } else {
             layout_Custom_other.setVisibility(View.VISIBLE);
         }
-
-        if(!bzcard_model.getBzcardFieldsModel().getButton1_name().equals("")){
+        
+        if (!bzcard_model.getBzcardFieldsModel().getButton1_name().equals("")) {
             layout_Cutom_Button.setVisibility(View.VISIBLE);
             iv_Cutom_Button.setBackgroundResource(R.drawable.ic_select_on);
         }
-        if(!bzcard_model.getBzcardFieldsModel().getButton2_name().equals("")){
+        if (!bzcard_model.getBzcardFieldsModel().getButton2_name().equals("")) {
             layout_Cutom_Button_other.setVisibility(View.VISIBLE);
             iv_Cutom_Button_other.setBackgroundResource(R.drawable.ic_select_on);
-        }else {
+        } else {
             layout_Custom_other.setVisibility(View.GONE);
         }
-
-
+        
+        
         edt_title_1.setText(bzcard_model.getBzcardFieldsModel().getButton1_name());
-        edt_add_url_1 .setText(bzcard_model.getBzcardFieldsModel().getButton1_url());
-        edt_title_2 .setText(bzcard_model.getBzcardFieldsModel().getButton2_name());
-        edt_add_url_2 .setText(bzcard_model.getBzcardFieldsModel().getButton2_url());
-
+        edt_add_url_1.setText(bzcard_model.getBzcardFieldsModel().getButton1_url());
+        edt_title_2.setText(bzcard_model.getBzcardFieldsModel().getButton2_name());
+        edt_add_url_2.setText(bzcard_model.getBzcardFieldsModel().getButton2_url());
+        
         edt_Bio.setText(bzcard_model.getBzcardFieldsModel().getBio_head());
-        edt_Add_description .setText(bzcard_model.getBzcardFieldsModel().getBio_description());
-
+        edt_Add_description.setText(bzcard_model.getBzcardFieldsModel().getBio_description());
+        
         switch (bzcard_model.getBzcardFieldsModel().getAction_name()) {
             case "Schedule a meeting":
                 layout_Add_call.setVisibility(View.VISIBLE);
@@ -205,49 +196,49 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
                 edt_Learn_more_url.setText(bzcard_model.getBzcardFieldsModel().getAction_url());
                 break;
         }
-
-        if(!bzcard_model.getBzcardFieldsModel().getHtml().equals("")){
+        
+        if (!bzcard_model.getBzcardFieldsModel().getHtml().equals("")) {
             layout_Custom_HTML.setVisibility(View.VISIBLE);
             iv_Custom_HTML.setBackgroundResource(R.drawable.ic_select_on);
             edt_add_Custom_HTML.setText(bzcard_model.getBzcardFieldsModel().getHtml());
         }
-
-
+        
+        
         medialistAdepter.notifyDataSetChanged();
     }
-
+    
     @Override
     public void onResume() {
         //Log.e("Fragment Call","Yes");
         super.onResume();
         bzcard_model = SessionManager.getBzcard(getActivity());
-        bzMediaInformationList= bzcard_model.getBzcardFieldsModel().getBzMediaInformationList();
-        deleteList= bzcard_model.getBzcardFieldsModel().getMedia_deletes();
+        bzMediaInformationList = bzcard_model.getBzcardFieldsModel().getBzMediaInformationList();
+        deleteList = bzcard_model.getBzcardFieldsModel().getMedia_deletes();
         setdata();
         setColor();
-        if(bzMediaInformationList.size()!=0){
+        if (bzMediaInformationList.size() != 0) {
             setCreatedVideoandImage();
         }
         rv_media_list.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        medialistAdepter=new MedialistAdepter(getActivity(),bzMediaInformationList,this);
+        medialistAdepter = new MedialistAdepter(getActivity(), bzMediaInformationList, this);
         rv_media_list.setAdapter(medialistAdepter);
         medialistAdepter.notifyDataSetChanged();
-
+        
     }
-
+    
     private void setCreatedVideoandImage() {
         iv_media_title.setBackgroundResource(R.drawable.ic_select_on);
         layout_media_list.setVisibility(View.VISIBLE);
-        if(bzMediaInformationList.size() != 0||bzMediaInformationList.size()<10){
+        if (bzMediaInformationList.size() != 0 || bzMediaInformationList.size() < 10) {
             layout_item_add_new.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             layout_item_add_new.setVisibility(View.GONE);
         }
-
+        
         SwipeHelper swipeHelper = new SwipeHelper(getActivity()) {
             @Override
             public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
-
+                
                 underlayButtons.add(new SwipeHelper.UnderlayButton(
                         "Edit",
                         0,
@@ -256,7 +247,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
                             @Override
                             public void onClick(int pos) {
                                 final Bzcard_Fields_Model.BZ_media_information item = medialistAdepter.getData().get(pos);
-                                Intent intent=null;
+                                Intent intent = null;
                                 switch (item.getMedia_type()) {
                                     case "video":
                                         intent = new Intent(getActivity(), Add_Video_Activity.class);
@@ -281,20 +272,20 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
                             @Override
                             public void onClick(final int pos) {
                                 final Bzcard_Fields_Model.BZ_media_information item = medialistAdepter.getData().get(pos);
-
-                                medialistAdepter.removeItem(pos,item);
-
-                               // Toast.makeText(getContext(), "Item was removed from the list.", Toast.LENGTH_LONG).show();
+                                
+                                medialistAdepter.removeItem(pos, item);
+                                
+                                // Toast.makeText(getContext(), "Item was removed from the list.", Toast.LENGTH_LONG).show();
                             }
                         }
                 ));
-
+                
             }
         };
         swipeHelper.attachToRecyclerView(rv_media_list);
-
+        
     }
-
+    
     private void IntentView(View view) {
         rv_color_list = view.findViewById(R.id.rv_color_list);
         iv_Cutom_Button = view.findViewById(R.id.iv_Cutom_Button);
@@ -326,12 +317,12 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
         layout_item_add_new = view.findViewById(R.id.layout_item_add_new);
         rv_media_list = view.findViewById(R.id.rv_media_list);
         layout_Cutom_Button_other = view.findViewById(R.id.layout_Cutom_Button_other);
-
+        
         edt_title_1 = view.findViewById(R.id.edt_title_1);
         edt_add_url_1 = view.findViewById(R.id.edt_add_url_1);
         edt_title_2 = view.findViewById(R.id.edt_title_2);
         edt_add_url_2 = view.findViewById(R.id.edt_add_url_2);
-
+        
         edt_Bio = view.findViewById(R.id.edt_Bio);
         edt_Add_description = view.findViewById(R.id.edt_Add_description);
         edt_Schedule_a_meeting_url1 = view.findViewById(R.id.edt_Schedule_a_meeting_url1);
@@ -345,7 +336,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
         edt_Learn_more_url = view.findViewById(R.id.edt_Learn_more_url);
         txt_invalid_Learn_more = view.findViewById(R.id.txt_invalid_Learn_more);
         edt_add_Custom_HTML = view.findViewById(R.id.edt_add_Custom_HTML);
-
+        
         layout_Schedule_a_meeting.setOnClickListener(this);
         layout_Know_more.setOnClickListener(this);
         layout_Visit_now.setOnClickListener(this);
@@ -353,7 +344,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
         layout_Learn_more.setOnClickListener(this);
         layout_media.setOnClickListener(this);
         layout_item_add_new.setOnClickListener(this);
-
+        
         iv_Cutom_Button.setBackgroundResource(R.drawable.ic_select_off);
         iv_Cutom_Button_other.setBackgroundResource(R.drawable.ic_select_off);
         iv_Add_call.setBackgroundResource(R.drawable.ic_select_off);
@@ -364,7 +355,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
         iv_Visit_now.setBackgroundResource(R.drawable.ic_radio_off);
         iv_Inquire_now.setBackgroundResource(R.drawable.ic_radio_off);
         iv_Learn_more.setBackgroundResource(R.drawable.ic_radio_off);
-
+        
         iv_Cutom_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -425,260 +416,260 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
                 }
             }
         });
-
+        
         edt_title_1.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+            
             }
-
+            
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                
                 bzcard_model.getBzcardFieldsModel().setButton1_name(edt_title_1.getText().toString().trim());
                 SessionManager.setBzcard(getActivity(), bzcard_model);
             }
-
+            
             @Override
             public void afterTextChanged(Editable editable) {
-
+            
             }
         });
         edt_add_url_1.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+            
             }
-
+            
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                
                 bzcard_model.getBzcardFieldsModel().setButton1_url(edt_add_url_1.getText().toString().trim());
                 SessionManager.setBzcard(getActivity(), bzcard_model);
             }
-
+            
             @Override
             public void afterTextChanged(Editable editable) {
-
+            
             }
         });
         edt_title_2.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+            
             }
-
+            
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                
                 bzcard_model.getBzcardFieldsModel().setButton2_name(edt_title_2.getText().toString().trim());
                 SessionManager.setBzcard(getActivity(), bzcard_model);
             }
-
+            
             @Override
             public void afterTextChanged(Editable editable) {
-
+            
             }
         });
         edt_add_url_2.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+            
             }
-
+            
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                
                 bzcard_model.getBzcardFieldsModel().setButton2_url(edt_add_url_2.getText().toString().trim());
                 SessionManager.setBzcard(getActivity(), bzcard_model);
             }
-
+            
             @Override
             public void afterTextChanged(Editable editable) {
-
+            
             }
         });
-
+        
         edt_Bio.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+            
             }
-
+            
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                
                 bzcard_model.getBzcardFieldsModel().setBio_head(edt_Bio.getText().toString().trim());
                 SessionManager.setBzcard(getActivity(), bzcard_model);
             }
-
+            
             @Override
             public void afterTextChanged(Editable editable) {
-
+            
             }
         });
         edt_Add_description.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+            
             }
-
+            
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                
                 bzcard_model.getBzcardFieldsModel().setBio_description(edt_Add_description.getText().toString().trim());
                 SessionManager.setBzcard(getActivity(), bzcard_model);
             }
-
+            
             @Override
             public void afterTextChanged(Editable editable) {
-
+            
             }
         });
         edt_add_Custom_HTML.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+            
             }
-
+            
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                
                 bzcard_model.getBzcardFieldsModel().setHtml(edt_add_Custom_HTML.getText().toString().trim());
                 SessionManager.setBzcard(getActivity(), bzcard_model);
             }
-
+            
             @Override
             public void afterTextChanged(Editable editable) {
-
+            
             }
         });
-
+        
         edt_Schedule_a_meeting_url1.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+            
             }
-
+            
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                
                 if (Global.isValidURL(s.toString()) == true) {
                     txt_invalid_Schedule_a_meeting.setVisibility(View.GONE);
                 } else {
                     txt_invalid_Schedule_a_meeting.setVisibility(View.VISIBLE);
                 }
             }
-
+            
             @Override
             public void afterTextChanged(Editable s) {
-
+            
             }
         });
         edt_Know_more_url.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+            
             }
-
+            
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                
                 if (Global.isValidURL(s.toString()) == true) {
                     txt_invalid_txt_Know_more.setVisibility(View.GONE);
                 } else {
                     txt_invalid_txt_Know_more.setVisibility(View.VISIBLE);
                 }
             }
-
+            
             @Override
             public void afterTextChanged(Editable s) {
-
+            
             }
         });
         edt_Visit_now_url.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+            
             }
-
+            
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                
                 if (Global.isValidURL(s.toString()) == true) {
                     txt_invalid_Visit_now.setVisibility(View.GONE);
                 } else {
                     txt_invalid_Visit_now.setVisibility(View.VISIBLE);
                 }
             }
-
+            
             @Override
             public void afterTextChanged(Editable s) {
-
+            
             }
         });
         edt_Inquire_now_url.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+            
             }
-
+            
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                
                 if (Global.isValidURL(s.toString()) == true) {
                     txt_invalid_Inquire_now.setVisibility(View.GONE);
                 } else {
                     txt_invalid_Inquire_now.setVisibility(View.VISIBLE);
                 }
             }
-
+            
             @Override
             public void afterTextChanged(Editable s) {
-
+            
             }
         });
         edt_Learn_more_url.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+            
             }
-
+            
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                
                 if (Global.isValidURL(s.toString()) == true) {
                     txt_invalid_Learn_more.setVisibility(View.GONE);
                 } else {
                     txt_invalid_Learn_more.setVisibility(View.VISIBLE);
                 }
             }
-
+            
             @Override
             public void afterTextChanged(Editable s) {
-
+            
             }
         });
-
-
+        
+        
         rv_media_list.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        medialistAdepter=new MedialistAdepter(getActivity(),bzMediaInformationList,this);
+        medialistAdepter = new MedialistAdepter(getActivity(), bzMediaInformationList, this);
         rv_media_list.setAdapter(medialistAdepter);
-
+        
     }
-
+    
     private void setColor() {
         String[] color_list = getContext().getResources().getStringArray(R.array.Select_color);
         for (int i = 0; i < color_list.length; i++) {
             Bzcard_Fields_Model.Bz_color_Model bzColorModel = new Bzcard_Fields_Model.Bz_color_Model();
             bzColorModel.setColorName(color_list[i]);
-            if(bzcard_model.isEdit()){
-                if (bzcard_model.getBzcardFieldsModel().getThemeColorHash().equals("#"+color_list[i])) {
+            if (bzcard_model.isEdit()) {
+                if (bzcard_model.getBzcardFieldsModel().getThemeColorHash().equals("#" + color_list[i])) {
                     bzColorModel.setIs_Select(true);
                 } else {
                     bzColorModel.setIs_Select(false);
                 }
-            }else {
+            } else {
                 if (i == 0) {
                     bzColorModel.setIs_Select(true);
                     bzcard_model.getBzcardFieldsModel().setThemeColorHash("#" + color_list[i]);
@@ -691,10 +682,10 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
         rv_color_list.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         colorAdepter = new ColorAdepter(getActivity(), color_modelList);
         rv_color_list.setAdapter(colorAdepter);
-
+        
     }
-
-
+    
+    
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -721,7 +712,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
                 layout_Visit_now_edit.setVisibility(View.GONE);
                 layout_Inquire_now_edit.setVisibility(View.GONE);
                 layout_Learn_more_edit.setVisibility(View.GONE);
-
+                
                 break;
             case R.id.layout_Visit_now:
                 iv_Schedule_a_meeting_radio.setBackgroundResource(R.drawable.ic_radio_off);
@@ -760,29 +751,29 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
                 layout_Learn_more_edit.setVisibility(View.VISIBLE);
                 break;
             case R.id.layout_media:
-                if(bzMediaInformationList.size()==0){
+                if (bzMediaInformationList.size() == 0) {
                     startActivity(new Intent(getActivity(), Select_Media_Activity.class));
                     layout_media_list.setVisibility(View.GONE);
                     iv_media_title.setBackgroundResource(R.drawable.ic_select_off);
-                }else {
+                } else {
                     //setCreatedVideoandImage();
-                    if(media_show){
-                        media_show=false;
+                    if (media_show) {
+                        media_show = false;
                         layout_media_list.setVisibility(View.GONE);
                         iv_media_title.setBackgroundResource(R.drawable.ic_select_off);
-                    }else {
-                        media_show=true;
+                    } else {
+                        media_show = true;
                         layout_media_list.setVisibility(View.VISIBLE);
                         iv_media_title.setBackgroundResource(R.drawable.ic_select_on);
                     }
                 }
                 break;
-                case R.id.layout_item_add_new:
-                    startActivity(new Intent(getActivity(), Select_Media_Activity.class));
+            case R.id.layout_item_add_new:
+                startActivity(new Intent(getActivity(), Select_Media_Activity.class));
                 break;
         }
     }
-
+    
     @Override
     public void OnVideoClick(Bzcard_Fields_Model.BZ_media_information information) {
         Intent intent = null;
@@ -791,65 +782,29 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
                 intent = new Intent(getActivity(), Add_Video_Activity.class);
                 break;
             case "image":
-
+                
                 intent = new Intent(getActivity(), Add_image_Activity.class);
                 break;
             case "pdf":
-
+                
                 intent = new Intent(getActivity(), Add_pdf_Activity.class);
                 break;
         }
         intent.putExtra("MyClass", information);
         startActivity(intent);
     }
-
-
+    
+    
     public static class ColorAdepter extends RecyclerView.Adapter<ColorAdepter.viewholder> {
-
+        
         public Context mCtx;
         List<Bzcard_Fields_Model.Bz_color_Model> color_modelList;
-
+        
         public ColorAdepter(Context applicationContext, List<Bzcard_Fields_Model.Bz_color_Model> color_modelList) {
             this.mCtx = applicationContext;
             this.color_modelList = color_modelList;
         }
-
-        @NonNull
-        @Override
-        public ColorAdepter.viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View view = inflater.inflate(R.layout.color_item_bzcard, parent, false);
-            return new ColorAdepter.viewholder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ColorAdepter.viewholder holder, int position) {
-            Bzcard_Fields_Model.Bz_color_Model item = color_modelList.get(position);
-            setBackground(holder.cv_main, item.getColorName(), mCtx);
-            if (item.isIs_Select()) {
-                holder.iv_select.setVisibility(View.VISIBLE);
-            } else {
-                holder.iv_select.setVisibility(View.GONE);
-            }
-            holder.cv_main.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(bzcard_model.getCard_id()!=1) {
-                        for (int i = 0; i < color_modelList.size(); i++) {
-                            if (color_modelList.get(i).isIs_Select()) {
-                                color_modelList.get(i).setIs_Select(false);
-                                break;
-                            }
-                        }
-                        item.setIs_Select(true);
-                        bzcard_model.getBzcardFieldsModel().setThemeColorHash("#" + item.getColorName());
-                        SessionManager.setBzcard(mCtx, bzcard_model);
-                        notifyDataSetChanged();
-                    }
-                }
-            });
-        }
-
+        
         private static void setBackground(CardView layout_item, String color, Context mCtx) {
             switch (color) {
                 case "5495EC":
@@ -881,39 +836,76 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
                     break;
             }
         }
-
+        
+        @NonNull
+        @Override
+        public ColorAdepter.viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            View view = inflater.inflate(R.layout.color_item_bzcard, parent, false);
+            return new ColorAdepter.viewholder(view);
+        }
+        
+        @Override
+        public void onBindViewHolder(@NonNull ColorAdepter.viewholder holder, int position) {
+            Bzcard_Fields_Model.Bz_color_Model item = color_modelList.get(position);
+            setBackground(holder.cv_main, item.getColorName(), mCtx);
+            if (item.isIs_Select()) {
+                holder.iv_select.setVisibility(View.VISIBLE);
+            } else {
+                holder.iv_select.setVisibility(View.GONE);
+            }
+            holder.cv_main.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (bzcard_model.getCard_id() != 1) {
+                        for (int i = 0; i < color_modelList.size(); i++) {
+                            if (color_modelList.get(i).isIs_Select()) {
+                                color_modelList.get(i).setIs_Select(false);
+                                break;
+                            }
+                        }
+                        item.setIs_Select(true);
+                        bzcard_model.getBzcardFieldsModel().setThemeColorHash("#" + item.getColorName());
+                        SessionManager.setBzcard(mCtx, bzcard_model);
+                        notifyDataSetChanged();
+                    }
+                }
+            });
+        }
+        
         @Override
         public int getItemCount() {
             return color_modelList.size();
         }
-
+        
         public static class viewholder extends RecyclerView.ViewHolder {
             View layout_item;
             ImageView iv_select;
             CardView cv_main;
-
+            
             public viewholder(View view) {
                 super(view);
                 layout_item = view.findViewById(R.id.layout_item);
                 iv_select = view.findViewById(R.id.iv_select);
                 cv_main = view.findViewById(R.id.cv_main);
-
+                
             }
         }
     }
-
+    
     public static class MedialistAdepter extends RecyclerView.Adapter<MedialistAdepter.viewholder> {
-
+        
         public Context mCtx;
         List<Bzcard_Fields_Model.BZ_media_information> bzMediaInformationList;
         Bz_MediaClick videoClick;
+        
         public MedialistAdepter(Context applicationContext, List<Bzcard_Fields_Model.BZ_media_information> bzMediaInformationList,
                                 Bz_MediaClick videoClick) {
             this.mCtx = applicationContext;
             this.bzMediaInformationList = bzMediaInformationList;
             this.videoClick = videoClick;
         }
-
+        
         @NonNull
         @Override
         public MedialistAdepter.viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -921,24 +913,24 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
             View view = inflater.inflate(R.layout.item_bzcard_midea, parent, false);
             return new MedialistAdepter.viewholder(view);
         }
-
+        
         @Override
         public void onBindViewHolder(@NonNull MedialistAdepter.viewholder holder, int position) {
-            Bzcard_Fields_Model.BZ_media_information information=bzMediaInformationList.get(position);
-
-            if(information.getIs_featured()==1){
+            Bzcard_Fields_Model.BZ_media_information information = bzMediaInformationList.get(position);
+            
+            if (information.getIs_featured() == 1) {
                 holder.iv_Featured.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 holder.iv_Featured.setVisibility(View.GONE);
             }
-            if(bzcard_model.isEdit()){
+            if (bzcard_model.isEdit()) {
                 switch (information.getMedia_type()) {
                     case "video":
-                        if(Global.IsNotNull(information.getMedia_filePath())){
+                        if (Global.IsNotNull(information.getMedia_filePath())) {
                             Glide.with(mCtx)
                                     .load(information.getMedia_filePath())
                                     .into(holder.iv_video);
-                        }else {
+                        } else {
                             if (!information.getMedia_thumbnail().equals("")) {
                               /*  Glide.with(mCtx)
                                         .load(information.getMedia_thumbnail())
@@ -952,7 +944,7 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
                                         .into(holder.iv_video);
                             }
                         }
-
+                        
                         holder.layout_pdf.setVisibility(View.GONE);
                         holder.layout_video_image.setVisibility(View.VISIBLE);
                         break;
@@ -961,29 +953,29 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
                         holder.layout_video_image.setVisibility(View.GONE);
                         break;
                     case "image":
-
+                        
                         holder.layout_pdf.setVisibility(View.GONE);
                         holder.layout_video_image.setVisibility(View.VISIBLE);
-                        if(Global.IsNotNull(information.getMedia_filePath())){
+                        if (Global.IsNotNull(information.getMedia_filePath())) {
                             Glide.with(mCtx)
                                     .load(information.getMedia_filePath())
                                     .into(holder.iv_video);
-                        }else {
-
+                        } else {
+                            
                             Glide.with(mCtx)
                                     .load(information.getMedia_url())
                                     .into(holder.iv_video);
                         }
                         break;
                 }
-            }else {
+            } else {
                 switch (information.getMedia_type()) {
                     case "video":
-                            Glide.with(mCtx)
-                                    .load(information.getMedia_filePath())
-                                    .into(holder.iv_video);
-
-
+                        Glide.with(mCtx)
+                                .load(information.getMedia_filePath())
+                                .into(holder.iv_video);
+                        
+                        
                         holder.layout_pdf.setVisibility(View.GONE);
                         holder.layout_video_image.setVisibility(View.VISIBLE);
                         break;
@@ -992,15 +984,15 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
                         holder.layout_video_image.setVisibility(View.GONE);
                         break;
                     case "image":
-
+                        
                         holder.layout_pdf.setVisibility(View.GONE);
                         holder.layout_video_image.setVisibility(View.VISIBLE);
-
-
-                            Glide.with(mCtx)
-                                    .load(information.getMedia_filePath())
-                                    .into(holder.iv_video);
-
+                        
+                        
+                        Glide.with(mCtx)
+                                .load(information.getMedia_filePath())
+                                .into(holder.iv_video);
+                        
                         break;
                 }
             }
@@ -1012,22 +1004,23 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
                     videoClick.OnVideoClick(information);
                 }
             });
-
+            
         }
+        
         public void removeItem(int position, Bzcard_Fields_Model.BZ_media_information item) {
             for (int i = 0; i < bzMediaInformationList.size(); i++) {
                 if (bzMediaInformationList.get(i).getId().equals(item.getId())) {
-
-                    Bzcard_Fields_Model.BZ_media_delete bz_media_delete=new Bzcard_Fields_Model.BZ_media_delete();
+                    
+                    Bzcard_Fields_Model.BZ_media_delete bz_media_delete = new Bzcard_Fields_Model.BZ_media_delete();
                     bz_media_delete.setMedia_type(item.getMedia_type());
-                    if(item.getMedia_type().equals("video")){
+                    if (item.getMedia_type().equals("video")) {
                         bz_media_delete.setMedia_url(item.getMedia_thumbnail());
-                    }else {
+                    } else {
                         bz_media_delete.setMedia_url(item.getMedia_url());
                     }
                     deleteList.add(bz_media_delete);
                     bzcard_model.getBzcardFieldsModel().setMedia_deletes(deleteList);
-
+                    
                     bzMediaInformationList.remove(i);
                     bzcard_model.getBzcardFieldsModel().setBzMediaInformationList(bzMediaInformationList);
                     SessionManager.setBzcard(mCtx, bzcard_model);
@@ -1036,28 +1029,28 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
             }
             notifyItemRemoved(position);
         }
-
+        
         public void restoreItem(Bzcard_Fields_Model.BZ_media_information item, int position) {
             bzMediaInformationList.add(position, item);
             notifyItemInserted(position);
         }
-
+        
         public List<Bzcard_Fields_Model.BZ_media_information> getData() {
             return bzMediaInformationList;
         }
-
+        
         @Override
         public int getItemCount() {
             return bzMediaInformationList.size();
         }
-
+        
         public static class viewholder extends RecyclerView.ViewHolder {
             RoundedImageView iv_video;
-            TextView txt_title,txt_dicription;
-            LinearLayout layout_swap,layout_item;
+            TextView txt_title, txt_dicription;
+            LinearLayout layout_swap, layout_item;
             ImageView iv_Featured;
-            RelativeLayout layout_pdf,layout_video_image;
-
+            RelativeLayout layout_pdf, layout_video_image;
+            
             public viewholder(View view) {
                 super(view);
                 iv_video = view.findViewById(R.id.iv_video);
@@ -1071,5 +1064,4 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
             }
         }
     }
-
 }

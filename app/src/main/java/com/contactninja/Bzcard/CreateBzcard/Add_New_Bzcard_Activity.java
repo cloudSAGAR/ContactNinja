@@ -15,12 +15,19 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -39,7 +46,6 @@ import com.contactninja.aws.image_aws.S3Uploader;
 import com.contactninja.retrofit.RetrofitCalls;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
-import com.google.gson.Gson;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -48,13 +54,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle")
@@ -64,15 +63,13 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
     FrameLayout frameContainer;
     TabLayout tabLayout;
     ImageView iv_back, iv_dummy_cover_img,
-             pulse_icon, iv_edit;
-
+            pulse_icon, iv_edit;
+    
     LinearLayout layout_cover;
     int image_flag = 1;
     Uri mCapturedImageURI;
     Integer CAPTURE_IMAGE = 3;
-    String cover_filePath = "",profile_filePath,cover_profile_image="";
-    private BroadcastReceiver mNetworkReceiver;
-    private long mLastClickTime = 0;
+    String cover_filePath = "", profile_filePath, cover_profile_image = "";
     CircleImageView iv_user;
     RoundedImageView iv_cover_img;
     BZcardListModel.Bizcard bzcard_model;
@@ -82,7 +79,10 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
     S3Uploader s3uploaderObj;
     LoadingDialog loadingDialog;
     RetrofitCalls retrofitCalls;
-    String user_image_Url="",olld_image="";
+    String user_image_Url = "", olld_image = "";
+    private BroadcastReceiver mNetworkReceiver;
+    private long mLastClickTime = 0;
+    
     // function to check permission
     public static boolean checkAndRequestPermissions(final Activity context) {
         int WExtstorePermission = ContextCompat.checkSelfPermission(context,
@@ -99,93 +99,89 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
         }
         if (!listPermissionsNeeded.isEmpty()) {
             ActivityCompat.requestPermissions(context, listPermissionsNeeded
-                            .toArray(new String[listPermissionsNeeded.size()]),
+                                                               .toArray(new String[listPermissionsNeeded.size()]),
                     REQUEST_ID_MULTIPLE_PERMISSIONS);
-
+            
             return false;
         }
         return true;
     }
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_bzcard);
         mNetworkReceiver = new ConnectivityReceiver();
-        sessionManager=new SessionManager(this);
+        sessionManager = new SessionManager(this);
         initUI();
         setTab();
         s3uploaderObj = new S3Uploader(this);
         sessionManager = new SessionManager(this);
         loadingDialog = new LoadingDialog(this);
-        retrofitCalls=new RetrofitCalls(this);
-        bzcard_model=SessionManager.getBzcard(getApplicationContext());
-        if (bzcard_model.getCard_id()==1){
+        retrofitCalls = new RetrofitCalls(this);
+        bzcard_model = SessionManager.getBzcard(getApplicationContext());
+        if (bzcard_model.getCard_id() == 1) {
             Glide.with(getApplicationContext()).load(Global.card_s3_link + "card_1_banner.png").into(iv_dummy_cover_img);
             iv_dummy_cover_img.setEnabled(false);
         }
-        if(bzcard_model.isEdit()){
+        if (bzcard_model.isEdit()) {
             if (!bzcard_model.getBzcardFieldsModel().getProfile_image().equals("")) {
                 Glide.with(getApplicationContext()).
-                        load(bzcard_model.getBzcardFieldsModel().getProfile_image()).
-                        into(iv_user);
+                                                           load(bzcard_model.getBzcardFieldsModel().getProfile_image()).
+                                                                                                                               into(iv_user);
                 iv_user.setVisibility(View.VISIBLE);
                 pulse_icon.setVisibility(View.GONE);
                 bzcard_model = SessionManager.getBzcard(getApplicationContext());
                 bzcard_model.getBzcardFieldsModel().setProfile_image(bzcard_model.getBzcardFieldsModel().getProfile_image());
-                SessionManager.setBzcard(getApplicationContext(),bzcard_model);
+                SessionManager.setBzcard(getApplicationContext(), bzcard_model);
             } else {
                 try {
                     SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
                     //Log.e("User Data Is ", user_data.getUser().getUserprofile().getProfilePic());
-
+                    
                     if (!user_data.getUser().getUserprofile().getProfilePic().equals("")) {
                         Glide.with(getApplicationContext()).
-                                load(user_data.getUser().getUserprofile().getProfilePic()).
-                                into(iv_user);
+                                                                   load(user_data.getUser().getUserprofile().getProfilePic()).
+                                                                                                                                     into(iv_user);
                         iv_user.setVisibility(View.VISIBLE);
                         pulse_icon.setVisibility(View.GONE);
                         bzcard_model = SessionManager.getBzcard(getApplicationContext());
                         bzcard_model.getBzcardFieldsModel().setProfile_image(user_data.getUser().getUserprofile().getProfilePic());
-                        SessionManager.setBzcard(getApplicationContext(),bzcard_model);
-                    }
-                    else {
+                        SessionManager.setBzcard(getApplicationContext(), bzcard_model);
+                    } else {
                         iv_user.setVisibility(View.GONE);
                         pulse_icon.setVisibility(View.VISIBLE);
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                catch (Exception e)
-                {
-
-                }
-
+                
             }
-               if (!bzcard_model.getBzcardFieldsModel().getCover_image().equals("")) {
+            if (!bzcard_model.getBzcardFieldsModel().getCover_image().equals("")) {
                 Glide.with(getApplicationContext()).
-                        load(bzcard_model.getBzcardFieldsModel().getCover_image()).
-                        into(iv_cover_img);
-                   iv_cover_img.setVisibility(View.VISIBLE);
-                   iv_dummy_cover_img.setVisibility(View.GONE);
-                   bzcard_model = SessionManager.getBzcard(getApplicationContext());
-                   bzcard_model.getBzcardFieldsModel().setCover_image(bzcard_model.getBzcardFieldsModel().getCover_image());
-                   SessionManager.setBzcard(getApplicationContext(),bzcard_model);
+                                                           load(bzcard_model.getBzcardFieldsModel().getCover_image()).
+                                                                                                                             into(iv_cover_img);
+                iv_cover_img.setVisibility(View.VISIBLE);
+                iv_dummy_cover_img.setVisibility(View.GONE);
+                bzcard_model = SessionManager.getBzcard(getApplicationContext());
+                bzcard_model.getBzcardFieldsModel().setCover_image(bzcard_model.getBzcardFieldsModel().getCover_image());
+                SessionManager.setBzcard(getApplicationContext(), bzcard_model);
             } else {
-                   iv_cover_img.setVisibility(View.GONE);
-                   iv_dummy_cover_img.setVisibility(View.VISIBLE);
+                iv_cover_img.setVisibility(View.GONE);
+                iv_dummy_cover_img.setVisibility(View.VISIBLE);
             }
-        }else {
+        } else {
             SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
-           // Log.e("User Data Is ", user_data.getUser().getUserprofile().getProfilePic());
-            if(Global.IsNotNull(user_data.getUser().getUserprofile().getProfilePic())){
+            if (Global.IsNotNull(user_data.getUser().getUserprofile().getProfilePic())) {
                 if (!user_data.getUser().getUserprofile().getProfilePic().equals("")) {
                     Glide.with(getApplicationContext()).
-                            load(user_data.getUser().getUserprofile().getProfilePic()).
-                            into(iv_user);
+                                                               load(user_data.getUser().getUserprofile().getProfilePic()).
+                                                                                                                                 into(iv_user);
                     iv_user.setVisibility(View.VISIBLE);
                     pulse_icon.setVisibility(View.GONE);
                     bzcard_model = SessionManager.getBzcard(getApplicationContext());
                     bzcard_model.getBzcardFieldsModel().setProfile_image(user_data.getUser().getUserprofile().getProfilePic());
-                    SessionManager.setBzcard(getApplicationContext(),bzcard_model);
+                    SessionManager.setBzcard(getApplicationContext(), bzcard_model);
                 } else {
                     iv_user.setVisibility(View.GONE);
                     pulse_icon.setVisibility(View.VISIBLE);
@@ -193,25 +189,25 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
             }
             if (Global.IsNotNull(bzcard_model.getBzcardFieldsModel().getCover_image())) {
                 Glide.with(getApplicationContext()).
-                        load(bzcard_model.getBzcardFieldsModel().getCover_image()).
-                        into(iv_cover_img);
+                                                           load(bzcard_model.getBzcardFieldsModel().getCover_image()).
+                                                                                                                             into(iv_cover_img);
                 iv_cover_img.setVisibility(View.VISIBLE);
                 iv_dummy_cover_img.setVisibility(View.GONE);
                 bzcard_model = SessionManager.getBzcard(getApplicationContext());
                 bzcard_model.getBzcardFieldsModel().setCover_image(bzcard_model.getBzcardFieldsModel().getCover_url());
-                SessionManager.setBzcard(getApplicationContext(),bzcard_model);
+                SessionManager.setBzcard(getApplicationContext(), bzcard_model);
             } else {
                 iv_cover_img.setVisibility(View.GONE);
                 iv_dummy_cover_img.setVisibility(View.VISIBLE);
             }
         }
     }
-
+    
     @SuppressLint("SetJavaScriptEnabled")
     private void initUI() {
-        tv_done=findViewById(R.id.save_button);
+        tv_done = findViewById(R.id.save_button);
         tv_done.setVisibility(View.VISIBLE);
-        tv_done.setText("Done");
+        tv_done.setText(getResources().getString(R.string.Done));
         mMainLayout = findViewById(R.id.mMainLayout);
         tabLayout = findViewById(R.id.tabLayout);
         frameContainer = findViewById(R.id.frameContainer_bzcars);
@@ -230,21 +226,21 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
         iv_edit.setOnClickListener(this);
         iv_user.setOnClickListener(this);
         tv_done.setOnClickListener(this);
-
+        
     }
-
+    
     private void setTab() {
         // loadingDialog = new LoadingDialog(this);
         //Set Viewpagger
         tabLayout.addTab(tabLayout.newTab().setText("Information"));
         tabLayout.addTab(tabLayout.newTab().setText("Media block"));
         tabLayout.addTab(tabLayout.newTab().setText("Social media"));
-
+        
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         Fragment fragment = new Information_Bzcard_Fragment();
         FragmentManager fragmentManager = getFragmentManager();
-
-
+        
+        
         if (fragmentManager != null) {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.frameContainer_bzcars, fragment, "Fragment");
@@ -272,24 +268,24 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
                     fragmentTransaction.commitAllowingStateLoss();
                 }
             }
-
+            
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
+            
             }
-
+            
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
+            
             }
         });
     }
-
+    
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         Global.checkConnectivity(Add_New_Bzcard_Activity.this, mMainLayout);
     }
-
+    
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void registerNetworkBroadcastForNougat() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -299,7 +295,7 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
             registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         }
     }
-
+    
     @RequiresApi(api = Build.VERSION_CODES.N)
     protected void unregisterNetworkChanges() {
         try {
@@ -308,14 +304,14 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
             e.printStackTrace();
         }
     }
-
+    
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onDestroy() {
         super.onDestroy();
         unregisterNetworkChanges();
     }
-
+    
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -328,29 +324,29 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
                 if (checkAndRequestPermissions(Add_New_Bzcard_Activity.this)) {
-                    cover_profile_image="cover";
+                    cover_profile_image = "cover";
                     captureimageDialog(false);
                 }
                 break;
-
+            
             case R.id.pulse_icon:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
                 if (checkAndRequestPermissions(Add_New_Bzcard_Activity.this)) {
-                    cover_profile_image="profile";
+                    cover_profile_image = "profile";
                     captureimageDialog(false);
                 }
                 break;
-
+            
             case R.id.iv_cover_img:
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
                 if (checkAndRequestPermissions(Add_New_Bzcard_Activity.this)) {
-                    cover_profile_image="cover";
+                    cover_profile_image = "cover";
                     captureimageDialog(false);
                 }
                 break;
@@ -360,13 +356,13 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
                 if (checkAndRequestPermissions(Add_New_Bzcard_Activity.this)) {
-                    cover_profile_image="profile";
+                    cover_profile_image = "profile";
                     captureimageDialog(false);
                 }
                 break;
-
+            
             case R.id.save_button:
-                startActivity(new Intent(getApplicationContext(),Title_bzcardActivity.class));
+                startActivity(new Intent(getApplicationContext(), Title_bzcardActivity.class));
                 finish();
                 break;
             case R.id.iv_user:
@@ -375,25 +371,25 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
                 if (checkAndRequestPermissions(Add_New_Bzcard_Activity.this)) {
-                    cover_profile_image="profile";
+                    cover_profile_image = "profile";
                     captureimageDialog(false);
                 }
                 break;
-
+            
         }
     }
-
+    
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         finish();
     }
-
+    
     private void captureimageDialog(boolean remove) {
         final View mView = getLayoutInflater().inflate(R.layout.capture_userpicture_dialog_item, null);
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Add_New_Bzcard_Activity.this, R.style.CoffeeDialog);
         bottomSheetDialog.setContentView(mView);
-
+        
         TextView cameraId = bottomSheetDialog.findViewById(R.id.cameraId);
         TextView tv_remove = bottomSheetDialog.findViewById(R.id.tv_remove);
         if (remove) {
@@ -409,8 +405,8 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
                 bottomSheetDialog.dismiss();
-
-
+                
+                
             }
         });
         cameraId.setOnClickListener(new View.OnClickListener() {
@@ -426,13 +422,13 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
                 ContentValues values = new ContentValues();
                 values.put(MediaStore.Images.Media.TITLE, fileName);
                 mCapturedImageURI = getContentResolver()
-                        .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                                values);
+                                            .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                                    values);
                 takePictureIntent
                         .putExtra(MediaStore.EXTRA_OUTPUT, mCapturedImageURI);
                 startActivityForResult(takePictureIntent, CAPTURE_IMAGE);
-
-
+                
+                
                 bottomSheetDialog.dismiss();
             }
         });
@@ -450,21 +446,21 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
                 ContentValues values = new ContentValues();
                 values.put(MediaStore.Images.Media.TITLE, fileName);
                 mCapturedImageURI = getContentResolver()
-                        .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                                values);
+                                            .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                                    values);
                 takePictureIntent
                         .putExtra(MediaStore.EXTRA_OUTPUT, mCapturedImageURI);
                 startActivityForResult(takePictureIntent, 1);
-
+                
                 bottomSheetDialog.dismiss();
-
+                
             }
         });
-
+        
         bottomSheetDialog.show();
-
+        
     }
-
+    
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -475,43 +471,40 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
                     Uri resultUri = result.getUri();
                     File file = new File(result.getUri().getPath());
                     Uri uri = Uri.fromFile(file);
-
-                    if (cover_profile_image.equals("cover"))
-                    {
+                    
+                    if (cover_profile_image.equals("cover")) {
                         cover_filePath = uri.getPath();
                         String profilePath = Global.getPathFromUri(getApplicationContext(), uri);
                         Glide.with(getApplicationContext()).
-                                load(resultUri).
-                                apply(RequestOptions.bitmapTransform(new RoundedCorners(50))).
-                                into(iv_cover_img);
+                                                                   load(resultUri).
+                                                                                          apply(RequestOptions.bitmapTransform(new RoundedCorners(50))).
+                                                                                                                                                               into(iv_cover_img);
                         iv_cover_img.setVisibility(View.VISIBLE);
                         iv_dummy_cover_img.setVisibility(View.GONE);
                         bzcard_model = SessionManager.getBzcard(getApplicationContext());
                         bzcard_model.getBzcardFieldsModel().setCover_url(cover_filePath);
-                        SessionManager.setBzcard(getApplicationContext(),bzcard_model);
-
-                    }
-                    else if (cover_profile_image.equals("profile")) {
-
-                        profile_filePath= uri.getPath();
+                        SessionManager.setBzcard(getApplicationContext(), bzcard_model);
+                        
+                    } else if (cover_profile_image.equals("profile")) {
+                        
+                        profile_filePath = uri.getPath();
                         String profilePath = Global.getPathFromUri(getApplicationContext(), uri);
                         Glide.with(getApplicationContext()).
-                                load(resultUri).
-                                apply(RequestOptions.bitmapTransform(new RoundedCorners(30))).
-                                into(iv_user);
+                                                                   load(resultUri).
+                                                                                          apply(RequestOptions.bitmapTransform(new RoundedCorners(30))).
+                                                                                                                                                               into(iv_user);
                         iv_user.setVisibility(View.VISIBLE);
                         pulse_icon.setVisibility(View.GONE);
-                        bzcard_model= SessionManager.getBzcard(getApplicationContext());
+                        bzcard_model = SessionManager.getBzcard(getApplicationContext());
                         bzcard_model.getBzcardFieldsModel().setProfile_url(profile_filePath);
-                        Log.e("Info is",new Gson().toJson(bzcard_model));
-
+                        
                         //  String contect_url=s3uploaderObj.Upload_Url(profile_filePath,"bzcard_profile");
-                     //  bzcard_model.setProfile_url(contect_url);
-                        SessionManager.setBzcard(getApplicationContext(),bzcard_model);
-
+                        //  bzcard_model.setProfile_url(contect_url);
+                        SessionManager.setBzcard(getApplicationContext(), bzcard_model);
+                        
                     }
-
-
+                    
+                    
                 } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                     Exception error = result.getError();
                 }
@@ -525,45 +518,41 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
                     Uri resultUri = result.getUri();
                     File file = new File(result.getUri().getPath());
                     Uri uri = Uri.fromFile(file);
-                    if (cover_profile_image.equals("cover"))
-                    {
+                    if (cover_profile_image.equals("cover")) {
                         cover_filePath = uri.getPath();
                         String profilePath = Global.getPathFromUri(getApplicationContext(), uri);
                         Glide.with(getApplicationContext()).
-                                load(resultUri).
-                                apply(RequestOptions.bitmapTransform(new RoundedCorners(50))).
-                                into(iv_cover_img);
+                                                                   load(resultUri).
+                                                                                          apply(RequestOptions.bitmapTransform(new RoundedCorners(50))).
+                                                                                                                                                               into(iv_cover_img);
                         iv_cover_img.setVisibility(View.VISIBLE);
                         iv_dummy_cover_img.setVisibility(View.GONE);
-                        bzcard_model= SessionManager.getBzcard(getApplicationContext());
+                        bzcard_model = SessionManager.getBzcard(getApplicationContext());
                         bzcard_model.getBzcardFieldsModel().setCover_url(cover_filePath);
-                        Log.e("Info is",new Gson().toJson(bzcard_model));
-
+                        
                         // String contect_url=s3uploaderObj.Upload_Url(cover_filePath,"bzcard_cover");
-                     // bzcard_model.setCover_url(contect_url);
-                        SessionManager.setBzcard(getApplicationContext(),bzcard_model);
-
-                    }
-                    else if (cover_profile_image.equals("profile")) {
-
-                        profile_filePath= uri.getPath();
+                        // bzcard_model.setCover_url(contect_url);
+                        SessionManager.setBzcard(getApplicationContext(), bzcard_model);
+                        
+                    } else if (cover_profile_image.equals("profile")) {
+                        
+                        profile_filePath = uri.getPath();
                         String profilePath = Global.getPathFromUri(getApplicationContext(), uri);
                         Glide.with(getApplicationContext()).
-                                load(resultUri).
-                                apply(RequestOptions.bitmapTransform(new RoundedCorners(30))).
-                                into(iv_user);
+                                                                   load(resultUri).
+                                                                                          apply(RequestOptions.bitmapTransform(new RoundedCorners(30))).
+                                                                                                                                                               into(iv_user);
                         iv_user.setVisibility(View.VISIBLE);
                         pulse_icon.setVisibility(View.GONE);
-                        bzcard_model= SessionManager.getBzcard(getApplicationContext());
+                        bzcard_model = SessionManager.getBzcard(getApplicationContext());
                         bzcard_model.getBzcardFieldsModel().setProfile_url(profile_filePath);
-                        Log.e("Info is",new Gson().toJson(bzcard_model));
-
-                     //  String contect_url=s3uploaderObj.Upload_Url(profile_filePath,"bzcard_profile");
-                     //  bzcard_model.setProfile_image(contect_url);
-                        SessionManager.setBzcard(getApplicationContext(),bzcard_model);
-
+                        
+                        //  String contect_url=s3uploaderObj.Upload_Url(profile_filePath,"bzcard_profile");
+                        //  bzcard_model.setProfile_image(contect_url);
+                        SessionManager.setBzcard(getApplicationContext(), bzcard_model);
+                        
                     }
-
+                    
                 } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                     Exception error = result.getError();
                 }
@@ -577,26 +566,24 @@ public class Add_New_Bzcard_Activity extends AppCompatActivity implements Connec
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
+                
             }
-
+            
         }
-
+        
     }
-
+    
     public void ImageCropFunctionCustom(Uri uri) {
         Intent intent = CropImage.activity(uri)
-                .setGuidelines(CropImageView.Guidelines.ON)
-                .getIntent(this);
+                                .setGuidelines(CropImageView.Guidelines.ON)
+                                .getIntent(this);
         startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
     }
-
+    
     @Override
     protected void onResume() {
         super.onResume();
-        Log.e("On Resume ","Main");
     }
-
-
-
+    
+    
 }

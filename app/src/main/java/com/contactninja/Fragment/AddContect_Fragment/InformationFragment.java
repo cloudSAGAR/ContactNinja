@@ -46,6 +46,7 @@ import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.Model.WorkTypeData;
 import com.contactninja.R;
 import com.contactninja.Utils.Global;
+import com.contactninja.Utils.Global_Time;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.PaginationListener;
 import com.contactninja.Utils.SessionManager;
@@ -1688,8 +1689,12 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         paramObject.put("organization_id", 1);
         paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("manage_by", "MANUAL");
-        paramObject.put("time", Global.getCurrentTime());
-        paramObject.put("date", Global.getCurrentDate());
+        try {
+            paramObject.put("time", Global_Time.time_12_to_24(Global_Time.getCurrentTime()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        paramObject.put("date", Global_Time.getCurrentDate());
         paramObject.put("assign_to", user_data.getUser().getId());
         paramObject.put("task_description", text);
 
@@ -1791,8 +1796,12 @@ public class InformationFragment extends Fragment implements View.OnClickListene
         paramObject.put("organization_id", 1);
         paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("manage_by", "MANUAL");
-        paramObject.put("time", Global.getCurrentTime());
-        paramObject.put("date", Global.getCurrentDate());
+        try {
+            paramObject.put("time", Global_Time.time_12_to_24(Global_Time.getCurrentTime()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        paramObject.put("date", Global_Time.getCurrentDate());
         paramObject.put("assign_to", user_data.getUser().getId());
         paramObject.put("task_description", text);
 

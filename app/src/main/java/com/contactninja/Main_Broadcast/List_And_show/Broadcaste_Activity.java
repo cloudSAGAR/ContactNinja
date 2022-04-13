@@ -26,6 +26,7 @@ import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
+import com.contactninja.Utils.Global_Time;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.ApiResponse;
@@ -125,7 +126,7 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
                 break;
         }
 
-        tv_date.setText(Global.DateFormateMonth(broadcasteda.getStartDate()) + " @ " + Global.TimeFormateAMPM(broadcasteda.getStartTime()));
+        tv_date.setText(Global_Time.DateFormateMonth(broadcasteda.getStartDate()) + " @ " + Global_Time.TimeFormateAMPM(broadcasteda.getStartTime()));
 
         switch (broadcasteda.getRecurringType()) {
             case "D":

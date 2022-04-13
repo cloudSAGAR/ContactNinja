@@ -45,12 +45,12 @@ import com.contactninja.ARE.ARE_ToolItem_Bold;
 import com.contactninja.ARE.ARE_ToolItem_Italic;
 import com.contactninja.ARE.ARE_ToolItem_Link;
 import com.contactninja.ARE.ARE_ToolItem_Underline;
+import com.contactninja.Auth.Thankyou_Screen;
 import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
-import com.contactninja.Manual_email_text.Email_Tankyou;
-import com.contactninja.Manual_email_text.List_And_show.Item_List_Text_Detail_Activty;
-import com.contactninja.Manual_email_text.Manual_Email_TaskActivity_;
+import com.contactninja.Manual_email_text.Manual_Email_Sheduled_Activity;
+import com.contactninja.Manual_email_text.Tankyou_after_scheduled_task_Activity;
 import com.contactninja.Model.BZcardListModel;
 import com.contactninja.Model.HastagList;
 import com.contactninja.Model.TemplateList;
@@ -62,6 +62,7 @@ import com.contactninja.R;
 import com.contactninja.Setting.Verification_web;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
+import com.contactninja.Utils.Global_Time;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.ApiResponse;
@@ -91,9 +92,11 @@ import retrofit2.Response;
 public class Contact_Click_Email_Send_Activity extends AppCompatActivity implements View.OnClickListener, TextClick,
         TemplateClick, ConnectivityReceiver.ConnectivityReceiverListener {
     public static final int PICKFILE_RESULT_CODE = 1;
+    static EditText ev_subject, ev_to, ev_from, ev_titale;
+    static AREditText edit_template;
     SessionManager sessionManager;
     BottomSheetDialog bottomSheetDialog;
-    List<BZcardListModel.Bizcard> bizcardList=new ArrayList<>();
+    List<BZcardListModel.Bizcard> bizcardList = new ArrayList<>();
     CardListAdepter cardListAdepter;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
@@ -108,20 +111,19 @@ public class Contact_Click_Email_Send_Activity extends AppCompatActivity impleme
     String filePath;
     BottomSheetDialog bottomSheetDialog_templateList;
     TemplateClick templateClick;
-
-    static EditText  ev_subject, ev_to, ev_from, ev_titale;
     String email = "", id = "", task_name = "", from_ac = "", from_ac_id = "";
     BottomSheetDialog bottomSheetDialog_templateList1;
     ImageView iv_more;
     int defult_id, temaplet_id = 0, FirstTime = 0;
     List<UserLinkedList.UserLinkedGmail> select_userLinkedGmailList = new ArrayList<>();
     List<UserLinkedList.UserLinkedGmail> userLinkedGmailList = new ArrayList<>();
+    LinearLayout bottombar;
+    int m_hour = 0;
+    int m_minute = 0;
     private int amountOfItemsSelected = 0;
     private BroadcastReceiver mNetworkReceiver;
     private long mLastClickTime=0;
     private IARE_Toolbar mToolbar;
-    LinearLayout bottombar;
-    static AREditText edit_template;
     boolean zoom_flag=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -444,7 +446,7 @@ public class Contact_Click_Email_Send_Activity extends AppCompatActivity impleme
         lay_schedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Manual_Email_TaskActivity_.class);
+                Intent intent = new Intent(getApplicationContext(), Manual_Email_Sheduled_Activity.class);
                 intent.putExtra("subject", ev_subject.getText().toString());
                 intent.putExtra("body", edit_template.getHtml().toString());
                 intent.putExtra("id", id);
@@ -735,8 +737,8 @@ public class Contact_Click_Email_Send_Activity extends AppCompatActivity impleme
         paramObject.put("organization_id", 1);
         paramObject.put("user_id", user_data.getUser().getId());
         paramObject.put("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
-        paramObject.put("time", Global.getCurrentTime());
-        paramObject.put("date", Global.getCurrentDate());
+        paramObject.put("time", Global_Time.getCurrentTime());
+        paramObject.put("date", Global_Time.getCurrentDate());
         paramObject.put("assign_to", user_data.getUser().getId());
 
 
@@ -778,7 +780,7 @@ public class Contact_Click_Email_Send_Activity extends AppCompatActivity impleme
                 if (response.body().getHttp_status() == 200) {
 
                     loadingDialog.cancelLoading();
-                    Intent intent = new Intent(getApplicationContext(), Email_Tankyou.class);
+                    Intent intent = new Intent(getApplicationContext(), Tankyou_after_scheduled_task_Activity.class);
                     intent.putExtra("s_name", "add");
                     startActivity(intent);
                     finish();
@@ -1357,15 +1359,9 @@ public class Contact_Click_Email_Send_Activity extends AppCompatActivity impleme
         TextView txt_time=bottomSheetDialog.findViewById(R.id.txt_time);
         TextView tc_time_zone=bottomSheetDialog.findViewById(R.id.tc_time_zone);
         TextView tv_done=bottomSheetDialog.findViewById(R.id.tv_done);
-        Date c = Calendar.getInstance().getTime();
-        System.out.println("Current time => " + c);
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        String formattedDate = df.format(c);
-        tv_date.setText(formattedDate);
-
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        String currentDateandTime = sdf.format(new Date());
-        tv_time.setText(currentDateandTime);
+     
+        tv_date.setText(Global_Time.getCurrentDate());
+        tv_time.setText(Global_Time.getCurrentTime());
         la_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1411,7 +1407,12 @@ public class Contact_Click_Email_Send_Activity extends AppCompatActivity impleme
     }
 
     private void Create_Zoom(TextView tv_date, TextView tv_time, TextView txt_time) {
-        String Starttime= tv_date.getText().toString()+'T'+tv_time.getText().toString()+":00";
+        String Starttime= "";
+        try {
+            Starttime = tv_date.getText().toString()+'T'+ Global_Time.time_12_to_24(tv_time.getText().toString().trim());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         String duration = txt_time.getText().toString();
         String mystring = duration;
         String arr[] = mystring.split(" ", 2);
@@ -1590,29 +1591,42 @@ public class Contact_Click_Email_Send_Activity extends AppCompatActivity impleme
     public void onTimer(TextView tv_time)
     {
         Calendar mcurrentTime = Calendar.getInstance();
-        int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-        int minute = mcurrentTime.get(Calendar.MINUTE);
+        m_hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+        m_minute = mcurrentTime.get(Calendar.MINUTE);
         TimePickerDialog mTimePicker;
         mTimePicker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                String stime = "";
-                if (selectedHour + 1 < 10) {
-                    stime = "0" + (selectedHour);
+            
+                m_hour = selectedHour;
+                m_minute = selectedMinute;
+                String timeSet = "";
+                if (m_hour > 12) {
+                    m_hour -= 12;
+                    timeSet = getResources().getString(R.string.PM);
+                } else if (m_hour == 0) {
+                    m_hour += 12;
+                    timeSet = getResources().getString(R.string.AM);
+                } else if (m_hour == 12) {
+                    timeSet = getResources().getString(R.string.PM);
                 } else {
-                    stime = String.valueOf(selectedHour);
+                    timeSet = getResources().getString(R.string.AM);
                 }
-
-
-                String sminite = "";
-                if (selectedMinute < 10) {
-                    sminite = "0" + selectedMinute;
-                } else {
-                    sminite = String.valueOf(selectedMinute);
-                }
-                tv_time.setText( stime + ":" + sminite);            }
-        }, hour, minute, true);//Yes 24 hour time
-        mTimePicker.setTitle("Select Time");
+            
+                String min = "";
+                if (m_minute < 10)
+                    min = "0" + m_minute;
+                else
+                    min = String.valueOf(m_minute);
+            
+                // Append in a StringBuilder
+                String aTime = new StringBuilder().append(m_hour).append(':')
+                                       .append(min).append(" ").append(timeSet).toString();
+                tv_time.setText(aTime);
+            
+            }
+        }, m_hour, m_minute, false);//Yes 24 hour time
+        mTimePicker.setTitle(getResources().getString(R.string.Select_Time));
         mTimePicker.show();
     }
 

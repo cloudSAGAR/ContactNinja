@@ -184,12 +184,11 @@ public class Text_And_Email_Auto_Manual extends AppCompatActivity  implements Vi
         save_button.setVisibility(View.VISIBLE);
         save_button.setOnClickListener(this);
         iv_back.setOnClickListener(this);
-        save_button.setText("Next");
+        save_button.setText(getResources().getString(R.string.Next));
         add_new_contect=findViewById(R.id.add_new_contect);
         mMainLayout=findViewById(R.id.mMainLayout);
-
-
-
+        
+        
     }
 
     @Override

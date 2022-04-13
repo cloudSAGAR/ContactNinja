@@ -37,6 +37,7 @@ import com.contactninja.Notification.NotificationListActivity;
 import com.contactninja.R;
 import com.contactninja.UserPofile.Affiliate_Report_LevelActivity;
 import com.contactninja.Utils.Global;
+import com.contactninja.Utils.Global_Time;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.ApiResponse;
@@ -329,7 +330,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         paramObject.put("organization_id", 1);
         paramObject.put("team_id", 1);
         paramObject.put("user_id", user_id);
-        paramObject.put("date_time", Global.getCurrentTimeandDate());
+        paramObject.put("date_time", Global_Time.getCurrentTimeandDate());
 
         JSONArray array = new JSONArray();
 

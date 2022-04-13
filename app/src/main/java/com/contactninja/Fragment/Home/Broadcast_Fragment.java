@@ -26,6 +26,7 @@ import com.contactninja.Model.Dashboard.Des_Broadcast;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.Global;
+import com.contactninja.Utils.Global_Time;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.ApiResponse;
@@ -236,13 +237,13 @@ public class Broadcast_Fragment extends Fragment {
                 holder.tv_username.setText(conactname);
                 switch (item.getRecurringType()) {
                     case "D":
-                        holder.tv_task_time.setText("Daily - " + Global.TimeFormateAMPM(item.getStartTime()));
+                        holder.tv_task_time.setText("Daily - " + Global_Time.TimeFormateAMPM(item.getStartTime()));
                         break;
                     case "W":
-                        holder.tv_task_time.setText("Weekly - " + Global.TimeFormateAMPM(item.getStartTime()));
+                        holder.tv_task_time.setText("Weekly - " + Global_Time.TimeFormateAMPM(item.getStartTime()));
                         break;
                     case "M":
-                        holder.tv_task_time.setText("Monthly - " + Global.TimeFormateAMPM(item.getStartTime()));
+                        holder.tv_task_time.setText("Monthly - " + Global_Time.TimeFormateAMPM(item.getStartTime()));
 
                         break;
                 }

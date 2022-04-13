@@ -26,6 +26,7 @@ import com.contactninja.Model.Dashboard.Des_AffiliateInfo;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.Global;
+import com.contactninja.Utils.Global_Time;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.ApiResponse;
@@ -328,7 +329,7 @@ public class User_GrowthFragment extends Fragment implements View.OnClickListene
         paramObject.put("organization_id", 1);
         paramObject.put("team_id", 1);
         paramObject.put("user_id", user_id);
-        paramObject.put("date_time", Global.getCurrentTimeandDate());
+        paramObject.put("date_time", Global_Time.getCurrentTimeandDate());
         
         
         JSONArray array = new JSONArray();

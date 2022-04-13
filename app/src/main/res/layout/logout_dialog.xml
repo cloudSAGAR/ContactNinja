@@ -50,7 +50,7 @@
             android:background="@drawable/shape_10_red"
             android:gravity="center"
             android:padding="@dimen/_10sdp"
-            android:text="@string/cancel"
+            android:text="@string/No"
             android:textColor="@color/white"
             tools:ignore="TextContrastCheck" />
         <TextView
@@ -61,7 +61,7 @@
             android:id="@+id/tv_ok"
             android:padding="@dimen/_10sdp"
             android:textColor="@color/white"
-            android:text="@string/ok"
+            android:text="@string/Yes"
             style="@style/tv_regular_12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

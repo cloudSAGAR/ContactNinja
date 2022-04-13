@@ -35,6 +35,7 @@
             android:gravity="center">
 
             <TextView
+                android:padding="@dimen/_5sdp"
                 android:id="@+id/add_new_contect"
                 style="@style/tv_Medium_12"
                 android:layout_width="wrap_content"
@@ -42,18 +43,10 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:singleLine="true"
-                android:text="@string/Create_your"
+                android:text="@string/Create_your_broadcast"
                 android:textColor="@color/text_reg" />
 
-            <TextView
-                style="@style/tv_Medium_12"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:singleLine="true"
-                android:text="@string/broadcast"
-                android:textColor="@color/purple_200" />
+
         </LinearLayout>
 
         <com.google.android.material.tabs.TabLayout

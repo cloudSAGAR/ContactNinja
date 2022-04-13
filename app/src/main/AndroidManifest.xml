@@ -146,7 +146,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Manual_email_text.Manual_Text_TaskActivity"
+            android:name=".Manual_email_text.Manual_Text_Sheduled_Activity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -162,11 +162,11 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Manual_email_text.Manual_Email_TaskActivity_"
+            android:name=".Manual_email_text.Manual_Email_Sheduled_Activity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Manual_email_text.Email_Tankyou"
+            android:name=".Manual_email_text.Tankyou_after_scheduled_task_Activity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity

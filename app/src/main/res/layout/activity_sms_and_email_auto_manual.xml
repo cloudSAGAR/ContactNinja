@@ -30,18 +30,9 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:singleLine="true"
-            android:text="@string/Create_your"
+            android:padding="@dimen/_5sdp"
+            android:text="@string/Create_your_task"
             android:textColor="@color/text_reg" />
-
-        <TextView
-            style="@style/tv_Medium_12"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:singleLine="true"
-            android:text="@string/task"
-            android:textColor="@color/purple_200" />
     </LinearLayout>
 
     <ImageView

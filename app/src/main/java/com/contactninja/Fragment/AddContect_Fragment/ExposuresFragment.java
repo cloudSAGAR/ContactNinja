@@ -33,6 +33,7 @@ import com.contactninja.Model.ExposuresModel;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.Global;
+import com.contactninja.Utils.Global_Time;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.ApiResponse;
@@ -237,7 +238,7 @@ public class ExposuresFragment extends Fragment {
                         }
                     }
                     if (Global.IsNotNull(movieList.get(position).getCreatedAt())){
-                        movieViewHolder.tv_date.setText(Global.formateChange(movieList.get(position).getCreatedAt()));
+                        movieViewHolder.tv_date.setText(Global_Time.formateChange(movieList.get(position).getCreatedAt()));
                     }
 
                     break;

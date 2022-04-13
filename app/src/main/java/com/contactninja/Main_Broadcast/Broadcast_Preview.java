@@ -43,6 +43,7 @@ import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
+import com.contactninja.Utils.Global_Time;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.ApiResponse;
@@ -124,7 +125,7 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
 
         }
 
-        String formateChnage = Global.DateFormateMonth(broadcate_save_data.getDate());
+        String formateChnage = Global_Time.DateFormateMonth(broadcate_save_data.getDate());
         tv_date.setText(formateChnage + " @ " + broadcate_save_data.getTime());
         tv_repete_type.setText(broadcate_save_data.getRecurrence());
 
@@ -215,7 +216,7 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
         save_button.setVisibility(View.VISIBLE);
         save_button.setOnClickListener(this);
         iv_back.setOnClickListener(this);
-        save_button.setText("Done");
+        save_button.setText(getResources().getString(R.string.Done));
         layout_toolbar_logo = findViewById(R.id.layout_toolbar_logo);
         layout_toolbar_logo.setVisibility(View.GONE);
         save_button.setVisibility(View.GONE);

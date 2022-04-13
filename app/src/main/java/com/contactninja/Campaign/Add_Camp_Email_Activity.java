@@ -55,6 +55,7 @@ import com.contactninja.R;
 import com.contactninja.Setting.Verification_web;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
+import com.contactninja.Utils.Global_Time;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.ApiResponse;
@@ -75,9 +76,11 @@ import retrofit2.Response;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables")
 public class Add_Camp_Email_Activity extends AppCompatActivity implements View.OnClickListener, TextClick,
-        TemplateClick, ConnectivityReceiver.ConnectivityReceiverListener {
+                                                                                  TemplateClick, ConnectivityReceiver.ConnectivityReceiverListener {
     public static final int PICKFILE_RESULT_CODE = 1;
     static CoordinatorLayout mMainLayout;
+    static EditText ev_subject;
+    static AREditText edit_template;
     public String template_id_is = "";
     ImageView iv_back;
     List<BZcardListModel.Bizcard> bizcardList = new ArrayList<>();
@@ -86,7 +89,6 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
-    static EditText ev_subject;
     LinearLayout top_layout;
     TemplateAdepter templateAdepter;
     RecyclerView rv_direct_list;
@@ -105,13 +107,13 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
     int defult_id;
     List<UserLinkedList.UserLinkedGmail> select_userLinkedGmailList = new ArrayList<>();
     List<UserLinkedList.UserLinkedGmail> userLinkedGmailList = new ArrayList<>();
+    LinearLayout bottombar;
     private BroadcastReceiver mNetworkReceiver;
     private int amountOfItemsSelected = 0;
     private int FirstTime = 0;
-    private long mLastClickTime=0;
+    private long mLastClickTime = 0;
     private IARE_Toolbar mToolbar;
-    LinearLayout bottombar;
-    static AREditText edit_template;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,7 +123,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
         templateClick = Add_Camp_Email_Activity.this;
-
+        
         IntentUI();
         initToolbar();
         try {
@@ -138,25 +140,25 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+        
         ev_subject.requestFocus();
         edit_template.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+            
             }
-
+            
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 top_layout.setVisibility(View.GONE);
             }
-
+            
             @Override
             public void afterTextChanged(Editable editable) {
-
+            
             }
         });
-
+        
         Intent inten = getIntent();
         Bundle bundle = inten.getExtras();
         String flag = bundle.getString("flag");
@@ -166,11 +168,11 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
             add_new_contect.setText("Step#" + step_id + "(" + stpe_tyep + " " + SessionManager.getCampaign_type(getApplicationContext()) + ")");
         } else {
             List<CampaignTask> step = SessionManager.getTask(getApplicationContext());
-
+            
             int step_id = step.get(0).getStepNo() + 1;
             String stpe_tyep = SessionManager.getCampaign_type_name(getApplicationContext());
             add_new_contect.setText("Step#" + step_id + "(" + stpe_tyep + " " + SessionManager.getCampaign_type(getApplicationContext()) + ")");
-
+            
         }
    /*     if (flag.equals("edit"))
         {
@@ -196,28 +198,28 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
           }
 
         }*/
-
-
+        
+        
         if (flag.equals("edit")) {
             edit_template.setText(Html.fromHtml(bundle.getString("body")));
-
+            
             seq_task_id = String.valueOf(bundle.getInt("seq_task_id"));
             sequence_id = String.valueOf(bundle.getInt("sequence_id"));
-
+            
             step_no = String.valueOf(bundle.getInt("step"));
             ev_subject.setText(bundle.getString("header"));
             //  SessionManager.setCampaign_type(bundle.getString("type"));
             //SessionManager.setCampaign_type_name(bundle.getString("manage_by"));
-
+            
             Log.e("Step ", step_no);
             String stpe_tyep = SessionManager.getCampaign_type_name(getApplicationContext());
             add_new_contect.setText("Step#" + step_no + "(" + stpe_tyep + " " + SessionManager.getCampaign_type(getApplicationContext()) + ")");
-
-
+            
+            
         }
-
+        
     }
-
+    
     private void initToolbar() {
         mToolbar = this.findViewById(R.id.areToolbar);
         IARE_ToolItem bold = new ARE_ToolItem_Bold();
@@ -230,12 +232,13 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
         mToolbar.addToolbarItem(link);
         edit_template.setToolbar(mToolbar);
     }
+    
     @Override
     protected void onResume() {
         super.onResume();
         Mail_listDetails();
     }
-
+    
     private void Mail_listDetails() {
         userLinkedGmailList = sessionManager.getUserLinkedGmail(getApplicationContext());
         if (userLinkedGmailList.size() == 0) {
@@ -250,7 +253,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
             iv_more.setVisibility(View.VISIBLE);
         }
         for (int i = 0; i < userLinkedGmailList.size(); i++) {
-
+            
             Intent inten = getIntent();
             Bundle bundle = inten.getExtras();
             String flag = bundle.getString("flag");
@@ -261,7 +264,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                     select_userLinkedGmailList.add(userLinkedGmailList.get(i));
                     from_ac = userLinkedGmailList.get(i).getType();
                     from_ac_id = String.valueOf(userLinkedGmailList.get(i).getId());
-
+                    
                 }
             } else {
                 if (userLinkedGmailList.get(i).getIsDefault().toString().equals("1")) {
@@ -270,12 +273,12 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                     select_userLinkedGmailList.add(userLinkedGmailList.get(i));
                     from_ac = userLinkedGmailList.get(i).getType();
                     from_ac_id = String.valueOf(userLinkedGmailList.get(i).getId());
-
+                    
                 }
             }
         }
     }
-
+    
     @Override
     public void onBackPressed() {
         SessionManager.setcamp_final_flag("");
@@ -283,15 +286,15 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
         intent.putExtra("flag", "new");
         startActivity(intent);
         finish();
-
+        
         super.onBackPressed();
     }
-
+    
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         Global.checkConnectivity(Add_Camp_Email_Activity.this, mMainLayout);
     }
-
+    
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void registerNetworkBroadcastForNougat() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -301,7 +304,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
             registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         }
     }
-
+    
     @RequiresApi(api = Build.VERSION_CODES.N)
     protected void unregisterNetworkChanges() {
         try {
@@ -310,17 +313,17 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
             e.printStackTrace();
         }
     }
-
+    
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onDestroy() {
         super.onDestroy();
         unregisterNetworkChanges();
     }
-
-
+    
+    
     private void Hastag_list() throws JSONException {
-
+        
         SignResponseModel signResponseModel = SessionManager.getGetUserdata(Add_Camp_Email_Activity.this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
@@ -342,8 +345,8 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                     }.getType();
                     HastagList hastagList = new Gson().fromJson(headerString, listType);
                     templateTextList = hastagList.getHashtag();
-
-
+                    
+                    
                     HastagList.TemplateText text = new HastagList.TemplateText();
                     text.setFile(R.drawable.ic_a);
                     text.setSelect(false);
@@ -352,38 +355,38 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                     text1.setFile(R.drawable.ic_card_blank);
                     text1.setSelect(false);
                     templateTextList.add(1, text1);
-
+                    
                     HastagList.TemplateText templateText = new HastagList.TemplateText();
                     templateText.setDescription("Placeholders #");
                     templateText.setSelect(true);
                     templateTextList.add(2, templateText);
-
-
+                    
+                    
                     Listset(templateTextList);
-
+                    
                 }
             }
-
+            
             @Override
             public void error(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
             }
-
-
+            
+            
         });
-
-
+        
+        
     }
-
+    
     private void Listset(List<HastagList.TemplateText> templateTextList) {
         rv_direct_list.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
         rv_direct_list.setHasFixedSize(true);
         picUpTextAdepter = new PicUpTextAdepter(Add_Camp_Email_Activity.this, templateTextList, this);
         rv_direct_list.setAdapter(picUpTextAdepter);
     }
-
+    
     private void IntentUI() {
-        bottombar=findViewById(R.id.bottombar);
+        bottombar = findViewById(R.id.bottombar);
         mMainLayout = findViewById(R.id.mMainLayout);
         iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
@@ -391,7 +394,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
         save_button.setVisibility(View.VISIBLE);
         save_button.setOnClickListener(this);
         iv_back.setOnClickListener(this);
-        save_button.setText("Next");
+        save_button.setText(getResources().getString(R.string.Next));
         ev_subject = findViewById(R.id.ev_subject);
         edit_template = findViewById(R.id.edit_template);
         top_layout = findViewById(R.id.top_layout);
@@ -402,9 +405,9 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
         ev_from = findViewById(R.id.ev_from);
         iv_more = findViewById(R.id.iv_more);
         iv_more.setOnClickListener(this);
-
+        
     }
-
+    
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(@SuppressLint("UnknownNullness") View view) {
@@ -422,7 +425,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                     Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.add_subject), false);
                 } else if (edit_template.getText().toString().equals("")) {
                     Global.Messageshow(getApplicationContext(), mMainLayout, getString(R.string.ComposeEmail), false);
-
+                    
                 } else {
                     if (Global.isNetworkAvailable(Add_Camp_Email_Activity.this, mMainLayout)) {
                         StepData();
@@ -443,20 +446,20 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                 mLastClickTime = SystemClock.elapsedRealtime();
                 Email_bouttomSheet();
                 break;
-
-
+            
+            
         }
-
+        
     }
-
+    
     private void Email_bouttomSheet() {
         final View mView = getLayoutInflater().inflate(R.layout.email_bottom_sheet, null);
         bottomSheetDialog_templateList1 = new BottomSheetDialog(Add_Camp_Email_Activity.this, R.style.CoffeeDialog);
         bottomSheetDialog_templateList1.setContentView(mView);
         TextView tv_done = bottomSheetDialog_templateList1.findViewById(R.id.tv_done);
         RecyclerView email_list = bottomSheetDialog_templateList1.findViewById(R.id.email_list);
-
-
+        
+        
         for (int i = 0; i < userLinkedGmailList.size(); i++) {
             if (userLinkedGmailList.get(i).getIsDefault() == 1) {
                 select_userLinkedGmailList.clear();
@@ -465,13 +468,13 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                 break;
             }
         }
-
+        
         email_list.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         EmailListAdepter emailListAdepter = new EmailListAdepter(getApplicationContext(), userLinkedGmailList);
         email_list.setAdapter(emailListAdepter);
         email_list.setVisibility(View.VISIBLE);
-
-
+        
+        
         tv_done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -483,10 +486,10 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                 }
             }
         });
-
+        
         bottomSheetDialog_templateList1.show();
     }
-
+    
     private void bouttomSheet() {
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.template_list_dialog_item, null);
         bottomSheetDialog_templateList = new BottomSheetDialog(Add_Camp_Email_Activity.this, R.style.CoffeeDialog);
@@ -503,13 +506,13 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
+        
+        
         tv_error.setVisibility(View.GONE);
-
+        
         bottomSheetDialog_templateList.show();
     }
-
+    
     private void Template_list(RecyclerView templet_list) throws JSONException {
         SignResponseModel signResponseModel = SessionManager.getGetUserdata(Add_Camp_Email_Activity.this);
         String token = Global.getToken(sessionManager);
@@ -536,34 +539,34 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                     templateList = list.getTemplate();
                 }
                 TemplateList.Template template1 = new TemplateList.Template();
-                template1.setTemplateName("Save current as template");
+                template1.setTemplateName(getResources().getString(R.string.Save_current_as_template));
                 template1.setSelect(true);
                 templateList.add(templateList.size(), template1);
-
-
+                
+                
                 templet_list.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                 templateAdepter = new TemplateAdepter(getApplicationContext(), templateList, templateClick, edit_template, ev_subject);
                 templet_list.setAdapter(templateAdepter);
             }
-
+            
             @Override
             public void error(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
             }
-
-
+            
+            
         });
-
-
+        
+        
     }
-
+    
     public void OnClick(@SuppressLint("UnknownNullness") String s) {
         String curenttext = edit_template.getText().toString();
-        String Newtext = curenttext +" "+ s +" ";
+        String Newtext = curenttext + " " + s + " ";
         edit_template.setText(Newtext);
         edit_template.setSelection(edit_template.getText().length());
     }
-
+    
     @Override
     public void OnClick(TemplateList.Template template) {
         ev_subject.setText(template.getContentHeader());
@@ -572,17 +575,17 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
         template_id_is = String.valueOf(template.getId());
         bottomSheetDialog_templateList.dismiss();
     }
-
+    
     public void showAlertDialogButtonClicked(View view, EditText edit_template) {
-
+        
         // Create an alert builder
         AlertDialog.Builder builder
                 = new AlertDialog.Builder(this, R.style.BottomSheetDialog);
         final View customLayout
                 = getLayoutInflater()
-                .inflate(
-                        R.layout.add_titale_for_templet,
-                        null);
+                          .inflate(
+                                  R.layout.add_titale_for_templet,
+                                  null);
         builder.setView(customLayout);
         CoordinatorLayout c_layout = customLayout.findViewById(R.id.c_layout);
         EditText edt_template_name = customLayout.findViewById(R.id.editText);
@@ -590,7 +593,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
         TextView tv_add = customLayout.findViewById(R.id.tv_add);
         AlertDialog dialog
                 = builder.create();
-
+        
         dialog.show();
         tv_add.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("SyntheticAccessor")
@@ -599,8 +602,8 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                 if (edt_template_name.getText().toString().equals("")) {
                     Global.Messageshow(getApplicationContext(), c_layout, getResources().getString(R.string.add_tamplate), false);
                 } else if (edit_template.equals("")) {
-                    Global.Messageshow(getApplicationContext(), c_layout,  getResources().getString(R.string.add_tamplate_txt), false);
-
+                    Global.Messageshow(getApplicationContext(), c_layout, getResources().getString(R.string.add_tamplate_txt), false);
+                    
                 } else {
                     try {
                         if (Global.isNetworkAvailable(Add_Camp_Email_Activity.this, Add_Camp_Email_Activity.mMainLayout)) {
@@ -611,7 +614,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                         e.printStackTrace();
                     }
                 }
-
+                
             }
         });
         tv_cancel.setOnClickListener(new View.OnClickListener() {
@@ -620,30 +623,30 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                 dialog.dismiss();
             }
         });
-
+        
     }
-
+    
     public void StepData() {
-
+        
         Intent inten = getIntent();
         Bundle bundle = inten.getExtras();
         String flag = bundle.getString("flag");
-
+        
         JsonObject obj = new JsonObject();
         if (flag.equals("add")) {
             loadingDialog.showLoadingDialog();
             SignResponseModel user_data = SessionManager.getGetUserdata(this);
-
+            
             try {
                 if (!SessionManager.getTask(getApplicationContext()).equals(null)) {
-
+                    
                     CampaignTask main_data = SessionManager.getTask(getApplicationContext()).get(0);
-
+                    
                     int step = main_data.getStepNo() + 1;
                     step_no = String.valueOf(step);
                     day = Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext()));
                     minite = Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext()));
-
+                    
                     if (SessionManager.getTask(getApplicationContext()).get(0).getSequenceId().toString().equals("null")) {
                         sequence_id = "null";
                     } else {
@@ -655,7 +658,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
             } catch (Exception e) {
                 sequence_id = "null";
             }
-
+            
             JsonObject paramObject = new JsonObject();
             paramObject.addProperty("content_body", edit_template.getHtml().toString());
             paramObject.addProperty("day", day);
@@ -664,9 +667,9 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
             paramObject.addProperty("organization_id", 1);
             if (!template_id_is.equals("")) {
                 paramObject.addProperty("template_id", template_id_is);
-
+                
             }
-
+            
             if (!sequence_id.equals("null")) {
                 paramObject.addProperty("sequence_id", sequence_id);
             }
@@ -674,19 +677,23 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
             paramObject.addProperty("step_no", step_no);
             paramObject.addProperty("team_id", 1);
             paramObject.addProperty("type", SessionManager.getCampaign_type(getApplicationContext()));
-            paramObject.addProperty("time", Global.getCurrentTime());
+            try {
+                paramObject.addProperty("time", Global_Time.time_12_to_24(Global_Time.getCurrentTime()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             paramObject.addProperty("user_id", user_data.getUser().getId());
             paramObject.addProperty("from_ac", from_ac);
             paramObject.addProperty("from_ac_id", from_ac_id);
-
+            
             obj.add("data", paramObject);
         } else {
             SignResponseModel user_data = SessionManager.getGetUserdata(this);
             String user_id = String.valueOf(user_data.getUser().getId());
             String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
             String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
-
-
+            
+            
             JsonObject paramObject = new JsonObject();
             paramObject.addProperty("content_body", edit_template.getHtml().toString());
             paramObject.addProperty("day", Integer.parseInt(SessionManager.getCampaign_Day(getApplicationContext())));
@@ -700,28 +707,32 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
             paramObject.addProperty("content_header", ev_subject.getText().toString());
             paramObject.addProperty("team_id", "1");
             paramObject.addProperty("type", SessionManager.getCampaign_type(getApplicationContext()));
-            paramObject.addProperty("time", Global.getCurrentTime());
+            try {
+                paramObject.addProperty("time", Global_Time.time_12_to_24(Global_Time.getCurrentTime()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             paramObject.addProperty("user_id", user_id);
             paramObject.addProperty("step_no", step_no);
             paramObject.addProperty("from_ac", from_ac);
             paramObject.addProperty("from_ac_id", from_ac_id);
             if (!template_id_is.equals("")) {
                 paramObject.addProperty("template_id", template_id_is);
-
+                
             }
             obj.add("data", paramObject);
-
+            
         }
-
+        
         retrofitCalls.Task_store(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(Add_Camp_Email_Activity.this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
                 //Log.e("Response is",new Gson().toJson(response));
-
+                
                 loadingDialog.cancelLoading();
-
+                
                 if (response.body().getHttp_status() == 200) {
-
+                    
                     Gson gson = new Gson();
                     String headerString = gson.toJson(response.body().getData());
                     Type listType = new TypeToken<List<CampaignTask>>() {
@@ -733,34 +744,28 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                     if (!flag.equals("edit")) {
                         SessionManager.setTask(getApplicationContext(), user_model1);
                         startActivity(new Intent(getApplicationContext(), Campaign_Overview.class));
-                    }
-                    else if (SessionManager.getcamp_final_flag(getApplicationContext()).equals("final_edit"))
-                    {
+                    } else if (SessionManager.getcamp_final_flag(getApplicationContext()).equals("final_edit")) {
+                        finish();
+                    } else {
                         finish();
                     }
-                    else {
-                        finish();
-                    }
-
-                }
-                else if (response.body().getHttp_status()==403)
-                {
-                    Global.Messageshow(getApplicationContext(),mMainLayout,getResources().getString(R.string.plan_validation),false);
-                }
-                else {
-
+                    
+                } else if (response.body().getHttp_status() == 403) {
+                    Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.plan_validation), false);
+                } else {
+                    
                     Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
-
+                    
                 }
             }
-
+            
             @Override
             public void error(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
             }
         });
     }
-
+    
     private void CreateTemplate(EditText edit_template, EditText ev_subject, EditText edt_template_name, AlertDialog dialog) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel signResponseModel = SessionManager.getGetUserdata(Add_Camp_Email_Activity.this);
@@ -776,7 +781,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
         paramObject.addProperty("template_slug", template_slug);
         paramObject.addProperty("content_body", edit_template.getText().toString().trim());
         paramObject.addProperty("type", "EMAIL");
-
+        
         obj.add("data", paramObject);
         retrofitCalls.CreateTemplate(sessionManager, obj, loadingDialog, token, Global.getVersionname(Add_Camp_Email_Activity.this), Global.Device, new RetrofitCallback() {
             @Override
@@ -800,19 +805,19 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                     }
                 }
             }
-
+            
             @Override
             public void error(Response<ApiResponse> response) {
                 dialog.dismiss();
                 loadingDialog.cancelLoading();
             }
-
-
+            
+            
         });
-
-
+        
+        
     }
-
+    
     private boolean isValidation(EditText editTemplate, EditText ev_subject, EditText edt_template_name) {
         if (edt_template_name.getText().toString().equals("")) {
             Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.template_name), false);
@@ -827,7 +832,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
         }
         return false;
     }
-
+    
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -836,36 +841,73 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                 Uri fileUri = data.getData();
                 filePath = fileUri.getPath();
                 Log.e("File Pathe uis ", filePath);
-
+                
             }
         }
     }
-
-
-
+    
+    void BZCard_list() throws JSONException {
+        
+        //   loadingDialog.showLoadingDialog();
+        
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Add_Camp_Email_Activity.this);
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        obj.add("data", paramObject);
+        retrofitCalls.BZcard_User_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(Add_Camp_Email_Activity.this), Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                if (response.body().getHttp_status() == 200) {
+                    bizcardList.clear();
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<BZcardListModel>() {
+                    }.getType();
+                    BZcardListModel bZcardListModel = new Gson().fromJson(headerString, listType);
+                    
+                    bizcardList = bZcardListModel.getBizcardList_user();
+                    
+                    
+                }
+            }
+            
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+        
+        
+    }
+    
     static class CardListAdepter extends RecyclerView.Adapter<CardListAdepter.cardListData> {
-
+        
         Activity mContext;
         List<BZcardListModel.Bizcard> bizcardList;
         BottomSheetDialog bottomSheetDialog;
         TextClick interfaceClick;
-
+        
         public CardListAdepter(Activity activity, List<BZcardListModel.Bizcard> bizcardList,
-                                BottomSheetDialog bottomSheetDialog, TextClick interfaceClick) {
+                               BottomSheetDialog bottomSheetDialog, TextClick interfaceClick) {
             this.mContext = activity;
             this.bizcardList = bizcardList;
             this.bottomSheetDialog = bottomSheetDialog;
             this.interfaceClick = interfaceClick;
         }
-
-
+        
+        
         @NonNull
         @Override
         public CardListAdepter.cardListData onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_list, parent, false);
             return new CardListAdepter.cardListData(view);
         }
-
+        
         @SuppressLint({"SetTextI18n", "UseCompatLoadingForDrawables"})
         @Override
         public void onBindViewHolder(@NonNull CardListAdepter.cardListData holder, int position) {
@@ -895,29 +937,29 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
             if (resID != 0) {
                 Glide.with(mContext.getApplicationContext()).load(resID).into(holder.iv_card);
             }*/
-
+            
             holder.layout_select_image.setOnClickListener(v -> {
-                String newUrl="",oldUrl="",Newtext="";
-                for(int i=0;i<bizcardList.size();i++){
-                    if(bizcardList.get(i).isScelect()){
-                        oldUrl=Global.bzcard_share+bizcardList.get(i).getId_encoded();
+                String newUrl = "", oldUrl = "", Newtext = "";
+                for (int i = 0; i < bizcardList.size(); i++) {
+                    if (bizcardList.get(i).isScelect()) {
+                        oldUrl = Global.bzcard_share + bizcardList.get(i).getId_encoded();
                         bizcardList.get(i).setScelect(false);
                         break;
                     }
                 }
                 bizcard.setScelect(true);
-                newUrl=Global.bzcard_share+bizcard.getId_encoded();
-
+                newUrl = Global.bzcard_share + bizcard.getId_encoded();
+                
                 String curenttext = edit_template.getText().toString();
-                if(!oldUrl.equals("")&& !oldUrl.equals(newUrl)){
-                    String changeurl=curenttext.replace(oldUrl,newUrl);
+                if (!oldUrl.equals("") && !oldUrl.equals(newUrl)) {
+                    String changeurl = curenttext.replace(oldUrl, newUrl);
                     Newtext = changeurl;
-                }else {
-                    Newtext = curenttext+newUrl;
+                } else {
+                    Newtext = curenttext + newUrl;
                 }
                 edit_template.setText(Newtext);
                 edit_template.setSelection(edit_template.getText().length());
-
+                
                 bottomSheetDialog.dismiss();
                 notifyDataSetChanged();
             });
@@ -927,38 +969,38 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                 holder.layout_select_image.setBackground(null);
             }
         }
-
-
+        
+        
         @Override
         public int getItemCount() {
             return bizcardList.size();
         }
-
+        
         public static class cardListData extends RecyclerView.ViewHolder {
-
+            
             ImageView iv_card;
             LinearLayout layout_select_image;
-
+            
             public cardListData(@NonNull View itemView) {
                 super(itemView);
                 iv_card = itemView.findViewById(R.id.iv_card);
                 layout_select_image = itemView.findViewById(R.id.layout_select_image);
             }
         }
-
-
+        
+        
     }
-
+    
     class EmailListAdepter extends RecyclerView.Adapter<EmailListAdepter.viewholder> {
-
+        
         public Context mCtx;
         List<UserLinkedList.UserLinkedGmail> userLinkedGmailList;
-
+        
         public EmailListAdepter(Context applicationContext, List<UserLinkedList.UserLinkedGmail> userLinkedGmailList) {
             this.mCtx = applicationContext;
             this.userLinkedGmailList = userLinkedGmailList;
         }
-
+        
         @NonNull
         @Override
         public EmailListAdepter.viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -966,32 +1008,32 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
             View view = inflater.inflate(R.layout.email_select_layout, parent, false);
             return new EmailListAdepter.viewholder(view);
         }
-
+        
         @Override
         public void onBindViewHolder(@NonNull EmailListAdepter.viewholder holder, int position) {
-
+            
             holder.tv_item.setText(userLinkedGmailList.get(position).getUserEmail());
             if (holder.iv_selected.isSelected() == false) {
                 holder.iv_unselected.setVisibility(View.VISIBLE);
                 holder.iv_selected.setVisibility(View.GONE);
-
+                
                 amountOfItemsSelected++;
             } else if (holder.iv_selected.isSelected() == true) {
                 holder.iv_unselected.setVisibility(View.GONE);
                 holder.iv_selected.setVisibility(View.VISIBLE);
                 amountOfItemsSelected--;
             }
-
+            
             if (amountOfItemsSelected > 1) {
-
+            
             }
             if (userLinkedGmailList.get(position).getIsDefault().toString().equals("1")) {
                 holder.iv_dufult.setVisibility(View.VISIBLE);
             } else {
                 holder.iv_dufult.setVisibility(View.GONE);
             }
-
-
+            
+            
             if (userLinkedGmailList.get(position).isEmailSelect()) {
                 holder.iv_selected.setVisibility(View.VISIBLE);
                 holder.iv_unselected.setVisibility(View.GONE);
@@ -999,8 +1041,8 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                 holder.iv_selected.setVisibility(View.GONE);
                 holder.iv_unselected.setVisibility(View.VISIBLE);
             }
-
-
+            
+            
             holder.layout_select.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -1011,7 +1053,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                         }
                     }
                     userLinkedGmailList.get(position).setEmailSelect(true);
-
+                    
                     select_userLinkedGmailList.clear();
                     holder.iv_selected.setVisibility(View.VISIBLE);
                     holder.iv_unselected.setVisibility(View.GONE);
@@ -1019,21 +1061,21 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                     notifyDataSetChanged();
                 }
             });
-
-
+            
+            
         }
-
+        
         @Override
         public int getItemCount() {
             return userLinkedGmailList.size();
         }
-
+        
         public class viewholder extends RecyclerView.ViewHolder {
             TextView tv_item;
             View line_view;
             ImageView iv_dufult, iv_selected, iv_unselected;
             LinearLayout layout_select;
-
+            
             public viewholder(View view) {
                 super(view);
                 tv_item = view.findViewById(R.id.tv_item);
@@ -1045,14 +1087,14 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
             }
         }
     }
-
+    
     class TemplateAdepter extends RecyclerView.Adapter<TemplateAdepter.viewholder> {
-
+        
         public Context mCtx;
         List<TemplateList.Template> templateTextList1;
         TemplateClick interfaceClick;
         EditText edit_template, ev_subject;
-
+        
         public TemplateAdepter(Context applicationContext, List<TemplateList.Template> templateTextList1,
                                TemplateClick interfaceClick, EditText edit_template, EditText ev_subject) {
             this.mCtx = applicationContext;
@@ -1061,7 +1103,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
             this.edit_template = edit_template;
             this.ev_subject = ev_subject;
         }
-
+        
         @NonNull
         @Override
         public TemplateAdepter.viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -1069,30 +1111,30 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
             View view = inflater.inflate(R.layout.select_templet_layout, parent, false);
             return new TemplateAdepter.viewholder(view);
         }
-
+        
         @Override
         public void onBindViewHolder(@NonNull TemplateAdepter.viewholder holder, int position) {
             TemplateList.Template item = templateTextList1.get(position);
             holder.tv_item.setText(item.getTemplateName());
             //holder.tv_item.setBackgroundResource(R.drawable.shape_unselect_back);
             holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.text_reg));
-
+            
             if (item.isSelect()) {
                 holder.tv_item.setTextColor(mCtx.getResources().getColor(R.color.purple_200));
                 holder.line_view.setVisibility(View.VISIBLE);
             } else {
                 holder.line_view.setVisibility(View.GONE);
             }
-
+            
             holder.tv_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (holder.tv_item.getText().toString().equals("Save current as template")) {
+                    if (holder.tv_item.getText().toString().equals(getResources().getString(R.string.Save_current_as_template))) {
                         showAlertDialogButtonClicked(view, edit_template);
                     } else {
                         interfaceClick.OnClick(item);
-                        for(int i=0;i<bizcardList.size();i++){
-                            if(bizcardList.get(i).isScelect()){
+                        for (int i = 0; i < bizcardList.size(); i++) {
+                            if (bizcardList.get(i).isScelect()) {
                                 bizcardList.get(i).setScelect(false);
                                 break;
                             }
@@ -1100,19 +1142,19 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                     }
                 }
             });
-
-
+            
+            
         }
-
+        
         @Override
         public int getItemCount() {
             return templateTextList1.size();
         }
-
+        
         public class viewholder extends RecyclerView.ViewHolder {
             TextView tv_item;
             View line_view;
-
+            
             public viewholder(View view) {
                 super(view);
                 tv_item = view.findViewById(R.id.selected_broadcast);
@@ -1120,19 +1162,19 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
             }
         }
     }
-
+    
     class PicUpTextAdepter extends RecyclerView.Adapter<PicUpTextAdepter.viewholder> {
-
+        
         public Activity mCtx;
         List<HastagList.TemplateText> templateTextList;
         TextClick interfaceClick;
-
+        
         public PicUpTextAdepter(Activity applicationContext, List<HastagList.TemplateText> templateTextList, TextClick interfaceClick) {
             this.mCtx = applicationContext;
             this.templateTextList = templateTextList;
             this.interfaceClick = interfaceClick;
         }
-
+        
         @NonNull
         @Override
         public PicUpTextAdepter.viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -1140,7 +1182,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
             View view = inflater.inflate(R.layout.template_text_selecte, parent, false);
             return new PicUpTextAdepter.viewholder(view);
         }
-
+        
         @Override
         public void onBindViewHolder(@NonNull PicUpTextAdepter.viewholder holder, int position) {
             HastagList.TemplateText item = templateTextList.get(position);
@@ -1152,38 +1194,35 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                 holder.tv_item.setVisibility(View.GONE);
                 holder.im_file.setImageDrawable(mCtx.getDrawable(item.getFile()));
                 holder.line_view.setVisibility(View.GONE);
-
+                
             } else {
-
+                
                 holder.im_file.setVisibility(View.GONE);
                 holder.tv_item.setVisibility(View.VISIBLE);
-
+                
             }
             if (position == 0) {
-
+                
                 holder.line_view.setVisibility(View.GONE);
-
+                
             } else if (position == 1) {
                 holder.line_view.setVisibility(View.GONE);
             } else {
-
+            
             }
             holder.im_file.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (position == 0) {
-                        if (bottombar.getVisibility()==View.VISIBLE)
-                        {
+                        if (bottombar.getVisibility() == View.VISIBLE) {
                             bottombar.setVisibility(View.GONE);
-
-                        }
-                        else {
+                            
+                        } else {
                             bottombar.setVisibility(View.VISIBLE);
-
+                            
                         }
-                    }
-                    else if (position == 1) {
-
+                    } else if (position == 1) {
+                        
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                         final View mView = getLayoutInflater().inflate(R.layout.bzcart_list_dialog_item, null);
@@ -1192,23 +1231,23 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                         bottomSheetDialog.setContentView(mView);
                         RecyclerView rv_image_card = bottomSheetDialog.findViewById(R.id.rv_image_card);
                         LinearLayout lay_no_list = bottomSheetDialog.findViewById(R.id.lay_no_list);
-
-                        if(bizcardList.size()!=0){
+                        
+                        if (bizcardList.size() != 0) {
                             rv_image_card.setVisibility(View.VISIBLE);
                             lay_no_list.setVisibility(View.GONE);
-                        }else {
+                        } else {
                             rv_image_card.setVisibility(View.GONE);
                             lay_no_list.setVisibility(View.VISIBLE);
                         }
-
-
+                        
+                        
                         rv_image_card.setLayoutManager(new LinearLayoutManager(Add_Camp_Email_Activity.this,
                                 LinearLayoutManager.HORIZONTAL, false));
                         rv_image_card.setHasFixedSize(true);
                         cardListAdepter = new CardListAdepter(Add_Camp_Email_Activity.this, bizcardList,
-                                 bottomSheetDialog, interfaceClick);
+                                bottomSheetDialog, interfaceClick);
                         rv_image_card.setAdapter(cardListAdepter);
-
+                        
                         bottomSheetDialog.show();
                     }
                 }
@@ -1238,20 +1277,20 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                     }
                 }
             });
-
-
+            
+            
         }
-
+        
         @Override
         public int getItemCount() {
             return templateTextList.size();
         }
-
+        
         public class viewholder extends RecyclerView.ViewHolder {
             TextView tv_item;
             View line_view;
             ImageView im_file;
-
+            
             public viewholder(View view) {
                 super(view);
                 tv_item = view.findViewById(R.id.tv_item);
@@ -1259,45 +1298,5 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
                 im_file = view.findViewById(R.id.im_file);
             }
         }
-    }
-
-    void BZCard_list() throws JSONException {
-
-     //   loadingDialog.showLoadingDialog();
-
-        SignResponseModel signResponseModel = SessionManager.getGetUserdata(Add_Camp_Email_Activity.this);
-        String token = Global.getToken(sessionManager);
-        JsonObject obj = new JsonObject();
-        JsonObject paramObject = new JsonObject();
-        paramObject.addProperty("organization_id", 1);
-        paramObject.addProperty("team_id", 1);
-        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
-        obj.add("data", paramObject);
-        retrofitCalls.BZcard_User_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(Add_Camp_Email_Activity.this), Global.Device, new RetrofitCallback() {
-            @Override
-            public void success(Response<ApiResponse> response) {
-                loadingDialog.cancelLoading();
-                if (response.body().getHttp_status() == 200) {
-                    bizcardList.clear();
-                    Gson gson = new Gson();
-                    String headerString = gson.toJson(response.body().getData());
-                    Type listType = new TypeToken<BZcardListModel>() {
-                    }.getType();
-                    BZcardListModel bZcardListModel = new Gson().fromJson(headerString, listType);
-
-                    bizcardList = bZcardListModel.getBizcardList_user();
-
-
-
-                }
-            }
-
-            @Override
-            public void error(Response<ApiResponse> response) {
-                loadingDialog.cancelLoading();
-            }
-        });
-
-
     }
 }

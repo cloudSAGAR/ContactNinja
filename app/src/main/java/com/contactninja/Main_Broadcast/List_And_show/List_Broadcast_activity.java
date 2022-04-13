@@ -36,6 +36,7 @@ import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
+import com.contactninja.Utils.Global_Time;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.PaginationListener;
 import com.contactninja.Utils.SessionManager;
@@ -204,7 +205,7 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
         save_button.setVisibility(View.GONE);
 
         iv_back.setOnClickListener(this);
-        save_button.setText("Next");
+        save_button.setText(getResources().getString(R.string.Next));
         mMainLayout = findViewById(R.id.mMainLayout);
 
         tv_create = findViewById(R.id.tv_create);
@@ -556,13 +557,13 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
                 holder.tv_username.setText(conactname);
                 switch (item.getRecurringType()) {
                     case "D":
-                        holder.tv_task_time.setText("Daily - " + Global.TimeFormateAMPM(item.getStartTime()));
+                        holder.tv_task_time.setText("Daily - " + Global_Time.TimeFormateAMPM(item.getStartTime()));
                         break;
                     case "W":
-                        holder.tv_task_time.setText("Weekly - " + Global.TimeFormateAMPM(item.getStartTime()));
+                        holder.tv_task_time.setText("Weekly - " + Global_Time.TimeFormateAMPM(item.getStartTime()));
                         break;
                     case "M":
-                        holder.tv_task_time.setText("Monthly - " + Global.TimeFormateAMPM(item.getStartTime()));
+                        holder.tv_task_time.setText("Monthly - " + Global_Time.TimeFormateAMPM(item.getStartTime()));
 
                         break;
                 }

@@ -27,6 +27,7 @@ import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
+import com.contactninja.Utils.Global_Time;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.ApiResponse;
@@ -47,7 +48,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import retrofit2.Response;
-
+@SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
 public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implements View.OnClickListener,ConnectivityReceiver.ConnectivityReceiverListener{
     private BroadcastReceiver mNetworkReceiver;
     LinearLayout mMainLayout;
@@ -66,7 +67,8 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
     private long mLastClickTime=0;
     int prospect_id=0,seq_task_id=0,record_id=0;
     String main_date="";
-
+    int m_hour = 0;
+    int m_minute = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,22 +93,15 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
         }catch (Exception e){
             e.printStackTrace();
         }
+        tv_date.setText(Global_Time.getCurrentDate());
 
-
-        Date c = Calendar.getInstance().getTime();
-        System.out.println("Current time => " + c);
-
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        String formattedDate = df.format(c);
-        tv_date.setText(formattedDate);
-
-        String formateChnage = Global.DateFormateMonth(formattedDate);
+        String formateChnage = Global_Time.DateFormateMonth(Global_Time.getCurrentDate());
         tv_date.setText(formateChnage);
-        main_date=formattedDate;
+        main_date=Global_Time.getCurrentDate();
 
         Calendar mcurrentTime = Calendar.getInstance();
         mcurrentTime.add(Calendar.MINUTE, 2);
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm aaa");
         String currentDateandTime = sdf.format(mcurrentTime.getTime());
         tv_time.setText(currentDateandTime);
     }
@@ -115,6 +110,7 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
         Global.checkConnectivity(Manual_Shooz_Time_Date_Activity.this, mMainLayout);
     }
 
+    @SuppressLint("ObsoleteSdkInt")
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void registerNetworkBroadcastForNougat() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -249,7 +245,11 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
         paramObject.put("prospect_id", prospect_id);
         paramObject.put("seq_task_id", seq_task_id);
         paramObject.put("status", "SNOOZE");
-        paramObject.put("time", tv_time.getText().toString());
+        try {
+            paramObject.put("time", Global_Time.time_12_to_24(tv_time.getText().toString()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         paramObject.put("date", main_date);
         obj.put("data", paramObject);
         JsonParser jsonParser = new JsonParser();
@@ -282,30 +282,42 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
     public void onTimer()
     {
         Calendar mcurrentTime = Calendar.getInstance();
-        mcurrentTime.set(Calendar.MINUTE, 2);
-        int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-        int minute = mcurrentTime.get(Calendar.MINUTE);
+        m_hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+        m_minute = mcurrentTime.get(Calendar.MINUTE);
         TimePickerDialog mTimePicker;
         mTimePicker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                String stime = "";
-                if (selectedHour + 1 < 10) {
-                    stime = "0" + (selectedHour);
+            
+                m_hour = selectedHour;
+                m_minute = selectedMinute;
+                String timeSet = "";
+                if (m_hour > 12) {
+                    m_hour -= 12;
+                    timeSet = "PM";
+                } else if (m_hour == 0) {
+                    m_hour += 12;
+                    timeSet = "AM";
+                } else if (m_hour == 12) {
+                    timeSet = "PM";
                 } else {
-                    stime = String.valueOf(selectedHour);
+                    timeSet = "AM";
                 }
-
-
-                String sminite = "";
-                if (selectedMinute < 10) {
-                    sminite = "0" + selectedMinute;
-                } else {
-                    sminite = String.valueOf(selectedMinute);
-                }
-                tv_time.setText( stime + ":" + sminite);            }
-        }, hour, minute, true);//Yes 24 hour time
-        mTimePicker.setTitle("Select Time");
+            
+                String min = "";
+                if (m_minute < 10)
+                    min = "0" + m_minute;
+                else
+                    min = String.valueOf(m_minute);
+            
+                // Append in a StringBuilder
+                String aTime = new StringBuilder().append(m_hour).append(':')
+                                       .append(min).append(" ").append(timeSet).toString();
+                tv_time.setText(aTime);
+            
+            }
+        }, m_hour, m_minute, false);//Yes 24 hour time
+        mTimePicker.setTitle(getResources().getString(R.string.Select_Time));
         mTimePicker.show();
     }
 
@@ -339,7 +351,7 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
                             sdate = String.valueOf(dayOfMonth);
                         }
 
-                        String formateChnage = Global.DateFormateMonth(year+"-"+sMonth+"-"+sdate);
+                        String formateChnage = Global_Time.DateFormateMonth(year+"-"+sMonth+"-"+sdate);
                         tv_date.setText(formateChnage);
                         main_date=year + "-" + sMonth + "-" + sdate;
                      //   tv_date.setText(year + "-" + sMonth + "-" + sdate);

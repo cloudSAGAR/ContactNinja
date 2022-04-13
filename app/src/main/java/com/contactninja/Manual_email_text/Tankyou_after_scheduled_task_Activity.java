@@ -19,7 +19,7 @@ import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
 
 @SuppressLint("SimpleDateFormat,StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
-public class Email_Tankyou extends AppCompatActivity  implements ConnectivityReceiver.ConnectivityReceiverListener{
+public class Tankyou_after_scheduled_task_Activity extends AppCompatActivity  implements ConnectivityReceiver.ConnectivityReceiverListener{
     TextView tv_sub_titale;
     String s_name="";
     private BroadcastReceiver mNetworkReceiver;
@@ -27,7 +27,7 @@ public class Email_Tankyou extends AppCompatActivity  implements ConnectivityRec
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_email_tankyou);
+        setContentView(R.layout.activity_tankyou_task_scheduled);
         mNetworkReceiver = new ConnectivityReceiver();
         mMainLayout = findViewById(R.id.mMainLayout);
         tv_sub_titale=findViewById(R.id.tv_sub_titale);
@@ -37,10 +37,10 @@ public class Email_Tankyou extends AppCompatActivity  implements ConnectivityRec
 
             if (s_name.equals("final"))
             {
-                tv_sub_titale.setText("Your task \n has been Schedule!");
+                tv_sub_titale.setText(getResources().getString(R.string.task_scheduled));
             }
             else {
-                tv_sub_titale.setText("Your task \n has been added!");
+                tv_sub_titale.setText(getResources().getString(R.string.task_added));
             }
 
 
@@ -65,9 +65,10 @@ public class Email_Tankyou extends AppCompatActivity  implements ConnectivityRec
     }
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
-        Global.checkConnectivity(Email_Tankyou.this, mMainLayout);
+        Global.checkConnectivity(Tankyou_after_scheduled_task_Activity.this, mMainLayout);
     }
 
+    @SuppressLint("ObsoleteSdkInt")
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void registerNetworkBroadcastForNougat() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

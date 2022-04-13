@@ -44,6 +44,7 @@ import com.contactninja.Model.UservalidateModel;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
+import com.contactninja.Utils.Global_Time;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.ApiResponse;
@@ -344,7 +345,7 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
 
                 }
                 TemplateList.Template template1 = new TemplateList.Template();
-                template1.setTemplateName("Save current as template");
+                template1.setTemplateName(getResources().getString(R.string.Save_current_as_template));
                 template1.setSelect(true);
                 templateList.add(templateList.size(), template1);
 
@@ -443,7 +444,7 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
         save_button.setVisibility(View.VISIBLE);
         save_button.setOnClickListener(this);
         iv_back.setOnClickListener(this);
-        save_button.setText("Next");
+        save_button.setText(getResources().getString(R.string.Next));
 
         edit_template_name = findViewById(R.id.edit_template_name);
         rv_direct_list = findViewById(R.id.rv_direct_list);
@@ -655,7 +656,11 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
             paramObject.addProperty("step_no", step_no);
             paramObject.addProperty("team_id", "1");
             paramObject.addProperty("type", SessionManager.getCampaign_type(getApplicationContext()));
-            paramObject.addProperty("time", Global.getCurrentTime());
+            try {
+                paramObject.addProperty("time", Global_Time.time_12_to_24(Global_Time.getCurrentTime()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             paramObject.addProperty("user_id", user_id);
             paramObject.addProperty("from_ac", from_ac);
             paramObject.addProperty("from_ac_id", from_ac_id);
@@ -675,7 +680,11 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
             paramObject.addProperty("team_id", "1");
             paramObject.addProperty("seq_task_id", seq_task_id);
             paramObject.addProperty("type", SessionManager.getCampaign_type(getApplicationContext()));
-            paramObject.addProperty("time", Global.getCurrentTime());
+            try {
+                paramObject.addProperty("time",Global_Time.time_12_to_24(Global_Time.getCurrentTime()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             paramObject.addProperty("user_id", user_id);
             paramObject.addProperty("step_no", step_no);
             paramObject.addProperty("from_ac", from_ac);
@@ -1203,7 +1212,7 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
             holder.tv_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (holder.tv_item.getText().toString().equals("Save current as template")) {
+                    if (holder.tv_item.getText().toString().equals(getResources().getString(R.string.Save_current_as_template))) {
                         showAlertDialogButtonClicked(view, edit_template.getText().toString());
                         bottomSheetDialog_templateList.cancel();
                     } else {

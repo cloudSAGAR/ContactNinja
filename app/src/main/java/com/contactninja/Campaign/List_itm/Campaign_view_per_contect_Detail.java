@@ -27,18 +27,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak,UseCompatLoadingForDrawables,SetJavaScriptEnabled")
-public class Campaign_view_per_contect_Detail extends AppCompatActivity implements View.OnClickListener,ConnectivityReceiver.ConnectivityReceiverListener  {
+public class Campaign_view_per_contect_Detail extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     ImageView iv_back, iv_Setting;
     TextView save_button;
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     SessionManager sessionManager;
     int position;
-    TextView tv_nameLetter,tv_FirstName;
-    List<CampaignTask_overview.SequenceProspect> sequenceProspects=new ArrayList<>();
-    private BroadcastReceiver mNetworkReceiver;
+    TextView tv_nameLetter, tv_FirstName;
+    List<CampaignTask_overview.SequenceProspect> sequenceProspects = new ArrayList<>();
     LinearLayout mMainLayout;
-
+    private BroadcastReceiver mNetworkReceiver;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,13 +48,13 @@ public class Campaign_view_per_contect_Detail extends AppCompatActivity implemen
         loadingDialog = new LoadingDialog(this);
         sessionManager = new SessionManager(this);
         retrofitCalls = new RetrofitCalls(this);
-        Intent intent=getIntent();
-        Bundle bundle=intent.getExtras();
-        position=Integer.parseInt(bundle.getString("position"));
-        CampaignTask_overview contect_list_data=SessionManager.getCampaign_data(getApplicationContext());
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        position = Integer.parseInt(bundle.getString("position"));
+        CampaignTask_overview contect_list_data = SessionManager.getCampaign_data(getApplicationContext());
         sequenceProspects.addAll(contect_list_data.getSequenceProspects());
         tv_FirstName.setText(sequenceProspects.get(position).getFirstname());
-
+        
         String name = sequenceProspects.get(position).getFirstname();
         String add_text = "";
         String[] split_data = name.split(" ");
@@ -71,9 +71,9 @@ public class Campaign_view_per_contect_Detail extends AppCompatActivity implemen
             e.printStackTrace();
         }
         tv_nameLetter.setText(add_text);
-
+        
     }
-
+    
     private void IntentUI() {
         mMainLayout = findViewById(R.id.mMainLayout);
         iv_back = findViewById(R.id.iv_back);
@@ -86,14 +86,14 @@ public class Campaign_view_per_contect_Detail extends AppCompatActivity implemen
         save_button.setVisibility(View.VISIBLE);
         save_button.setText(getString(R.string.view_contect));
         save_button.setTextColor(getResources().getColor(R.color.purple_200));
-        tv_nameLetter=findViewById(R.id.tv_nameLetter);
-        tv_FirstName=findViewById(R.id.tv_FirstName);
-
+        tv_nameLetter = findViewById(R.id.tv_nameLetter);
+        tv_FirstName = findViewById(R.id.tv_FirstName);
+        
     }
-
+    
     @Override
     public void onClick(View view) {
-
+        
         switch (view.getId()) {
             case R.id.iv_back:
                 finish();
@@ -103,17 +103,17 @@ public class Campaign_view_per_contect_Detail extends AppCompatActivity implemen
                 break;
         }
     }
-
+    
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
-
+    
     }
-
+    
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         Global.checkConnectivity(Campaign_view_per_contect_Detail.this, mMainLayout);
     }
-
+    
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void registerNetworkBroadcastForNougat() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -123,7 +123,7 @@ public class Campaign_view_per_contect_Detail extends AppCompatActivity implemen
             registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         }
     }
-
+    
     @RequiresApi(api = Build.VERSION_CODES.N)
     protected void unregisterNetworkChanges() {
         try {
@@ -132,7 +132,7 @@ public class Campaign_view_per_contect_Detail extends AppCompatActivity implemen
             e.printStackTrace();
         }
     }
-
+    
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onDestroy() {

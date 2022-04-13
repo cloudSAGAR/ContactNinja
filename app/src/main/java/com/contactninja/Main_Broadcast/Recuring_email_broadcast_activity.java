@@ -33,6 +33,7 @@ import com.contactninja.Model.Broadcste_Coman_Model;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
+import com.contactninja.Utils.Global_Time;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
 import com.contactninja.retrofit.RetrofitCalls;
@@ -56,7 +57,8 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
     RetrofitCalls retrofitCalls;
     LoadingDialog loadingDialog;
     String main_date="";
-
+    int m_hour = 0;
+    int m_minute = 0;
     ImageView iv_back, iv_time, iv_date, iv_down_arrow,iv_big_logo,iv_small_logo;
     TextView save_button, tv_day_txt, tv_occurs_weekly;
     LinearLayout la_date, la_time, linearLayout, layout_rec,
@@ -122,27 +124,16 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
             tv_titele.setText(getResources().getString(R.string.broadcast_email));
         }
         broadcate_save_data = SessionManager.getBroadcate_save_data(getApplicationContext());
-        Log.e("Save Data is", new Gson().toJson(broadcate_save_data));
-
-        Date c = Calendar.getInstance().getTime();
-        System.out.println("Current time => " + c);
-
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        String formattedDate = df.format(c);
-        String formateChnage = Global.DateFormateMonth(formattedDate);
+        String formateChnage = Global_Time.DateFormateMonth(Global_Time.getCurrentDate());
         tv_date.setText(formateChnage);
-        main_date=formattedDate;;
-
-
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-        String currentDateandTime = sdf.format(new Date());
-        tv_time.setText(currentDateandTime);
+        main_date=Global_Time.getCurrentDate();
+        tv_time.setText(Global_Time.getCurrentTime());
 
 
         if (SessionManager.getBroadcast_flag(getApplicationContext()).equals("edit")) {
             broadcate_save_data = SessionManager.getBroadcate_save_data(getApplicationContext());
             tv_time.setText(broadcate_save_data.getTime());
-            String formateChnage1 = Global.DateFormateMonth(broadcate_save_data.getDate());
+            String formateChnage1 = Global_Time.DateFormateMonth(broadcate_save_data.getDate());
             tv_date.setText(formateChnage1);
             main_date=broadcate_save_data.getDate();;
 
@@ -531,7 +522,11 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
                     Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.Select_Recurrence), false);
                 } else {
                     broadcate_save_data.setDate(main_date);
-                    broadcate_save_data.setTime(tv_time.getText().toString());
+                    try {
+                        broadcate_save_data.setTime(Global_Time.time_12_to_24(tv_time.getText().toString().trim()));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     broadcate_save_data.setRecurrence(tv_recurrence.getText().toString());
                     broadcate_save_data.setRepeat_every(tv_day.getText().toString());
                     broadcate_save_data.setOccurs_weekly(day_list_id);
@@ -714,30 +709,42 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
 
     public void onTimer() {
         Calendar mcurrentTime = Calendar.getInstance();
-        int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-        int minute = mcurrentTime.get(Calendar.MINUTE);
+        m_hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+        m_minute = mcurrentTime.get(Calendar.MINUTE);
         TimePickerDialog mTimePicker;
         mTimePicker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                String stime = "";
-                if (selectedHour + 1 < 10) {
-                    stime = "0" + (selectedHour);
+            
+                m_hour = selectedHour;
+                m_minute = selectedMinute;
+                String timeSet = "";
+                if (m_hour > 12) {
+                    m_hour -= 12;
+                    timeSet = "PM";
+                } else if (m_hour == 0) {
+                    m_hour += 12;
+                    timeSet = "AM";
+                } else if (m_hour == 12) {
+                    timeSet = "PM";
                 } else {
-                    stime = String.valueOf(selectedHour);
+                    timeSet = "AM";
                 }
-
-
-                String sminite = "";
-                if (selectedMinute < 10) {
-                    sminite = "0" + selectedMinute;
-                } else {
-                    sminite = String.valueOf(selectedMinute);
-                }
-                tv_time.setText(stime + ":" + sminite + ":" + "00");
+            
+                String min = "";
+                if (m_minute < 10)
+                    min = "0" + m_minute;
+                else
+                    min = String.valueOf(m_minute);
+            
+                // Append in a StringBuilder
+                String aTime = new StringBuilder().append(m_hour).append(':')
+                                       .append(min).append(" ").append(timeSet).toString();
+                tv_time.setText(aTime);
+            
             }
-        }, hour, minute, true);//Yes 24 hour time
-        mTimePicker.setTitle("Select Time");
+        }, m_hour, m_minute, false);//Yes 24 hour time
+        mTimePicker.setTitle(getResources().getString(R.string.Select_Time));
         mTimePicker.show();
     }
 
@@ -771,7 +778,7 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
                             sdate = String.valueOf(dayOfMonth);
                         }
 
-                        String formateChnage = Global.DateFormateMonth(year+"-"+sMonth+"-"+sdate);
+                        String formateChnage = Global_Time.DateFormateMonth(year+"-"+sMonth+"-"+sdate);
                         tv_date.setText(formateChnage);
                         main_date=year + "-" + sMonth + "-" + sdate;
 
