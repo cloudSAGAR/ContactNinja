@@ -112,6 +112,8 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
     private int amountOfItemsSelected = 0;
     private BroadcastReceiver mNetworkReceiver;
     private long mLastClickTime=0;
+    boolean zoom_flag=false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,6 +138,11 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
         ev_from.setEnabled(false);
         // Toast.makeText(getApplicationContext(),id,Toast.LENGTH_LONG).show();
 
+        try {
+            Zoom_Api_check_zoom_account(getApplicationContext());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         try {
             if (Global.isNetworkAvailable(Manual_Text_Send_Activty.this, mMainLayout)) {
                 Hastag_list();
@@ -308,8 +315,16 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
                     text1.setSelect(false);
                     templateTextList.add(0, text1);
 
+
                     HastagList.TemplateText text2 = new HastagList.TemplateText();
-                    text2.setFile(R.drawable.ic_video);
+                    if (zoom_flag==true)
+                    {
+                        text2.setFile(R.drawable.ic_video);
+                    }
+                    else {
+                        text2.setFile(R.drawable.ic_video_5);
+                    }
+
                     text2.setSelect(false);
                     templateTextList.add(1, text2);
 
@@ -1407,6 +1422,42 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
 
     }
 
+    void Zoom_Api_check_zoom_account(Context mCtx) throws JSONException {
+
+        SignResponseModel signResponseModel= SessionManager.getGetUserdata(Manual_Text_Send_Activty.this);
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        paramObject.addProperty("user_tmz_id",signResponseModel.getUser().getUserTimezone().get(0).getValue());
+        obj.add("data", paramObject);
+        retrofitCalls.zoomIntegrationExists(sessionManager,obj, loadingDialog, token,Global.getVersionname(Manual_Text_Send_Activty.this),Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                if (response.body().getHttp_status() == 200) {
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<ZoomExists>() {
+                    }.getType();
+                    ZoomExists zoomExists=new Gson().fromJson(headerString, listType);
+                    if(zoomExists.getUserExists()){
+                        zoom_flag=true;
+                    }else {
+                        zoom_flag=false;
+                    }
+                }
+            }
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+
+
+    }
     private void broadcast_manu_zoom(Context mCtx) {
 
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.zoom_layout, null);
