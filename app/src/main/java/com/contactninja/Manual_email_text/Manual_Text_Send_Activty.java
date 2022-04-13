@@ -561,7 +561,6 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
 
     private void SMSAPI(String text, int id, String email) throws JSONException {
 
-        Log.e("Phone Number", email);
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
         String user_id = String.valueOf(user_data.getUser().getId());

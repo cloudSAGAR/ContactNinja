@@ -74,8 +74,7 @@ public class Global extends Application {
     private static long lastClickTime = 0;
     private static Global mInstance;
     private static Snackbar snackbar;
-
-
+    public static int default_time_zoone_id = 6;
     public static String imei=Build.MANUFACTURER+" "+Build.MODEL+" "+Build.VERSION.RELEASE;
 
     public static void openEmailAuth(Activity activity) {

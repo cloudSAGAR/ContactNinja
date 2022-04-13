@@ -49,6 +49,7 @@ import com.contactninja.Interface.TemplateClick;
 import com.contactninja.Interface.TextClick;
 import com.contactninja.MainActivity;
 import com.contactninja.Manual_email_text.Email_Tankyou;
+import com.contactninja.Manual_email_text.List_And_show.Item_List_Text_Detail_Activty;
 import com.contactninja.Manual_email_text.Manual_Email_TaskActivity_;
 import com.contactninja.Model.BZcardListModel;
 import com.contactninja.Model.HastagList;
@@ -121,7 +122,7 @@ public class Contact_Click_Email_Send_Activity extends AppCompatActivity impleme
     private IARE_Toolbar mToolbar;
     LinearLayout bottombar;
     static AREditText edit_template;
-
+    boolean zoom_flag=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -144,6 +145,11 @@ public class Contact_Click_Email_Send_Activity extends AppCompatActivity impleme
         ev_titale.setText(task_name);
 
         ev_to.setText(email);
+        try {
+            Zoom_Api_check_zoom_account(getApplicationContext());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         try {
             if (Global.isNetworkAvailable(Contact_Click_Email_Send_Activity.this, mMainLayout)) {
@@ -162,7 +168,42 @@ public class Contact_Click_Email_Send_Activity extends AppCompatActivity impleme
             e.printStackTrace();
         }
     }
+    void Zoom_Api_check_zoom_account(Context mCtx) throws JSONException {
 
+        SignResponseModel signResponseModel= SessionManager.getGetUserdata(Contact_Click_Email_Send_Activity.this);
+        String token = Global.getToken(sessionManager);
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+        paramObject.addProperty("user_tmz_id",signResponseModel.getUser().getUserTimezone().get(0).getValue());
+        obj.add("data", paramObject);
+        retrofitCalls.zoomIntegrationExists(sessionManager,obj, loadingDialog, token,Global.getVersionname(Contact_Click_Email_Send_Activity.this),Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+                if (response.body().getHttp_status() == 200) {
+                    Gson gson = new Gson();
+                    String headerString = gson.toJson(response.body().getData());
+                    Type listType = new TypeToken<ZoomExists>() {
+                    }.getType();
+                    ZoomExists zoomExists=new Gson().fromJson(headerString, listType);
+                    if(zoomExists.getUserExists()){
+                        zoom_flag=true;
+                    }else {
+                        zoom_flag=false;
+                    }
+                }
+            }
+            @Override
+            public void error(Response<ApiResponse> response) {
+                loadingDialog.cancelLoading();
+            }
+        });
+
+
+    }
     private void initToolbar() {
         mToolbar = this.findViewById(R.id.areToolbar);
         IARE_ToolItem bold = new ARE_ToolItem_Bold();
@@ -265,7 +306,13 @@ public class Contact_Click_Email_Send_Activity extends AppCompatActivity impleme
                     templateTextList.add(1, text1);
 
                     HastagList.TemplateText text2 = new HastagList.TemplateText();
-                    text2.setFile(R.drawable.ic_video);
+                    if (zoom_flag==true)
+                    {
+                        text2.setFile(R.drawable.ic_video);
+                    }
+                    else {
+                        text2.setFile(R.drawable.ic_video_5);
+                    }
                     text2.setSelect(false);
                     templateTextList.add(2, text2);
 

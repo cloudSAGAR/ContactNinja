@@ -93,6 +93,7 @@ import java.io.FileOutputStream;
 import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.Clock;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -112,6 +113,7 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener {
     List<Contact> update_listContacts = new ArrayList<>();
     MyAsyncTasks myAsyncTasks;
+    MyAsyncTasks_userprofile myAsyncTasks_userprofile;
     //Declare Variabls for fragment
     public static int navItemIndex = 0;
     public static ArrayList<InviteListData> inviteListData = new ArrayList<>();
@@ -160,6 +162,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         activity = MainActivity.this;
         mNetworkReceiver = new ConnectivityReceiver();
+
         registerNetworkBroadcastForNougat();
         sessionManager = new SessionManager(this);
         sessionManager.login();
@@ -185,6 +188,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         TimeZone tz = TimeZone.getDefault();
         if (!Global.IsNotNull(user_data.getUser().getWorkingHoursList()) || user_data.getUser().getWorkingHoursList().size() == 0) {
+
             try {
                 if (Global.isNetworkAvailable(this, MainActivity.mMainLayout)) {
                     Timezone(tz.getID());
@@ -214,6 +218,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     }
                 });
+        SignResponseModel user_data = SessionManager.getGetUserdata(activity);
+
+        Log.e("Time Zone Chnage ",new Gson().toJson(user_data));
+        if(user_data.getUser().getUserTimezone().size()!=0){
+            if (!user_data.getUser().getUserTimezone().get(0).getTzname().toString().trim().equals(tz.getID()))
+                {
+                    Log.e("Time Xone",tz.getID());
+                    try {
+                        Timezone(tz.getID());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+        }
     }
 
     public static void upload(RemoteMessage remoteMessage) {
@@ -271,6 +290,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Working_hour(timezonDataList.get(i).getValue());
                         break;
                     }
+                    else if (timezonDataList.size()==i+1)
+                    {
+                        Working_hour(Global.default_time_zoone_id);
+                    }
                 }
             }
 
@@ -295,6 +318,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         retrofitCalls.Working_hour(sessionManager, obj, loadingDialog, token_api, version_name, Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
+              //  Log.e("Response is",new Gson().toJson(response));
+                myAsyncTasks_userprofile = new MyAsyncTasks_userprofile();
+                myAsyncTasks_userprofile.execute();
                 EnableRuntimePermission();
             }
 
@@ -1413,5 +1439,69 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    public class MyAsyncTasks_userprofile extends AsyncTask<String, String, String> {
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // display a progress dialog for good user experiance
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            // implement API in background and store the response in current variable
+            String current = "";
+            try {
+                Userinfo();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return current;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+
+        }
+
+    }
+
+    private void Userinfo() throws JSONException {
+        //  loadingDialog.showLoadingDialog();
+        SignResponseModel signResponseModel = SessionManager.getGetUserdata(getApplicationContext());
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("api", "user view");
+        obj.add("data", paramObject);
+        retrofitCalls.Userinfo(sessionManager, obj, loadingDialog, Global.getToken(sessionManager),
+                Global.getVersionname(this), Global.Device, new RetrofitCallback() {
+                    @Override
+                    public void success(Response<ApiResponse> response) {
+                        if (response.body().getHttp_status() == 200) {
+                            loadingDialog.cancelLoading();
+                            SessionManager.setUserdata(getApplicationContext(), new SignResponseModel());
+
+                            Gson gson = new Gson();
+                            String headerString = gson.toJson(response.body().getData());
+                            Type listType = new TypeToken<SignResponseModel>() {
+                            }.getType();
+                            SignResponseModel user_model = new Gson().fromJson(headerString, listType);
+                            SessionManager.setUserdata(getApplicationContext(), user_model);
+
+
+
+                        } else {
+                            loadingDialog.cancelLoading();
+                        }
+                    }
+
+                    @Override
+                    public void error(Response<ApiResponse> response) {
+                        loadingDialog.cancelLoading();
+                    }
+                });
+    }
 
 }
