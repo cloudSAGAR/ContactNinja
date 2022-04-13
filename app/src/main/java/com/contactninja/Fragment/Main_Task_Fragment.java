@@ -533,7 +533,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
         paramObject.addProperty("q", ev_search.getText().toString());
         paramObject.addProperty("filter_by", Filter);
-        paramObject.addProperty("user_datetime", Global_Time.getCurrentTimeandDate());
+        paramObject.addProperty("user_datetime", Global_Time.getCurrentTimeandDate_24());
         paramObject.addProperty("perPage", perPage);
         paramObject.addProperty("page", currentPage);
         obj.add("data", paramObject);
@@ -709,11 +709,11 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
     public static String parseDate(String timeAtMiliseconds) throws ParseException {
         String result = "now";
 
-        Date CurrentDate = Global_Time.defoult_date_time_formate.parse(Global_Time.getCurrentTimeandDate());
+        Date CurrentDate = Global_Time.defoult_date_time_formate.parse(Global_Time.getCurrentTimeandDate_24());
         Date CreateDate = Global_Time.defoult_date_time_formate.parse(timeAtMiliseconds);
 
 
-        long different = Math.abs(CurrentDate.getTime() - CreateDate.getTime());
+        long different = Math.abs(CurrentDate.getTime()-CreateDate.getTime());
 
         long secondsInMilli = 1000;
         long minutesInMilli = secondsInMilli * 60;

@@ -330,7 +330,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         paramObject.put("organization_id", 1);
         paramObject.put("team_id", 1);
         paramObject.put("user_id", user_id);
-        paramObject.put("date_time", Global_Time.getCurrentTimeandDate());
+        paramObject.put("date_time", Global_Time.getCurrentTimeandDate_24());
 
         JSONArray array = new JSONArray();
 

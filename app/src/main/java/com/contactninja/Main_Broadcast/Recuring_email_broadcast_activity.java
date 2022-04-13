@@ -522,25 +522,32 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
                 if (recurring_type.equals("Recurrence")) {
                     Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.Select_Recurrence), false);
                 } else {
-                    broadcate_save_data.setDate(main_date);
                     try {
-                        broadcate_save_data.setTime(Global_Time.time_12_to_24(tv_time.getText().toString().trim()));
+                        if (Global_Time.checkTime_isvalid(getApplicationContext(),tv_time.getText().toString().trim(),tv_date.getText().toString().trim())) {
+                            
+                            broadcate_save_data.setDate(main_date);
+                            try {
+                                broadcate_save_data.setTime(Global_Time.time_12_to_24(tv_time.getText().toString().trim()));
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            broadcate_save_data.setRecurrence(tv_recurrence.getText().toString());
+                            broadcate_save_data.setRepeat_every(tv_day.getText().toString());
+                            broadcate_save_data.setOccurs_weekly(day_list_id);
+                            broadcate_save_data.setOccurs_monthly(occurs_monthly);
+                            broadcate_save_data.setDay_of_month(tv_month.getText().toString());
+                            broadcate_save_data.setEvery_second(second_id);
+                            broadcate_save_data.setEvery_day(day_section_id);
+                            SessionManager.setBroadcate_save_data(getApplicationContext(), broadcate_save_data);
+                            SessionManager.setBroadcast_flag("edit");
+                            Intent broad_caste = new Intent(getApplicationContext(), Broadcast_Name_Activity.class);
+                            broad_caste.putExtra("Activty","Recurrence");
+                            startActivity(broad_caste);
+                            finish();
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    broadcate_save_data.setRecurrence(tv_recurrence.getText().toString());
-                    broadcate_save_data.setRepeat_every(tv_day.getText().toString());
-                    broadcate_save_data.setOccurs_weekly(day_list_id);
-                    broadcate_save_data.setOccurs_monthly(occurs_monthly);
-                    broadcate_save_data.setDay_of_month(tv_month.getText().toString());
-                    broadcate_save_data.setEvery_second(second_id);
-                    broadcate_save_data.setEvery_day(day_section_id);
-                    SessionManager.setBroadcate_save_data(getApplicationContext(), broadcate_save_data);
-                    SessionManager.setBroadcast_flag("edit");
-                    Intent broad_caste = new Intent(getApplicationContext(), Broadcast_Name_Activity.class);
-                    broad_caste.putExtra("Activty","Recurrence");
-                    startActivity(broad_caste);
-                    finish();
                 }
 
 
@@ -716,11 +723,7 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
         mTimePicker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                Calendar datetime = Calendar.getInstance();
-                Calendar c = Calendar.getInstance();
-                datetime.set(Calendar.HOUR_OF_DAY, selectedHour);
-                datetime.set(Calendar.MINUTE, selectedMinute);
-                if (datetime.getTimeInMillis() >= c.getTimeInMillis()) {
+              
                 
                     m_hour = selectedHour;
                     m_minute = selectedMinute;
@@ -748,10 +751,7 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
                                            .append(min).append(" ").append(timeSet).toString();
                     tv_time.setText(aTime);
                 
-                } else {
-                    //it's before current'
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.Invalid_Time), Toast.LENGTH_LONG).show();
-                }
+             
             }
         }, m_hour, m_minute, false);//Yes 24 hour time
         mTimePicker.setTitle(getResources().getString(R.string.Select_Time));

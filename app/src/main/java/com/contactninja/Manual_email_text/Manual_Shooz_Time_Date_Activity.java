@@ -207,9 +207,16 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
                 }
                 else {
                     try {
-                        SMSAPI();
-
-                    } catch (JSONException e) {
+                        if (Global_Time.checkTime_isvalid(getApplicationContext(),tv_time.getText().toString().trim(),tv_date.getText().toString().trim())) {
+                            
+                            try {
+                                SMSAPI();
+        
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -289,12 +296,7 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
         mTimePicker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                Calendar datetime = Calendar.getInstance();
-                Calendar c = Calendar.getInstance();
-                datetime.set(Calendar.HOUR_OF_DAY, selectedHour);
-                datetime.set(Calendar.MINUTE, selectedMinute);
-                if (datetime.getTimeInMillis() >= c.getTimeInMillis()) {
-                
+                    
                     m_hour = selectedHour;
                     m_minute = selectedMinute;
                     String timeSet = "";
@@ -320,11 +322,7 @@ public class Manual_Shooz_Time_Date_Activity extends AppCompatActivity implement
                     String aTime = new StringBuilder().append(m_hour).append(':')
                                            .append(min).append(" ").append(timeSet).toString();
                     tv_time.setText(aTime);
-                
-                } else {
-                    //it's before current'
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.Invalid_Time), Toast.LENGTH_LONG).show();
-                }
+                    
             }
         }, m_hour, m_minute, false);//Yes 24 hour time
         mTimePicker.setTitle(getResources().getString(R.string.Select_Time));

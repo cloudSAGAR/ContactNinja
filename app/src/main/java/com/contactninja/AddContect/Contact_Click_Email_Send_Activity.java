@@ -1393,9 +1393,15 @@ public class Contact_Click_Email_Send_Activity extends AppCompatActivity impleme
                 mLastClickTime = SystemClock.elapsedRealtime();
                 /*Create a Zoom Meeting*/
                 if(!txt_time.getText().toString().equals("")){
-                    Create_Zoom(tv_date,tv_time,txt_time);
-                    bottomSheetDialog.cancel();
-
+                    try {
+                        if (Global_Time.checkTime_isvalid(getApplicationContext(),tv_time.getText().toString().trim(),tv_date.getText().toString().trim())) {
+                            Create_Zoom(tv_date,tv_time,txt_time);
+                        bottomSheetDialog.cancel();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+    
                 }else {
                     Global.Messageshow(mCtx,mMainLayout,mCtx.getString(R.string.select_meeting),false);
                 }
@@ -1598,11 +1604,6 @@ public class Contact_Click_Email_Send_Activity extends AppCompatActivity impleme
         mTimePicker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                Calendar datetime = Calendar.getInstance();
-                Calendar c = Calendar.getInstance();
-                datetime.set(Calendar.HOUR_OF_DAY, selectedHour);
-                datetime.set(Calendar.MINUTE, selectedMinute);
-                if (datetime.getTimeInMillis() >= c.getTimeInMillis()) {
                 
                     m_hour = selectedHour;
                     m_minute = selectedMinute;
@@ -1630,10 +1631,7 @@ public class Contact_Click_Email_Send_Activity extends AppCompatActivity impleme
                                            .append(min).append(" ").append(timeSet).toString();
                     tv_time.setText(aTime);
                 
-                } else {
-                    //it's before current'
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.Invalid_Time), Toast.LENGTH_LONG).show();
-                }
+           
             }
         }, m_hour, m_minute, false);//Yes 24 hour time
         mTimePicker.setTitle(getResources().getString(R.string.Select_Time));

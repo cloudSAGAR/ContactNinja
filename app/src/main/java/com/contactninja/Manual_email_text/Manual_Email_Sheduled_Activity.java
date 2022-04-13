@@ -183,7 +183,7 @@ public class Manual_Email_Sheduled_Activity extends AppCompatActivity implements
                     Global.Messageshow(getApplicationContext(), linearLayout, getResources().getString(R.string.add_time), false);
                 } else {
                     try {
-                        if (Global_Time.checkTime_isvalid(getApplicationContext(),tv_time.getText().toString().trim())) {
+                        if (Global_Time.checkTime_isvalid(getApplicationContext(),tv_time.getText().toString().trim(),tv_date.getText().toString().trim())) {
                             try {
                                 EmailAPI(subject, body, Integer.parseInt(id), email);
                             } catch (JSONException e) {
@@ -354,12 +354,6 @@ public class Manual_Email_Sheduled_Activity extends AppCompatActivity implements
         mTimePicker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                Calendar datetime = Calendar.getInstance();
-                Calendar c = Calendar.getInstance();
-                datetime.set(Calendar.HOUR_OF_DAY, selectedHour);
-                datetime.set(Calendar.MINUTE, selectedMinute);
-                if (datetime.getTimeInMillis() >= c.getTimeInMillis()) {
-                
                     m_hour = selectedHour;
                     m_minute = selectedMinute;
                     String timeSet = "";
@@ -385,11 +379,6 @@ public class Manual_Email_Sheduled_Activity extends AppCompatActivity implements
                     String aTime = new StringBuilder().append(m_hour).append(':')
                                            .append(min).append(" ").append(timeSet).toString();
                     tv_time.setText(aTime);
-                
-                } else {
-                    //it's before current'
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.Invalid_Time), Toast.LENGTH_LONG).show();
-                }
             }
         }, m_hour, m_minute, false);//Yes 24 hour time
         mTimePicker.setTitle(getResources().getString(R.string.Select_Time));
