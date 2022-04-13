@@ -160,15 +160,13 @@ public class Text_And_Email_Auto_Manual extends AppCompatActivity  implements Vi
         else {
             if (SessionManager.getTask(getApplicationContext()).size() == 0) {
                 String step_id = String.valueOf(SessionManager.getTask(getApplicationContext()).size() + 1);
-                String stpe_tyep = SessionManager.getCampaign_type_name(getApplicationContext());
-                add_new_contect.setText(getString(R.string.create_task));
             } else {
                 List<CampaignTask> step=   SessionManager.getTask(getApplicationContext());
                 int step_id = step.get(0).getStepNo() + 1;
-                String stpe_tyep = SessionManager.getCampaign_type_name(getApplicationContext());
-                add_new_contect.setText(getString(R.string.create_task) );
-
+    
             }
+            String stpe_tyep = SessionManager.getCampaign_type_name(getApplicationContext());
+            add_new_contect.setText(getString(R.string.Create_your_task));
         }
 
 

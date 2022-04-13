@@ -346,7 +346,6 @@
     <string name="campaign_alert_sub_txt">Campaign is a series of emails and or Text sent to a prospect using automation or creating a manual task on predetermined time delay.</string>
     <string name="campaign_step_one">Select your step</string>
     <string name="Upgrade_Plan">Upgrade Plan</string>
-    <string name="create_task">Create your </string>
 
     <string name="campaign_step_one_email">Automated Email</string>
     <string name="campaign_step_one_email_manual">Manual Email</string>
@@ -709,5 +708,6 @@
     <string name="Edit_Contact">Edit Contact</string>
     <string name="please_try_again_later">Please try again later</string>
     <string name="Add_prospects">Add prospects</string>
+    <string name="Invalid_Time">Invalid Time</string>
 
 </resources>

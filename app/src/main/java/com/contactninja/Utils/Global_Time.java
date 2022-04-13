@@ -2,6 +2,11 @@ package com.contactninja.Utils;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
+import android.content.Context;
+import android.widget.Toast;
+
+import com.contactninja.Contect.Contact;
+import com.contactninja.R;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -20,13 +25,13 @@ public class Global_Time extends Application {
     public static SimpleDateFormat defoult_month_formate = new SimpleDateFormat(dd_MMM_yyyy_hh_mm_ss);
     static String dd_MMM_yyyy_hh_mmaaa = "dd-MMM-yyyy hh:mmaaa";
     static String dd_MMM_yyyy = "dd-MMM-yyyy";
-    static String HH_mm_aaa = "HH:mm aaa";
     static String HH_mm_ss = "HH:mm:ss";
+    static String HH_mm = "HH:mm";
     static String hh_mm_a = "hh:mm a";
     private static Global_Time mInstance;
     
     public static String getCurrentTime() {
-        String currentTime = new SimpleDateFormat(HH_mm_aaa, Locale.getDefault()).format(new Date());
+        String currentTime = new SimpleDateFormat(hh_mm_a, Locale.getDefault()).format(new Date());
         return currentTime;
     }
     
@@ -80,7 +85,7 @@ public class Global_Time extends Application {
         Date oneWayTripDate = null;
         String tripDate = "";
         SimpleDateFormat input = new SimpleDateFormat(HH_mm_ss);
-        SimpleDateFormat output = new SimpleDateFormat(HH_mm_aaa);
+        SimpleDateFormat output = new SimpleDateFormat(hh_mm_a);
         try {
             oneWayTripDate = input.parse(Time);                 // parse input
             tripDate = output.format(oneWayTripDate);    // format output
@@ -127,10 +132,29 @@ public class Global_Time extends Application {
     }
     
     public static String time_12_to_24(String time) throws Exception {
-        SimpleDateFormat displayFormat = new SimpleDateFormat(HH_mm_ss);
+        SimpleDateFormat displayFormat = new SimpleDateFormat(HH_mm);
         SimpleDateFormat parseFormat = new SimpleDateFormat(hh_mm_a);
         Date date = parseFormat.parse(time);
         return displayFormat.format(date);
+    }
+    public static boolean checkTime_isvalid(Context context, String time) throws Exception {
+      boolean check=false;
+        SimpleDateFormat displayFormat = new SimpleDateFormat(hh_mm_a);
+        SimpleDateFormat parseFormat = new SimpleDateFormat(HH_mm);
+        Date date = parseFormat.parse(time);
+       
+        
+        Calendar datetime = Calendar.getInstance();
+        Calendar c = Calendar.getInstance();
+        datetime.set(Calendar.HOUR_OF_DAY,  date.getHours());
+        datetime.set(Calendar.MINUTE, date.getMinutes());
+        if (datetime.getTimeInMillis() >= c.getTimeInMillis()) {
+            check=true;
+        } else {
+            check=false;
+        Toast.makeText(context, context.getResources().getString(R.string.Invalid_Time), Toast.LENGTH_LONG).show();
+    }
+        return check;
     }
     
     @Override

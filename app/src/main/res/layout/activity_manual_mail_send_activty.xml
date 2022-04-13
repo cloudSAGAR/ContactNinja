@@ -13,7 +13,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/lay_bouttom"
+        android:layout_above="@+id/bottombar"
         android:layout_below="@+id/toolbar">
 
         <LinearLayout
@@ -43,7 +43,6 @@
                 </TextView>
 
                 <EditText
-                    android:inputType="textCapSentences"
                     android:id="@+id/ev_titale"
                     style="@style/tv_regular_12"
                     android:layout_width="match_parent"
@@ -53,6 +52,7 @@
                     android:focusable="true"
                     android:gravity="left|center"
                     android:imeOptions="actionDone"
+                    android:inputType="textCapSentences"
                     android:maxLines="1"
                     android:singleLine="true"
                     android:textColor="@color/text_reg"
@@ -189,7 +189,6 @@
                 </TextView>
 
                 <EditText
-                    android:inputType="textCapSentences"
                     android:id="@+id/ev_subject"
                     style="@style/tv_regular_12"
                     android:layout_width="match_parent"
@@ -199,6 +198,7 @@
                     android:focusable="true"
                     android:gravity="left|center"
                     android:imeOptions="actionDone"
+                    android:inputType="textCapSentences"
                     android:textColor="@color/text_reg"
                     tools:ignore="Autofill,LabelFor,RtlHardcoded,TextFields,TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
@@ -218,7 +218,6 @@
             <com.chinalwb.are.AREditText
                 android:id="@+id/edit_compose"
                 style="@style/tv_normal_12"
-                android:inputType="textCapSentences|textMultiLine"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -230,6 +229,7 @@
                 android:gravity="left"
                 android:hint="@string/ComposeEmail"
                 android:imeOptions="actionDone"
+                android:inputType="textCapSentences|textMultiLine"
                 android:linksClickable="true"
                 android:padding="15dp"
                 android:textColor="@color/text_reg"
@@ -239,13 +239,12 @@
     </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
+        android:layout_above="@+id/lay_bouttom"
         android:layout_marginStart="@dimen/_15sdp"
-        android:layout_marginBottom="@dimen/_50sdp"
         android:id="@+id/bottombar"
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
         <com.chinalwb.are.styles.toolbar.ARE_ToolbarDefault
@@ -257,6 +256,7 @@
             android:gravity="center_vertical" />
 
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/lay_bouttom"
         android:layout_width="match_parent"

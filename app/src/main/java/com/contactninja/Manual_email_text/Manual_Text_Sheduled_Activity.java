@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -138,7 +139,7 @@ public class Manual_Text_Sheduled_Activity extends AppCompatActivity implements 
         save_button.setVisibility(View.VISIBLE);
         save_button.setOnClickListener(this);
         iv_back.setOnClickListener(this);
-        save_button.setText("Done");
+        save_button.setText(getResources().getString(R.string.Done));
         tc_time_zone = findViewById(R.id.tc_time_zone);
         la_date = findViewById(R.id.la_date);
         tv_date = findViewById(R.id.tv_date);
@@ -208,7 +209,6 @@ public class Manual_Text_Sheduled_Activity extends AppCompatActivity implements 
     }
     
     public void onTimer() {
-        
         Calendar mcurrentTime = Calendar.getInstance();
         m_hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
         m_minute = mcurrentTime.get(Calendar.MINUTE);
@@ -216,33 +216,42 @@ public class Manual_Text_Sheduled_Activity extends AppCompatActivity implements 
         mTimePicker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                Calendar datetime = Calendar.getInstance();
+                Calendar c = Calendar.getInstance();
+                datetime.set(Calendar.HOUR_OF_DAY, selectedHour);
+                datetime.set(Calendar.MINUTE, selectedMinute);
+                if (datetime.getTimeInMillis() >= c.getTimeInMillis()) {
                 
-                m_hour = selectedHour;
-                m_minute = selectedMinute;
-                String timeSet = "";
-                if (m_hour > 12) {
-                    m_hour -= 12;
-                    timeSet = "PM";
-                } else if (m_hour == 0) {
-                    m_hour += 12;
-                    timeSet = "AM";
-                } else if (m_hour == 12) {
-                    timeSet = "PM";
+                    m_hour = selectedHour;
+                    m_minute = selectedMinute;
+                    String timeSet = "";
+                    if (m_hour > 12) {
+                        m_hour -= 12;
+                        timeSet = getResources().getString(R.string.PM);
+                    } else if (m_hour == 0) {
+                        m_hour += 12;
+                        timeSet = getResources().getString(R.string.AM);
+                    } else if (m_hour == 12) {
+                        timeSet = getResources().getString(R.string.PM);
+                    } else {
+                        timeSet = getResources().getString(R.string.AM);
+                    }
+                
+                    String min = "";
+                    if (m_minute < 10)
+                        min = "0" + m_minute;
+                    else
+                        min = String.valueOf(m_minute);
+                
+                    // Append in a StringBuilder
+                    String aTime = new StringBuilder().append(m_hour).append(':')
+                                           .append(min).append(" ").append(timeSet).toString();
+                    tv_time.setText(aTime);
+                
                 } else {
-                    timeSet = "AM";
+                    //it's before current'
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.Invalid_Time), Toast.LENGTH_LONG).show();
                 }
-                
-                String min = "";
-                if (m_minute < 10)
-                    min = "0" + m_minute;
-                else
-                    min = String.valueOf(m_minute);
-                
-                // Append in a StringBuilder
-                String aTime = new StringBuilder().append(m_hour).append(':')
-                                       .append(min).append(" ").append(timeSet).toString();
-                tv_time.setText(aTime);
-                
             }
         }, m_hour, m_minute, false);//Yes 24 hour time
         mTimePicker.setTitle(getResources().getString(R.string.Select_Time));

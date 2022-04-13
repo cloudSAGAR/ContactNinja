@@ -29,6 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -257,7 +258,7 @@ public class Contact_Click_Email_Send_Activity extends AppCompatActivity impleme
         save_button.setVisibility(View.VISIBLE);
         save_button.setOnClickListener(this);
         iv_back.setOnClickListener(this);
-        save_button.setText("Next");
+        save_button.setText(getResources().getString(R.string.Next));
         mMainLayout = findViewById(R.id.mMainLayout);
         tv_use_tamplet = findViewById(R.id.tv_use_tamplet);
         tv_use_tamplet.setOnClickListener(this);
@@ -1597,33 +1598,42 @@ public class Contact_Click_Email_Send_Activity extends AppCompatActivity impleme
         mTimePicker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-            
-                m_hour = selectedHour;
-                m_minute = selectedMinute;
-                String timeSet = "";
-                if (m_hour > 12) {
-                    m_hour -= 12;
-                    timeSet = getResources().getString(R.string.PM);
-                } else if (m_hour == 0) {
-                    m_hour += 12;
-                    timeSet = getResources().getString(R.string.AM);
-                } else if (m_hour == 12) {
-                    timeSet = getResources().getString(R.string.PM);
+                Calendar datetime = Calendar.getInstance();
+                Calendar c = Calendar.getInstance();
+                datetime.set(Calendar.HOUR_OF_DAY, selectedHour);
+                datetime.set(Calendar.MINUTE, selectedMinute);
+                if (datetime.getTimeInMillis() >= c.getTimeInMillis()) {
+                
+                    m_hour = selectedHour;
+                    m_minute = selectedMinute;
+                    String timeSet = "";
+                    if (m_hour > 12) {
+                        m_hour -= 12;
+                        timeSet = getResources().getString(R.string.PM);
+                    } else if (m_hour == 0) {
+                        m_hour += 12;
+                        timeSet = getResources().getString(R.string.AM);
+                    } else if (m_hour == 12) {
+                        timeSet = getResources().getString(R.string.PM);
+                    } else {
+                        timeSet = getResources().getString(R.string.AM);
+                    }
+                
+                    String min = "";
+                    if (m_minute < 10)
+                        min = "0" + m_minute;
+                    else
+                        min = String.valueOf(m_minute);
+                
+                    // Append in a StringBuilder
+                    String aTime = new StringBuilder().append(m_hour).append(':')
+                                           .append(min).append(" ").append(timeSet).toString();
+                    tv_time.setText(aTime);
+                
                 } else {
-                    timeSet = getResources().getString(R.string.AM);
+                    //it's before current'
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.Invalid_Time), Toast.LENGTH_LONG).show();
                 }
-            
-                String min = "";
-                if (m_minute < 10)
-                    min = "0" + m_minute;
-                else
-                    min = String.valueOf(m_minute);
-            
-                // Append in a StringBuilder
-                String aTime = new StringBuilder().append(m_hour).append(':')
-                                       .append(min).append(" ").append(timeSet).toString();
-                tv_time.setText(aTime);
-            
             }
         }, m_hour, m_minute, false);//Yes 24 hour time
         mTimePicker.setTitle(getResources().getString(R.string.Select_Time));

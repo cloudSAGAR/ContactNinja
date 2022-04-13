@@ -128,7 +128,8 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         tabLayout.addTab(tabLayout.newTab().setText("Broadcast"));
         tabLayout.addTab(tabLayout.newTab().setText("Campaign"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-
+    
+        TabSet();
 
         return view;
     }
@@ -319,7 +320,6 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onResume() {
-        TabSet();
      //   Log.e("Update Contect is",new Gson().toJson(SessionManager.getupdateContect(getActivity())));
         super.onResume();
     }
