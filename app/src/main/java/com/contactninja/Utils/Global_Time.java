@@ -49,6 +49,7 @@ public class Global_Time extends Application {
         return date;
     }
     
+    
     public static synchronized Global_Time getInstance() {
         return mInstance;
     }
