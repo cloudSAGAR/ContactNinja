@@ -838,9 +838,14 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
                     }.getType();
                     UservalidateModel user_model = new Gson().fromJson(headerString, listType);
                     if (user_model.getTemplate_slug() != null) {
-                        Global.Messageshow(getApplicationContext(), mMainLayout,
-                                user_model.getTemplate_slug().get(0).toString().replace("slug", "name"), false);
-                    }
+                       try {
+                           Global.Messageshow(getApplicationContext(), mMainLayout,
+                                   user_model.getTemplate_slug().get(0).toString().replace("slug", "name"), false);
+
+                       }catch (Exception e)
+                       {
+                       }
+                       }
                 }
             }
             

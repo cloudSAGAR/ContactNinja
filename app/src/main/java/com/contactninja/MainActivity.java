@@ -220,11 +220,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 });
         SignResponseModel user_data = SessionManager.getGetUserdata(activity);
 
-        Log.e("Time Zone Chnage ",new Gson().toJson(user_data));
+     //   Log.e("Time Zone Chnage ",new Gson().toJson(user_data));
         if(user_data.getUser().getUserTimezone().size()!=0){
             if (!user_data.getUser().getUserTimezone().get(0).getTzname().toString().trim().equals(tz.getID()))
                 {
-                    Log.e("Time Xone",tz.getID());
+                  //  Log.e("Time Xone",tz.getID());
                     try {
                         Timezone(tz.getID());
                     } catch (JSONException e) {

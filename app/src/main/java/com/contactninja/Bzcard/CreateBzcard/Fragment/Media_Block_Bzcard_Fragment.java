@@ -217,7 +217,13 @@ public class Media_Block_Bzcard_Fragment extends Fragment implements View.OnClic
         setdata();
         setColor();
         if (bzMediaInformationList.size() != 0) {
-            setCreatedVideoandImage();
+           try {
+               setCreatedVideoandImage();
+           }
+           catch (Exception e)
+           {
+
+           }
         }
         rv_media_list.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         medialistAdepter = new MedialistAdepter(getActivity(), bzMediaInformationList, this);
