@@ -817,7 +817,7 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
         String template_slug = template_name.toUpperCase().replace(" ", "_");
         paramObject.addProperty("template_slug", template_slug);
         paramObject.addProperty("content_body", edit_template.getText().toString().trim());
-        paramObject.addProperty("type", "EMAIL");
+        paramObject.addProperty("type", "SMS");
         
         obj.add("data", paramObject);
         retrofitCalls.CreateTemplate(sessionManager, obj, loadingDialog, token, Global.getVersionname(Manual_Text_Send_Activty.this), Global.Device, new RetrofitCallback() {

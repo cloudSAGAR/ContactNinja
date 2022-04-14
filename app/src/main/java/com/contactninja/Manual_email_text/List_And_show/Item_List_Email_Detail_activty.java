@@ -949,7 +949,7 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
         paramObject.addProperty("content_header", ev_subject.getText().toString().trim());
         String template_slug = template_name.toUpperCase().replace(" ", "_");
         paramObject.addProperty("template_slug", template_slug);
-        paramObject.addProperty("content_body", edit_compose.getHtml().toString().trim());
+        paramObject.addProperty("content_body", edit_compose.getText().toString().trim());
         paramObject.addProperty("type", "EMAIL");
 
         obj.add("data", paramObject);

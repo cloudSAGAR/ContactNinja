@@ -960,7 +960,7 @@ public class Item_List_Text_Detail_Activty extends AppCompatActivity implements 
         String template_slug = template_name.toUpperCase().replace(" ", "_");
         paramObject.addProperty("template_slug", template_slug);
         paramObject.addProperty("content_body", edit_compose.getText().toString().trim());
-        paramObject.addProperty("type", "EMAIL");
+        paramObject.addProperty("type", "SMS");
         
         obj.add("data", paramObject);
         retrofitCalls.CreateTemplate(sessionManager, obj, loadingDialog, token, Global.getVersionname(Item_List_Text_Detail_Activty.this), Global.Device, new RetrofitCallback() {

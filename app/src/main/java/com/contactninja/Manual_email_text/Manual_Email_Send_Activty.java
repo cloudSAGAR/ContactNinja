@@ -658,7 +658,7 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
         paramObject.addProperty("content_header", ev_subject.getText().toString().trim());
         String template_slug = template_name.toUpperCase().replace(" ", "_");
         paramObject.addProperty("template_slug", template_slug);
-        paramObject.addProperty("content_body", edit_template.getHtml().toString().trim());
+        paramObject.addProperty("content_body", edit_template.getText().toString().trim());
         paramObject.addProperty("type", "EMAIL");
 
         obj.add("data", paramObject);
