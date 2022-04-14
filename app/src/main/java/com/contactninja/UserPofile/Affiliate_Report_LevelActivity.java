@@ -275,19 +275,19 @@ class Affiliate_Report_LevelActivity extends AppCompatActivity implements View.O
                     case "All":
                         level1List = desAffiliateInfo.getLevelAll();
                         break;
-                    case "Lavel 1":
+                    case "Level 1":
                         level1List = desAffiliateInfo.getLevel1();
                         break;
-                    case "Lavel 2":
+                    case "Level 2":
                         level1List = desAffiliateInfo.getLevel2();
                         break;
-                    case "Lavel 3":
+                    case "Level 3":
                         level1List = desAffiliateInfo.getLevel3();
                         break;
-                    case "Lavel 4":
+                    case "Level 4":
                         level1List = desAffiliateInfo.getLevel4();
                         break;
-                    case "Lavel 5":
+                    case "Level 5":
                         level1List = desAffiliateInfo.getLevel5();
                         break;
                 }
@@ -464,19 +464,19 @@ class LavelSelectAdapter extends RecyclerView.Adapter<LavelSelectAdapter.InviteL
                     case "All":
                         level1List = desAffiliateInfo.getLevelAll();
                         break;
-                    case "Lavel 1":
+                    case "Level 1":
                         level1List = desAffiliateInfo.getLevel1();
                         break;
-                    case "Lavel 2":
+                    case "Level 2":
                         level1List = desAffiliateInfo.getLevel2();
                         break;
-                    case "Lavel 3":
+                    case "Level 3":
                         level1List = desAffiliateInfo.getLevel3();
                         break;
-                    case "Lavel 4":
+                    case "Level 4":
                         level1List = desAffiliateInfo.getLevel4();
                         break;
-                    case "Lavel 5":
+                    case "Level 5":
                         level1List = desAffiliateInfo.getLevel5();
                         break;
                 }

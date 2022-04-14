@@ -85,7 +85,7 @@ android:layout_height="wrap_content">
                 android:gravity="center|left"
                 android:padding="@dimen/_5sdp"
                 android:singleLine="true"
-                android:textColor="@color/text_gray"
+                android:textColor="@color/purple_200"
                 tools:ignore="TextContrastCheck" />
         </LinearLayout>
 
