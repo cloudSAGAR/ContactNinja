@@ -418,6 +418,7 @@ public class Company_Fragment extends Fragment {
         if (Filter.equals("BLOCK")) {
             paramObject.addProperty("is_blocked", 1);
         }
+
         obj.add("data", paramObject);
         retrofitCalls.CompanyList(sessionManager, obj, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
             @Override

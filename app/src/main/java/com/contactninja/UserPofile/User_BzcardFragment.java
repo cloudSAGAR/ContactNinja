@@ -143,7 +143,10 @@ public class User_BzcardFragment extends Fragment implements View.OnClickListene
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("organization_id", 1);
         paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("orderBy","created_at");
+        paramObject.addProperty("order","ASC");
         paramObject.addProperty("user_id", signResponseModel.getUser().getId());
+
         obj.add("data", paramObject);
         retrofitCalls.BZcard_User_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
             @Override

@@ -277,6 +277,8 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         paramObject.put("page", currentPage);
         paramObject.put("perPage", perPage);
         paramObject.put("q", ev_search.getText().toString());
+        paramObject.put("orderBy","created_at");
+        paramObject.put("order","ASC");
         obj.put("data", paramObject);
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());

@@ -257,6 +257,8 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         paramObject.addProperty("q", ev_search.getText().toString());
         paramObject.addProperty("perPage", perPage);
         paramObject.addProperty("page", currentPage);
+        paramObject.addProperty("orderBy","created_at");
+       /* paramObject.addProperty("order","ASC");*/
         obj.add("data", paramObject);
         PackageManager pm = getApplicationContext().getPackageManager();
         String pkgName = getApplicationContext().getPackageName();

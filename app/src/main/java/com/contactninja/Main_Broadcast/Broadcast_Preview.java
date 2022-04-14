@@ -427,7 +427,7 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
         paramObject.put("organization_id", "1");
         paramObject.put("user_id", user_id);
         paramObject.put("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
-        paramObject.put("start_time", broadcate_save_data.getTime());
+        paramObject.put("start_time", broadcate_save_data.getTime()+":00");
         paramObject.put("start_date", broadcate_save_data.getDate());
         paramObject.put("assign_to", user_id);
 
@@ -477,7 +477,7 @@ public class Broadcast_Preview extends AppCompatActivity implements View.OnClick
             paramObject.put("template_id", "");
 
         } else {
-            paramObject.put("template_id", broadcate_save_data.getTemplate_id());
+            paramObject.put("template_id", "");
         }
 
         paramObject.put("content_header", broadcate_save_data.getContent_header());

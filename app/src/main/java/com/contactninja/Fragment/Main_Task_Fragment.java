@@ -536,6 +536,8 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
         paramObject.addProperty("user_datetime", Global_Time.getCurrentTimeandDate_24());
         paramObject.addProperty("perPage", perPage);
         paramObject.addProperty("page", currentPage);
+        paramObject.addProperty("orderBy","created_at");
+        paramObject.addProperty("order","ASC");
         obj.add("data", paramObject);
         retrofitCalls.Mail_Activiy_list(sessionManager, obj, loadingDialog, token, Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
             @Override

@@ -171,7 +171,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
             Double A = ((double) des_taskCounter.getAuto() / total) * 100;
             Double m = ((double) des_taskCounter.getManual() / total) * 100;
 
-           long AA= Math.round(A);
+            long AA= Math.round(A);
             long MM=Math.round(m);
             String Auto = Integer.toString((int) AA);
             String manual = Integer.toString((int) MM);
