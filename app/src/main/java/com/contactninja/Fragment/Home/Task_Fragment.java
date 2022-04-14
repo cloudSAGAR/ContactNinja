@@ -143,6 +143,7 @@ public class Task_Fragment extends Fragment  {
         paramObject.put("organization_id", 1);
         paramObject.put("team_id", 1);
         paramObject.put("user_id", user_id);
+        paramObject.put("date_time", Global_Time.getCurrentTimeandDate_24());
 
         JSONArray array = new JSONArray();
 
