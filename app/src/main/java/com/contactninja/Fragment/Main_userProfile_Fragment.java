@@ -865,7 +865,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         param_data.put("zipcode", addcontectModel.getZip_code().toString().trim());
         param_data.put("zoom_id", addcontectModel.getZoom_id().toString().trim());
 
-        try {
+         try {
             param_data.put("profile_pic", user_image_Url.toString());
         }
         catch (Exception e)

@@ -78,6 +78,8 @@ class Affiliate_Report_LevelActivity extends AppCompatActivity implements View.O
 
     Integer user_id = 0;
     String token_api = "", organization_id = "", team_id = "";
+    ImageView iv_cancle_search_icon;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -311,6 +313,7 @@ class Affiliate_Report_LevelActivity extends AppCompatActivity implements View.O
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                         Global.hideKeyboard(Affiliate_Report_LevelActivity.this);
+                        iv_cancle_search_icon.setVisibility(View.VISIBLE);
                         List<LevelModel> temp = new ArrayList<>();
                         for (LevelModel d : finalLevel1List) {
                             if (d.getFirstName().toLowerCase().contains(ev_search.getText().toString().toLowerCase())) {
@@ -359,6 +362,8 @@ class Affiliate_Report_LevelActivity extends AppCompatActivity implements View.O
         iv_back = findViewById(R.id.iv_back);
         iv_back.setVisibility(View.VISIBLE);
         iv_back.setOnClickListener(this);
+        iv_cancle_search_icon=findViewById(R.id.iv_cancle_search_icon);
+        iv_cancle_search_icon.setOnClickListener(this);
     }
 
     @Override
@@ -408,6 +413,18 @@ class Affiliate_Report_LevelActivity extends AppCompatActivity implements View.O
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
                 showBottomSheetDialog(lavelName, tv_lavel_name);
+                break;
+            case R.id.iv_cancle_search_icon:
+                ev_search.setText("");
+                iv_cancle_search_icon.setVisibility(View.GONE);
+                try {
+                    if (Global.isNetworkAvailable(Affiliate_Report_LevelActivity.this, MainActivity.mMainLayout)) {
+                        Api_List();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 break;
         }
     }
