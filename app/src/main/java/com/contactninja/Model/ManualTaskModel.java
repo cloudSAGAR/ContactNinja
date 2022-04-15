@@ -39,7 +39,7 @@ public class ManualTaskModel {
     private String status;
     @SerializedName("stage")
     @Expose
-    private String stage;
+    private String stage="";
     @SerializedName("email")
     @Expose
     private String email;

@@ -12,6 +12,9 @@
 
     <color name="red">#F64F50</color>
     <color name="green">#08910D</color>
+    <color name="Active_green">#07BB19</color>
+    <color name="Paused_yellow">#FCAC4F</color>
+    <color name="Inactive_red">#F07676</color>
     <color name="green_rate">#27AE60</color>
     <color name="otp_background">#5495EC</color>
     <color name="otp_header_text_color">#777777</color>

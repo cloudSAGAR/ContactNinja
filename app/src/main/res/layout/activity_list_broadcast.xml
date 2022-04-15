@@ -122,6 +122,8 @@
             android:background="@color/home_list_back_line" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
             android:id="@+id/swipeToRefresh"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

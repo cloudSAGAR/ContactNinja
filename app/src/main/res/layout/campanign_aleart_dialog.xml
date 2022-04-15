@@ -39,7 +39,7 @@
             android:background="@drawable/shape_10_red"
             android:gravity="center"
             android:padding="@dimen/_8sdp"
-            android:text="@string/cancel"
+            android:text="@string/No"
             android:textColor="@color/white"
             tools:ignore="TextContrastCheck" />
 
@@ -53,7 +53,7 @@
             android:background="@drawable/shape_10_green"
             android:gravity="center"
             android:padding="@dimen/_8sdp"
-            android:text="@string/ok"
+            android:text="@string/Yes"
             android:textColor="@color/white" />
 
     </LinearLayout>

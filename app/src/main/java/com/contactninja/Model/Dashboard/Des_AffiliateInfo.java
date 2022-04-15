@@ -30,19 +30,19 @@ public class Des_AffiliateInfo implements Serializable {
 
     @SerializedName("ratio_of_level_1")
     @Expose
-    private Integer ratiooflevel1=0;
+    private double ratiooflevel1=0;
     @SerializedName("ratio_of_level_2")
     @Expose
-    private Integer ratiooflevel2=0;
+    private double ratiooflevel2=0;
     @SerializedName("ratio_of_level_3")
     @Expose
-    private Integer ratiooflevel3=0;
+    private double ratiooflevel3=0;
     @SerializedName("ratio_of_level_4")
     @Expose
-    private Integer ratiooflevel4=0;
+    private double ratiooflevel4=0;
     @SerializedName("ratio_of_level_5")
     @Expose
-    private Integer ratiooflevel5=0;
+    private double ratiooflevel5=0;
 
 
     @SerializedName("level_1")
@@ -64,7 +64,7 @@ public class Des_AffiliateInfo implements Serializable {
     @Expose
     private List<LevelModel> level5 = new ArrayList<>();
 
-    public Integer getRatiooflevel1() {
+    public double getRatiooflevel1() {
         return ratiooflevel1;
     }
 
@@ -80,7 +80,7 @@ public class Des_AffiliateInfo implements Serializable {
         this.ratiooflevel1 = ratiooflevel1;
     }
 
-    public Integer getRatiooflevel2() {
+    public double getRatiooflevel2() {
         return ratiooflevel2;
     }
 
@@ -88,7 +88,7 @@ public class Des_AffiliateInfo implements Serializable {
         this.ratiooflevel2 = ratiooflevel2;
     }
 
-    public Integer getRatiooflevel3() {
+    public double getRatiooflevel3() {
         return ratiooflevel3;
     }
 
@@ -96,7 +96,7 @@ public class Des_AffiliateInfo implements Serializable {
         this.ratiooflevel3 = ratiooflevel3;
     }
 
-    public Integer getRatiooflevel4() {
+    public double getRatiooflevel4() {
         return ratiooflevel4;
     }
 
@@ -104,7 +104,7 @@ public class Des_AffiliateInfo implements Serializable {
         this.ratiooflevel4 = ratiooflevel4;
     }
 
-    public Integer getRatiooflevel5() {
+    public double getRatiooflevel5() {
         return ratiooflevel5;
     }
 

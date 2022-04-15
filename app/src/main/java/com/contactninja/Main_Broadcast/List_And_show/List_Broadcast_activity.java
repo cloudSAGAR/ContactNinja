@@ -480,7 +480,7 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
                 setImage(item, holder);
 
 
-                holder.layout_contec.setOnLongClickListener(new View.OnLongClickListener() {
+              /*  holder.layout_contec.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
                         switch (item.getStatus()) {
@@ -497,28 +497,10 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
                         }
                         return true;
                     }
-                });
+                });*/
 
-                switch (item.getStatus()) {
-                    case "I":
-                        if(Global.IsNotNull(item.getFirstActivated())){
-                            holder.iv_puse_icon.setVisibility(View.VISIBLE);
-                            holder.tv_status.setText("Paused");
-                            holder.tv_status.setTextColor(getResources().getColor(R.color.tv_push_color));
-                        }else {
-                            holder.iv_hold.setVisibility(View.VISIBLE);
-                            holder.tv_status.setText("Inactive");
-                            holder.tv_status.setTextColor(getResources().getColor(R.color.red));
-                        }
-                        break;
-                    case "A":
-                        holder.iv_play_icon.setVisibility(View.VISIBLE);
-                        holder.tv_status.setText("Active");
-                        holder.tv_status.setTextColor(getResources().getColor(R.color.text_green));
-
-                        break;
-                }
-                holder.iv_hold.setOnClickListener(new View.OnClickListener() {
+             
+                holder.lay_btn_hold.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
@@ -530,19 +512,7 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
                     }
                 });
 
-                holder.iv_play_icon.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                            return;
-                        }
-                        mLastClickTime = SystemClock.elapsedRealtime();
-                        showAlertDialogButtonClicked(item, 1);
-
-                    }
-                });
-
-                holder.iv_puse_icon.setOnClickListener(new View.OnClickListener() {
+                holder.lay_btn_play.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
@@ -550,6 +520,18 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
                         }
                         mLastClickTime = SystemClock.elapsedRealtime();
                         showAlertDialogButtonClicked(item, 0);
+
+                    }
+                });
+
+                holder.lay_btn_pause.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
+                        showAlertDialogButtonClicked(item, 1);
 
                     }
                 });
@@ -603,45 +585,57 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
         }
 
         public class viewData extends RecyclerView.ViewHolder {
-            TextView tv_username, tv_task_description, tv_time, no_image, tv_status, tv_task_time;
-            LinearLayout layout_contec;
-            ImageView image_icon, iv_camp, iv_hold, iv_play_icon, iv_puse_icon;
+            TextView tv_username, tv_task_description, no_image, tv_status, tv_task_time;
+            LinearLayout layout_contec,lay_btn_hold,lay_btn_play,lay_btn_pause;
+            ImageView image_icon;
 
             public viewData(@NonNull View itemView) {
                 super(itemView);
-                iv_puse_icon = itemView.findViewById(R.id.iv_puse_icon);
-                iv_play_icon = itemView.findViewById(R.id.iv_play_icon);
-                iv_hold = itemView.findViewById(R.id.iv_hold);
+                lay_btn_pause = itemView.findViewById(R.id.lay_btn_pause);
+                lay_btn_play = itemView.findViewById(R.id.lay_btn_play);
+                lay_btn_hold = itemView.findViewById(R.id.lay_btn_hold);
                 tv_task_time = itemView.findViewById(R.id.tv_task_time);
                 tv_username = itemView.findViewById(R.id.tv_username);
                 tv_task_description = itemView.findViewById(R.id.tv_task_description);
-                tv_time = itemView.findViewById(R.id.tv_time);
                 no_image = itemView.findViewById(R.id.no_image);
                 tv_status = itemView.findViewById(R.id.tv_status);
                 layout_contec = itemView.findViewById(R.id.layout_contec);
                 image_icon = itemView.findViewById(R.id.image_icon);
-                iv_camp = itemView.findViewById(R.id.iv_camp);
             }
         }
 
         private void setImage(BroadcastActivityListModel.Broadcast broadcast, viewData holder) {
             switch (broadcast.getStatus()) {
                 case "A":
-                    holder.iv_hold.setVisibility(View.GONE);
-                    holder.iv_play_icon.setVisibility(View.VISIBLE);
-                    holder.iv_puse_icon.setVisibility(View.GONE);
+                    /* status active */
+                    holder.tv_status.setText(mCtx.getResources().getString(R.string.Active));
+                    holder.tv_status.setTextColor(mCtx.getResources().getColor(R.color.Active_green));
+                    /* button paush show */
+                    holder.lay_btn_pause.setVisibility(View.VISIBLE);
+                    holder.lay_btn_hold.setVisibility(View.GONE);
+                    holder.lay_btn_play.setVisibility(View.GONE);
                     break;
                 case "I":
                     if (broadcast.getFirstActivated() != null && !broadcast.getFirstActivated().equals("")) {
-                        holder.iv_puse_icon.setVisibility(View.VISIBLE);
-                        holder.iv_hold.setVisibility(View.GONE);
+                        /* status paused */
+                        holder.tv_status.setText(mCtx.getResources().getString(R.string.Paused));
+                        holder.tv_status.setTextColor(mCtx.getResources().getColor(R.color.Paused_yellow));
+                        /* button start show */
+                        holder.lay_btn_play.setVisibility(View.VISIBLE);
+                        holder.lay_btn_hold.setVisibility(View.GONE);
+                        holder.lay_btn_pause.setVisibility(View.GONE);
                     } else {
-                        holder.iv_hold.setVisibility(View.VISIBLE);
-                        holder.iv_puse_icon.setVisibility(View.GONE);
+                        /* status inactive */
+                        holder.tv_status.setText(mCtx.getResources().getString(R.string.Inactive));
+                        holder.tv_status.setTextColor(mCtx.getResources().getColor(R.color.Inactive_red));
+                        /* button hold show */
+                        holder.lay_btn_hold.setVisibility(View.VISIBLE);
+                        holder.lay_btn_pause.setVisibility(View.GONE);
+                        holder.lay_btn_play.setVisibility(View.GONE);
                     }
-                    holder.iv_play_icon.setVisibility(View.GONE);
                     break;
             }
+           
         }
 
     }
@@ -661,10 +655,8 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
         TextView tv_message = customLayout.findViewById(R.id.tv_message);
         if (status == 1) {
             tv_message.setText("Are you sure you want to pause the broadcast");
-        } else if (status == 0) {
-            tv_message.setText("Are you sure you want to play the broadcast");
         } else {
-            tv_message.setText("Are you sure you want to play the broadcast");
+            tv_message.setText("Are you sure you want to start the broadcast");
         }
         TextView tv_ok = customLayout.findViewById(R.id.tv_ok);
         TextView tv_cancel = customLayout.findViewById(R.id.tv_cancel);
