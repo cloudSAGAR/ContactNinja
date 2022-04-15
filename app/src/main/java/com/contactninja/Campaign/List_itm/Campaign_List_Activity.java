@@ -419,7 +419,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         super.onBackPressed();
     }
     
-    public void showAlertDialogButtonClicked(int sequence_id, int status) {
+    public void showAlertDialogButtonClicked(int sequence_id, int status,int position) {
         
         // Create an alert builder
         AlertDialog.Builder builder
@@ -435,7 +435,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         if (status == 1) {
             tv_message.setText("Are you sure you want to pause the campaign");
         } else {
-            tv_message.setText("Are you sure you want to play the campaign");
+            tv_message.setText("Are you sure you want to start the campaign");
         }
         TextView tv_ok = customLayout.findViewById(R.id.tv_ok);
         TextView tv_cancel = customLayout.findViewById(R.id.tv_cancel);
@@ -448,13 +448,13 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         tv_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                StartCampignApi(sequence_id, status, dialog);
+                StartCampignApi(sequence_id, status, dialog,position);
             }
         });
         dialog.show();
     }
     
-    public void StartCampignApi(int sequence_id, int status, AlertDialog dialog) {
+    public void StartCampignApi(int sequence_id, int status, AlertDialog dialog,int position) {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
         String user_id = String.valueOf(user_data.getUser().getId());
@@ -577,7 +577,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                 holder.campaign_name.setText(campaign.getSeqName());
                 setImage(campaign, holder);
                 
-                holder.layout_item.setOnLongClickListener(new View.OnLongClickListener() {
+              /*  holder.layout_item.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
                         switch (campaign.getStatus()) {
@@ -594,7 +594,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                         }
                         return true;
                     }
-                });
+                });*/
                 
                 holder.layout_item.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -606,35 +606,35 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                         campaingClick.OnClick(campaign);
                     }
                 });
-                holder.iv_hold.setOnClickListener(new View.OnClickListener() {
+                holder.lay_btn_hold.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                             return;
                         }
                         mLastClickTime = SystemClock.elapsedRealtime();
-                        showAlertDialogButtonClicked(campaign.getId(), 3);
+                        showAlertDialogButtonClicked(campaign.getId(), 3,position);
                         
                     }
                 });
-                holder.iv_play_icon.setOnClickListener(new View.OnClickListener() {
+                holder.lay_btn_play.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                             return;
                         }
                         mLastClickTime = SystemClock.elapsedRealtime();
-                        showAlertDialogButtonClicked(campaign.getId(), 1);
+                        showAlertDialogButtonClicked(campaign.getId(), 0,position);
                     }
                 });
-                holder.iv_puse_icon.setOnClickListener(new View.OnClickListener() {
+                holder.lay_btn_pause.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                             return;
                         }
                         mLastClickTime = SystemClock.elapsedRealtime();
-                        showAlertDialogButtonClicked(campaign.getId(), 0);
+                        showAlertDialogButtonClicked(campaign.getId(), 1,position);
                     }
                 });
                 
@@ -646,22 +646,32 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         private void setImage(Campaign_List.Campaign campaign, viewData holder) {
             switch (campaign.getStatus()) {
                 case "A":
-                    holder.iv_hold.setVisibility(View.GONE);
-                    holder.iv_play_icon.setVisibility(View.VISIBLE);
-                    holder.iv_puse_icon.setVisibility(View.GONE);
+                    /* status active */
+                    holder.tv_status.setText(mCtx.getResources().getString(R.string.Active));
+                    holder.tv_status.setTextColor(mCtx.getResources().getColor(R.color.Active_green));
+                    /* button paush show */
+                    holder.lay_btn_pause.setVisibility(View.VISIBLE);
+                    holder.lay_btn_hold.setVisibility(View.GONE);
+                    holder.lay_btn_play.setVisibility(View.GONE);
                     break;
                 case "I":
                     if (campaign.getStarted_on() != null && !campaign.getStarted_on().equals("")) {
-                        holder.iv_puse_icon.setVisibility(View.VISIBLE);
-                        holder.iv_hold.setVisibility(View.GONE);
+                        /* status paused */
+                        holder.tv_status.setText(mCtx.getResources().getString(R.string.Paused));
+                        holder.tv_status.setTextColor(mCtx.getResources().getColor(R.color.Paused_yellow));
+                        /* button start show */
+                        holder.lay_btn_play.setVisibility(View.VISIBLE);
+                        holder.lay_btn_hold.setVisibility(View.GONE);
+                        holder.lay_btn_pause.setVisibility(View.GONE);
                     } else {
-                        
-                        holder.iv_hold.setVisibility(View.VISIBLE);
-                        holder.iv_puse_icon.setVisibility(View.GONE);
-                        
-                        
+                        /* status inactive */
+                        holder.tv_status.setText(mCtx.getResources().getString(R.string.Inactive));
+                        holder.tv_status.setTextColor(mCtx.getResources().getColor(R.color.Inactive_red));
+                        /* button hold show */
+                        holder.lay_btn_hold.setVisibility(View.VISIBLE);
+                        holder.lay_btn_pause.setVisibility(View.GONE);
+                        holder.lay_btn_play.setVisibility(View.GONE);
                     }
-                    holder.iv_play_icon.setVisibility(View.GONE);
                     break;
             }
         }
@@ -673,16 +683,16 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         
         
         public class viewData extends RecyclerView.ViewHolder {
-            TextView campaign_name;
-            ImageView iv_hold, iv_puse_icon, iv_play_icon;
-            LinearLayout layout_item;
+            TextView campaign_name,tv_status;
+            LinearLayout layout_item, lay_btn_hold,lay_btn_pause,lay_btn_play;
             
             public viewData(@NonNull View itemView) {
                 super(itemView);
                 campaign_name = itemView.findViewById(R.id.campaign_name);
-                iv_hold = itemView.findViewById(R.id.iv_hold);
-                iv_puse_icon = itemView.findViewById(R.id.iv_puse_icon);
-                iv_play_icon = itemView.findViewById(R.id.iv_play_icon);
+                tv_status = itemView.findViewById(R.id.tv_status);
+                lay_btn_hold = itemView.findViewById(R.id.lay_btn_hold);
+                lay_btn_pause = itemView.findViewById(R.id.lay_btn_pause);
+                lay_btn_play = itemView.findViewById(R.id.lay_btn_play);
                 layout_item = itemView.findViewById(R.id.layout_item);
             }
         }

@@ -215,7 +215,7 @@ public class Broadcast_Fragment extends Fragment {
         @Override
         public BroadcastListAdepter.InviteListDataclass onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View view = inflater.inflate(R.layout.item_brodadcastlist, parent, false);
+            View view = inflater.inflate(R.layout.item_brodadcastlist_deshboard, parent, false);
             return new InviteListDataclass(view);
         }
 
@@ -307,8 +307,8 @@ public class Broadcast_Fragment extends Fragment {
 
 
         public static class InviteListDataclass extends RecyclerView.ViewHolder {
-            TextView tv_username, tv_task_description, tv_time, no_image, tv_status, tv_task_time;
-            ImageView image_icon, iv_camp, iv_hold, iv_play_icon, iv_puse_icon;
+            TextView tv_username, tv_task_description, tv_status, tv_task_time;
+            ImageView image_icon, iv_hold, iv_play_icon, iv_puse_icon;
             RelativeLayout iv_logo;
             LinearLayout layout_contec;
             View view_last_line;
@@ -323,11 +323,8 @@ public class Broadcast_Fragment extends Fragment {
                 tv_task_time = itemView.findViewById(R.id.tv_task_time);
                 tv_username = itemView.findViewById(R.id.tv_username);
                 tv_task_description = itemView.findViewById(R.id.tv_task_description);
-                tv_time = itemView.findViewById(R.id.tv_time);
-                no_image = itemView.findViewById(R.id.no_image);
                 tv_status = itemView.findViewById(R.id.tv_status);
                 image_icon = itemView.findViewById(R.id.image_icon);
-                iv_camp = itemView.findViewById(R.id.iv_camp);
                 iv_logo = itemView.findViewById(R.id.iv_logo);
                 view_last_line = itemView.findViewById(R.id.view_last_line);
                 layout_contec = itemView.findViewById(R.id.layout_contec);

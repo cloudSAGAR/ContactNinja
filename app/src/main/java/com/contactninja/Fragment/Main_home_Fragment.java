@@ -201,7 +201,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         if (Global.IsNotNull(des_affiliateInfo)) {
 
             int Total_Affiliate = 0;
-            int Total_rat = 0;
+            double Total_rat = 0;
 
             if (Global.IsNotNull(des_affiliateInfo.getCountOfLevel1()) && des_affiliateInfo.getCountOfLevel1() != 0) {
 
@@ -301,7 +301,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
     }
 
     private void setLavel(TextView text_lavelNumber, TextView text_lavelRate, Integer countOfLevel,
-                          Integer Ratiooflevel, ImageView image_up_down) {
+                          double Ratiooflevel, ImageView image_up_down) {
 
         text_lavelNumber.setText(String.valueOf(countOfLevel));
 

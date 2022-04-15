@@ -659,7 +659,8 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
         }
     }
 
-    public static void compareDates(String onlyDate, String FullDate, TextView tv_status, TextView tv_time, ManualTaskModel item) {
+    public static void compareDates(String onlyDate, String FullDate, TextView tv_status,
+                                    TextView tv_time, ManualTaskModel item) {
         try {
 
 
@@ -672,7 +673,8 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                     tv_status.setText("Due");
                     tv_status.setTextColor(Color.parseColor("#EC5454"));
                 } else {
-                    tv_status.setText(Global.setFirstLetter(item.getStatus()));
+                    
+                    tv_status.setText(Global.setFirstLetter(item.getStage()));
                     tv_status.setTextColor(Color.parseColor("#ABABAB"));
                 }
                 String formateChnage = Global_Time.formateChange(FullDate);
@@ -683,7 +685,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                     tv_status.setText("Upcoming");
                     tv_status.setTextColor(Color.parseColor("#2DA602"));
                 } else {
-                    tv_status.setText(Global.setFirstLetter(item.getStatus()));
+                    tv_status.setText(Global.setFirstLetter(item.getStage()));
                     tv_status.setTextColor(Color.parseColor("#ABABAB"));
                 }
 
@@ -694,7 +696,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                 if (item.getStatus().equals("NOT_STARTED")) {
                     tv_status.setText("Today");
                 } else {
-                    tv_status.setText(Global.setFirstLetter(item.getStatus()));
+                    tv_status.setText(Global.setFirstLetter(item.getStage()));
                 }
                 tv_status.setTextColor(Color.parseColor("#ABABAB"));
                 tv_time.setText(parseDate(FullDate));
@@ -871,6 +873,11 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                     FullDate = item.getDate() + " " + item.getTime();
                     curendate =item.getDate();
                 }
+                if(Filter.equals("AUTO")||Filter.equals("FINISHED_AUTO")){
+                    holder.tv_type.setText(mCtx.getResources().getString(R.string.Automated));
+                }else {
+                    holder.tv_type.setText(mCtx.getResources().getString(R.string.Manual));
+                }
 
                 compareDates(curendate, FullDate, holder.tv_status, holder.tv_time, item);
 
@@ -954,7 +961,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
         }
 
         public class viewData extends RecyclerView.ViewHolder {
-            TextView tv_username, tv_task_description, tv_time, no_image, tv_status;
+            TextView tv_username, tv_task_description, tv_time, no_image, tv_status,tv_type;
             LinearLayout layout_contec;
             ImageView image_icon, iv_labal;
 
@@ -965,6 +972,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                 tv_time = itemView.findViewById(R.id.tv_time);
                 no_image = itemView.findViewById(R.id.no_image);
                 tv_status = itemView.findViewById(R.id.tv_status);
+                tv_type = itemView.findViewById(R.id.tv_type);
                 layout_contec = itemView.findViewById(R.id.layout_contec);
                 image_icon = itemView.findViewById(R.id.image_icon);
                 iv_labal = itemView.findViewById(R.id.iv_labal);

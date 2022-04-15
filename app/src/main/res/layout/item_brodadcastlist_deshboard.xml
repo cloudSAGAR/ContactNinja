@@ -7,20 +7,55 @@
     tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
 
     <LinearLayout
-        android:layout_margin="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
         android:id="@+id/layout_contec"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:orientation="horizontal"
-        >
+        android:weightSum="2">
 
+        <RelativeLayout
+            android:id="@+id/iv_logo"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:id="@+id/iv_puse_icon"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_60sdp"
+                android:layout_gravity="center"
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/ic_push"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/iv_play_icon"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_60sdp"
+                android:layout_gravity="center"
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/ic_play"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/iv_hold"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_60sdp"
+                android:layout_gravity="center"
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/ic_hold" />
+
+        </RelativeLayout>
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:gravity="center|left"
             android:orientation="vertical">
 
@@ -83,70 +118,9 @@
                 android:padding="@dimen/_1sdp"
                 android:singleLine="true"
                 android:textColor="@color/text_gray"
-               />
+                />
 
         </LinearLayout>
-
-
-        <RelativeLayout
-            android:id="@+id/iv_logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center">
-
-            <LinearLayout
-                android:id="@+id/lay_btn_pause"
-                android:layout_width="@dimen/_70sdp"
-                android:layout_height="@dimen/_25sdp"
-                android:layout_gravity="center"
-                android:background="@drawable/shape_25_paush_button_line"
-                android:gravity="center"
-                android:visibility="gone">
-
-                <TextView
-                    android:gravity="center"
-                    style="@style/tv_regular_12"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="@string/Pause"
-                    android:textColor="@color/text_reg" />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/lay_btn_play"
-                android:layout_width="@dimen/_70sdp"
-                android:layout_height="@dimen/_25sdp"
-                android:layout_gravity="center"
-                android:background="@drawable/shape_25_play_button_line"
-                android:gravity="center"
-                android:visibility="gone">
-
-                <TextView
-                    android:gravity="center"
-                    style="@style/tv_regular_12"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="@string/Start"
-                    android:textColor="@color/purple_200" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/lay_btn_hold"
-                android:layout_width="@dimen/_70sdp"
-                android:layout_height="@dimen/_25sdp"
-                android:layout_gravity="center"
-                android:background="@drawable/shape_25_inactive_button_line"
-                android:gravity="center"
-                >
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:padding="@dimen/_5sdp"
-                    android:src="@drawable/ic_hold" />
-            </LinearLayout>
-
-        </RelativeLayout>
 
     </LinearLayout>
 

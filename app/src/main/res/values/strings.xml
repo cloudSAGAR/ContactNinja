@@ -709,5 +709,12 @@
     <string name="please_try_again_later">Please try again later</string>
     <string name="Add_prospects">Add prospects</string>
     <string name="Invalid_Time">Invalid Time</string>
+    <string name="Active">Active</string>
+    <string name="Paused">Paused</string>
+    <string name="Pause">Pause</string>
+    <string name="Inactive">Inactive</string>
+    <string name="Start">Start</string>
+    <string name="Manual">Manual</string>
+    <string name="Automated">Automated</string>
 
 </resources>

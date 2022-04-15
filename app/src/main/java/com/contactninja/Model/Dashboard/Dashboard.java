@@ -13,7 +13,7 @@ import java.util.List;
 public class Dashboard {
     @SerializedName("AFFILIATE")
     @Expose
-    private Des_AffiliateInfo affiliate;
+    private Des_AffiliateInfo affiliate=new Des_AffiliateInfo();
     @SerializedName("AFFILIATE_REWARDS")
     @Expose
     private Integer AFFILIATE_REWARDS=0;
@@ -31,7 +31,7 @@ public class Dashboard {
     private List<Des_Sequence> sequence = new ArrayList<>();
     @SerializedName("TASK_COUNTER")
     @Expose
-    private Des_TaskCounter taskCounter;
+    private Des_TaskCounter taskCounter=new Des_TaskCounter();
 
     public Integer getAFFILIATE_REWARDS() {
         return AFFILIATE_REWARDS;
