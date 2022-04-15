@@ -305,13 +305,6 @@ public class RetrofitCalls {
         call_api(retrofitCallback, loadingDialog);
 
     }
-    public void Timezone(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
-        call = retrofitApiInterface.Timezone(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
-        this.retrofitCallback = retrofitCallback;
-        this.session = session;
-        call_api(retrofitCallback, loadingDialog);
-
-    }
     public void Add_Subscription(SessionManager session, JsonObject registerinfo, LoadingDialog loadingDialog, String token, String version , String device_id, RetrofitCallback retrofitCallback) {
         call = retrofitApiInterface.Add_Subscription(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
         this.retrofitCallback = retrofitCallback;
@@ -334,6 +327,13 @@ public class RetrofitCalls {
 
     }
 
+    public void Working_hour_Update(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
+        call = retrofitApiInterface.Working_hour_Update(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
+        this.retrofitCallback = retrofitCallback;
+        this.session = session;
+        call_api(retrofitCallback, loadingDialog);
+
+    }
     public void CompanyList(SessionManager session,JsonObject registerinfo, LoadingDialog loadingDialog, String token,String version ,String device_id, RetrofitCallback retrofitCallback) {
         call = retrofitApiInterface.CompanyList(RetrofitApiClient.API_Header,token,registerinfo,device_id,version);
         this.retrofitCallback = retrofitCallback;

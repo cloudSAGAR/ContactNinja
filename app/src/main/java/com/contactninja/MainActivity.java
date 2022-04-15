@@ -226,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 {
                   //  Log.e("Time Xone",tz.getID());
                     try {
-                        Timezone(tz.getID());
+                        Timezone_update(tz.getID());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -275,7 +275,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         paramObject.addProperty("team_id", 1);
         paramObject.addProperty("user_id", user_id);
         obj.add("data", paramObject);
-        retrofitCalls.Timezone(sessionManager, obj, loadingDialog, token_api, Global.getVersionname(this), Global.Device, new RetrofitCallback() {
+        retrofitCalls.Timezone_list(sessionManager, obj, loadingDialog, token_api, Global.getVersionname(this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 
@@ -304,6 +304,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
+    private void Timezone_update(String id) throws JSONException {
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", user_id);
+        obj.add("data", paramObject);
+        retrofitCalls.Timezone_list(sessionManager, obj, loadingDialog, token_api, Global.getVersionname(this), Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+
+
+                Gson gson = new Gson();
+                String headerString = gson.toJson(response.body().getData());
+                Type listType = new TypeToken<ArrayList<Timezon.TimezonData>>() {
+                }.getType();
+                List<Timezon.TimezonData> timezonDataList = new Gson().fromJson(headerString, listType);
+                for (int i = 0; i < timezonDataList.size(); i++) {
+                    if (id.equals(timezonDataList.get(i).getTzname())) {
+                        Working_hour_update(timezonDataList.get(i).getValue());
+                        break;
+                    }
+                    else if (timezonDataList.size()==i+1)
+                    {
+                        Working_hour_update(Global.default_time_zoone_id);
+                    }
+                }
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+            }
+        });
+    }
+
+
     //Working Hourse Call
     private void Working_hour(Integer value) {
         JsonObject obj = new JsonObject();
@@ -318,9 +354,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         retrofitCalls.Working_hour(sessionManager, obj, loadingDialog, token_api, version_name, Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
-              //  Log.e("Response is",new Gson().toJson(response));
-                myAsyncTasks_userprofile = new MyAsyncTasks_userprofile();
-                myAsyncTasks_userprofile.execute();
                 EnableRuntimePermission();
             }
 
@@ -331,6 +364,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    private void Working_hour_update(Integer value) {
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("id", value);
+        paramObject.addProperty("organization_id", 1);
+        paramObject.addProperty("team_id", 1);
+        paramObject.addProperty("user_id", user_id);
+        obj.add("data", paramObject);
+        String version_name = Global.getVersionname(this);
+        retrofitCalls.Working_hour_Update(sessionManager, obj, loadingDialog, token_api, version_name, Global.Device, new RetrofitCallback() {
+            @Override
+            public void success(Response<ApiResponse> response) {
+                myAsyncTasks_userprofile = new MyAsyncTasks_userprofile();
+                myAsyncTasks_userprofile.execute();
+
+            }
+
+            @Override
+            public void error(Response<ApiResponse> response) {
+            }
+        });
+
+    }
     @RequiresApi(api = Build.VERSION_CODES.N)
     protected void unregisterNetworkChanges() {
         try {

@@ -80,7 +80,7 @@ public class PlanType_Screen extends AppCompatActivity implements View.OnClickLi
         paramObject.addProperty("team_id", 1);
         paramObject.addProperty("user_id", user_id);
         obj.add("data", paramObject);
-        retrofitCalls.Timezone(sessionManager, obj, loadingDialog, token_api, Global.getVersionname(this), Global.Device, new RetrofitCallback() {
+        retrofitCalls.Timezone_list(sessionManager, obj, loadingDialog, token_api, Global.getVersionname(this), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
 
