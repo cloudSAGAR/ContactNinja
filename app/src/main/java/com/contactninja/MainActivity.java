@@ -220,19 +220,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 });
         SignResponseModel user_data = SessionManager.getGetUserdata(activity);
 
-     //   Log.e("Time Zone Chnage ",new Gson().toJson(user_data));
-        if(user_data.getUser().getUserTimezone().size()!=0){
-            if (!user_data.getUser().getUserTimezone().get(0).getTzname().toString().trim().equals(tz.getID()))
-                {
-                  //  Log.e("Time Xone",tz.getID());
-                    try {
-                        Timezone_update(tz.getID());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-        }
+     
     }
 
     public static void upload(RemoteMessage remoteMessage) {
@@ -876,6 +864,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SessionManager.setOneCotect_deatil(getApplicationContext(), new ContectListData.Contact());
         // SessionManager.setnewContect(getApplicationContext(),new ArrayList<>());
         Global.getInstance().setConnectivityListener(MainActivity.this);
+        
+        TimeZone tz = TimeZone.getDefault();
+        if(user_data.getUser().getUserTimezone().size()!=0){
+            if (!user_data.getUser().getUserTimezone().get(0).getTzname().toString().trim().equals(tz.getID()))
+            {
+                //  Log.e("Time Xone",tz.getID());
+                try {
+                    Timezone_update(tz.getID());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        
+        }
+        
     }
 
     @Override
