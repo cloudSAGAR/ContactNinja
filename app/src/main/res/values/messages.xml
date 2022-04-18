@@ -22,7 +22,7 @@
     <string name="video_description_error">Add video description</string>
     <string name="max_media">Can add only up to 10 media blocks.</string>
     <string name="max_card">only 5 card add</string>
-    <string name="contect_block">This contect is block</string>
+    <string name="contect_block">This contact is blacklisted</string>
     <string name="add_camp_prospact">Pause the campaign before adding new prospects</string>
     <string name="plan_validation">You don\'t have active plan or quota.</string>
     <string name="add_contact">Add first contacts</string>
