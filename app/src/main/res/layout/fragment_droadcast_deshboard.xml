@@ -9,17 +9,24 @@
     tools:context=".MainActivity"
     tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <androidx.core.widget.NestedScrollView
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
         android:background="@drawable/shap_15_line_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_gravity="center"
         android:gravity="center"
         >
+
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_broadcast_list"
             android:layout_width="match_parent"
@@ -34,5 +41,8 @@
             android:layout_height="@dimen/_150sdp">
 
         </ImageView>
+
     </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
 </LinearLayout>

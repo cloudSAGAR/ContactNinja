@@ -8,8 +8,10 @@ import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -18,12 +20,18 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
+import com.contactninja.Campaign.Fragment.Campaign_Stats_Fragment;
+import com.contactninja.Campaign.Fragment.Campaign_Step_Fragment;
+import com.contactninja.Campaign.List_itm.Campaign_Final_Start;
 import com.contactninja.Fragment.Home.Broadcast_Fragment;
 import com.contactninja.Fragment.Home.Campaign_Fragment;
 import com.contactninja.Fragment.Home.Task_Fragment;
@@ -40,6 +48,8 @@ import com.contactninja.Utils.Global;
 import com.contactninja.Utils.Global_Time;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
+
+import com.contactninja.WrapContentViewPager;
 import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;
@@ -58,6 +68,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -71,7 +82,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
     LoadingDialog loadingDialog;
     SessionManager sessionManager;
     ImageView iv_toolbar_notification;
-    LinearLayout layout_toolbar_logo,layout_level;
+    LinearLayout layout_toolbar_logo, layout_level;
     TabLayout tabLayout;
     Integer user_id = 0;
     String token_api = "", organization_id = "", team_id = "";
@@ -88,22 +99,27 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
     List<Des_Bizcard> des_bizcardList = new ArrayList<>();
 
     TextView tv_campaign, tv_text, tv_email, tv_broadcast, tv_lavel_count_1, tv_lavel_count_2, tv_lavel_count_3, tv_lavel_count_4, tv_lavel_count_5, tv_total_lavel,
-            btn_view_affilate_detail, tv_autometed_task, tv_manual_task, tv_rat_total, tv_rat_1, tv_rat_2, tv_rat_3, tv_rat_4, tv_rat_5,tv_total_reeard,tv_name_user;
+            btn_view_affilate_detail, tv_autometed_task, tv_manual_task, tv_rat_total, tv_rat_1, tv_rat_2, tv_rat_3, tv_rat_4, tv_rat_5, tv_total_reeard, tv_name_user;
     LinearLayout layout_Affiliate, layout_Bz_card, layout_connected_email;
     ImageView iv_all_up, iv_1_up, iv_2_up, iv_3_up, iv_4_up, iv_5_up;
     private int Weekofday = 7;
-
     public Main_home_Fragment(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
     }
+
     public Main_home_Fragment() {
     }
+
+    WrapContentViewPager viewPager;
+    ViewpaggerAdapter adapter;
+    NestedScrollView scrollView;
 
     @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main_home, container, false);
+
         retrofitCalls = new RetrofitCalls(getActivity());
         loadingDialog = new LoadingDialog(getActivity());
         sessionManager = new SessionManager(getActivity());
@@ -114,6 +130,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
 
         intentView(view);
+
 
         try {
             if (Global.isNetworkAvailable(getActivity(), MainActivity.mMainLayout)) {
@@ -128,7 +145,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         tabLayout.addTab(tabLayout.newTab().setText("Broadcast"));
         tabLayout.addTab(tabLayout.newTab().setText("Campaign"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-    
+
         TabSet();
 
         return view;
@@ -137,18 +154,17 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
     @SuppressLint("DefaultLocale")
     @RequiresApi(api = Build.VERSION_CODES.P)
     private void setdata(HashMap<String, String> map) {
-        Fragment fragment = new Task_Fragment();
+      /*  Fragment fragment = new Task_Fragment();
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame, fragment, "Fragment");
-        fragmentTransaction.commitAllowingStateLoss();
+        fragmentTransaction.commitAllowingStateLoss();*/
 
         /**
          *
          * Set data user name
          * */
         tv_name_user.setText(user_data.getUser().getFirstName());
-
 
 
         /**
@@ -171,8 +187,8 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
             Double A = ((double) des_taskCounter.getAuto() / total) * 100;
             Double m = ((double) des_taskCounter.getManual() / total) * 100;
 
-            long AA= Math.round(A);
-            long MM=Math.round(m);
+            long AA = Math.round(A);
+            long MM = Math.round(m);
             String Auto = Integer.toString((int) AA);
             String manual = Integer.toString((int) MM);
 
@@ -183,15 +199,11 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         }
 
 
-
-
         /**
          *
          * Set data AFFILIATE_REWARDS
          * */
         tv_total_reeard.setText(String.valueOf(dashboard.getAFFILIATE_REWARDS()));
-
-
 
 
         /**
@@ -205,8 +217,8 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
 
             if (Global.IsNotNull(des_affiliateInfo.getCountOfLevel1()) && des_affiliateInfo.getCountOfLevel1() != 0) {
 
-                setLavel(tv_lavel_count_1,tv_rat_1,des_affiliateInfo.getCountOfLevel1(),
-                        des_affiliateInfo.getRatiooflevel1(),iv_1_up);
+                setLavel(tv_lavel_count_1, tv_rat_1, des_affiliateInfo.getCountOfLevel1(),
+                        des_affiliateInfo.getRatiooflevel1(), iv_1_up);
                 Total_rat = des_affiliateInfo.getRatiooflevel1();
                 Total_Affiliate = des_affiliateInfo.getCountOfLevel1();
 
@@ -215,8 +227,8 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
             if (Global.IsNotNull(des_affiliateInfo.getCountOfLevel2()) && des_affiliateInfo.getCountOfLevel2() != 0) {
                 Total_rat = Total_rat + des_affiliateInfo.getRatiooflevel2();
                 Total_Affiliate = Total_Affiliate + des_affiliateInfo.getCountOfLevel2();
-                setLavel(tv_lavel_count_2,tv_rat_2,des_affiliateInfo.getCountOfLevel2(),
-                        des_affiliateInfo.getRatiooflevel2(),iv_2_up);
+                setLavel(tv_lavel_count_2, tv_rat_2, des_affiliateInfo.getCountOfLevel2(),
+                        des_affiliateInfo.getRatiooflevel2(), iv_2_up);
 
             }
             if (Global.IsNotNull(des_affiliateInfo.getCountOfLevel3()) && des_affiliateInfo.getCountOfLevel3() != 0) {
@@ -224,21 +236,21 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
                 Total_rat = Total_rat + des_affiliateInfo.getRatiooflevel3();
                 Total_Affiliate = Total_Affiliate + des_affiliateInfo.getCountOfLevel3();
 
-                setLavel(tv_lavel_count_3,tv_rat_3,des_affiliateInfo.getCountOfLevel3(),
-                        des_affiliateInfo.getRatiooflevel3(),iv_3_up);
+                setLavel(tv_lavel_count_3, tv_rat_3, des_affiliateInfo.getCountOfLevel3(),
+                        des_affiliateInfo.getRatiooflevel3(), iv_3_up);
 
             }
             if (Global.IsNotNull(des_affiliateInfo.getCountOfLevel4()) && des_affiliateInfo.getCountOfLevel4() != 0) {
                 Total_rat = Total_rat + des_affiliateInfo.getRatiooflevel4();
                 Total_Affiliate = Total_Affiliate + des_affiliateInfo.getCountOfLevel4();
 
-                setLavel(tv_lavel_count_4,tv_rat_4,des_affiliateInfo.getCountOfLevel4(),
-                        des_affiliateInfo.getRatiooflevel4(),iv_4_up);
+                setLavel(tv_lavel_count_4, tv_rat_4, des_affiliateInfo.getCountOfLevel4(),
+                        des_affiliateInfo.getRatiooflevel4(), iv_4_up);
 
             }
             if (Global.IsNotNull(des_affiliateInfo.getCountOfLevel5()) && des_affiliateInfo.getCountOfLevel5() != 0) {
-                setLavel(tv_lavel_count_5,tv_rat_5,des_affiliateInfo.getCountOfLevel5(),
-                        des_affiliateInfo.getRatiooflevel5(),iv_5_up);
+                setLavel(tv_lavel_count_5, tv_rat_5, des_affiliateInfo.getCountOfLevel5(),
+                        des_affiliateInfo.getRatiooflevel5(), iv_5_up);
 
 
                 Total_rat = Total_rat + des_affiliateInfo.getRatiooflevel5();
@@ -246,19 +258,19 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
 
             }
             tv_total_lavel.setText(String.valueOf(Total_Affiliate));
-                if(Total_Affiliate!=0){
-                    layout_level.setVisibility(View.VISIBLE);
-                }else {
-                    layout_level.setVisibility(View.GONE);
-                }
+            if (Total_Affiliate != 0) {
+                layout_level.setVisibility(View.VISIBLE);
+            } else {
+                layout_level.setVisibility(View.GONE);
+            }
             if (Total_rat > 0) {
                 iv_all_up.setImageResource(R.drawable.ic_home_grow_up);
                 tv_rat_total.setTextColor(getActivity().getResources().getColor(R.color.green_rate));
-                tv_rat_total.setText("+"+String.valueOf(Total_rat)+"%");
-            } else if (Total_rat < 0 ) {
+                tv_rat_total.setText("+" + String.valueOf(Total_rat) + "%");
+            } else if (Total_rat < 0) {
                 iv_all_up.setImageResource(R.drawable.ic_home_grow_down);
                 tv_rat_total.setTextColor(getActivity().getResources().getColor(R.color.red));
-                tv_rat_total.setText("-"+String.valueOf(Total_rat)+"%");
+                tv_rat_total.setText("-" + String.valueOf(Total_rat) + "%");
             }
 
             btn_view_affilate_detail.setOnClickListener(new View.OnClickListener() {
@@ -280,7 +292,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
                 mBarChart.setOutlineAmbientShadowColor(Color.GREEN);
                 mBarChart.startAnimation();
                 loadData(map);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -308,19 +320,19 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         if (Ratiooflevel > 0) {
             image_up_down.setImageResource(R.drawable.ic_home_grow_up);
             text_lavelRate.setTextColor(getActivity().getResources().getColor(R.color.green_rate));
-            text_lavelRate.setText("+"+String.valueOf(Ratiooflevel)+"%");
+            text_lavelRate.setText("+" + String.valueOf(Ratiooflevel) + "%");
 
         } else if (Ratiooflevel < 0 || Ratiooflevel == 0) {
             image_up_down.setImageResource(R.drawable.ic_home_grow_down);
             text_lavelRate.setTextColor(getActivity().getResources().getColor(R.color.red));
-            text_lavelRate.setText("-"+String.valueOf(Ratiooflevel)+"%");
+            text_lavelRate.setText("-" + String.valueOf(Ratiooflevel) + "%");
         }
 
     }
 
     @Override
     public void onResume() {
-     //   Log.e("Update Contect is",new Gson().toJson(SessionManager.getupdateContect(getActivity())));
+        //   Log.e("Update Contect is",new Gson().toJson(SessionManager.getupdateContect(getActivity())));
         super.onResume();
     }
 
@@ -383,12 +395,9 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
 
 
                     setdata(map);
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-
 
 
             }
@@ -402,7 +411,29 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
 
     private void TabSet() {
 
+        adapter = new ViewpaggerAdapter(getActivity(), getChildFragmentManager(),
+                tabLayout.getTabCount(), "");
+
+        viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+       /* tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 Fragment fragment = null;
@@ -436,12 +467,15 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
 
             }
         });
-
+*/
     }
 
     private void intentView(View view) {
+        scrollView=view.findViewById(R.id.nest_scrollview);
+        scrollView.setFillViewport (true);
         iv_toolbar_notification = view.findViewById(R.id.iv_toolbar_notification);
         iv_toolbar_notification.setVisibility(View.GONE);
+        viewPager = view.findViewById(R.id.viewPager);
 
         layout_toolbar_logo = view.findViewById(R.id.layout_toolbar_logo);
         layout_toolbar_logo.setVisibility(View.VISIBLE);
@@ -496,6 +530,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         bzcardlistAdepter = new BzcardlistAdepter(getActivity(), new ArrayList<>());
         rv_bzcardlist.setAdapter(bzcardlistAdepter);
         rv_bzcardlist.setVisibility(View.VISIBLE);
+
 
     }
 
@@ -604,4 +639,50 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         }
 
     }
+
+
+    class ViewpaggerAdapter extends FragmentPagerAdapter {
+
+        Context context;
+        int totalTabs;
+        String strtext1;
+
+        public ViewpaggerAdapter(Context c, FragmentManager fm, int totalTabs, String strtext1) {
+            super(fm);
+            context = c;
+            context = c;
+            this.totalTabs = totalTabs;
+            this.strtext1 = strtext1;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    Task_Fragment fragment = new Task_Fragment();
+
+                    return fragment;
+                case 1:
+                    Broadcast_Fragment c_Fragment = new Broadcast_Fragment();
+                    return c_Fragment;
+                case 2:
+                    Campaign_Fragment campaign_fragment = new Campaign_Fragment();
+
+                    return campaign_fragment;
+
+
+                default:
+                  return null;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            Log.e("Tab Count", String.valueOf(totalTabs));
+            return totalTabs;
+        }
+    }
+
+
 }
+
