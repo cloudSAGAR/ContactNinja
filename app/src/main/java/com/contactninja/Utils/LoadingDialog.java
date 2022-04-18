@@ -63,11 +63,7 @@ public class LoadingDialog {
             dialog.setCancelable(false);
             dialog.setCanceledOnTouchOutside(false);
             dialog.setView(activity.getLayoutInflater().inflate(R.layout.custom_dialog_progess, null));
-            ImageView imageView= dialog.findViewById(R.id.loader);
-            Glide.with(activity.getApplicationContext())
-                    .load(R.drawable.loadder)
-                    .into(imageView);
-           // dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
             dialog.show();
         } catch (Exception ex) {
             ex.printStackTrace();
