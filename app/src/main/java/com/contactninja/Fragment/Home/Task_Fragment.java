@@ -61,7 +61,7 @@ public class Task_Fragment extends Fragment  {
     LoadingDialog loadingDialog;
     Dashboard dashboard = new Dashboard();
     List<Des_Task> des_tasks = new ArrayList<>();
-
+    String Filter = "";
     public Task_Fragment(){
 
     }
@@ -274,6 +274,10 @@ public class Task_Fragment extends Fragment  {
                 }
 
 
+                    holder.tv_type.setText(mCtx.getResources().getString(R.string.Manual));
+
+
+
                 String FullDate="",curendate="";
                     FullDate = item.getDate() + " " + item.getTime();
                     curendate =item.getDate();
@@ -302,7 +306,7 @@ public class Task_Fragment extends Fragment  {
 
 
         public class InviteListDataclass extends RecyclerView.ViewHolder {
-            TextView tv_username, tv_task_description, tv_time, no_image, tv_status;
+            TextView tv_username, tv_task_description, tv_time, no_image, tv_status,tv_type;
             ImageView image_icon, iv_labal;
             View view_last_line;
             LinearLayout layout_contec;
@@ -319,6 +323,7 @@ public class Task_Fragment extends Fragment  {
                 iv_labal = itemView.findViewById(R.id.iv_labal);
                 view_last_line = itemView.findViewById(R.id.view_last_line);
                 layout_contec = itemView.findViewById(R.id.layout_contec);
+                tv_type=itemView.findViewById(R.id.tv_type);
 
             }
 
