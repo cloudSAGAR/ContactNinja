@@ -515,13 +515,14 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
     private void broadcast_manu() {
         
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.mail_bottom_sheet, null);
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Manual_Text_Send_Activty.this, R.style.CoffeeDialog);
+        BottomSheetDialog   bottomSheetDialog = new BottomSheetDialog(Manual_Text_Send_Activty.this, R.style.CoffeeDialog);
         bottomSheetDialog.setContentView(mView);
         LinearLayout lay_sendnow = bottomSheetDialog.findViewById(R.id.lay_sendnow);
         LinearLayout lay_schedule = bottomSheetDialog.findViewById(R.id.lay_schedule);
         lay_sendnow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                bottomSheetDialog.dismiss();
                 try {
                     SMSAPI(edit_template.getText().toString(), Integer.parseInt(id), p_number);
                 } catch (JSONException e) {
@@ -533,7 +534,7 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
         lay_schedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                
+                bottomSheetDialog.dismiss();
                 Intent intent = new Intent(getApplicationContext(), Manual_Text_Sheduled_Activity.class);
                 intent.putExtra("text", edit_template.getText().toString());
                 intent.putExtra("id", id);
@@ -544,7 +545,7 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
                 intent.putExtra("from_ac_id", from_ac_id);
                 startActivity(intent);
                 finish();
-                
+
                 
             }
         });
