@@ -8,7 +8,9 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
 import android.view.KeyEvent;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.contactninja.R;
 
 @SuppressLint("StaticFieldLeak,UnknownNullness,SetTextI18n,SyntheticAccessor,NotifyDataSetChanged,NonConstantResourceId,InflateParams,Recycle,StaticFieldLeak")
@@ -61,8 +63,11 @@ public class LoadingDialog {
             dialog.setCancelable(false);
             dialog.setCanceledOnTouchOutside(false);
             dialog.setView(activity.getLayoutInflater().inflate(R.layout.custom_dialog_progess, null));
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-
+            ImageView imageView= dialog.findViewById(R.id.loader);
+            Glide.with(activity.getApplicationContext())
+                    .load(R.drawable.loadder)
+                    .into(imageView);
+           // dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
             dialog.show();
         } catch (Exception ex) {
             ex.printStackTrace();

@@ -15,8 +15,15 @@
         android:layout_gravity="center"
         android:layout_width="@dimen/_30sdp"
         android:layout_height="@dimen/_30sdp"/>-->
+    <ImageView
+        android:id="@+id/loader"
+        android:layout_gravity="center"
+        android:src="@drawable/loadder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </ImageView>
 
-    <LinearLayout
+   <!-- <LinearLayout
         android:layout_width="@dimen/_100sdp"
         android:layout_height="@dimen/_100sdp"
         android:layout_gravity="center"
@@ -29,6 +36,6 @@
             android:layout_height="@dimen/_50sdp"
             android:layout_gravity="center"
             app:SpinKit_Color="@color/white" />
-    </LinearLayout>
+    </LinearLayout>-->
 
 </FrameLayout>
