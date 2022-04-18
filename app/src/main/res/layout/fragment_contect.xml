@@ -163,6 +163,7 @@
                         <com.reddit.indicatorfastscroll.FastScrollerThumbView
                             android:id="@+id/fastscroller_thumb"
                             android:layout_width="40dp"
+
                             android:layout_height="match_parent"
                             android:layout_alignParentRight="true" />
 

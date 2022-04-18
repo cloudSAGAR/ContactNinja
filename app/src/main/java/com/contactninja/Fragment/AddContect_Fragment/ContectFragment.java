@@ -43,7 +43,6 @@ import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-
 import com.bumptech.glide.Glide;
 import com.contactninja.AddContect.Create_New_Contect_Activity;
 import com.contactninja.Contect.Contact;
@@ -297,10 +296,11 @@ public class ContectFragment extends Fragment {
                             int indicatorCenterY,
                             int itemPosition
                     ) {
-
+                        rvinviteuserdetails.scrollToPosition(itemPosition);
                     }
                 }
         );
+
 
         if (SessionManager.getContectList(getActivity()).size() != 0) {
             contectListData.addAll(SessionManager.getContectList(getActivity()).get(0).getContacts());
@@ -420,7 +420,7 @@ public class ContectFragment extends Fragment {
                     listContacts1.addAll(SessionManager.getnewContect(getActivity()));
                     if (listContacts1.size() != 0) {
                         loadingDialog.showLoadingDialog();
-                       List<Contact> newList = listContacts1.stream()
+                        List<Contact> newList = listContacts1.stream()
                                 .distinct()
                                 .collect(Collectors.toList());
 
@@ -665,10 +665,18 @@ public class ContectFragment extends Fragment {
                 x = paginationAdapter.getItemCount();
                 y = x + contectListData.size() - paginationAdapter.getItemCount();
             }
-          /*  for (int i = x; i < y; i++) {
-               // main_contectListData.add(contectListData.get(i));
-                paginationAdapter.add(contectListData.get(i));
-            }*/
+            String second_latter = "";
+            for (int i = x; i < y; i++) {
+
+                String first_latter = contectListData.get(i).getFirstname().substring(0, 1).toUpperCase();
+                if (!first_latter.equals(second_latter)) {
+                    contectListData.get(i).setFirst_latter(first_latter);
+                    second_latter = first_latter;
+                }
+
+                // main_contectListData.add(contectListData.get(i));
+                //  paginationAdapter.add(contectListData.get(i));
+            }
             paginationAdapter.addAll(contectListData.subList(x, y));
             //  paginationAdapter.notifyDataSetChanged();
         }
@@ -712,8 +720,7 @@ public class ContectFragment extends Fragment {
                         if (number.equals("")) {
                             number = response.get(i).numbers.get(j).number;
                         } else {
-                            if (!number.contains(response.get(i).numbers.get(j).number))
-                            {
+                            if (!number.contains(response.get(i).numbers.get(j).number)) {
                                 number = number + "," + response.get(i).numbers.get(j).number;
                             }
 
@@ -2280,13 +2287,22 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         holder1.top_layout.setVisibility(View.VISIBLE);
 
 */
-                        String first_latter = Contact_data.getFirstname().substring(0, 1).toUpperCase();
+                  /*      String first_latter = Contact_data.getFirstname().substring(0, 1).toUpperCase();
                         if (!first_latter.equals(second_latter)) {
                             holder1.first_latter.setText(first_latter);
                             second_latter = first_latter;
                             holder1.first_latter.setVisibility(View.VISIBLE);
                             holder1.top_layout.setVisibility(View.VISIBLE);
 
+                        }*/
+
+                        if (!Contact_data.getFirst_latter().equals("")) {
+                            holder1.first_latter.setText(Contact_data.getFirst_latter());
+                            holder1.first_latter.setVisibility(View.VISIBLE);
+                            holder1.top_layout.setVisibility(View.VISIBLE);
+                        } else {
+                            holder1.first_latter.setVisibility(View.GONE);
+                            holder1.top_layout.setVisibility(View.GONE);
                         }
 
                       /*  if (second_latter.equals("")) {
