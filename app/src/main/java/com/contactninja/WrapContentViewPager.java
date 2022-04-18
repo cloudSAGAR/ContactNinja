@@ -7,7 +7,9 @@ import android.view.View;
 
 import androidx.viewpager.widget.ViewPager;
 
-public class WrapContentViewPager extends ViewPager {
+import java.lang.reflect.Field;
+
+/*public class WrapContentViewPager extends ViewPager {
     public WrapContentViewPager (Context context) {
         super(context);
     }
@@ -18,40 +20,77 @@ public class WrapContentViewPager extends ViewPager {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int mode = MeasureSpec.getMode(heightMeasureSpec);
-        View child = getChildAt(getCurrentItem());
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        if (child != null) {
-            //Log.e("Cueent uitem", String.valueOf(getCurrentItem()));
-            child.measure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+        int height = 0;
+        int childWidthSpec = MeasureSpec.makeMeasureSpec(
+                Math.max(0, MeasureSpec.getSize(widthMeasureSpec) -
+                        getPaddingLeft() - getPaddingRight()),
+                MeasureSpec.getMode(widthMeasureSpec)
+        );
+        for (int i = 0; i < getChildCount(); i++) {
+            View child = getChildAt(i);
+            child.measure(childWidthSpec, MeasureSpec.UNSPECIFIED);
             int h = child.getMeasuredHeight();
-            heightMeasureSpec = MeasureSpec.makeMeasureSpec(h, MeasureSpec.EXACTLY);
+            if (h > height) height = h;
         }
-        else {
-            /*int height=0;
-            if (getCurrentItem()==2)
-            {
 
-
-                View child1 = getChildAt(2);
-                child1.measure(200, MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
-                int childMeasuredHeight = child1.getMeasuredHeight();
-                if (childMeasuredHeight > height) {
-                    height = childMeasuredHeight;
-                }
-            }
+        if (height != 0) {
             heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
-*/
-
-
-
         }
-
-
-
-
-
 
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
+}*/
+
+
+public class WrapContentViewPager extends ViewPager {
+
+    public WrapContentViewPager(Context context) {
+        super(context);
+    }
+
+    public WrapContentViewPager(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        View child = getCurrentView(this);
+        if (child != null) {
+            child.measure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(0,
+                    MeasureSpec.UNSPECIFIED));
+            int h = child.getMeasuredHeight();
+
+            heightMeasureSpec = MeasureSpec.makeMeasureSpec(h, MeasureSpec.EXACTLY);
+        }
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
+
+    View getCurrentView(ViewPager viewPager) {
+        try {
+            final int currentItem = viewPager.getCurrentItem();
+            for (int i = 0; i < viewPager.getChildCount(); i++) {
+                final View child = viewPager.getChildAt(i);
+                final ViewPager.LayoutParams layoutParams = (ViewPager.LayoutParams)
+                        child.getLayoutParams();
+
+                Field f = layoutParams.getClass().getDeclaredField("position");
+                //NoSuchFieldException
+                f.setAccessible(true);
+                int position = (Integer) f.get(layoutParams); //IllegalAccessException
+
+                if (!layoutParams.isDecor && currentItem == position) {
+                    return child;
+                }
+            }
+        } catch (NoSuchFieldException e) {
+            e.fillInStackTrace();
+        } catch (IllegalArgumentException e) {
+            e.fillInStackTrace();
+        } catch (IllegalAccessException e) {
+            e.fillInStackTrace();
+        }
+        return null;
     }
 }

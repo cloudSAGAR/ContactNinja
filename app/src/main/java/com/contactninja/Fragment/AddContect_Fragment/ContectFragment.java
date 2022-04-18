@@ -274,9 +274,6 @@ public class ContectFragment extends Fragment {
         retrofitCalls = new RetrofitCalls(getActivity());
         layoutManager = new LinearLayoutManager(getActivity());
         rvinviteuserdetails.setLayoutManager(layoutManager);
-       /* SpeedyLinearLayoutManager speedyLinearLayoutManager=     new SpeedyLinearLayoutManager(getActivity(), SpeedyLinearLayoutManager.VERTICAL, false);
-        rvinviteuserdetails.setLayoutManager(speedyLinearLayoutManager);
-       */
         rvinviteuserdetails.setHasFixedSize(true);
         contectListData = new ArrayList<>();
         SessionManager.setOneCotect_deatil(getActivity(), new ContectListData.Contact());
@@ -1288,7 +1285,7 @@ public class ContectFragment extends Fragment {
                                 sessionManager.setContectList(getActivity(), contectListData_store);
                                 num_count.setText("" + contectListData1.getTotal() + " Contacts");
                                 totale_group = contectListData1.getTotal();
-                                contectListData.addAll(contectListData_store.get(0).getContacts());
+
                                 onScrolledToBottom();
 
 
@@ -1306,7 +1303,7 @@ public class ContectFragment extends Fragment {
                                     List<ContectListData> contectListData_store = new ArrayList<>();
                                     contectListData_store.add(contectListData1);
                                     sessionManager.setContectList(getActivity(), contectListData_store);
-                                    //contectListData.addAll(contectListData_store.get(0).getContacts());
+
                                     rvinviteuserdetails.setItemViewCacheSize(50000);
                                     paginationAdapter = new ContectListAdapter(getActivity());
                                     rvinviteuserdetails.setAdapter(paginationAdapter);

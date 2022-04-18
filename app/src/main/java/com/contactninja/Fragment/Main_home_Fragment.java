@@ -332,7 +332,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onResume() {
-        //   Log.e("Update Contect is",new Gson().toJson(SessionManager.getupdateContect(getActivity())));
+          Log.e("Update Contect is",new Gson().toJson(SessionManager.getupdateContect(getActivity())));
         super.onResume();
     }
 
@@ -415,6 +415,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
                 tabLayout.getTabCount(), "");
 
         viewPager.setAdapter(adapter);
+        viewPager.measure(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

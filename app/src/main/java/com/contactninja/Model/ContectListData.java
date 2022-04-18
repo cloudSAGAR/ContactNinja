@@ -145,6 +145,7 @@ public class ContectListData {
         @Expose
         private Integer is_blocked=0;
 
+        private String first_latter="";
         public String getNotes() {
             return notes;
         }
@@ -231,6 +232,14 @@ public class ContectListData {
 
         public void setOrganizationId(Integer organizationId) {
             this.organizationId = organizationId;
+        }
+
+        public String getFirst_latter() {
+            return first_latter;
+        }
+
+        public void setFirst_latter(String first_latter) {
+            this.first_latter = first_latter;
         }
 
         public Integer getTeamId() {
