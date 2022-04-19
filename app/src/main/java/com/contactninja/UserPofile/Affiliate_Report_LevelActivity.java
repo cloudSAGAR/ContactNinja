@@ -25,6 +25,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.contactninja.MainActivity;
 import com.contactninja.Model.Dashboard.Dashboard;
@@ -79,6 +80,8 @@ class Affiliate_Report_LevelActivity extends AppCompatActivity implements View.O
     Integer user_id = 0;
     String token_api = "", organization_id = "", team_id = "";
     ImageView iv_cancle_search_icon;
+    SwipeRefreshLayout swipeToRefresh;
+
 
 
     @Override
@@ -102,7 +105,21 @@ class Affiliate_Report_LevelActivity extends AppCompatActivity implements View.O
             e.printStackTrace();
         }
 
+        swipeToRefresh.setColorSchemeResources(R.color.purple_200);
+        swipeToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
 
+                try {
+                    if (Global.isNetworkAvailable(Affiliate_Report_LevelActivity.this, MainActivity.mMainLayout)) {
+                        Api_List();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
         mNetworkReceiver = new ConnectivityReceiver();
 
     }
@@ -154,8 +171,9 @@ class Affiliate_Report_LevelActivity extends AppCompatActivity implements View.O
             @SuppressLint("NewApi")
             @Override
             public void success(Response<ApiResponse> response) {
-
-
+                desAffiliateInfo=new Des_AffiliateInfo();
+                dashboard=new Dashboard();
+                swipeToRefresh.setRefreshing(false);
                 Gson gson = new Gson();
                 String headerString = gson.toJson(response.body().getData());
                 Type listType = new TypeToken<Dashboard>() {
@@ -171,10 +189,13 @@ class Affiliate_Report_LevelActivity extends AppCompatActivity implements View.O
             @Override
             public void error(Response<ApiResponse> response) {
                 loadingDialog.cancelLoading();
-
+                swipeToRefresh.setRefreshing(false);
             }
         });
     }
+
+
+
 
     private void setdate() {
 
@@ -364,6 +385,7 @@ class Affiliate_Report_LevelActivity extends AppCompatActivity implements View.O
         iv_back.setOnClickListener(this);
         iv_cancle_search_icon=findViewById(R.id.iv_cancle_search_icon);
         iv_cancle_search_icon.setOnClickListener(this);
+        swipeToRefresh=findViewById(R.id.swipeToRefresh);
     }
 
     @Override
