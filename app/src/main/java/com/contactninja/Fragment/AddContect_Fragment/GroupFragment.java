@@ -282,7 +282,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         obj.put("data", paramObject);
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
-        Log.e("Obbject data", new Gson().toJson(gsonObject));
+      //  Log.e("Obbject data", new Gson().toJson(gsonObject));
         retrofitCalls.Group_List(sessionManager, gsonObject, loadingDialog, token, Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {

@@ -277,7 +277,7 @@ public class Global extends Application {
 
     public static String getToken(SessionManager sessionManager) {
         String token = sessionManager.getAccess_token();
-        Log.e("token", token);
+        //Log.e("token", token);
         return token;
     }
 
@@ -467,15 +467,15 @@ public class Global extends Application {
                 String groupIndex1 = matcher.group(7);
                 if(groupIndex1!=null && groupIndex1.length()==11)
                     video_id = groupIndex1;
-                Log.e("Video id",video_id);
+              //  Log.e("Video id",video_id);
                 String[] split_data=yourUrl.split("t=");
                 if (split_data.length!=1)
                 {
-                    Log.e("Time is","?start="+split_data[1]);
+                  //  Log.e("Time is","?start="+split_data[1]);
                     start_time="?start="+split_data[1];
                 }
                 main_url= Global.youtube_link+video_id+start_time;
-                Log.e("main_url",main_url);
+                //Log.e("main_url",main_url);
                 //Toast.makeText(getApplicationContext(),video_id,Toast.LENGTH_LONG).show();
             }
         }

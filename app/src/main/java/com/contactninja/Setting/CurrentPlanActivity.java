@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -270,7 +271,7 @@ public class CurrentPlanActivity extends AppCompatActivity implements View.OnCli
             } else if (k == 1) {
                 List<Plandetail.Plansublist> plansublists123 = new ArrayList<>();
                 Plandetail plan = new Plandetail();
-                plan.setPlan_product_id(getResources().getString(R.string.plan_39));
+                plan.setPlan_product_id(getResources().getString(R.string.plan_9));
                 plan.setPlan_name("Ninja BZcard");
                 plan.setPlan_description("Master text marketing with broadcasts and lead tracking to multiply the chances of your messages to be opened and converted.\n");
                 plan.setPlan_free("$9.95/Monthly");
@@ -400,6 +401,9 @@ public class CurrentPlanActivity extends AppCompatActivity implements View.OnCli
 
 
         for(int i=0;i<plandetailslist.size();i++){
+
+           // Log.e("CurentPlan",CurentPlan);
+          //  Log.e("Planid",plandetailslist.get(i).getPlan_product_id());
             if(CurentPlan.equals(plandetailslist.get(i).getPlan_product_id())){
                 tv_save.setText(getResources().getString(R.string.Current_Plan));
 

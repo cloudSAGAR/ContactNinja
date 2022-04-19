@@ -677,8 +677,8 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
             paramObject.addProperty("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
             paramObject.addProperty("minute", Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext())));
             paramObject.addProperty("organization_id", "1");
-            Log.e("S_id", sequence_id);
-            Log.e("S_task", seq_task_id);
+           // Log.e("S_id", sequence_id);
+          //  Log.e("S_task", seq_task_id);
             paramObject.addProperty("sequence_id", sequence_id);
             paramObject.addProperty("seq_task_id", seq_task_id);
             paramObject.addProperty("content_header", ev_subject.getText().toString());
@@ -811,7 +811,7 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
             if (resultCode == -1) {
                 Uri fileUri = data.getData();
                 filePath = fileUri.getPath();
-                Log.e("File Pathe uis ", filePath);
+                //Log.e("File Pathe uis ", filePath);
 
             }
         }

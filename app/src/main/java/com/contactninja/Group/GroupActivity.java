@@ -931,8 +931,8 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                     }*/
                     /*
                      * Contact already block not select */
-                    Log.e("Group Flag",group_flag);
-                    Log.e("Flag other",contacts.get(position).getFlag());
+                  //  Log.e("Group Flag",group_flag);
+                  //  Log.e("Flag other",contacts.get(position).getFlag());
                     if (contacts.get(position).getIs_blocked().equals(1)) {
                         holder1.iv_block.setVisibility(View.VISIBLE);
                      /*   holder1.add_new_contect_icon.setVisibility(View.GONE);
@@ -943,11 +943,11 @@ public class GroupActivity extends AppCompatActivity implements View.OnClickList
                         holder1.iv_block.setVisibility(View.GONE);
                         holder1.userName.setTextColor(context.getResources().getColor(R.color.unblock_item));
                         if (contacts.get(position).getFlag().equals("false")) {
-                            Log.e("Same","yes");
+                          //  Log.e("Same","yes");
                             holder1.add_new_contect_icon.setVisibility(View.GONE);
                             holder1.remove_contect_icon.setVisibility(View.VISIBLE);
                         } else {
-                            Log.e("Same","no");
+                           // Log.e("Same","no");
                             holder1.remove_contect_icon.setVisibility(View.GONE);
                             holder1.add_new_contect_icon.setVisibility(View.VISIBLE);
                         }

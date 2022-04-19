@@ -72,7 +72,7 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
         mNetworkReceiver = new ConnectivityReceiver();
         broadcate_save_data = new Broadcate_save_data();
         // broadcasteda=SessionManager.getBroadcate_List_Detail(this);
-        Log.e("Broadcaste Data", new Gson().toJson(broadcasteda));
+      //  Log.e("Broadcaste Data", new Gson().toJson(broadcasteda));
 
 
         Intent inten = getIntent();

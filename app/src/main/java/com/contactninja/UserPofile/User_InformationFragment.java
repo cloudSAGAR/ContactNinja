@@ -804,7 +804,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                             Collections.reverse(phonedetails_list);
                             contactdetails.add(contactdetail);
 
-                            Log.e("Contect List Is", new Gson().toJson(phonedetails_list));
+                      //      Log.e("Contect List Is", new Gson().toJson(phonedetails_list));
 
 
                         }
@@ -963,8 +963,8 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 rv_email.setLayoutManager(new LinearLayoutManager(getActivity()));
                 rv_email.setAdapter(emailAdapter);
                 //     Log.e("layout_Add_email",new Gson().toJson(emaildetails_list));
-                Log.e("Concet List size", String.valueOf(contactdetails.size()));
-                Log.e("Email  List is ", new Gson().toJson(SessionManager.getAdd_Contect_Detail(getActivity())));
+               // Log.e("Concet List size", String.valueOf(contactdetails.size()));
+               // Log.e("Email  List is ", new Gson().toJson(SessionManager.getAdd_Contect_Detail(getActivity())));
             });
         }
     }
@@ -986,7 +986,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 contactdetail1.setType("NUMBER");
                 phonedetails_list.add(contactdetail1);
                 contactdetails.add(contactdetail1);
-                Log.e("Add View is", new Gson().toJson(phonedetails_list));
+              //  Log.e("Add View is", new Gson().toJson(phonedetails_list));
                 phoneAdapter = new PhoneAdapter(getActivity(), phonedetails_list, layout_Add_phone);
                 rv_phone.setItemViewCacheSize(50000);
                 rv_phone.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -1015,7 +1015,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             rv_phone.setAdapter(phoneAdapter);
 
             layout_Add_phone.setOnClickListener(v -> {
-                Log.e("Add View is", new Gson().toJson(phonedetails_list));
+              //  Log.e("Add View is", new Gson().toJson(phonedetails_list));
                 Contactdetail contactdetail1 = new Contactdetail();
                 contactdetail1.setId(contactdetails.size());
                 contactdetail1.setEmail_number("");
@@ -1479,7 +1479,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
     }
 
     private void UpdateContect(Contactdetail id) throws JSONException {
-        Log.e("Update Api Call", "Yes");
+       // Log.e("Update Api Call", "Yes");
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
         String user_id = String.valueOf(user_data.getUser().getId());
         String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
@@ -1491,7 +1491,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
         paramObject.put("organization_id", SessionManager.getOneCotect_deatil(getActivity()).getOrganizationId());
         paramObject.put("team_id", SessionManager.getOneCotect_deatil(getActivity()).getTeamId());
         paramObject.put("user_id", user_id);
-        Log.e("Id is", String.valueOf(id.getId()));
+       // Log.e("Id is", String.valueOf(id.getId()));
         if (id.getId() == 0) {
 
         } else {
@@ -1599,10 +1599,10 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                                 if (t_id.equals(timezoneModels.get(i).getValue().toString())) {
                                     zone_txt.setText(timezoneModels.get(i).getText());
 
-                                    Log.e("No Same Data", "NO");
+                               //     Log.e("No Same Data", "NO");
                                     break;
                                 } else {
-                                    Log.e("No Same Data", "Yes");
+                                  //  Log.e("No Same Data", "Yes");
                                 }
                             }
                         }
@@ -1945,9 +1945,9 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                     holder.iv_set_default.setVisibility(View.GONE);
                 }
 
-                Log.e("Countr code",String.valueOf(Global.Countrycode(mCtx, item.getEmail_number())));
-                Log.e("Using Phone Code", String.valueOf(Global.Countrycode(mCtx, item.getEmail_number())));
-                Log.e("Countr Code is ","Postion "+position+ "  "+item.getCountry_code());
+                //Log.e("Countr code",String.valueOf(Global.Countrycode(mCtx, item.getEmail_number())));
+               // Log.e("Using Phone Code", String.valueOf(Global.Countrycode(mCtx, item.getEmail_number())));
+               // Log.e("Countr Code is ","Postion "+position+ "  "+item.getCountry_code());
                 if (Global.IsNotNull(item.getCountry_code()))
                 {
                     holder.ccp_id.setDefaultCountryUsingNameCode(item.getCountry_code());
@@ -1975,7 +1975,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                         if (countryCode.length() > 0 && phoneNumber.length() > 0) {
                             if (Global.isValidPhoneNumber(phoneNumber)) {
                                 boolean status = validateUsing_libphonenumber(countryCode, phoneNumber);
-                                Log.e("Contect Status", String.valueOf(status));
+                           //     Log.e("Contect Status", String.valueOf(status));
                                 if (status) {
                                     holder.iv_invalid1.setText("");
                                     holder.iv_invalid1.setVisibility(View.GONE);
@@ -2108,9 +2108,9 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                             String phoneNumber = holder.edt_mobile_no.getText().toString().trim();
                             if (contactdetails.size() <= 12) {
                                 layout_Add_phone.setVisibility(View.VISIBLE);
-                                Log.e("Contect id ", String.valueOf(contactdetails.get(position).getId()));
+                             //   Log.e("Contect id ", String.valueOf(contactdetails.get(position).getId()));
                                 addcontectModel.setContactdetails(contactdetails);
-                                Log.e("Add Contect Model is ", new Gson().toJson(addcontectModel));
+                              //  Log.e("Add Contect Model is ", new Gson().toJson(addcontectModel));
                                 SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
 
                             }
@@ -2369,7 +2369,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
 
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        Log.e("Action done", "Yes");
+                      //  Log.e("Action done", "Yes");
                         if (holder.edt_email.getText().toString().equals("")) {
 
                         } else {

@@ -391,7 +391,7 @@ public class ContectFragment extends Fragment {
             }
         });
         if (!SessionManager.getnewContect(getActivity()).equals(null) && !SessionManager.getnewContect(getActivity()).equals("")) {
-            Log.e("Data Is", new Gson().toJson(SessionManager.getnewContect(getActivity())));
+           // Log.e("Data Is", new Gson().toJson(SessionManager.getnewContect(getActivity())));
             ArrayList<Contact> listContacts1 = new ArrayList<>();
             listContacts1.addAll(SessionManager.getnewContect(getActivity()));
             if (listContacts1.size() != 0) {
@@ -897,7 +897,7 @@ public class ContectFragment extends Fragment {
                 SessionManager.setnewContect(getActivity(), new ArrayList<>());
                 loadingDialog.cancelLoading();
                 tv_upload.setEnabled(true);
-                Log.e("Error is", new Gson().toJson(response));
+             //   Log.e("Error is", new Gson().toJson(response));
             }
 
         });
@@ -1210,7 +1210,7 @@ public class ContectFragment extends Fragment {
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
 
-                Log.e("Filtter Is", Filter);
+             //   Log.e("Filtter Is", Filter);
                 showBottomSheetDialog_Filtter();
             }
         });
@@ -1490,7 +1490,7 @@ public class ContectFragment extends Fragment {
                     paramObject.put("notes", "");
                     JSONArray jsonArray = new JSONArray();
                     jsonArray_contect.put(paramObject);
-                    Log.e("Object is", new Gson().toJson(jsonArray_contect));
+                //    Log.e("Object is", new Gson().toJson(jsonArray_contect));
 
 
                 }
@@ -1504,7 +1504,7 @@ public class ContectFragment extends Fragment {
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
 
-        Log.e("Final Data is", new Gson().toJson(gsonObject));
+      //  Log.e("Final Data is", new Gson().toJson(gsonObject));
         retrofitCalls.Updatecontect(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {

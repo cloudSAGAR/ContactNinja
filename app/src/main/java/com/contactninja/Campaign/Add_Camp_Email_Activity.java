@@ -211,7 +211,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
             //  SessionManager.setCampaign_type(bundle.getString("type"));
             //SessionManager.setCampaign_type_name(bundle.getString("manage_by"));
             
-            Log.e("Step ", step_no);
+            //Log.e("Step ", step_no);
             String stpe_tyep = SessionManager.getCampaign_type_name(getApplicationContext());
             add_new_contect.setText("Step#" + step_no + "(" + stpe_tyep + " " + SessionManager.getCampaign_type(getApplicationContext()) + ")");
             
@@ -700,8 +700,8 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
             paramObject.addProperty("manage_by", SessionManager.getCampaign_type_name(getApplicationContext()));
             paramObject.addProperty("hours", Integer.parseInt(SessionManager.getCampaign_minute(getApplicationContext())));
             paramObject.addProperty("organization_id", "1");
-            Log.e("S_id", sequence_id);
-            Log.e("S_task", seq_task_id);
+        //    Log.e("S_id", sequence_id);
+            //Log.e("S_task", seq_task_id);
             paramObject.addProperty("sequence_id", sequence_id);
             paramObject.addProperty("seq_task_id", seq_task_id);
             paramObject.addProperty("content_header", ev_subject.getText().toString());
@@ -840,7 +840,7 @@ public class Add_Camp_Email_Activity extends AppCompatActivity implements View.O
             if (resultCode == -1) {
                 Uri fileUri = data.getData();
                 filePath = fileUri.getPath();
-                Log.e("File Pathe uis ", filePath);
+                //Log.e("File Pathe uis ", filePath);
                 
             }
         }

@@ -332,7 +332,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onResume() {
-          Log.e("Update Contect is",new Gson().toJson(SessionManager.getupdateContect(getActivity())));
+          //Log.e("Update Contect is",new Gson().toJson(SessionManager.getupdateContect(getActivity())));
         super.onResume();
     }
 
@@ -364,7 +364,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         obj.put("data", paramObject);
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
-        Log.e("Gson Data is", new Gson().toJson(gsonObject));
+        //Log.e("Gson Data is", new Gson().toJson(gsonObject));
         retrofitCalls.Dashboard(sessionManager, gsonObject, loadingDialog, token_api, Global.getVersionname(getActivity()), Global.Device, new RetrofitCallback() {
             @SuppressLint("NewApi")
             @Override
@@ -417,7 +417,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
         viewPager.setAdapter(adapter);
         viewPager.measure(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-
+        viewPager.setOffscreenPageLimit(1);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -679,7 +679,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
 
         @Override
         public int getCount() {
-            Log.e("Tab Count", String.valueOf(totalTabs));
+           // Log.e("Tab Count", String.valueOf(totalTabs));
             return totalTabs;
         }
     }

@@ -224,7 +224,7 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
                     phoneDatum.setPhoneNumber("System Assigned");
                     userLinkedGmailList.add(userLinkedGmailList.size(), phoneDatum);
                     Collections.reverse(userLinkedGmailList);
-                    Log.e("Size is", "" + new Gson().toJson(userLinkedGmailList));
+                   // Log.e("Size is", "" + new Gson().toJson(userLinkedGmailList));
                     if (userLinkedGmailList.size() == 1) {
                         iv_down.setVisibility(View.GONE);
                     } else if (userLinkedGmailList.size() == 1) {
@@ -243,7 +243,7 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
                             
                         }
                     }
-                    Log.e("List Is", new Gson().toJson(userLinkedGmailList));
+                   // Log.e("List Is", new Gson().toJson(userLinkedGmailList));
                 } else {
                     ContecModel.PhoneDatum phoneDatum = new ContecModel.PhoneDatum();
                     phoneDatum.setId(0);
@@ -606,7 +606,7 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
         
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
-        Log.e("Gson Data is", new Gson().toJson(gsonObject));
+       // Log.e("Gson Data is", new Gson().toJson(gsonObject));
         
         
         retrofitCalls.manual_task_store(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(this), Global.Device, new RetrofitCallback() {
@@ -885,7 +885,7 @@ public class Manual_Text_Send_Activty extends AppCompatActivity implements View.
             if (resultCode == -1) {
                 Uri fileUri = data.getData();
                 filePath = fileUri.getPath();
-                Log.e("File Pathe uis ", filePath);
+              //  Log.e("File Pathe uis ", filePath);
                 
             }
         }

@@ -149,7 +149,7 @@ class Affiliate_Report_LevelActivity extends AppCompatActivity implements View.O
         obj.put("data", paramObject);
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
-        Log.e("Gson Data is", new Gson().toJson(gsonObject));
+    //    Log.e("Gson Data is", new Gson().toJson(gsonObject));
         retrofitCalls.affiliate_list(sessionManager, gsonObject, loadingDialog, token_api, Global.getVersionname(Affiliate_Report_LevelActivity.this), Global.Device, new RetrofitCallback() {
             @SuppressLint("NewApi")
             @Override

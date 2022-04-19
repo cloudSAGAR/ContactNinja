@@ -90,8 +90,8 @@ public class Broadcast_Auto_Selection_Fragment extends Fragment implements View.
 
         c_name = SessionManager.getCampaign_type_name(getActivity());
         c_type = SessionManager.getCampaign_type(getActivity());
-        Log.e("c_name", c_name);
-        Log.e("c_type", c_type);
+       // Log.e("c_name", c_name);
+       // Log.e("c_type", c_type);
         //Log.e("Frgment Call","Yes");
 
         if (c_type.equals("SMS")) {

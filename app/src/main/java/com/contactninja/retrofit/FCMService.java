@@ -21,14 +21,14 @@ public class FCMService extends FirebaseMessagingService {
 
     @Override
     public void onNewToken(@NotNull String token) {
-        Log.e("FCM Refreshed token: CC", token);
+      //  Log.e("FCM Refreshed token: CC", token);
 
     }
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         if (remoteMessage.getNotification() != null) {
-            Log.e("Remote Data is",new Gson().toJson(remoteMessage));
+            //Log.e("Remote Data is",new Gson().toJson(remoteMessage));
             MainActivity.upload(remoteMessage);
         }
 

@@ -1484,7 +1484,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
 
         // Get update data count.
         int updateCount = contentResolver.update(dataUri, contentValues, whereClauseBuf.toString(), null);
-        Log.e("Count is", String.valueOf(updateCount));
+       // Log.e("Count is", String.valueOf(updateCount));
 
     }
 

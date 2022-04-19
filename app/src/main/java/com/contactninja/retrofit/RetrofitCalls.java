@@ -583,7 +583,7 @@ public class RetrofitCalls {
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("refresh_token", sessionManager.getRefresh_token());
         obj.add("data", paramObject);
-        Log.e("Tokem is ",new Gson().toJson(obj));
+      //  Log.e("Tokem is ",new Gson().toJson(obj));
         retrofitCalls.Refress_Token(sessionManager,obj, loadingDialog, token, Global.AppVersion,Global.Device, new RetrofitCallback() {
             @Override
             public void success(Response<ApiResponse> response) {
@@ -600,8 +600,8 @@ public class RetrofitCalls {
                         sessionManager.setRefresh_token(data.getRefreshToken());
                         sessionManager.setAccess_token(data.getTokenType()+" "+data.getAccessToken());
 
-                        Log.e("Access_token",data.getTokenType()+" "+data.getAccessToken());
-                        Log.e("Refresh_token",data.getRefreshToken());
+                      //  Log.e("Access_token",data.getTokenType()+" "+data.getAccessToken());
+                       // Log.e("Refresh_token",data.getRefreshToken());
 
                         Toast.makeText(context,context.getResources().getString(R.string.tryAgain),Toast.LENGTH_SHORT).show();
 

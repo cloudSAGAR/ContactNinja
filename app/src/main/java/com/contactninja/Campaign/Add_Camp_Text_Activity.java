@@ -192,7 +192,7 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
                     userLinkedGmailList = userLinkedGmail.getPhoneData();
 
 
-                    Log.e("Size is", "" + new Gson().toJson(userLinkedGmailList));
+                    //Log.e("Size is", "" + new Gson().toJson(userLinkedGmailList));
 
                     ContecModel.PhoneDatum phoneDatum = new ContecModel.PhoneDatum();
                     phoneDatum.setId(0);
@@ -232,7 +232,7 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
                         }
 
                     }
-                    Log.e("List Is", new Gson().toJson(userLinkedGmailList));
+                   // Log.e("List Is", new Gson().toJson(userLinkedGmailList));
                 } else {
 
                     ContecModel.PhoneDatum phoneDatum = new ContecModel.PhoneDatum();
@@ -710,7 +710,7 @@ public class Add_Camp_Text_Activity extends AppCompatActivity implements View.On
                     Type listType = new TypeToken<List<CampaignTask>>() {
                     }.getType();
                     List<CampaignTask> user_model1 = new Gson().fromJson(headerString, listType);
-                    Log.e("User Model ", new Gson().toJson(user_model1));
+                  //  Log.e("User Model ", new Gson().toJson(user_model1));
                     Intent inten = getIntent();
                     Bundle bundle = inten.getExtras();
                     String flag = bundle.getString("flag");

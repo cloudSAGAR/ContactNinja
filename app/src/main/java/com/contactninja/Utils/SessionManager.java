@@ -70,7 +70,7 @@ public class SessionManager {
     public static final String campaign_day = "campaign_day";
     public static final String campaign_minute = "campaign_minute";
     public static final String Campaign_overview = "campign_overview";
-    private static final String PREF_NAME = "jainaPref";
+    private static final String PREF_NAME = "contactninjaPref";
     private static final String IS_LOGIN = "IsLoggedIn";
     private static final String IS_APPITRO = "Isintro";
     private static final String IS_Email_Update = "IsEmailUpdate";

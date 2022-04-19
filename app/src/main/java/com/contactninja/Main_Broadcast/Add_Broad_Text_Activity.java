@@ -200,7 +200,7 @@ public class Add_Broad_Text_Activity extends AppCompatActivity implements View.O
                     userLinkedGmailList = userLinkedGmail.getPhoneData();
 
 
-                    Log.e("Size is", "" + new Gson().toJson(userLinkedGmailList));
+                  //  Log.e("Size is", "" + new Gson().toJson(userLinkedGmailList));
 
                     ContecModel.PhoneDatum phoneDatum = new ContecModel.PhoneDatum();
                     phoneDatum.setId(0);
@@ -240,7 +240,7 @@ public class Add_Broad_Text_Activity extends AppCompatActivity implements View.O
                         }
 
                     }
-                    Log.e("List Is", new Gson().toJson(userLinkedGmailList));
+                    //Log.e("List Is", new Gson().toJson(userLinkedGmailList));
                 } else {
 
                     ContecModel.PhoneDatum phoneDatum = new ContecModel.PhoneDatum();

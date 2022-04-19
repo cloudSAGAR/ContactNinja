@@ -295,7 +295,7 @@ public class Recuring_email_broadcast_activity extends AppCompatActivity impleme
             broadcste_coman_model.setNum(String.valueOf(count));
             count++;
             list_DayOfWeek_Month.add(broadcste_coman_model);
-            Log.e("Day is",new Gson().toJson(list_DayOfWeek_Month));
+            //Log.e("Day is",new Gson().toJson(list_DayOfWeek_Month));
         }
     }
 

@@ -149,7 +149,7 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
             e.printStackTrace();
         }
         List<ContectListData.Contact> list_data = SessionManager.getGroupList(getApplicationContext());
-        Log.e("List Data is ", new Gson().toJson(list_data));
+      //  Log.e("List Data is ", new Gson().toJson(list_data));
 
 
         for (int j = 0; j < list_data.get(0).getContactDetails().size(); j++) {
@@ -159,8 +159,8 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
             }
         }
 
-        Log.e("Id is", id);
-        Log.e("email", email);
+       // Log.e("Id is", id);
+       // Log.e("email", email);
         ev_to.setText(email);
 
         try {
@@ -200,7 +200,7 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
 
     private void Mail_listDetails() {
         userLinkedGmailList = sessionManager.getUserLinkedGmail(getApplicationContext());
-        Log.e("Size is", "" + new Gson().toJson(userLinkedGmailList));
+        //Log.e("Size is", "" + new Gson().toJson(userLinkedGmailList));
         if (userLinkedGmailList.size() == 0) {
             iv_more.setVisibility(View.GONE);
             if (FirstTime == 0) {
@@ -741,7 +741,7 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
             if (resultCode == -1) {
                 Uri fileUri = data.getData();
                 filePath = fileUri.getPath();
-                Log.e("File Pathe uis ", filePath);
+           //     Log.e("File Pathe uis ", filePath);
 
             }
         }
@@ -804,7 +804,7 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
 
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
-        Log.e("Gson Data is", new Gson().toJson(gsonObject));
+       // Log.e("Gson Data is", new Gson().toJson(gsonObject));
 
 
         retrofitCalls.manual_task_store(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(Manual_Email_Send_Activty.this), Global.Device, new RetrofitCallback() {
@@ -839,7 +839,7 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
     private void Email_execute(String subject, String text, int id, String email, String record_id) throws JSONException {
 
         //  loadingDialog.showLoadingDialog();
-        Log.e("Defuilt id", String.valueOf(defult_id));
+        //Log.e("Defuilt id", String.valueOf(defult_id));
 
         SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
         String user_id = String.valueOf(user_data.getUser().getId());
@@ -879,7 +879,7 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
                     /* finish();*/
                 }
 
-                Log.e("Main Response is", new Gson().toJson(response.body()));
+              //  Log.e("Main Response is", new Gson().toJson(response.body()));
 
             }
 

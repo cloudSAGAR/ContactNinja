@@ -307,9 +307,9 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                     
                 } else {
                     
-                    Log.e("sequence id", String.valueOf(sequence_id));
-                    
-                    Log.e("Sequence is is", String.valueOf(sequence_id));
+                //    Log.e("sequence id", String.valueOf(sequence_id));
+
+                  //  Log.e("Sequence is is", String.valueOf(sequence_id));
                     if (SessionManager.getTask(getApplicationContext()).size() != 0) {
                         sequence_id = SessionManager.getTask(getApplicationContext()).get(0).getSequenceId();
                     } else {
@@ -357,7 +357,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
             Bundle bundle = getintent.getExtras();
             sequence_id = bundle.getInt("sequence_id");
         }
-        Log.e("sequence_id", String.valueOf(sequence_id));
+        //Log.e("sequence_id", String.valueOf(sequence_id));
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("organization_id", 1);
@@ -399,7 +399,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
             Bundle bundle = getintent.getExtras();
             sequence_id = bundle.getInt("sequence_id");
         }
-        Log.e("sequence_id", String.valueOf(sequence_id));
+        //Log.e("sequence_id", String.valueOf(sequence_id));
         
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
@@ -453,7 +453,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
                                 campaign_overviewAdapter.addAll(main_data);
                                 
                             }
-                            Log.e("Data is ", new Gson().toJson(main_data));
+                          //  Log.e("Data is ", new Gson().toJson(main_data));
                             
                         } else {
                             campaign_overviewAdapter.addAll(new ArrayList<>());
@@ -479,7 +479,7 @@ public class Campaign_Overview extends AppCompatActivity implements View.OnClick
             Bundle bundle = getintent.getExtras();
             sequence_id = bundle.getInt("sequence_id");
         }
-        Log.e("sequence_id", String.valueOf(sequence_id));
+        //Log.e("sequence_id", String.valueOf(sequence_id));
         
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();

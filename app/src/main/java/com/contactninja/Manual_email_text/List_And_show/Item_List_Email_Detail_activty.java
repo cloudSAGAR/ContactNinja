@@ -280,7 +280,7 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
     private void Mail_listDetails() {
 
         userLinkedGmailList = sessionManager.getUserLinkedGmail(getApplicationContext());
-        Log.e("Size is", "" + new Gson().toJson(userLinkedGmailList));
+      //  Log.e("Size is", "" + new Gson().toJson(userLinkedGmailList));
        if (userLinkedGmailList.size() == 1) {
             iv_more.setVisibility(View.GONE);
         } else {
@@ -587,7 +587,7 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
         obj.put("data", paramObject);
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
-        Log.e("Gson Data is", new Gson().toJson(gsonObject));
+        //Log.e("Gson Data is", new Gson().toJson(gsonObject));
 
 
         retrofitCalls.manual_task_store(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(this), Global.Device, new RetrofitCallback() {
@@ -1033,7 +1033,7 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
             if (resultCode == -1) {
                 Uri fileUri = data.getData();
                 filePath = fileUri.getPath();
-                Log.e("File Pathe uis ", filePath);
+               // Log.e("File Pathe uis ", filePath);
 
             }
         }
@@ -1090,7 +1090,7 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
 
         JsonParser jsonParser = new JsonParser();
         JsonObject gsonObject = (JsonObject) jsonParser.parse(obj.toString());
-        Log.e("Gson Data is", new Gson().toJson(gsonObject));
+        //Log.e("Gson Data is", new Gson().toJson(gsonObject));
 
 
         retrofitCalls.manual_task_store(sessionManager, gsonObject, loadingDialog, Global.getToken(sessionManager), Global.getVersionname(Item_List_Email_Detail_activty.this), Global.Device, new RetrofitCallback() {
@@ -1127,7 +1127,7 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
     private void Email_execute(String subject, String text, int id, String email, String record_id) throws JSONException {
 
         //  loadingDialog.showLoadingDialog();
-        Log.e("Defuilt id", String.valueOf(defult_id));
+        //Log.e("Defuilt id", String.valueOf(defult_id));
 
         SignResponseModel user_data = SessionManager.getGetUserdata(getApplicationContext());
         JsonObject obj = new JsonObject();
@@ -1170,7 +1170,7 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
                     /* finish();*/
                 }
 
-                Log.e("Main Response is", new Gson().toJson(response.body()));
+           //     Log.e("Main Response is", new Gson().toJson(response.body()));
 
             }
 
