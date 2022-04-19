@@ -16,7 +16,7 @@ public class Dashboard {
     private Des_AffiliateInfo affiliate=new Des_AffiliateInfo();
     @SerializedName("AFFILIATE_REWARDS")
     @Expose
-    private Integer AFFILIATE_REWARDS=0;
+    private Double AFFILIATE_REWARDS=0.0;
     @SerializedName("BROADCAST")
     @Expose
     private List<Des_Broadcast> broadcast = new ArrayList<>();
@@ -33,11 +33,11 @@ public class Dashboard {
     @Expose
     private Des_TaskCounter taskCounter=new Des_TaskCounter();
 
-    public Integer getAFFILIATE_REWARDS() {
+    public Double getAFFILIATE_REWARDS() {
         return AFFILIATE_REWARDS;
     }
 
-    public void setAFFILIATE_REWARDS(Integer AFFILIATE_REWARDS) {
+    public void setAFFILIATE_REWARDS(Double AFFILIATE_REWARDS) {
         this.AFFILIATE_REWARDS = AFFILIATE_REWARDS;
     }
 

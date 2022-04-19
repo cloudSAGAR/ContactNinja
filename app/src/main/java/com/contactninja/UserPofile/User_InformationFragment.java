@@ -816,12 +816,19 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                 e.printStackTrace();
             }
 
-            phoneAdapter = new PhoneAdapter(getActivity(), phonedetails_list, layout_Add_phone);
-            rv_phone.setLayoutManager(new LinearLayoutManager(getActivity()));
-            rv_phone.setAdapter(phoneAdapter);
-            emailAdapter = new EmailAdapter(getActivity(), emaildetails_list, layout_Add_email);
-            rv_email.setLayoutManager(new LinearLayoutManager(getActivity()));
-            rv_email.setAdapter(emailAdapter);
+            try {
+                phoneAdapter = new PhoneAdapter(getActivity(), phonedetails_list, layout_Add_phone);
+                rv_phone.setLayoutManager(new LinearLayoutManager(getActivity()));
+                rv_phone.setAdapter(phoneAdapter);
+                emailAdapter = new EmailAdapter(getActivity(), emaildetails_list, layout_Add_email);
+                rv_email.setLayoutManager(new LinearLayoutManager(getActivity()));
+                rv_email.setAdapter(emailAdapter);
+
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
 
 
         } else {

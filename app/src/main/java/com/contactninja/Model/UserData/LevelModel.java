@@ -34,13 +34,13 @@ public class LevelModel implements Serializable {
     private String createdAt;
     @SerializedName("reward_earned")
     @Expose
-    private Integer reward_earned=0;
+    private Double reward_earned=0.0;
 
-    public Integer getReward_earned() {
+    public Double getReward_earned() {
         return reward_earned;
     }
 
-    public void setReward_earned(Integer reward_earned) {
+    public void setReward_earned(Double reward_earned) {
         this.reward_earned = reward_earned;
     }
 

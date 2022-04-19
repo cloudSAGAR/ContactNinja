@@ -684,6 +684,7 @@ public class ContectFragment extends Fragment {
     }
 
     private void splitdata(List<Contact> response) {
+        Log.e("Respoinse is",new Gson().toJson(response));
         data = new StringBuilder();
         data.append("Firstname" +
                 "," + "Lastname" +
