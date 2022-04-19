@@ -489,6 +489,7 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
     
     public void LoginData() throws JSONException {
         // Log.e("Code is", countrycode);
+        loadingDialog.cancelLoading();
         JsonObject obj = new JsonObject();
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("firebase_fcm_token", SessionManager.getFcm_Token(getApplicationContext()));
@@ -501,7 +502,7 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
             @Override
             public void success(Response<ApiResponse> response) {
                 // Log.e("Response is",new Gson().toJson(response));
-                loadingDialog.cancelLoading();
+
                 
                 
                 if (response.body().getHttp_status() == 200) {
@@ -524,19 +525,23 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                             intent.putExtra("login_type", login_type);
                             startActivity(intent);
                             finish();
+                            loadingDialog.cancelLoading();
                         } else if (user_model.getUser().getUserprofile().getPurchased_planid().equals("") ||
                                            user_model.getUser().getUserprofile().getPurchased_planid().equals("null")) {
                             startActivity(new Intent(getApplicationContext(), PlanType_Screen.class));
                             finish();
+                            loadingDialog.cancelLoading();
                         } else {
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             finish();
+                            loadingDialog.cancelLoading();
                         }
                     } catch (Exception e) {
                         Intent intent = new Intent(getApplicationContext(), Phone_email_verificationActivity.class);
                         intent.putExtra("login_type", login_type);
                         startActivity(intent);
                         finish();
+                        loadingDialog.cancelLoading();
                     }
                     
                     
@@ -546,6 +551,7 @@ public class VerificationActivity extends AppCompatActivity implements Connectiv
                 } else {
                     verfiy_button.setEnabled(false);
                     Global.Messageshow(getApplicationContext(), mMainLayout, response.body().getMessage(), false);
+                    loadingDialog.cancelLoading();
                 }
             }
             

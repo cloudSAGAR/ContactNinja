@@ -475,7 +475,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                             rv_email.setLayoutManager(new LinearLayoutManager(getActivity()));
                             rv_email.setAdapter(emailAdapter);
                             addcontectModel.setContactdetails(contactdetails);
-
+                            addcontectModel.setContactdetails_email(emaildetails_list);
 
                         } else {
                             //    Log.e("Label is ", String.valueOf(detail_contect.get(i).getIsDefault()));
@@ -513,7 +513,8 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             EmailistSwipe();
 
 
-        } else if (flag.equals("read")) {
+        }
+        else if (flag.equals("read")) {
 
             // Log.e("Model Data", new Gson().toJson(user_data_model));
             edt_mobile_no.setEnabled(false);
@@ -773,44 +774,48 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
             });
             try {
                 List<ContactDetail> detail_contect = Contect_data.getContactDetails();
-                for (int i = 0; i < detail_contect.size(); i++) {
-                    if (!detail_contect.get(i).getEmailNumber().trim().equalsIgnoreCase("")) {
-                        if (detail_contect.get(i).getType().equals("EMAIL")) {
-                            Contactdetail contactdetail = new Contactdetail();
-                            // contactdetail.setCountry_code(detail_contect.get(i).getCountryCode());
-                            contactdetail.setType(detail_contect.get(i).getType());
-                            contactdetail.setEmail_number(detail_contect.get(i).getEmailNumber());
-                            //contactdetail.setId(detail_contect.get(i).getId());
-                            contactdetail.setLabel(detail_contect.get(i).getLabel());
-                            contactdetail.setIs_default(0);
-                            emaildetails_list.add(contactdetail);
-                            Collections.reverse(emaildetails_list);
-                            contactdetails.add(contactdetail);
+                if (Global.IsNotNull(detail_contect))
+                {
+                    for (int i = 0; i < detail_contect.size(); i++) {
+                        if (!detail_contect.get(i).getEmailNumber().trim().equalsIgnoreCase("")) {
+                            if (detail_contect.get(i).getType().equals("EMAIL")) {
+                                Contactdetail contactdetail = new Contactdetail();
+                                // contactdetail.setCountry_code(detail_contect.get(i).getCountryCode());
+                                contactdetail.setType(detail_contect.get(i).getType());
+                                contactdetail.setEmail_number(detail_contect.get(i).getEmailNumber());
+                                //contactdetail.setId(detail_contect.get(i).getId());
+                                contactdetail.setLabel(detail_contect.get(i).getLabel());
+                                contactdetail.setIs_default(0);
+                                emaildetails_list.add(contactdetail);
+                                Collections.reverse(emaildetails_list);
+                                contactdetails.add(contactdetail);
 
-                            layout_Add_email.setVisibility(View.GONE);
-
-
-                        } else {
-                            /*                        Log.e("Label is ", String.valueOf(detail_contect.get(i).getIsDefault()));*/
-                            Contactdetail contactdetail = new Contactdetail();
-                            /*                        contactdetail.setCountry_code(detail_contect.get(i).getCountryCode());*/
-                            contactdetail.setType(detail_contect.get(i).getType());
-                            contactdetail.setEmail_number(detail_contect.get(i).getEmailNumber());
-                            //contactdetail.setId(detail_contect.get(i).getId());
-                            contactdetail.setLabel(detail_contect.get(i).getLabel());
-                            contactdetail.setIs_default(0);
-
-                            phonedetails_list.add(contactdetail);
-                            Collections.reverse(phonedetails_list);
-                            contactdetails.add(contactdetail);
-
-                      //      Log.e("Contect List Is", new Gson().toJson(phonedetails_list));
+                                layout_Add_email.setVisibility(View.GONE);
 
 
+                            } else {
+                                /*                        Log.e("Label is ", String.valueOf(detail_contect.get(i).getIsDefault()));*/
+                                Contactdetail contactdetail = new Contactdetail();
+                                /*                        contactdetail.setCountry_code(detail_contect.get(i).getCountryCode());*/
+                                contactdetail.setType(detail_contect.get(i).getType());
+                                contactdetail.setEmail_number(detail_contect.get(i).getEmailNumber());
+                                //contactdetail.setId(detail_contect.get(i).getId());
+                                contactdetail.setLabel(detail_contect.get(i).getLabel());
+                                contactdetail.setIs_default(0);
+
+                                phonedetails_list.add(contactdetail);
+                                Collections.reverse(phonedetails_list);
+                                contactdetails.add(contactdetail);
+
+                                //      Log.e("Contect List Is", new Gson().toJson(phonedetails_list));
+
+
+                            }
                         }
-                    }
 
+                    }
                 }
+
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -2387,7 +2392,7 @@ public class User_InformationFragment extends Fragment implements View.OnClickLi
                                     layout_Add_email.setVisibility(View.VISIBLE);
                                 }
                                 addcontectModel.setContactdetails_email(contactdetails);
-                                //addcontectModel.setContactdetails(contactdetails);
+                               // addcontectModel.setContactdetails(contactdetails);
                                 SessionManager.setAdd_Contect_Detail(getActivity(), addcontectModel);
                             } else {
                                 holder.iv_invalid.setVisibility(View.VISIBLE);
