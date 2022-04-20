@@ -65,6 +65,7 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
     private long mLastClickTime = 0;
     private BroadcastReceiver mNetworkReceiver;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -406,7 +407,7 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
 
         super.onResume();
         try {
-            Mail_list();
+            Broadcast_data();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -419,8 +420,8 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
     }
 
 
-    void Mail_list() throws JSONException {
-
+    void Broadcast_data() throws JSONException {
+        loadingDialog.showLoadingDialog();
         SignResponseModel signResponseModel = SessionManager.getGetUserdata(this);
         String token = Global.getToken(sessionManager);
         JsonObject obj = new JsonObject();
@@ -525,7 +526,7 @@ public class Broadcaste_Activity extends AppCompatActivity implements View.OnCli
                                 finish();
                             } else {
                                 try {
-                                    Mail_list();
+                                    Broadcast_data();
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }

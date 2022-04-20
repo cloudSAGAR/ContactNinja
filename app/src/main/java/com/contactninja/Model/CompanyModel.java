@@ -132,6 +132,7 @@ public class CompanyModel {
         private String updatedAt = "";
 
 
+        Boolean flag=false;
 
         @SerializedName("company_url")
         @Expose
@@ -159,6 +160,14 @@ public class CompanyModel {
 
         public void setOrganizationId(Integer organizationId) {
             this.organizationId = organizationId;
+        }
+
+        public Boolean getFlag() {
+            return flag;
+        }
+
+        public void setFlag(Boolean flag) {
+            this.flag = flag;
         }
 
         public String getCompany_url() {

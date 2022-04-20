@@ -13,6 +13,7 @@ import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -419,8 +420,8 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         super.onBackPressed();
     }
     
-    public void showAlertDialogButtonClicked(int sequence_id, int status,int position) {
-        
+    public void showAlertDialogButtonClicked(int sequence_id, int status,int position,Campaign_List.Campaign campaign) {
+        Log.e("Postion is ",String.valueOf(position));
         // Create an alert builder
         AlertDialog.Builder builder
                 = new AlertDialog.Builder(this, R.style.MyDialogStyle);
@@ -448,13 +449,14 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         tv_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                StartCampignApi(sequence_id, status, dialog,position);
+                StartCampignApi(sequence_id, status, dialog,position,campaign);
             }
         });
         dialog.show();
     }
     
-    public void StartCampignApi(int sequence_id, int status, AlertDialog dialog,int position) {
+    public void StartCampignApi(int sequence_id, int status, AlertDialog dialog,int position,Campaign_List.Campaign campaign) {
+        Log.e("Postion is ",String.valueOf(position));
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(this);
         String user_id = String.valueOf(user_data.getUser().getId());
@@ -481,7 +483,15 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                         loadingDialog.cancelLoading();
                         
                         if (response.body().getHttp_status() == 200) {
-                            onResume();
+                            //onResume();
+                            if (status == 1) {
+                               // paramObject.addProperty("status", "I");
+                                campaign.setStatus("I");
+                                campaingAdepter.notifyDataSetChanged();
+                            } else {
+                                campaign.setStatus("A");
+                                campaingAdepter.notifyDataSetChanged();
+                            }
                             dialog.dismiss();
                         } else if (response.body().getHttp_status() == 403) {
                             Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.plan_validation), false);
@@ -613,7 +623,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                             return;
                         }
                         mLastClickTime = SystemClock.elapsedRealtime();
-                        showAlertDialogButtonClicked(campaign.getId(), 3,position);
+                        showAlertDialogButtonClicked(campaign.getId(), 3,position,campaign);
                         
                     }
                 });
@@ -624,7 +634,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                             return;
                         }
                         mLastClickTime = SystemClock.elapsedRealtime();
-                        showAlertDialogButtonClicked(campaign.getId(), 0,position);
+                        showAlertDialogButtonClicked(campaign.getId(), 0,position,campaign);
                     }
                 });
                 holder.lay_btn_pause.setOnClickListener(new View.OnClickListener() {
@@ -634,7 +644,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                             return;
                         }
                         mLastClickTime = SystemClock.elapsedRealtime();
-                        showAlertDialogButtonClicked(campaign.getId(), 1,position);
+                        showAlertDialogButtonClicked(campaign.getId(), 1,position,campaign);
                     }
                 });
                 
@@ -642,7 +652,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
             
             
         }
-        
+
         private void setImage(Campaign_List.Campaign campaign, viewData holder) {
             switch (campaign.getStatus()) {
                 case "A":

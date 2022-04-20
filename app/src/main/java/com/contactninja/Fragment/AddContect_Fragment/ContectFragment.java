@@ -109,6 +109,7 @@ public class ContectFragment extends Fragment {
             ContactsContract.Data.DATA1,//phone number
             ContactsContract.Data.CONTACT_ID
     };
+    private List<ContectListData.Contact> contacts;
     public static ArrayList<InviteListData> inviteListData = new ArrayList<>();
     static String csv_file = "";
     MyAsyncTasks1 myAsyncTasks1;
@@ -1907,7 +1908,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
 */
 
-    private void broadcast_manu(ContectListData.Contact contact_item) {
+    private void broadcast_manu(ContectListData.Contact contact_item,int position) {
 
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.remove_block_layout, null);
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.CoffeeDialog);
@@ -1987,7 +1988,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 try {
                     Filter = "ALL";
                     iv_filter_icon.setImageResource(R.drawable.ic_filter);
-                    Contect_Remove(contact_item, "0", bottomSheetDialog);
+                    Contect_Remove(contact_item, "0", bottomSheetDialog,position);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -2019,19 +2020,21 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             @Override
             public void success(Response<ApiResponse> response) {
 
-
+                loadingDialog.cancelLoading();
                 if (response.body().getHttp_status() == 200) {
 
                     Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), true);
-                    try {
+                    fillter_text = "";
+                    contact_data.setIs_blocked(Integer.valueOf(block));
+                    paginationAdapter.notifyDataSetChanged();
+                    /*try {
                         fillter_text = "";
 
                         ContectEvent();
                     } catch (JSONException e) {
                         e.printStackTrace();
-                    }
+                    }*/
                 } else {
-                    loadingDialog.cancelLoading();
                     Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), false);
                 }
                 bottomSheetDialog.cancel();
@@ -2046,7 +2049,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     }
 
-    public void Contect_Remove(ContectListData.Contact contact_data, String block, BottomSheetDialog bottomSheetDialog) throws JSONException {
+    public void Contect_Remove(ContectListData.Contact contact_data, String block, BottomSheetDialog bottomSheetDialog,int position) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
         JSONObject obj = new JSONObject();
@@ -2065,18 +2068,21 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             @Override
             public void success(Response<ApiResponse> response) {
 
-
+                loadingDialog.cancelLoading();
                 if (response.body().getHttp_status() == 200) {
                     Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), true);
-                    try {
+                    fillter_text = "";
+                    paginationAdapter.removeloist_by_postion(position);
+                    contectListData.remove(position);
+                    num_count.setText("" + contectListData.size() + " Contacts");
+                  /*  try {
                         fillter_text = "";
                         // loadingDialog.showLoadingDialog();
                         ContectEvent();
                     } catch (JSONException e) {
                         e.printStackTrace();
-                    }
+                    }*/
                 } else {
-                    loadingDialog.cancelLoading();
                     Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), false);
                 }
                 bottomSheetDialog.cancel();
@@ -2231,8 +2237,9 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         private final Context context;
         String second_latter = "";
         String current_latter = "", image_url = "";
-        private List<ContectListData.Contact> contacts;
+
         private boolean isLoadingAdded = false;
+        private List<ContectListData.Contact> contacts;
 
         public ContectListAdapter(@SuppressLint("UnknownNullness") Context context) {
             this.context = context;
@@ -2390,7 +2397,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                             @Override
                             public boolean onLongClick(View view) {
 
-                                broadcast_manu(Contact_data);
+                                broadcast_manu(Contact_data,position);
                                 return false;
                             }
                         });
@@ -2461,6 +2468,11 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             contacts.clear();
             notifyDataSetChanged();
         }
+        public void removeloist_by_postion(int postion) {
+            contacts.remove(postion);
+            notifyDataSetChanged();
+        }
+
 
         public ContectListData.Contact getItem(int position) {
             return contacts.get(position);

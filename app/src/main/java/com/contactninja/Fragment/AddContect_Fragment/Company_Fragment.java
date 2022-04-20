@@ -98,6 +98,7 @@ public class Company_Fragment extends Fragment {
     LinearLayout demo_layout, linearLayout3;
     LinearLayout lay_no_list, layout_list;
     private long mLastClickTime = 0;
+    int totale_count=0;
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -433,6 +434,7 @@ public class Company_Fragment extends Fragment {
                         }.getType();
                         CompanyModel data = new Gson().fromJson(headerString, listType);
                         num_count.setText(String.valueOf(data.getTotal() + " Companies"));
+                        totale_count=data.getTotal();
                         List<CompanyModel.Company> companyList;
                         if (Filter.equals("BLOCK")) {
                             companyList = data.getBlocked_companies();
@@ -492,6 +494,7 @@ public class Company_Fragment extends Fragment {
                             }
                         }
                         num_count.setText(String.valueOf(0 + " Companies"));
+                        totale_count=0;
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -529,7 +532,7 @@ public class Company_Fragment extends Fragment {
         }
     }
     
-    private void broadcast_manu(CompanyModel.Company Company) {
+    private void broadcast_manu(CompanyModel.Company Company,int position) {
         
         @SuppressLint("InflateParams") final View mView = getLayoutInflater().inflate(R.layout.remove_block_layout, null);
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.CoffeeDialog);
@@ -569,7 +572,7 @@ public class Company_Fragment extends Fragment {
                 try {
                     iv_filter_icon.setImageResource(R.drawable.ic_filter);
                     Filter = "ALL";
-                    Contect_BLock(Company, "1", bottomSheetDialog);
+                    Contect_BLock(Company, "1", bottomSheetDialog,position);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -590,7 +593,7 @@ public class Company_Fragment extends Fragment {
                 try {
                     iv_filter_icon.setImageResource(R.drawable.ic_filter);
                     Filter = "ALL";
-                    Contect_BLock(Company, "0", bottomSheetDialog);
+                    Contect_BLock(Company, "0", bottomSheetDialog,position);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -611,7 +614,7 @@ public class Company_Fragment extends Fragment {
                 try {
                     Filter = "ALL";
                     iv_filter_icon.setImageResource(R.drawable.ic_filter);
-                    Company_Remove(Company, "0", bottomSheetDialog);
+                    Company_Remove(Company, "0", bottomSheetDialog,position);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -623,7 +626,7 @@ public class Company_Fragment extends Fragment {
         
     }
     
-    public void Contect_BLock(CompanyModel.Company Company, String block, BottomSheetDialog bottomSheetDialog) throws JSONException {
+    public void Contect_BLock(CompanyModel.Company Company, String block, BottomSheetDialog bottomSheetDialog,int position) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
         JSONObject obj = new JSONObject();
@@ -647,13 +650,17 @@ public class Company_Fragment extends Fragment {
                 loadingDialog.cancelLoading();
                 if (response.body().getHttp_status() == 200) {
                     Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), true);
-                    try {
+
+                    Company.setIs_blocked(Integer.valueOf(block));
+                    companyAdapter.notifyDataSetChanged();
+
+                    /* try {
                         companyAdapter.removeitem();
                         currentPage = 1;
                         CompanyList();
                     } catch (JSONException e) {
                         e.printStackTrace();
-                    }
+                    }*/
                 } else {
                     Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), false);
                 }
@@ -669,7 +676,7 @@ public class Company_Fragment extends Fragment {
         
     }
     
-    public void Company_Remove(CompanyModel.Company Company, String block, BottomSheetDialog bottomSheetDialog) throws JSONException {
+    public void Company_Remove(CompanyModel.Company Company, String block, BottomSheetDialog bottomSheetDialog,int position) throws JSONException {
         loadingDialog.showLoadingDialog();
         SignResponseModel user_data = SessionManager.getGetUserdata(getActivity());
         JSONObject obj = new JSONObject();
@@ -691,13 +698,16 @@ public class Company_Fragment extends Fragment {
                 loadingDialog.cancelLoading();
                 if (response.body().getHttp_status() == 200) {
                     Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), false);
-                    try {
+                    companyAdapter.removeitem_by_delete(position);
+                    totale_count=totale_count-1;
+                    num_count.setText(String.valueOf(totale_count + " Companies"));
+                   /* try {
                         companyAdapter.removeitem();
                         currentPage = 1;
                         CompanyList();
                     } catch (JSONException e) {
                         e.printStackTrace();
-                    }
+                    }*/
                     bottomSheetDialog.cancel();
                 } else {
                     Global.Messageshow(getActivity(), mMainLayout, response.body().getMessage(), false);
@@ -772,6 +782,13 @@ public class Company_Fragment extends Fragment {
                         movieViewHolder.userName.setText(WorkData.getName());
                         movieViewHolder.userNumber.setVisibility(View.GONE);
                     }
+                    if (WorkData.getFlag()==true){
+                        movieViewHolder.main_layout.setVisibility(View.GONE);
+                        movieViewHolder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+                    }
+                    else {
+                        movieViewHolder.main_layout.setVisibility(View.VISIBLE);
+                    }
                     
                     
                     movieViewHolder.first_latter.setVisibility(View.VISIBLE);
@@ -837,7 +854,7 @@ public class Company_Fragment extends Fragment {
                         @Override
                         public boolean onLongClick(View view) {
                             
-                            broadcast_manu(WorkData);
+                            broadcast_manu(WorkData,position);
                             return false;
                         }
                     });
@@ -874,7 +891,7 @@ public class Company_Fragment extends Fragment {
                 return VIEW_TYPE_NORMAL;
             }
         }
-        
+
         public void addItems(List<CompanyModel.Company> postItems) {
             companyList.addAll(postItems);
             notifyDataSetChanged();
@@ -913,6 +930,12 @@ public class Company_Fragment extends Fragment {
         
         public void removeitem() {
             companyList.clear();
+            notifyDataSetChanged();
+        }
+
+        public void removeitem_by_delete(int postion) {
+           /// companyList.remove(postion);
+            companyList.get(postion).setFlag(true);
             notifyDataSetChanged();
         }
         

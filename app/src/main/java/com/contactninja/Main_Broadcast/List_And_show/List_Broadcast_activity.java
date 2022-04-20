@@ -704,7 +704,19 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
                     public void success(Response<ApiResponse> response) {
                         loadingDialog.cancelLoading();
                         if (response.body().getHttp_status()==200) {
-                            currentPage = PAGE_START;
+
+                            if (status == 1) {
+                                broadcast.setStatus("I");
+                                broadCast_Adepter.notifyDataSetChanged();
+                            } else if (status == 0) {
+                                broadcast.setStatus("A");
+                                broadCast_Adepter.notifyDataSetChanged();
+                            } else {
+                                broadcast.setStatus("A");
+                                broadCast_Adepter.notifyDataSetChanged();
+                            }
+
+                         /*   currentPage = PAGE_START;
                             isLastPage = false;
                             broadcastActivityListModels.clear();
                             broadCast_Adepter.clear();
@@ -717,7 +729,7 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
-                            }
+                            }*/
                         }
                         else if (response.body().getHttp_status()==403)
                         {
