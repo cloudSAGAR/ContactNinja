@@ -305,20 +305,90 @@
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/plus_footer_layout.xml" value="0.3359375" />
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/toolbar.xml" value="0.3359375" />
         <entry key="..\:/Contectnoija02-12-2021/ContactNinja2-12/ContactNinja/app/src/main/res/layout/top_user_details.xml" value="0.3359375" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/drawable/ic_manu_icon.xml" value="0.1965" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/drawable/ic_message_tab.xml" value="0.1965" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/drawable/ic_video.xml" value="0.1965" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/drawable/ic_video_5.xml" value="0.1965" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/drawable/shape_primary_circle.xml" value="0.1965" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/drawable/shape_white_all_10.xml" value="0.1965" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/drawable/shape_white_top_left_right_20.xml" value="0.1965" />
         <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/activity_add_new_bzcard.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/activity_affiliate_report_level.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/activity_automated_email.xml" value="0.33" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/activity_broad_email.xml" value="0.31203703703703706" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/activity_broadcast_preview.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/activity_broadcaste.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/activity_broadcaste_view_contect.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/activity_campaign_final_start.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/activity_campaign_list.xml" value="0.1546875" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/activity_campaign_view_per_contect_detail.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/activity_campaign_viewcontect.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/activity_contact_email_send.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/activity_contect_and_group_actvity.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/activity_create_new_company.xml" value="0.296195652173913" />
         <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/activity_create_new_contect.xml" value="0.31203703703703706" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/activity_current_plan.xml" value="0.31203703703703706" />
         <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/activity_email_detail_activty.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/activity_first_step.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/activity_group.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/activity_login.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/activity_manual_email.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/activity_manual_email_task.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/activity_manual_mail_send_activty.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/activity_manual_sms.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/activity_manual_sms_send_activty.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/activity_manual_sms_task.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/activity_phone_email_verification.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/activity_plan_detail_screen.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/activity_plan_type_screen.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/activity_select_bzcard.xml" value="0.296195652173913" />
         <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/activity_select_media.xml" value="0.296195652173913" />
         <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/activity_send_broadcast.xml" value="0.3385416666666667" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/activity_signup.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/activity_sms_and_email_auto_manual.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/activity_sms_detail_activty.xml" value="0.31203703703703706" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/activity_template.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/activity_text_and_email_auto_manual_broadcast.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/common_dialog.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/custom_dialog_progess.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/custom_tab_campagin.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/eamil_add_layout.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/fillter_company_block_unblock.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/fillter_contact_block_unblock.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/filter_solo_list.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/fragment_broadcste__contect_.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/fragment_bzcard.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/fragment_campaign__email_.xml" value="0.31203703703703706" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/fragment_campaign__stats_.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/fragment_campaign__step_.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/fragment_campaign_contect.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/fragment_campaign_deshboard.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/fragment_campaign_group.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/fragment_company_.xml" value="0.31203703703703706" />
         <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/fragment_contect.xml" value="0.296195652173913" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/fragment_contect_main_.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/fragment_droadcast_deshboard.xml" value="0.31203703703703706" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/fragment_edit_contect.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/fragment_email_.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/fragment_group.xml" value="0.31203703703703706" />
         <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/fragment_information.xml" value="0.2427536231884058" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/fragment_information_bzcard_.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/fragment_main_home.xml" value="0.31203703703703706" />
         <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/fragment_members.xml" value="0.296195652173913" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/fragment_task_send.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/fragment_user_bzcard.xml" value="0.31203703703703706" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/fragment_user_growth.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/fragment_user_information.xml" value="0.31203703703703706" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/fragment_user_profile_main.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/invite_user_details.xml" value="0.3385416666666667" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/item_bzcard_midea.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/item_campaning_beshbord.xml" value="0.25" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/item_emailactivitylist.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/lavel_item.xml" value="0.31203703703703706" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/phone_add_layout.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/template_text_selecte.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/toolbar.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/91910/AndroidProject/contact-ninja-android/app/src/main/res/layout/verification_web.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/drawable/ic_back.xml" value="0.35625" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/layout/activity_addnewcontect.xml" value="0.21105072463768115" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/contact-ninja-android/app/src/main/res/layout/activity_login.xml" value="0.16271442986881937" />

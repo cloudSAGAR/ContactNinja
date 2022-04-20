@@ -57,7 +57,7 @@ public class Broadcaste_viewContect extends AppCompatActivity implements Connect
     FastScrollerThumbView fastscroller_thumb;
     EditText ev_search;
     GroupContectAdapter groupContectAdapter;
-    LinearLayout mMainLayout;
+    LinearLayout mMainLayout,layout_select_list;
     private BroadcastReceiver mNetworkReceiver;
 
 
@@ -182,7 +182,8 @@ public class Broadcaste_viewContect extends AppCompatActivity implements Connect
         ev_search = findViewById(R.id.ev_search);
         iv_cancle_search_icon = findViewById(R.id.iv_cancle_search_icon);
         mMainLayout = findViewById(R.id.mMainLayout);
-
+        layout_select_list=findViewById(R.id.layout_select_list);
+        layout_select_list.setVisibility(View.GONE);
         add_contect_list = findViewById(R.id.add_contect_list);
         add_contect_list.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         iv_back = findViewById(R.id.iv_back);

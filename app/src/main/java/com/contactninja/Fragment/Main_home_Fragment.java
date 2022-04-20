@@ -8,10 +8,7 @@ import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -24,14 +21,9 @@ import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 
-import com.contactninja.Campaign.Fragment.Campaign_Stats_Fragment;
-import com.contactninja.Campaign.Fragment.Campaign_Step_Fragment;
-import com.contactninja.Campaign.List_itm.Campaign_Final_Start;
 import com.contactninja.Fragment.Home.Broadcast_Fragment;
 import com.contactninja.Fragment.Home.Campaign_Fragment;
 import com.contactninja.Fragment.Home.Task_Fragment;
@@ -48,7 +40,6 @@ import com.contactninja.Utils.Global;
 import com.contactninja.Utils.Global_Time;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
-
 import com.contactninja.WrapContentViewPager;
 import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitCallback;
@@ -68,7 +59,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -90,29 +80,26 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
     MainActivity mainActivity;
     ValueLineChart mBarChart;
     PieChart mBarChart1;
-    private long mLastClickTime = 0;
     RecyclerView rv_bzcardlist;
     BzcardlistAdepter bzcardlistAdepter;
     Dashboard dashboard = new Dashboard();
     Des_TaskCounter des_taskCounter = new Des_TaskCounter();
     Des_AffiliateInfo des_affiliateInfo = new Des_AffiliateInfo();
     List<Des_Bizcard> des_bizcardList = new ArrayList<>();
-
     TextView tv_campaign, tv_text, tv_email, tv_broadcast, tv_lavel_count_1, tv_lavel_count_2, tv_lavel_count_3, tv_lavel_count_4, tv_lavel_count_5, tv_total_lavel,
             btn_view_affilate_detail, tv_autometed_task, tv_manual_task, tv_rat_total, tv_rat_1, tv_rat_2, tv_rat_3, tv_rat_4, tv_rat_5, tv_total_reeard, tv_name_user;
     LinearLayout layout_Affiliate, layout_Bz_card, layout_connected_email;
     ImageView iv_all_up, iv_1_up, iv_2_up, iv_3_up, iv_4_up, iv_5_up;
+    WrapContentViewPager viewPager;
+    ViewpaggerAdapter adapter;
+    NestedScrollView scrollView;
+    private long mLastClickTime = 0;
     private int Weekofday = 7;
     public Main_home_Fragment(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
     }
-
     public Main_home_Fragment() {
     }
-
-    WrapContentViewPager viewPager;
-    ViewpaggerAdapter adapter;
-    NestedScrollView scrollView;
 
     @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
@@ -154,16 +141,6 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
     @SuppressLint("DefaultLocale")
     @RequiresApi(api = Build.VERSION_CODES.P)
     private void setdata(HashMap<String, String> map) {
-      /*  Fragment fragment = new Task_Fragment();
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame, fragment, "Fragment");
-        fragmentTransaction.commitAllowingStateLoss();*/
-
-        /**
-         *
-         * Set data user name
-         * */
         tv_name_user.setText(user_data.getUser().getFirstName());
 
 
@@ -198,18 +175,8 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
 
         }
 
+        tv_total_reeard.setText(String.valueOf(Integer.parseInt(dashboard.getAFFILIATE_REWARDS().toString())));
 
-        /**
-         *
-         * Set data AFFILIATE_REWARDS
-         * */
-        tv_total_reeard.setText(String.valueOf(dashboard.getAFFILIATE_REWARDS()));
-
-
-        /**
-         *
-         * Set data AffiliateInfo
-         * */
         if (Global.IsNotNull(des_affiliateInfo)) {
 
             int Total_Affiliate = 0;
@@ -297,10 +264,6 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
             }
         }
 
-        /**
-         *
-         * Set data Bzcard
-         * */
         if (Global.IsNotNull(des_bizcardList) && des_bizcardList.size() != 0) {
             bzcardlistAdepter.clear();
             layout_Bz_card.setVisibility(View.VISIBLE);
@@ -332,7 +295,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onResume() {
-          //Log.e("Update Contect is",new Gson().toJson(SessionManager.getupdateContect(getActivity())));
+        //Log.e("Update Contect is",new Gson().toJson(SessionManager.getupdateContect(getActivity())));
         super.onResume();
     }
 
@@ -434,46 +397,11 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
 
             }
         });
-       /* tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                Fragment fragment = null;
-                switch (tab.getPosition()) {
-                    case 0:
-                        fragment = new Task_Fragment();
-                        break;
-                    case 1:
-                        fragment = new Broadcast_Fragment();
-                        break;
-                    case 2:
-                        fragment = new Campaign_Fragment();
-                        break;
-
-                }
-                if (fragment != null) {
-                    FragmentManager fragmentManager = getFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.frame, fragment, "Fragment");
-                    fragmentTransaction.commitAllowingStateLoss();
-                }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-*/
     }
 
     private void intentView(View view) {
-        scrollView=view.findViewById(R.id.nest_scrollview);
-        scrollView.setFillViewport (true);
+        scrollView = view.findViewById(R.id.nest_scrollview);
+        scrollView.setFillViewport(true);
         iv_toolbar_notification = view.findViewById(R.id.iv_toolbar_notification);
         iv_toolbar_notification.setVisibility(View.GONE);
         viewPager = view.findViewById(R.id.viewPager);
@@ -582,8 +510,8 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
 
     public static class BzcardlistAdepter extends RecyclerView.Adapter<BzcardlistAdepter.InviteListDataclass> {
 
-        List<Des_Bizcard> des_bizcardList;
         public Context mCtx;
+        List<Des_Bizcard> des_bizcardList;
 
         public BzcardlistAdepter(Context context, List<Des_Bizcard> des_bizcardList) {
             this.mCtx = context;
@@ -673,13 +601,13 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
 
 
                 default:
-                  return null;
+                    return null;
             }
         }
 
         @Override
         public int getCount() {
-           // Log.e("Tab Count", String.valueOf(totalTabs));
+            // Log.e("Tab Count", String.valueOf(totalTabs));
             return totalTabs;
         }
     }

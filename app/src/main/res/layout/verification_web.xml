@@ -8,7 +8,9 @@
     tools:context=".Setting.Verification_web">
     <include layout="@layout/toolbar"/>
     <WebView
+        android:visibility="visible"
         android:id="@+id/webEmail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
 </LinearLayout>
