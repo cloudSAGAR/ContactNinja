@@ -855,7 +855,7 @@ public class Company_Fragment extends Fragment {
                         public boolean onLongClick(View view) {
                             
                             broadcast_manu(WorkData,position);
-                            return false;
+                            return true;
                         }
                     });
                     movieViewHolder.main_layout.setOnClickListener(new View.OnClickListener() {

@@ -2398,7 +2398,7 @@ public class ContectListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                             public boolean onLongClick(View view) {
 
                                 broadcast_manu(Contact_data,position);
-                                return false;
+                                return true;
                             }
                         });
 
