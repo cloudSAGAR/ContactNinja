@@ -40,7 +40,7 @@ import com.contactninja.Utils.Global;
 import com.contactninja.Utils.Global_Time;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.SessionManager;
-import com.contactninja.WrapContentViewPager;
+import com.contactninja.Utils.WrapContentViewPager;
 import com.contactninja.retrofit.ApiResponse;
 import com.contactninja.retrofit.RetrofitCallback;
 import com.contactninja.retrofit.RetrofitCalls;

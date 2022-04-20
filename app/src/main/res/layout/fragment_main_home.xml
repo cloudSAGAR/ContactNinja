@@ -928,7 +928,7 @@
                     android:layout_above="@id/llFooter" >
                 </FrameLayout>
 
-                <com.contactninja.WrapContentViewPager
+                <com.contactninja.Utils.WrapContentViewPager
                     android:id="@+id/viewPager"
                     android:layout_above="@id/llFooter"
                     android:layout_width="match_parent"
