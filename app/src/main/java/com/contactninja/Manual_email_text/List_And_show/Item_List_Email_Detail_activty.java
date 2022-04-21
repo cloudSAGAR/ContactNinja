@@ -16,7 +16,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.text.Editable;
 import android.text.Html;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -136,6 +138,8 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
     boolean zoom_flag=false;
     int m_hour = 0;
     int m_minute = 0;
+    int mPreviousLength;
+    Boolean mBackSpace;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -174,7 +178,39 @@ public class Item_List_Email_Detail_activty extends AppCompatActivity implements
 
 
         templateClick = this;
+        edit_compose.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                mPreviousLength = charSequence.length();
+            }
 
+            @Override
+            public void onTextChanged(CharSequence s, int i, int i1, int i2) {
+                mBackSpace = mPreviousLength > s.length();
+                try {
+                    if (mBackSpace) {
+                        if (String.valueOf(s.charAt(s.length()-1)).equals("]")) {
+                            int last_postion = edit_compose.getText().toString().lastIndexOf("]");
+                            int fisrt_postion = edit_compose.getText().toString().lastIndexOf("[");
+                            String remove_string = edit_compose.getText().toString().substring(0, fisrt_postion) + "" + edit_compose.getText().toString().substring(last_postion+1);
+                            edit_compose.setText(remove_string);
+                            edit_compose.setSelection(edit_compose.getText().length());
+                        }
+
+                    }
+                }
+                catch (Exception e)
+                {
+                    e.getMessage();
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
 
 

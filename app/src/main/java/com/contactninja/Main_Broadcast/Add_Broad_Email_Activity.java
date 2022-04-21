@@ -115,6 +115,8 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
     private IARE_Toolbar mToolbar;
     LinearLayout bottombar;
     static AREditText edit_template;
+    int mPreviousLength;
+    Boolean mBackSpace;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -186,6 +188,39 @@ public class Add_Broad_Email_Activity extends AppCompatActivity implements View.
             add_new_contect.setText("Step#" + step_id + "(" + stpe_tyep + " " + SessionManager.getCampaign_type(getApplicationContext()) + ")");
 
         }
+        edit_template.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                mPreviousLength = charSequence.length();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int i, int i1, int i2) {
+                mBackSpace = mPreviousLength > s.length();
+                try {
+                    if (mBackSpace) {
+                        if (String.valueOf(s.charAt(s.length()-1)).equals("]")) {
+                            int last_postion = edit_template.getText().toString().lastIndexOf("]");
+                            int fisrt_postion = edit_template.getText().toString().lastIndexOf("[");
+                            String remove_string = edit_template.getText().toString().substring(0, fisrt_postion) + "" + edit_template.getText().toString().substring(last_postion+1);
+                            edit_template.setText(remove_string);
+                            edit_template.setSelection(edit_template.getText().length());
+                        }
+
+                    }
+                }
+                catch (Exception e)
+                {
+                    e.getMessage();
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
     }
 
