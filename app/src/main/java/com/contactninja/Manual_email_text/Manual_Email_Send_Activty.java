@@ -15,6 +15,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +31,6 @@ import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -78,12 +79,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import retrofit2.Response;
 
@@ -126,6 +124,9 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
     boolean zoom_flag=false;
     int m_hour = 0;
     int m_minute = 0;
+    int mPreviousLength;
+    Boolean mBackSpace;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -178,6 +179,41 @@ public class Manual_Email_Send_Activty extends AppCompatActivity implements View
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+
+        edit_template.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                mPreviousLength = charSequence.length();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int i, int i1, int i2) {
+                mBackSpace = mPreviousLength > s.length();
+              try {
+                  if (mBackSpace) {
+                      if (String.valueOf(s.charAt(s.length()-1)).equals("]")) {
+                          int last_postion = edit_template.getText().toString().lastIndexOf("]");
+                          int fisrt_postion = edit_template.getText().toString().lastIndexOf("[");
+                          String remove_string = edit_template.getText().toString().substring(0, fisrt_postion) + "" + edit_template.getText().toString().substring(last_postion+1);
+                          edit_template.setText(remove_string);
+                          edit_template.setSelection(edit_template.getText().length());
+                      }
+
+                  }
+              }
+              catch (Exception e)
+              {
+                    e.getMessage();
+              }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
     private void initToolbar() {
