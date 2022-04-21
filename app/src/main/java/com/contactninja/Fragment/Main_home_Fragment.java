@@ -175,7 +175,7 @@ public class Main_home_Fragment extends Fragment implements View.OnClickListener
 
         }
 
-        tv_total_reeard.setText(String.valueOf(Integer.parseInt(dashboard.getAFFILIATE_REWARDS().toString())));
+        tv_total_reeard.setText(dashboard.getAFFILIATE_REWARDS().toString());
 
         if (Global.IsNotNull(des_affiliateInfo)) {
 
