@@ -42,6 +42,7 @@ import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
 import com.contactninja.Utils.Global;
+import com.contactninja.Utils.Global_Time;
 import com.contactninja.Utils.LoadingDialog;
 import com.contactninja.Utils.PaginationListener;
 import com.contactninja.Utils.SessionManager;
@@ -487,8 +488,10 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                             if (status == 1) {
                                // paramObject.addProperty("status", "I");
                                 campaign.setStatus("I");
+                                campaign.setStarted_on(Global_Time.getCurrentTimeandDate_24());
                                 campaingAdepter.notifyDataSetChanged();
                             } else {
+                                campaign.setStarted_on(Global_Time.getCurrentTimeandDate_24());
                                 campaign.setStatus("A");
                                 campaingAdepter.notifyDataSetChanged();
                             }
