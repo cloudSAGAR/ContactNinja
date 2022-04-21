@@ -186,6 +186,8 @@
                 android:background="@color/white"
                 app:tabIndicatorColor="@color/home_list_tab_bg"
                 app:tabIndicatorHeight="2dp"
+                app:tabIndicatorFullWidth="false"
+                app:tabIndicatorGravity="bottom"
                 app:tabSelectedTextColor="@color/text_reg"
                 app:tabTextAppearance="@style/CustomTextAppearanceTab_bzcars"
                 app:tabTextColor="@color/text_gray"

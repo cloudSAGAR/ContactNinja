@@ -52,6 +52,8 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
             app:tabRippleColor="@null"
+            app:tabIndicatorFullWidth="false"
+            app:tabIndicatorGravity="bottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_25sdp"

@@ -128,6 +128,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
         android:background="@color/white"
+        app:tabIndicatorFullWidth="false"
+        app:tabIndicatorGravity="bottom"
         app:tabIndicatorColor="@color/home_list_tab_bg"
         app:tabIndicatorHeight="2dp"
         app:tabSelectedTextColor="@color/text_reg"
