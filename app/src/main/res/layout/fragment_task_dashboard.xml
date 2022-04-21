@@ -21,8 +21,8 @@
         android:gravity="center"
         >
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_Task_list"
             android:overScrollMode="never"
+            android:id="@+id/rv_Task_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

@@ -54,7 +54,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -73,6 +72,8 @@
                     android:gravity="center|left"
                     android:padding="@dimen/_2sdp" />
                 <View
+                    android:layout_marginStart="1dp"
+                    android:layout_marginEnd="1dp"
                     android:layout_marginTop="@dimen/_2sdp"
                     android:layout_marginBottom="@dimen/_2sdp"
                     android:layout_width="1dp"

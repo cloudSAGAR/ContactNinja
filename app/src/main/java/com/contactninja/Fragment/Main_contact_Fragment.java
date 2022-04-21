@@ -138,6 +138,14 @@ public class Main_contact_Fragment extends Fragment {
         search_icon = view.findViewById(R.id.search_icon);
         layout_toolbar_logo = view.findViewById(R.id.layout_toolbar_logo);
         layout_toolbar_logo.setVisibility(View.VISIBLE);
+        layout_toolbar_logo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.activity.ImageSetLight(getResources().getString(R.string.select_Home));
+                MainActivity.activity.navItemIndex=0;
+                MainActivity.activity.displayView();
+            }
+        });
     }
 
 

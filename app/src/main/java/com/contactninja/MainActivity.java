@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static int RC_APP_UPDATE = 0;
     private final List<ContectListData.Contact> contectListData = new ArrayList<>();
     InstallStateUpdatedListener installStateUpdatedListener;
-    ImageView llHome, llsend, llContact, llUser;
+    public static ImageView llHome, llsend, llContact, llUser;
     FrameLayout frameLayout;
     SessionManager sessionManager;
     boolean doubleBackToExitPressedOnce = false;
@@ -936,31 +936,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    public void ImageSetLight(String imageName) {
+    public static void ImageSetLight(String imageName) {
         switch (imageName) {
             case "Home":
-                llHome.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_home_select));
-                llsend.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_task));
-                llContact.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_contacts));
-                llUser.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_user));
+                llHome.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_nav_home_select));
+                llsend.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_nav_task));
+                llContact.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_nav_contacts));
+                llUser.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_nav_user));
                 break;
             case "Send":
-                llHome.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_home));
-                llsend.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_task_select));
-                llContact.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_contacts));
-                llUser.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_user));
+                llHome.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_nav_home));
+                llsend.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_nav_task_select));
+                llContact.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_nav_contacts));
+                llUser.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_nav_user));
                 break;
             case "Contact":
-                llHome.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_home));
-                llsend.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_task));
-                llContact.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_contacts_selece));
-                llUser.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_user));
+                llHome.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_nav_home));
+                llsend.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_nav_task));
+                llContact.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_nav_contacts_selece));
+                llUser.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_nav_user));
                 break;
             case "User":
-                llHome.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_home));
-                llsend.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_task));
-                llContact.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_contacts));
-                llUser.setImageDrawable(getResources().getDrawable(R.drawable.ic_nav_user_select));
+                llHome.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_nav_home));
+                llsend.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_nav_task));
+                llContact.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_nav_contacts));
+                llUser.setImageDrawable(activity.getResources().getDrawable(R.drawable.ic_nav_user_select));
                 break;
 
 

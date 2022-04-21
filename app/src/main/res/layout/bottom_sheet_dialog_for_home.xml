@@ -29,7 +29,7 @@
                 android:gravity="center"
                 android:paddingTop="@dimen/_12sdp"
                 android:paddingBottom="@dimen/_12sdp"
-                android:text="@string/Please_select_label"
+                android:text="@string/Please_select_your_level"
                 android:textColor="@color/text_reg">
 
             </TextView>

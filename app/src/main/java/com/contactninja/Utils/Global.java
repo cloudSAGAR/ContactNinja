@@ -277,7 +277,7 @@ public class Global extends Application {
 
     public static String getToken(SessionManager sessionManager) {
         String token = sessionManager.getAccess_token();
-        //Log.e("token", token);
+        Log.e("token", token);
         return token;
     }
 

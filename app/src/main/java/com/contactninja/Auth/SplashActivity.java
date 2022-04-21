@@ -28,6 +28,7 @@ public class SplashActivity extends AppCompatActivity {
         Runnable mRunnable = () -> {
             securityManager.checkLogin();
             finish();
+            
         };
         int SPLASH_DISPLAY_LENGTH = 2000;
         mHandler.postDelayed(mRunnable, SPLASH_DISPLAY_LENGTH);

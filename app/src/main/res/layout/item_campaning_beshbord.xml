@@ -12,17 +12,29 @@
         android:orientation="horizontal"
         android:padding="@dimen/_10sdp">
 
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_status"
+                style="@style/tv_regular_10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|left"
+                android:gravity="center|left"
+                android:textColor="@color/Active_green" />
 
         <TextView
             android:id="@+id/tv_camp_name"
             style="@style/tv_Medium_12"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
             android:textColor="@color/text_reg"
             tools:ignore="SelectableText" />
-
+        </LinearLayout>
         <LinearLayout
             android:layout_width="@dimen/_100sdp"
             android:layout_height="wrap_content"

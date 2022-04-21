@@ -626,12 +626,17 @@ public class List_Broadcast_activity extends AppCompatActivity implements View.O
                         holder.lay_btn_pause.setVisibility(View.GONE);
                     } else {
                         /* status inactive */
-                        holder.tv_status.setText(mCtx.getResources().getString(R.string.Inactive));
+                        holder.tv_status.setText(mCtx.getResources().getString(R.string.noactive));
                         holder.tv_status.setTextColor(mCtx.getResources().getColor(R.color.Inactive_red));
-                        /* button hold show */
+                        /* button hold show *//*
                         holder.lay_btn_hold.setVisibility(View.VISIBLE);
                         holder.lay_btn_pause.setVisibility(View.GONE);
-                        holder.lay_btn_play.setVisibility(View.GONE);
+                        holder.lay_btn_play.setVisibility(View.GONE);*/
+                        
+                        /* button start show */
+                        holder.lay_btn_play.setVisibility(View.VISIBLE);
+                        holder.lay_btn_hold.setVisibility(View.GONE);
+                        holder.lay_btn_pause.setVisibility(View.GONE);
                     }
                     break;
             }

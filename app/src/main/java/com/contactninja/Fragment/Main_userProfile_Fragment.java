@@ -39,6 +39,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.bumptech.glide.Glide;
 import com.contactninja.AddContect.Create_New_Contect_Activity;
 import com.contactninja.Bzcard.Select_Bzcard_Activity;
+import com.contactninja.MainActivity;
 import com.contactninja.Model.AddcontectModel;
 import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.ContectListData;
@@ -642,6 +643,7 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
         save_button = view.findViewById(R.id.save_button);
         save_button.setOnClickListener(this);
         layout_toolbar_logo = view.findViewById(R.id.layout_toolbar_logo);
+        layout_toolbar_logo.setOnClickListener(this);
         layout_toolbar_logo.setVisibility(View.VISIBLE);
         edit_profile = view.findViewById(R.id.edit_profile);
         edit_profile.setOnClickListener(this);
@@ -1092,6 +1094,11 @@ public class Main_userProfile_Fragment extends Fragment implements View.OnClickL
                 }
                 Intent i = new Intent(getActivity(), SettingActivity.class);
                 getActivity().startActivity(i);
+                break;
+                case R.id.layout_toolbar_logo:
+                    MainActivity.activity.ImageSetLight(getResources().getString(R.string.select_Home));
+                    MainActivity.activity.navItemIndex=0;
+                    MainActivity.activity.displayView();
                 break;
 
             case R.id.edit_profile:

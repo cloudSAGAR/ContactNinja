@@ -265,18 +265,18 @@ public class Broadcast_Fragment extends Fragment {
                     case "I":
                         if(Global.IsNotNull(item.getFirstActivated())){
                             holder.iv_puse_icon.setVisibility(View.VISIBLE);
-                            holder.tv_status.setText("Paused");
+                            holder.tv_status.setText(mCtx.getResources().getString(R.string.Paused));
                             holder.tv_status.setTextColor(mCtx.getResources().getColor(R.color.tv_push_color));
     
                         }else {
                             holder.iv_hold.setVisibility(View.VISIBLE);
-                            holder.tv_status.setText("Inactive");
+                            holder.tv_status.setText(mCtx.getResources().getString(R.string.Inactive));
                             holder.tv_status.setTextColor(mCtx.getResources().getColor(R.color.red));
                         }
                         break;
                     case "A":
                         holder.iv_play_icon.setVisibility(View.VISIBLE);
-                        holder.tv_status.setText("Active");
+                        holder.tv_status.setText(mCtx.getResources().getString(R.string.Active));
                         holder.tv_status.setTextColor(mCtx.getResources().getColor(R.color.text_green));
 
                         break;

@@ -294,6 +294,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
 
         layout_toolbar_logo = view.findViewById(R.id.layout_toolbar_logo);
         layout_toolbar_logo.setVisibility(View.VISIBLE);
+        layout_toolbar_logo.setOnClickListener(this);
     }
 
     @Override
@@ -313,6 +314,11 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
                 iv_cancle_search_icon.setVisibility(View.GONE);
                 iv_filter_icon.setVisibility(View.VISIBLE);
                 onResume();
+                break;
+            case R.id.layout_toolbar_logo:
+                MainActivity.activity.ImageSetLight(getResources().getString(R.string.select_Home));
+                MainActivity.activity.navItemIndex=0;
+                MainActivity.activity.displayView();
                 break;
         }
     }
@@ -785,7 +791,7 @@ public class Main_Task_Fragment extends Fragment implements View.OnClickListener
             switch (viewType) {
                 case VIEW_TYPE_NORMAL:
                     return new viewData(
-                            LayoutInflater.from(parent.getContext()).inflate(R.layout.item_emailactivitylist, parent, false));
+                            LayoutInflater.from(parent.getContext()).inflate(R.layout.item_tasklist, parent, false));
                 case VIEW_TYPE_LOADING:
                     return new ProgressHolder(
                             LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loading, parent, false));

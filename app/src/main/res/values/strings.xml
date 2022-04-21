@@ -402,7 +402,7 @@
     <string name="cam_tv_titel">Conatc ninja campaign for new mebers</string>
     <string name="con_reach">Completed Out reach</string>
     <string name="con_pending">Pending Out reach</string>
-    <string name="Please_select_your_level">Please select your level</string>
+    <string name="Please_select_your_level">Please select affiliate level</string>
     <string name="lavel1">Level 1</string>
     <string name="lavel2">Level 2</string>
     <string name="lavel3">Level 3</string>
@@ -640,7 +640,7 @@
     <string name="home_broadcast">Broadcast</string>
     <string name="hoome_affiliategrowth">Affiliate Growth</string>
     <string name="home_lastday">Last 7 days</string>
-    <string name="home_affiliate_text">View Detailed Affiliate Report</string>
+    <string name="home_affiliate_text">View Detailed Affiliate Report ↗</string>
     <string name="home_today_activity">Activities</string>
     <string name="Edit">Edit</string>
     <string name="Delete">Delete</string>
@@ -712,9 +712,11 @@
     <string name="Active">Active</string>
     <string name="Paused">Paused</string>
     <string name="Pause">Pause</string>
-    <string name="Inactive">Inactive</string>
+    <string name="Inactive">Incomplete</string>
+    <string name="noactive">Not active</string>
     <string name="Start">Start</string>
     <string name="Manual">Manual</string>
     <string name="Automated">Automated</string>
+    <string name="pending">Pending</string>
 
 </resources>

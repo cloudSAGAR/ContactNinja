@@ -41,6 +41,7 @@ import com.contactninja.retrofit.RetrofitCalls;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
 import org.json.JSONException;
 
@@ -65,6 +66,7 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
     BZcardListModel bZcardListModel = new BZcardListModel();
     private BroadcastReceiver mNetworkReceiver;
     private long mLastClickTime = 0;
+    DotsIndicator dots_indicator;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,6 +137,7 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
         viewPager2.setClipChildren(false);
         viewPager2.setOffscreenPageLimit(3);
         viewPager2.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
+        dots_indicator.setViewPager2(viewPager2);
         CompositePageTransformer compositePagerTransformer = new CompositePageTransformer();
         compositePagerTransformer.addTransformer(new MarginPageTransformer(40));
         compositePagerTransformer.addTransformer(new ViewPager2.PageTransformer() {
@@ -175,6 +178,7 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
         tv_Preview = findViewById(R.id.tv_Preview);
         txt_Use.setOnClickListener(this);
         tv_Preview.setOnClickListener(this);
+        dots_indicator = findViewById(R.id.dots_indicator);
     }
     
     @Override

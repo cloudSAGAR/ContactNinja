@@ -10,6 +10,7 @@
     <color name="white">#FFFFFF</color>
     <color name="white_50">#80FFFFFF</color>
 
+    <color name="notactive">#8E8F8E</color>
     <color name="red">#F64F50</color>
     <color name="green">#08910D</color>
     <color name="Active_green">#07BB19</color>

@@ -674,13 +674,24 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                         holder.lay_btn_hold.setVisibility(View.GONE);
                         holder.lay_btn_pause.setVisibility(View.GONE);
                     } else {
-                        /* status inactive */
-                        holder.tv_status.setText(mCtx.getResources().getString(R.string.Inactive));
-                        holder.tv_status.setTextColor(mCtx.getResources().getColor(R.color.Inactive_red));
-                        /* button hold show */
-                        holder.lay_btn_hold.setVisibility(View.VISIBLE);
-                        holder.lay_btn_pause.setVisibility(View.GONE);
-                        holder.lay_btn_play.setVisibility(View.GONE);
+                        if(campaign.getProspect()!=0){
+                            /* status not active */
+                            holder.tv_status.setText(mCtx.getResources().getString(R.string.noactive));
+                            holder.tv_status.setTextColor(mCtx.getResources().getColor(R.color.notactive));
+                            /* button start show */
+                            holder.lay_btn_play.setVisibility(View.VISIBLE);
+                            holder.lay_btn_hold.setVisibility(View.GONE);
+                            holder.lay_btn_pause.setVisibility(View.GONE);
+                        }else {
+                            /* status inactive */
+                            holder.tv_status.setText(mCtx.getResources().getString(R.string.Inactive));
+                            holder.tv_status.setTextColor(mCtx.getResources().getColor(R.color.Inactive_red));
+                            /* button hold show */
+                            holder.lay_btn_hold.setVisibility(View.VISIBLE);
+                            holder.lay_btn_pause.setVisibility(View.GONE);
+                            holder.lay_btn_play.setVisibility(View.GONE);
+                        }
+                       
                     }
                     break;
             }

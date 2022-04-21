@@ -8,13 +8,6 @@
     android:orientation="vertical"
     tools:ignore="HardcodedText,TextViewEdits,UseCompoundDrawables,TooManyViews,SelectableText,UseCompatTextViewDrawableXml,UselessParent,NestedWeights,DisableBaselineAlignment,ContentDescription,RtlHardcoded,InefficientWeight,NegativeMargin,RtlSymmetry,Autofill,LabelFor,TextFields">
 
-    <!--<ProgressBar
-        android:indeterminate="true"
-        android:indeterminateTintMode="src_atop"
-        android:indeterminateTint="@color/white"
-        android:layout_gravity="center"
-        android:layout_width="@dimen/_30sdp"
-        android:layout_height="@dimen/_30sdp"/>-->
 
     <pl.droidsonroids.gif.GifImageView
         android:layout_width="@dimen/_40sdp"
@@ -25,27 +18,5 @@
         android:padding="@dimen/_5sdp"
         android:src="@drawable/loadder" />
 
-    <!--  <ImageView
-        android:id="@+id/new_loader"
-        android:layout_gravity="center"
-        android:src="@drawable/loadder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    </ImageView>-->
-
-   <!-- <LinearLayout
-        android:layout_width="@dimen/_100sdp"
-        android:layout_height="@dimen/_100sdp"
-        android:layout_gravity="center"
-        android:gravity="center">
-
-        <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/spin_kit"
-            style="@style/SpinKitView.Large.ThreeBounce"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="@dimen/_50sdp"
-            android:layout_gravity="center"
-            app:SpinKit_Color="@color/white" />
-    </LinearLayout>-->
 
 </FrameLayout>

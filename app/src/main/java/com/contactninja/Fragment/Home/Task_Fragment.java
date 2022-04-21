@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.Dashboard.Dashboard;
 import com.contactninja.Model.Dashboard.Des_Task;
-import com.contactninja.Model.ManualTaskModel;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.Global;
@@ -212,7 +210,7 @@ public class Task_Fragment extends Fragment  {
         @Override
         public TaslListAdepter.InviteListDataclass onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View view = inflater.inflate(R.layout.item_emailactivitylist, parent, false);
+            View view = inflater.inflate(R.layout.item_tasklist_dashboard, parent, false);
             return new TaslListAdepter.InviteListDataclass(view);
         }
 
@@ -282,7 +280,7 @@ public class Task_Fragment extends Fragment  {
                     FullDate = item.getDate() + " " + item.getTime();
                     curendate =item.getDate();
 
-                compareDates(curendate, FullDate, holder.tv_status, item);
+                compareDates(curendate, FullDate, holder.tv_status,holder.tv_time, item);
 
 
             }
@@ -331,7 +329,7 @@ public class Task_Fragment extends Fragment  {
 
     }
 
-    public static void compareDates(String onlyDate, String FullDate, TextView tv_status,
+    public static void compareDates(String onlyDate, String FullDate, TextView tv_status,TextView tv_time,
                                    Des_Task item) {
         try {
 
@@ -343,14 +341,19 @@ public class Task_Fragment extends Fragment  {
             if (date1.after(date2)) {
                     tv_status.setText("Due");
                     tv_status.setTextColor(Color.parseColor("#EC5454"));
+                String formateChnage = Global_Time.formateChange(FullDate);
+                tv_time.setText(formateChnage.replace(" ", "\n"));
 
             } else if (date1.before(date2)) {
                     tv_status.setText("Upcoming");
                     tv_status.setTextColor(Color.parseColor("#2DA602"));
+                String formateChnage = Global_Time.formateChange(FullDate);
+                tv_time.setText(formateChnage.replace(" ", "\n"));
 
             } else if (date1.equals(date2)) {
                     tv_status.setText("Today");
                 tv_status.setTextColor(Color.parseColor("#ABABAB"));
+                tv_time.setText(parseDate(FullDate));
 
             }
 
@@ -359,6 +362,55 @@ public class Task_Fragment extends Fragment  {
             ex.printStackTrace();
         }
     }
+    public static String parseDate(String timeAtMiliseconds) throws ParseException {
+        String result = "now";
+        
+        Date CurrentDate = Global_Time.defoult_date_time_formate.parse(Global_Time.getCurrentTimeandDate_24());
+        Date CreateDate = Global_Time.defoult_date_time_formate.parse(timeAtMiliseconds);
+        
+        
+        long different = Math.abs(CurrentDate.getTime()-CreateDate.getTime());
+        
+        long secondsInMilli = 1000;
+        long minutesInMilli = secondsInMilli * 60;
+        long hoursInMilli = minutesInMilli * 60;
+        long daysInMilli = hoursInMilli * 24;
+        
+        long elapsedDays = different / daysInMilli;
+        different = different % daysInMilli;
+        
+        long elapsedHours = different / hoursInMilli;
+        different = different % hoursInMilli;
+        
+        long elapsedMinutes = different / minutesInMilli;
+        different = different % minutesInMilli;
+        
+        long elapsedSeconds = different / secondsInMilli;
+        
+        different = different % secondsInMilli;
+        if (elapsedDays == 0) {
+            if (elapsedHours == 0) {
+                if (elapsedMinutes == 0) {
+                    if (elapsedSeconds < 0) {
+                        return "0" + " s";
+                    } else {
+                        if (elapsedDays > 0 && elapsedSeconds < 59) {
+                            return "now";
+                        }
+                    }
+                } else {
+                    return String.valueOf(elapsedMinutes) + "m ago";
+                }
+            } else {
+                return String.valueOf(elapsedHours) + "h ago";
+            }
+            
+        }
+        
+        
+        return result;
+    }
+    
 }
 
 

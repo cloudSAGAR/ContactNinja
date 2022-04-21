@@ -28,6 +28,7 @@
 
 
         <androidx.recyclerview.widget.RecyclerView
+            android:overScrollMode="never"
             android:id="@+id/rv_broadcast_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
