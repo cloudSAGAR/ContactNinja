@@ -40,12 +40,18 @@ public class Global_Time extends Application {
     public static String getCurrentDate() {
         DateFormat df = new SimpleDateFormat(yyyy_MM_dd);
         String date = df.format(Calendar.getInstance().getTime());
+        if(date==null){
+            date="";
+        }
         return date;
     }
     
     public static String getCurrentTimeandDate_24() {
         DateFormat df = new SimpleDateFormat(yyyy_MM_dd_HH_mm_ss);
         String date = df.format(Calendar.getInstance().getTime());
+        if(date==null){
+            date="";
+        }
         return date;
     }
     
