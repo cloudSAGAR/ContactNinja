@@ -456,7 +456,7 @@ public class Company_Fragment extends Fragment {
                         if (currentPage != PAGE_START)
                             companyAdapter.removeLoading();
                         companyAdapter.addItems(companyList);
-                        
+                        rvinviteuserdetails.setItemViewCacheSize(5000);
                         // check weather is last page or not
                         if (data.getTotal() > companyAdapter.getItemCount()) {
                             companyAdapter.addLoading();
@@ -730,7 +730,8 @@ public class Company_Fragment extends Fragment {
         public Context mCtx;
         TextView phone_txt;
         Contactdetail item;
-        String second_latter = "", current_latter = "";
+        String second_latter = "",
+                current_latter = "";
         private boolean isLoaderVisible = false;
         private List<CompanyModel.Company> companyList;
         
@@ -798,15 +799,15 @@ public class Company_Fragment extends Fragment {
                     String first_latter = WorkData.getName().substring(0, 1).toUpperCase();
                     movieViewHolder.first_latter.setText(first_latter);
                     
-                    if (first_latter != second_latter) {
+                   /* if (first_latter != second_latter) {
                         second_latter = first_latter;
                         movieViewHolder.first_latter.setVisibility(View.VISIBLE);
                         movieViewHolder.top_layout.setVisibility(View.VISIBLE);
                         
-                    }
+                    }*/
 
 
-                     /*   if (second_latter.equals("")) {
+                       if (second_latter.equals("")) {
                             current_latter = first_latter;
                             second_latter = first_latter;
                             movieViewHolder.first_latter.setVisibility(View.VISIBLE);
@@ -825,7 +826,7 @@ public class Company_Fragment extends Fragment {
                             movieViewHolder.first_latter.setVisibility(View.VISIBLE);
                             movieViewHolder.top_layout.setVisibility(View.VISIBLE);
 
-                        }*/
+                        }
                     
                     
                     String name = WorkData.getName();
