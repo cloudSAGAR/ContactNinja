@@ -535,7 +535,7 @@ public class Campaign_Name_Activity extends AppCompatActivity implements View.On
 
                     WorkingHoursModel.WorkingHour workingHour = workingHourList.get(position);
                     if (Global.IsNotNull(workingHour.getName())) {
-                        holder.tv_time_name.setText(workingHour.getName());
+                        holder.tv_time_name.setText(workingHour.getName()+"( "+workingHour.getStartTime()+" - "+workingHour.getEndTime()+" )");
                         if (Global.IsNotNull(workingHour.getIsDefault())) {
                             if (workingHour.getIsDefault().equals("1")) {
                                 holder.iv_is_default.setVisibility(View.VISIBLE);

@@ -393,7 +393,7 @@
     <string name="manu_name1"> Save as draft</string>
     <string name="manu_setting">setting</string>
     <string name="manu_name2"> Edit </string>
-    <string name="txt_campaign">Start campaign</string>
+    <string name="txt_campaign">Save campaign</string>
     <string name="view_contect">View contacts</string>
     <string name="tv_contect">Contacts</string>
     <string name="tv_prospect">Prospects</string>
@@ -465,7 +465,7 @@
     <string name="manual_Completed">Completed</string>
     <string name="manual_Skipped">Skipped</string>
     <string name="manual_Paused">Pause</string>
-    <string name="Play">Play</string>
+    <string name="Play">Start</string>
     <string name="manual_mark">Mark as complete</string>
     <string name="manual_Snooze">Snooze</string>
     <string name="manual_Delete">Delete</string>

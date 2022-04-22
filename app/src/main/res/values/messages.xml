@@ -25,6 +25,7 @@
     <string name="contect_block">This contact is blacklisted</string>
     <string name="add_camp_prospact">Pause the campaign before adding new prospects</string>
     <string name="plan_validation">You don\'t have active plan or quota.</string>
+    <string name="camapning_validation">You can not delete this campaign until you pause it.</string>
     <string name="add_contact">Add first contacts</string>
     <string name="add_tamplate_txt">Enter template text</string>
     <string name="template_title_already">The template title has already been taken.</string>

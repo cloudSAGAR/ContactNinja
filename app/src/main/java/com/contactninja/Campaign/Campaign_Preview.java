@@ -123,7 +123,7 @@ public class Campaign_Preview extends AppCompatActivity implements View.OnClickL
             toolbar.inflateMenu(R.menu.option_menu);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         } else {
-            tv_add_new_step.setText("Add New Step");
+            tv_add_new_step.setText(getResources().getString(R.string.campaign_button_txt));
             tv_name.setEnabled(false);
             layout_name.setEnabled(false);
             iv_camp_edit.setVisibility(View.VISIBLE);

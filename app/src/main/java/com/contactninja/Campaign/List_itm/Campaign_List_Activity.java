@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,12 +33,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.contactninja.Bzcard.Media.SwipeHelper;
 import com.contactninja.Campaign.Add_Camp_Tab_Select_Activity;
 import com.contactninja.Campaign.Campaign_Overview;
 import com.contactninja.Campaign.Campaign_Preview;
 import com.contactninja.Interface.CampaingClick;
 import com.contactninja.MainActivity;
 import com.contactninja.Model.Campaign_List;
+import com.contactninja.Model.Contactdetail;
 import com.contactninja.Model.UserData.SignResponseModel;
 import com.contactninja.R;
 import com.contactninja.Utils.ConnectivityReceiver;
@@ -107,8 +110,8 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         rv_campaign_list.setLayoutManager(layoutManager);
         campaingAdepter = new CampaingAdepter(Campaign_List_Activity.this, new ArrayList<>(), this);
         rv_campaign_list.setAdapter(campaingAdepter);
-        
-        
+
+        CampaignlistSwipe();
         rv_campaign_list.addOnScrollListener(new PaginationListener(layoutManager) {
             @Override
             protected void loadMoreItems() {
@@ -147,7 +150,80 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
             }
         });
     }
-    
+    private void CampaignlistSwipe() {
+        SwipeHelper swipeHelper = new SwipeHelper(getApplicationContext()) {
+            @Override
+            public void instantiateUnderlayButton(RecyclerView.ViewHolder viewHolder, List<UnderlayButton> underlayButtons) {
+                underlayButtons.add(new SwipeHelper.UnderlayButton(
+                        "Delete",
+                        0,
+                        Color.parseColor("#FF3C30"),
+                        new SwipeHelper.UnderlayButtonClickListener() {
+                            @Override
+                            public void onClick(final int pos) {
+                                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                                    return;
+                                }
+                                mLastClickTime = SystemClock.elapsedRealtime();
+                                Log.e("Postion is",String.valueOf(pos));
+                                campaingAdepter.getata_from_campaning(pos);
+                                //  Toast.makeText(getContext(), "Item was removed from the list.", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                ));
+
+            }
+        };
+        swipeHelper.attachToRecyclerView(rv_campaign_list);
+    }
+
+    public void StartCampignApi_delete(int sequence_id, int status,int postion) {
+        loadingDialog.showLoadingDialog();
+        SignResponseModel user_data = SessionManager.getGetUserdata(this);
+        String user_id = String.valueOf(user_data.getUser().getId());
+        String organization_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getId());
+        String team_id = String.valueOf(user_data.getUser().getUserOrganizations().get(0).getTeamId());
+
+
+        JsonObject obj = new JsonObject();
+        JsonObject paramObject = new JsonObject();
+        paramObject.addProperty("organization_id", "1");
+        paramObject.addProperty("record_id", sequence_id);
+        paramObject.addProperty("team_id", "1");
+        paramObject.addProperty("user_id", user_id);
+        if (status == 1) {
+            paramObject.addProperty("status", "D");
+        } else {
+            paramObject.addProperty("status", "A");
+        }
+        obj.add("data", paramObject);
+        retrofitCalls.Sequence_settings(sessionManager, obj,
+                loadingDialog, Global.getToken(sessionManager),
+                Global.getVersionname(Campaign_List_Activity.this),
+                Global.Device, new RetrofitCallback() {
+                    @Override
+                    public void success(Response<ApiResponse> response) {
+                        loadingDialog.cancelLoading();
+
+                        if (response.body().getHttp_status() == 200) {
+                            campaingAdepter.removeitem(postion);
+                        }
+                        else if (response.body().getHttp_status()==404)
+                        {
+                            Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.camapning_validation), false);
+                        }
+                        else if (response.body().getHttp_status() == 403) {
+                            Global.Messageshow(getApplicationContext(), mMainLayout, getResources().getString(R.string.plan_validation), false);
+                        }
+
+                    }
+
+                    @Override
+                    public void error(Response<ApiResponse> response) {
+                        loadingDialog.cancelLoading();
+                    }
+                });
+    }
     private void IntentUI() {
         mMainLayout = findViewById(R.id.mMainLayout);
         iv_cancle_search_icon = findViewById(R.id.iv_cancle_search_icon);
@@ -589,7 +665,14 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
             if (Global.IsNotNull(campaign.getSeqName())) {
                 holder.campaign_name.setText(campaign.getSeqName());
                 setImage(campaign, holder);
-                
+
+                if (campaignList.get(position).isFalg()==true){
+                    holder.main_layout.setVisibility(View.GONE);
+                    holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+                }
+                else {
+                    holder.main_layout.setVisibility(View.VISIBLE);
+                }
               /*  holder.layout_item.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
@@ -704,11 +787,20 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
         public int getItemCount() {
             return campaignList.size();
         }
-        
-        
+
+        public void removeitem(int postion) {
+            campaignList.get(postion).setFalg(true);
+            notifyDataSetChanged();
+        }
+
+        public void getata_from_campaning(int pos) {
+            StartCampignApi_delete(campaignList.get(pos).getId(), 1,pos);
+        }
+
+
         public class viewData extends RecyclerView.ViewHolder {
             TextView campaign_name,tv_status;
-            LinearLayout layout_item, lay_btn_hold,lay_btn_pause,lay_btn_play;
+            LinearLayout layout_item, lay_btn_hold,lay_btn_pause,lay_btn_play,main_layout;
             
             public viewData(@NonNull View itemView) {
                 super(itemView);
@@ -718,6 +810,7 @@ public class Campaign_List_Activity extends AppCompatActivity implements View.On
                 lay_btn_pause = itemView.findViewById(R.id.lay_btn_pause);
                 lay_btn_play = itemView.findViewById(R.id.lay_btn_play);
                 layout_item = itemView.findViewById(R.id.layout_item);
+                main_layout=itemView.findViewById(R.id.main_layout);
             }
         }
         

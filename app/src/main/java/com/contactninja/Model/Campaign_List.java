@@ -82,6 +82,16 @@ public class Campaign_List {
         @SerializedName("total_count")
         @Expose
         private Integer totalCount=0;
+        boolean falg=false;
+
+
+        public boolean isFalg() {
+            return falg;
+        }
+
+        public void setFalg(boolean falg) {
+            this.falg = falg;
+        }
 
         public String getStarted_on() {
             return started_on;
