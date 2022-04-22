@@ -56,7 +56,7 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
     public static Select_Bzcard_Activity activity;
     ImageView iv_back;
     RelativeLayout mMainLayout;
-    ViewPager2 viewPager2;
+    static ViewPager2 viewPager2;
     TextView txt_footer, txt_Use, tv_Preview;
     SessionManager sessionManager;
     RetrofitCalls retrofitCalls;
@@ -132,7 +132,7 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
     }
     
     private void setImage() {
-        viewPager2.setAdapter(new ViewPageAdepter(getApplicationContext(), bizcardList));
+        viewPager2.setAdapter(new ViewPageAdepter(this, bizcardList));
         viewPager2.setClipToPadding(false);
         viewPager2.setClipChildren(false);
         viewPager2.setOffscreenPageLimit(3);
@@ -267,7 +267,7 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
         finish();
     }
     
-    public static class ViewPageAdepter extends RecyclerView.Adapter<ViewPageAdepter.viewholder> {
+    public class ViewPageAdepter extends RecyclerView.Adapter<ViewPageAdepter.viewholder> {
         
         public Context mCtx;
         List<BZcardListModel.Bizcard> bizcardList = new ArrayList<>();
@@ -310,6 +310,24 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
                     Glide.with(mCtx.getApplicationContext()).load(Global.card_s3_link + "bzstore6.png").into(holder.iv_card);
                     break;
             }
+
+            holder.iv_card.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    SessionManager.setBzcard(mCtx, new BZcardListModel.Bizcard());
+                    BZcardListModel.Bizcard main_model;
+                    main_model = SessionManager.getBzcard(mCtx);
+                    for (int i = 0; i < bizcardList.size(); i++) {
+                        if (viewPager2.getCurrentItem() == i) {
+                            Card_id = bizcardList.get(i).getId();
+                            break;
+                        }
+                    }
+                    main_model.setCard_id(Card_id);
+                    SessionManager.setBzcard(mCtx, main_model);
+                    mCtx.startActivity(new Intent(mCtx, Add_New_Bzcard_Activity.class));
+                }
+            });
             /*int resID = mCtx.getResources().getIdentifier(bizcard.getCardName()
                     .replace(" ", "_").toLowerCase(), "drawable", mCtx.getPackageName());
             if (resID != 0) {
@@ -323,7 +341,7 @@ public class Select_Bzcard_Activity extends AppCompatActivity implements Connect
             return bizcardList.size();
         }
         
-        public static class viewholder extends RecyclerView.ViewHolder {
+        public  class viewholder extends RecyclerView.ViewHolder {
             ImageView iv_card;
             
             public viewholder(View view) {
